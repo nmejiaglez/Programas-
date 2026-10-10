@@ -1,0 +1,24 @@
+DESINSTALADOR TOTAL - Instrucciones
+===================================
+Funciona en Windows 7, 8, 10 y 11. No necesita instalar nada.
+
+1. Copie DesinstaladorTotal.bat y DesinstaladorTotal.ps1 en la MISMA carpeta.
+2. Clic derecho sobre DesinstaladorTotal.bat > "Ejecutar como administrador".
+3. Escriba parte del nombre del programa (ej.: "zoom") y elija su numero.
+4. El programa:
+   PASO 1 - Ejecuta el desinstalador oficial del programa.
+   PASO 2 - Busca restos: carpetas (Program Files, ProgramData, AppData),
+            claves del registro, accesos directos, servicios y tareas.
+   PASO 3 - Le muestra la lista, usted excluye lo que no quiera borrar,
+            y confirma escribiendo SI.
+
+Si el programa YA se desinstalo pero dejo basura, escriba su nombre igual:
+el programa ofrecera buscar solo los restos.
+
+SEGURIDAD:
+- Nunca borra nada sin mostrarlo y sin que usted escriba SI.
+- Guarda un respaldo del registro en el Escritorio (doble clic al .reg
+  para restaurar).
+- Nunca toca Windows, Program Files completo ni sus documentos.
+- Revise la lista: si un resto pertenece a otro programa del mismo
+  fabricante, excluyalo por su numero.
