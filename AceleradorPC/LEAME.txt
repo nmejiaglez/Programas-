@@ -1,0 +1,27 @@
+ACELERADOR PC - Instrucciones
+=============================
+Funciona en Windows 7, 8, 10 y 11. No necesita instalar nada.
+
+1. Copie AceleradorPC.bat y AceleradorPC.ps1 en la MISMA carpeta.
+2. Clic derecho sobre AceleradorPC.bat > "Ejecutar como administrador".
+3. Elija la opcion 1 (TODO) y al terminar REINICIE la computadora.
+
+QUE HACE:
+- General: alto rendimiento, menos animaciones, menus y apagado mas
+  rapidos, sin retraso al iniciar, borra temporales.
+- Internet: limpia DNS, optimiza TCP, libera ancho de banda reservado,
+  opcion de DNS rapido (Cloudflare o Google).
+- Archivos: Explorador mas rapido, carpetas sin "Trabajando en ello...",
+  miniaturas reconstruidas, TRIM en SSD o desfragmentacion en disco duro.
+- Diagnostico (opcion 8): le dice que hace lenta la PC (RAM, disco lleno,
+  disco duro viejo, programas pesados).
+
+SEGURIDAD:
+- Antes de cambiar algo crea un PUNTO DE RESTAURACION.
+- Para deshacer todo: opcion 9 y elija "Antes de Acelerador PC".
+- No borra documentos, fotos ni programas. No desactiva el antivirus
+  ni las actualizaciones de Windows.
+- En portatiles, el modo alto rendimiento gasta un poco mas de bateria.
+
+NOTA: ningun programa hace milagros. Si la PC tiene disco duro mecanico
+o menos de 4 GB de RAM, cambiar a SSD o agregar memoria es la mejora real.
