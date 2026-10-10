@@ -1,0 +1,18 @@
+LIMPIEZA PC - Instrucciones
+===========================
+Funciona en Windows XP, Vista, 7, 8, 10 y 11. No necesita instalar nada.
+
+1. Copie LimpiezaPC.bat a la computadora (USB, correo, etc.).
+2. Clic derecho sobre LimpiezaPC.bat > "Ejecutar como administrador".
+3. Elija una opcion del menu:
+   1 = Rapida (temporales y papelera) - segura para uso diario
+   2 = Completa (ademas cache de navegadores, Windows Update, registros)
+   3 = Liberador de espacio de Windows
+   4 = Revisar disco (solo lectura)
+   5 = Reparar archivos de Windows
+   6 = Desfragmentar/optimizar disco
+   7 = Ver programas de inicio (desactivarlos acelera PCs viejas)
+
+SEGURIDAD: NO borra documentos, fotos, contrasenas, favoritos ni programas.
+Solo borra archivos temporales y caches que Windows vuelve a crear.
+ATENCION: la opcion 1 y 2 vacian la papelera de reciclaje.
