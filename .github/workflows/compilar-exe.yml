@@ -1,0 +1,49 @@
+name: Compilar EXE Acelerador PC Ultra Pro
+
+on:
+  push:
+    paths:
+      - 'AceleradorPC/**'
+      - '.github/workflows/compilar-exe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  compilar:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verificar sintaxis
+        shell: powershell
+        run: |
+          $e = $null; $t = $null
+          [void][System.Management.Automation.Language.Parser]::ParseFile("$PWD\AceleradorPC\AceleradorPC_UltraPro.ps1", [ref]$t, [ref]$e)
+          if ($e) { $e | ForEach-Object { Write-Error "$($_.Extent.StartLineNumber): $($_.Message)" }; exit 1 }
+
+      - name: Compilar con ps2exe
+        shell: powershell
+        run: |
+          Install-Module ps2exe -Scope CurrentUser -Force
+          .\AceleradorPC\Compilar_EXE.ps1
+          if (-not (Test-Path .\AceleradorPC\AceleradorPC_UltraPro.exe)) { exit 1 }
+          Compress-Archive -Path .\AceleradorPC\AceleradorPC_UltraPro.exe, .\AceleradorPC\LEAME.txt -DestinationPath .\AceleradorPC_UltraPro_2026.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AceleradorPC_UltraPro_2026
+          path: |
+            AceleradorPC/AceleradorPC_UltraPro.exe
+            AceleradorPC/LEAME.txt
+
+      - name: Publicar en Releases (descarga directa)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete ultra-pro-2026 --yes --cleanup-tag || true
+          gh release create ultra-pro-2026 AceleradorPC/AceleradorPC_UltraPro.exe AceleradorPC_UltraPro_2026.zip \
+            --target "${{ github.sha }}" --title "Acelerador PC Ultra Pro 2026" \
+            --notes "Descargue AceleradorPC_UltraPro.exe y ejecútelo (pedirá permisos de administrador)."

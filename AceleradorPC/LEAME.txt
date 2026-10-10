@@ -1,27 +1,49 @@
-ACELERADOR PC - Instrucciones
-=============================
-Funciona en Windows 7, 8, 10 y 11. No necesita instalar nada.
+ACELERADOR PC ULTRA PRO 2026 - Instrucciones
+============================================
+Windows 7 SP1, 8, 8.1, 10 y 11. Funciona en PCs antiguas con 4 GB de RAM.
 
-1. Copie AceleradorPC.bat y AceleradorPC.ps1 en la MISMA carpeta.
-2. Clic derecho sobre AceleradorPC.bat > "Ejecutar como administrador".
-3. Elija la opcion 1 (TODO) y al terminar REINICIE la computadora.
+USO RÁPIDO (sin Claude Code ni nada instalado):
+1. Descargue AceleradorPC_UltraPro.exe desde la sección "Releases" del
+   repositorio en GitHub (versión "Acelerador PC Ultra Pro 2026").
+2. Doble clic sobre el .exe y acepte "Sí" cuando pida administrador.
+   (Si Windows SmartScreen avisa: "Más información" > "Ejecutar de todas formas").
+3. Pulse "MANTENIMIENTO COMPLETO" y al terminar REINICIE la computadora.
 
-QUE HACE:
-- General: alto rendimiento, menos animaciones, menus y apagado mas
-  rapidos, sin retraso al iniciar, borra temporales.
-- Internet: limpia DNS, optimiza TCP, libera ancho de banda reservado,
-  opcion de DNS rapido (Cloudflare o Google).
-- Archivos: Explorador mas rapido, carpetas sin "Trabajando en ello...",
-  miniaturas reconstruidas, TRIM en SSD o desfragmentacion en disco duro.
-- Diagnostico (opcion 8): le dice que hace lenta la PC (RAM, disco lleno,
-  disco duro viejo, programas pesados).
+Alternativa sin .exe: copie AceleradorPC_UltraPro.ps1 y AceleradorPC_UltraPro.bat
+en la misma carpeta y haga doble clic en el .bat.
+Para generar el .exe usted mismo: clic derecho en Compilar_EXE.ps1 >
+"Ejecutar con PowerShell".
+
+FUNCIONES:
+ - Mantenimiento completo (con confirmación previa e informe final).
+ - Diagnóstico de procesador (uso, velocidad, temperatura), RAM (módulos,
+   uso, paginación), discos (espacio, SMART, desgaste SSD) y batería.
+ - Programas que ralentizan la PC: medición real de CPU y memoria.
+ - Diagnóstico de internet: router, pérdida de paquetes, latencia, DNS,
+   señal Wi-Fi y velocidad de descarga.
+ - Limpieza profunda segura: temporales, cachés de navegadores (no borra
+   contraseñas, historial ni marcadores), informes de errores, descargas
+   viejas de Windows Update. La Papelera solo se vacía si usted lo autoriza.
+ - Reparar Windows con DISM + SFC, verificando el resultado.
+ - Verificar errores del disco (solo lectura). La reparación chkdsk /f solo
+   se programa si usted lo confirma.
+ - Optimizar inicio de Windows: lista con recomendaciones; antivirus y
+   controladores protegidos; cambios 100 % reversibles.
+ - Optimizar internet (TCP, QoS, DNS rápido opcional verificado) y Reparar red.
+ - Rapidez general y de archivos/carpetas (funciones del programa original).
+ - Rendimiento y batería: plan automático según portátil/escritorio,
+   informe de salud de la batería.
+ - Protección: punto de restauración verificado, respaldo del registro y la
+   red, copia de archivos personales a USB/disco externo (solo copia).
+ - Informe final HTML: problemas detectados, reparaciones y resultados.
+
+Informes y respaldos: Documentos\AceleradorPC_UltraPro
 
 SEGURIDAD:
-- Antes de cambiar algo crea un PUNTO DE RESTAURACION.
-- Para deshacer todo: opcion 9 y elija "Antes de Acelerador PC".
-- No borra documentos, fotos ni programas. No desactiva el antivirus
-  ni las actualizaciones de Windows.
-- En portatiles, el modo alto rendimiento gasta un poco mas de bateria.
+ - No elimina documentos, fotos, música, videos ni descargas.
+ - No desactiva Windows Defender, Firewall, UAC ni Windows Update.
+ - Para deshacer: botón "DESHACER cambios" > punto "Antes de Acelerador
+   PC Ultra Pro", o haga doble clic en los archivos .reg del respaldo.
 
-NOTA: ningun programa hace milagros. Si la PC tiene disco duro mecanico
-o menos de 4 GB de RAM, cambiar a SSD o agregar memoria es la mejora real.
+NOTA: en Windows 7 se requiere Windows Management Framework 5.1 para el .exe.
+Si la PC tiene disco mecánico o poca RAM, un SSD o más memoria es la mejora real.
