@@ -28,6 +28,7 @@ jobs:
         run: |
           Install-Module ps2exe -Scope CurrentUser -Force
           .\AceleradorPC\Compilar_EXE.ps1
+          Set-Location $env:GITHUB_WORKSPACE
           if (-not (Test-Path .\AceleradorPC\AceleradorPC_UltraPro.exe)) { exit 1 }
           Compress-Archive -Path .\AceleradorPC\AceleradorPC_UltraPro.exe, .\AceleradorPC\LEAME.txt -DestinationPath .\AceleradorPC_UltraPro_2026.zip
 
