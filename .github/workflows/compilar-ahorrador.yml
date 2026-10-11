@@ -1,0 +1,59 @@
+name: Compilar Ahorrador de RAM
+
+on:
+  push:
+    paths:
+      - 'AhorradorRAM/**'
+      - '.github/workflows/compilar-ahorrador.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  compilar:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            nombre: AhorradorRAM_Windows
+          - os: macos-latest
+            nombre: AhorradorRAM_macOS
+          - os: ubuntu-22.04
+            nombre: AhorradorRAM_Linux
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compilar
+        shell: bash
+        working-directory: AhorradorRAM
+        run: |
+          pip install pyinstaller psutil
+          pyinstaller --onefile --windowed --name "${{ matrix.nombre }}" ahorrador_ram.py
+          if [ "${{ runner.os }}" = "macOS" ]; then
+            cd dist && ditto -c -k --keepParent "${{ matrix.nombre }}.app" "${{ matrix.nombre }}.zip" && rm -rf "${{ matrix.nombre }}" "${{ matrix.nombre }}.app"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.nombre }}
+          path: AhorradorRAM/dist/*
+
+  publicar:
+    needs: compilar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Publicar en Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete ahorrador-ram-2026 --repo "${{ github.repository }}" --yes --cleanup-tag || true
+          gh release create ahorrador-ram-2026 dist/* --repo "${{ github.repository }}" \
+            --target "${{ github.sha }}" --title "Ahorrador de RAM 2026" \
+            --notes "Windows: AhorradorRAM_Windows.exe · macOS: AhorradorRAM_macOS.zip · Linux: AhorradorRAM_Linux"

@@ -1,0 +1,25 @@
+AHORRADOR DE RAM 2026 - Windows, macOS y Linux
+==============================================
+Para computadoras con poca memoria (2-4 GB). El programa es ligero.
+
+QUÉ HACE
+ - Medidor de RAM en vivo (verde / naranja / rojo).
+ - Lista de programas agrupados (todas las pestañas de Chrome juntas, etc.)
+   con la memoria que gasta cada uno. En rojo los que gastan más del 10 %.
+ - "Cerrar programa": libera su memoria (pide confirmación; los del sistema
+   y el antivirus están protegidos).
+ - "Compactar memoria" (Windows): los programas en segundo plano devuelven
+   a Windows la memoria que no están usando. No cierra nada ni pierde datos.
+ - Aviso automático cuando la RAM pasa del 90 % indicando quién la gasta.
+ - Consejos según su equipo (navegador, programas de inicio, ampliar RAM).
+
+IMPORTANTE (honestidad): ningún programa "crea" memoria. Lo que de verdad
+libera RAM es cerrar lo que no se usa y evitar que arranque solo. La
+compactación ayuda unos minutos, no es permanente. Con menos de 4 GB, la
+mejora real es ampliar a 8 GB.
+
+CÓMO USARLO
+ - Ejecutable: descargue de "Releases" en GitHub ("Ahorrador de RAM 2026"):
+   AhorradorRAM_Windows.exe / AhorradorRAM_macOS.zip / AhorradorRAM_Linux
+   (En Windows, "Ejecutar como administrador" permite compactar más programas).
+ - Con Python 3: python ahorrador_ram.py   (modo texto: --consola)
