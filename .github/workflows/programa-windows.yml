@@ -31,4 +31,4 @@ jobs:
           name: Radiología Suite para Windows
           body: "Descargue **RadiologiaSuite_Windows.zip**, descomprímalo y abra **Radiologia Suite.exe**. Funciona sin internet."
           files: RadiologiaSuite_Windows.zip
-          make_latest: true
+          make_latest: false
