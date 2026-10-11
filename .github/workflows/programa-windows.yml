@@ -1,0 +1,34 @@
+name: Programa Windows
+on:
+  push:
+    branches: [claude/pensive-albattani-u87i1f, main]
+    paths: ["RadiologiaSuite/**", ".github/workflows/programa-windows.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Construir Radiologia Suite.exe
+        run: |
+          npx --yes @electron/packager@18.3.6 RadiologiaSuite "Radiologia Suite" --platform=win32 --arch=x64 --electron-version=33.2.1 --out=dist --asar --ignore='\.bat$'
+          D="dist/Radiologia Suite-win32-x64"
+          find "$D/locales" -type f ! -name 'es*.pak' ! -name 'en-US.pak' -delete
+          cp -r RadiologiaSuite/Plantillas_Word "$D/"
+          rm -f "$D/Plantillas_Word/generar_plantilla.py"
+          cp RadiologiaSuite/LEAME_WINDOWS.txt "$D/LEAME.txt"
+          mv "$D" Radiologia_Suite
+          zip -qr9 RadiologiaSuite_Windows.zip Radiologia_Suite
+      - name: Publicar descarga
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: radiologia-suite
+          name: Radiología Suite para Windows
+          body: "Descargue **RadiologiaSuite_Windows.zip**, descomprímalo y abra **Radiologia Suite.exe**. Funciona sin internet."
+          files: RadiologiaSuite_Windows.zip
+          make_latest: true

@@ -1,0 +1,16 @@
+RADIOLOGIA SUITE - Dr. Nestor Jose Mejia Gonzalez
+
+PROGRAMA DE WINDOWS. FUNCIONA SIN INTERNET. NO NECESITA NAVEGADOR.
+
+1. Descomprima el ZIP completo (clic derecho > Extraer todo).
+2. Mueva la carpeta a Documentos (o donde guste). No borre ningun archivo de la carpeta.
+3. Doble clic en "Radiologia Suite.exe".
+   La primera vez se crea un acceso directo en el Escritorio.
+   Si Windows muestra "Windows protegio su PC": presione "Mas informacion" > "Ejecutar de todas formas".
+
+SUS PACIENTES se guardan solos en:
+   Documentos\Archivo Pacientes\Pacientes\Ano\Mes\Nombre_Paciente\
+   Registro en Excel: Documentos\Archivo Pacientes\Registro_Pacientes.csv
+Para guardarlos en una memoria USB: pestana Pacientes > "Cambiar carpeta".
+
+RESPALDO: copie la carpeta "Archivo Pacientes" a una memoria o a Google Drive cada semana.
