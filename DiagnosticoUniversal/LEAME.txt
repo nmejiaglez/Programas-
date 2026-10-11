@@ -1,0 +1,42 @@
+DIAGNÓSTICO PC UNIVERSAL 2026 - Windows, macOS y Linux
+======================================================
+
+QUÉ HACE
+Analiza la computadora, muestra cada problema por gravedad (GRAVE, MEDIO,
+LEVE) y le da un botón para corregirlo. Siempre pide confirmación.
+
+Detecta:
+ - Memoria RAM insuficiente o casi llena.
+ - Procesador saturado y temperatura alta.
+ - Disco casi lleno; errores del disco (Windows y macOS, solo lectura).
+ - Archivos temporales y cachés acumulados  -> botón Limpiar.
+ - Papelera llena                            -> botón Vaciar.
+ - Caché de paquetes y registros grandes (Linux) -> botón Limpiar/Reducir.
+ - Demasiados programas al inicio            -> abre el administrador de inicio.
+ - Programas que consumen muchos recursos    -> botón Cerrar.
+ - Equipo sin reiniciar hace muchos días.
+ - Batería desgastada.
+ - Sin internet, internet lento o DNS fallando -> botón Limpiar DNS.
+ - Windows: reparación de archivos del sistema (SFC + DISM).
+ - Acceso directo a las actualizaciones del sistema.
+Botón "Corregir lo seguro": aplica solo limpieza de temporales y DNS.
+Botón "Guardar informe": guarda un informe en Documentos/DiagnosticoPC_Informes.
+
+SEGURIDAD
+ - Nunca borra documentos, fotos, música, videos ni descargas.
+ - Solo borra temporales/cachés con más de 1 día de antigüedad.
+ - No desactiva antivirus, firewall ni actualizaciones.
+ - No cierra procesos del sistema.
+
+CÓMO USARLO
+Opción A - Ejecutable (sin instalar nada): descargue el archivo de su
+sistema desde "Releases" en GitHub (versión "Diagnóstico PC Universal 2026"):
+   Windows: DiagnosticoPC_Windows.exe  (clic derecho > Ejecutar como administrador)
+   macOS:   DiagnosticoPC_macOS.zip    (descomprimir; la 1ª vez: clic derecho > Abrir)
+   Linux:   DiagnosticoPC_Linux        (chmod +x DiagnosticoPC_Linux; ./DiagnosticoPC_Linux)
+
+Opción B - Con Python 3 instalado:
+   Windows: doble clic en Iniciar_Windows.bat
+   macOS/Linux: ./iniciar_mac_linux.sh
+   (Opcional, más preciso: pip install psutil)
+   Sin pantalla gráfica: python3 diagnostico_pc.py --consola

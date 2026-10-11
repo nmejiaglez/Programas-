@@ -1,0 +1,59 @@
+name: Compilar Diagnóstico PC Universal
+
+on:
+  push:
+    paths:
+      - 'DiagnosticoUniversal/**'
+      - '.github/workflows/compilar-diagnostico.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  compilar:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            nombre: DiagnosticoPC_Windows
+          - os: macos-latest
+            nombre: DiagnosticoPC_macOS
+          - os: ubuntu-22.04
+            nombre: DiagnosticoPC_Linux
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compilar
+        shell: bash
+        working-directory: DiagnosticoUniversal
+        run: |
+          pip install pyinstaller psutil
+          pyinstaller --onefile --windowed --name "${{ matrix.nombre }}" diagnostico_pc.py
+          if [ "${{ runner.os }}" = "macOS" ]; then
+            cd dist && ditto -c -k --keepParent "${{ matrix.nombre }}.app" "${{ matrix.nombre }}.zip" && rm -rf "${{ matrix.nombre }}" "${{ matrix.nombre }}.app"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.nombre }}
+          path: DiagnosticoUniversal/dist/*
+
+  publicar:
+    needs: compilar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Publicar en Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete diagnostico-universal-2026 --repo "${{ github.repository }}" --yes --cleanup-tag || true
+          gh release create diagnostico-universal-2026 dist/* --repo "${{ github.repository }}" \
+            --target "${{ github.sha }}" --title "Diagnóstico PC Universal 2026" \
+            --notes "Windows: DiagnosticoPC_Windows.exe · macOS: DiagnosticoPC_macOS.zip · Linux: DiagnosticoPC_Linux"
