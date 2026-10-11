@@ -1,11 +1,5 @@
 // ====== registro de estudios (localStorage) ======
-const CLAVE_REG = "registroEstudios";
-const leerReg = () => { try { return JSON.parse(localStorage.getItem(CLAVE_REG)) || []; } catch { return []; } };
-function registrarEstudio(r) {
-  const reg = leerReg(); reg.push(r);
-  try { localStorage.setItem(CLAVE_REG, JSON.stringify(reg)); } catch { alert("No se pudo guardar en el registro (almacenamiento lleno o bloqueado)."); }
-  renderRegistro();
-}
+const leerReg = () => Almacen.lista();
 function filtrados() {
   const mes = $("rMes").value, q = $("rBuscar").value.toLowerCase();
   return leerReg().filter(r => (!mes || r.fecha.startsWith(mes)) && (!q || Object.values(r).join(" ").toLowerCase().includes(q)));
@@ -26,8 +20,5 @@ $("rCSV").addEventListener("click", () => {
   const csv = "﻿" + cols.join(";") + "\n" + filtrados().map(r => cols.map(c => `"${String(r[c] ?? "").replace(/"/g, '""')}"`).join(";")).join("\n");
   const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
   a.download = `Registro_Radiologia_${$("rMes").value || "todo"}.csv`; a.click();
-});
-$("rBorrar").addEventListener("click", () => {
-  if (confirm("¿Borrar TODO el registro? Exporte el CSV antes. Esta acción no se puede deshacer.")) { try { localStorage.removeItem(CLAVE_REG); } catch {} renderRegistro(); }
 });
 renderRegistro();

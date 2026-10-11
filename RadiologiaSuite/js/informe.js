@@ -86,21 +86,23 @@ $("chkRec").addEventListener("change", e => $("recomendaciones").classList.toggl
 $("btnLimpiar").addEventListener("click", () => {
   if (!confirm("¿Limpiar el formulario para un nuevo paciente?")) return;
   ["pNombre", "pEdad", "pMedico", "pIndicacion", "etiologia", "recomendaciones"].forEach(i => $(i).value = "");
-  $("chkRec").checked = false; $("recomendaciones").classList.add("oculto"); renderFormulario(); scrollTo(0, 0);
+  $("chkRec").checked = false; $("recomendaciones").classList.add("oculto"); $("historial").innerHTML = ""; renderFormulario(); scrollTo(0, 0);
 });
 renderFormulario();
 
 // ====== logos ======
+const mostradores = [];
+function mostrarLogos() { mostradores.forEach(f => f()); }
 function logoInput(inp, prev, clave) {
-  const mostrar = () => { const d = leer(clave); $(prev).src = d || ""; $(prev).style.display = d ? "block" : "none"; };
+  const mostrar = () => { const d = leer(clave); $(prev).src = d || ""; $(prev).style.display = d ? "block" : "none"; }; mostradores.push(mostrar);
   $(inp).addEventListener("change", e => {
     const f = e.target.files[0]; if (!f) return; const r = new FileReader();
-    r.onload = () => { if (!guardar(clave, r.result)) alert("La imagen es demasiado grande para guardarla. Use una imagen de menos de 1.5 MB."); mostrar(); };
+    r.onload = () => { if (!guardar(clave, r.result)) alert("La imagen es demasiado grande para guardarla. Use una imagen de menos de 1.5 MB."); mostrar(); Almacen.guardarLogosEnCarpeta(); };
     r.readAsDataURL(f);
   }); mostrar();
 }
 logoInput("logoHosp", "prevHosp", "logoHosp"); logoInput("logoNM", "prevNM", "logoNM"); logoInput("logoFirma", "prevFirma", "logoFirma");
-$("btnQuitarLogos").addEventListener("click", () => { ["logoHosp", "logoNM", "logoFirma"].forEach(k => { try { localStorage.removeItem(k); } catch {} }); location.reload(); });
+$("btnQuitarLogos").addEventListener("click", async () => { ["logoHosp", "logoNM", "logoFirma"].forEach(k => { try { localStorage.removeItem(k); } catch {} }); await Almacen.guardarLogosEnCarpeta(); mostrarLogos(); });
 
 async function imagen(clave, maxW, maxH) {
   const d = leer(clave); if (!d) return null;
@@ -221,10 +223,18 @@ async function generarWord() {
     "US general femenino": "US_General_Femenino", "US general masculino": "US_General_Masculino", "US pélvico transabdominal": "US_Pelvico", "US prostático / vesicoprostático": "US_Prostatico",
     "US de tiroides y cuello": "US_Tiroides", "US de mamas": "US_Mamas", "US Doppler venoso de miembros inferiores": "Doppler_Venoso_MMII", "US obstétrico": "US_Obstetrico" }[estudio];
   const archivo = `${[n[0], n.length > 2 ? n[n.length - 2] : n[1]].filter(Boolean).join("_")}_${corto}.docx`;
-  const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = archivo; document.body.appendChild(link); link.click(); link.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 5000);
-
-  registrarEstudio({ fecha: a.iso, hora: a.hora, paciente: nombre, edad: $("pEdad").value, sexo: $("pSexo").value, medico: $("pMedico").value,
-    procedencia: $("pProc").value, estudio, diagnostico: $("conclusiones").value.split("\n")[0] || "", archivo });
+  const reg = { fecha: a.iso, hora: a.hora, paciente: nombre, edad: $("pEdad").value, sexo: $("pSexo").value, medico: $("pMedico").value,
+    procedencia: $("pProc").value, estudio, diagnostico: $("conclusiones").value.split("\n")[0] || "", archivo };
+  if (Almacen.dir) {
+    const g = await Almacen.guardarArchivo(blob, nombre, `${a.iso}_${corto}.docx`);
+    Object.assign(reg, g); await Almacen.agregar(reg);
+    avisar(`✅ Informe guardado en <b>${esc(Almacen.dir.name)}/${esc(g.ruta)}</b>`);
+  } else {
+    const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = archivo; document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    await Almacen.agregar(reg);
+    avisar(`⬇ Informe descargado (${esc(archivo)}). Para guardarlo ordenado por paciente, conecte la carpeta en 🗂 Pacientes.`);
+  }
 }
+function avisar(html) { const d = document.createElement("div"); d.className = "aviso"; d.innerHTML = html; document.body.appendChild(d); setTimeout(() => d.remove(), 6000); }
 $("btnWord").addEventListener("click", () => generarWord().catch(e => { console.error(e); alert("Error al generar el Word: " + e.message); }));

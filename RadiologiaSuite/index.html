@@ -9,10 +9,11 @@
 <body>
 <header>
   <div><b>RADIOLOGÍA SUITE</b><span>Dr. Néstor José Mejía González · Código MINSA 37294 · HRECOS Juigalpa</span></div>
-  <div id="reloj"></div>
+  <div><span id="barraCarpeta"></span> &nbsp; <span id="reloj"></span></div>
 </header>
 <nav>
   <button data-tab="informe" class="activo">📝 Informe</button>
+  <button data-tab="pacientes">🗂 Pacientes</button>
   <button data-tab="calc">🧮 Calculadoras</button>
   <button data-tab="obst">🤰 Obstetricia</button>
   <button data-tab="registro">📊 Registro</button>
@@ -34,6 +35,7 @@
       <label>Estudio<select id="pEstudio"></select></label>
       <label class="ancho">Indicación clínica<input id="pIndicacion" placeholder="Motivo del estudio"></label>
     </div>
+    <div id="historial" class="historial"></div>
   </div>
   <div class="tarjeta"><h2>Hallazgos</h2><p class="nota">Elija la frase de cada órgano. El comentario es opcional y se agrega al final de la frase.</p><div id="hallazgos"></div></div>
   <div class="tarjeta"><h2>Cuadro de mediciones</h2><p class="nota">Use cm en las estructuras con tres medidas: el volumen (L × AP × T × 0.523) se calcula solo. Deje en blanco lo que no midió; no aparecerá en el informe.</p><table id="medidas" class="tabla"></table>
@@ -49,6 +51,23 @@
   <div class="acciones">
     <button id="btnWord" class="prim">⬇ Generar informe Word</button>
     <button id="btnLimpiar" class="sec">Nuevo paciente</button>
+  </div>
+</section>
+
+<!-- ================= PACIENTES ================= -->
+<section id="pacientes" class="tab">
+  <div class="tarjeta">
+    <h2>Archivo de pacientes</h2>
+    <div id="aEstado" class="estado"></div>
+    <div class="botones">
+      <button id="aElegir" class="prim">📁 Elegir carpeta (memoria USB)</button>
+      <button id="aReconectar" class="sec" style="display:none">🔌 Reconectar</button>
+      <button id="aDesconectar" class="peligro" style="display:none">Desconectar de esta PC</button>
+      <label class="sec boton-archivo">📥 Importar informes anteriores (.docx / .pdf)<input type="file" id="aImportar" multiple accept=".docx,.pdf,.doc" hidden></label>
+    </div>
+    <p class="nota">Con la carpeta conectada, cada informe se guarda solo en <b>Pacientes › Nombre_Apellidos › AAAA-MM-DD_Estudio.docx</b>, junto con el registro (<b>registro.json</b> y <b>Registro_Pacientes.csv</b>, que se abre en Excel) y sus logos. En la computadora no queda guardado ningún dato de pacientes.</p>
+    <input id="aBuscar" placeholder="🔎 Buscar paciente, estudio o diagnóstico…">
+    <div id="aLista"></div>
   </div>
 </section>
 
@@ -123,11 +142,11 @@
 <section id="registro" class="tab">
   <div class="tarjeta">
     <h2>Registro de estudios</h2>
-    <p class="nota">Cada informe generado se guarda aquí, solo en este navegador. Exporte el CSV con regularidad para no perder datos.</p>
+    <p class="nota">Estadística de los estudios realizados. Con la carpeta de pacientes conectada, el registro vive en la memoria USB.</p>
     <div class="grid3">
       <label>Mes<input id="rMes" type="month"></label>
       <label>Buscar<input id="rBuscar" placeholder="Nombre, estudio, diagnóstico…"></label>
-      <div class="botones"><button id="rCSV" class="sec">⬇ Exportar CSV (Excel)</button><button id="rBorrar" class="peligro">Borrar registro</button></div>
+      <div class="botones"><button id="rCSV" class="sec">⬇ Exportar CSV (Excel)</button></div>
     </div>
     <div id="rStats" class="stats"></div>
     <table class="tabla" id="rTabla"></table>
@@ -166,7 +185,9 @@
 <script src="js/datos.js"></script>
 <script src="js/calculos.js"></script>
 <script src="js/informe.js"></script>
+<script src="js/archivo.js"></script>
 <script src="js/registro.js"></script>
 <script src="js/dicom.js"></script>
+<script>Almacen.init();</script>
 </body>
 </html>

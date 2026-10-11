@@ -12,6 +12,28 @@ PRIMERA VEZ
   Pestaña "Logos": cargue el logo del hospital, el sello NM Radiología y,
   si desea, su firma digital. Quedan guardados y salen en todos los informes.
 
+ARCHIVO DE PACIENTES EN MEMORIA USB (recomendado)
+  1. Copie esta carpeta RadiologiaSuite a su memoria USB.
+  2. Ábrala con doble clic en ABRIR_RADIOLOGIA_SUITE.bat (use Chrome o Edge).
+  3. Pestaña "Pacientes" › "Elegir carpeta" › elija una carpeta de la memoria
+     (por ejemplo, cree una llamada "Archivo Pacientes") › Permitir.
+  Desde ahí el programa crea y ordena solo:
+     Archivo Pacientes/
+        Pacientes/Juan_Carlos_Perez_Lopez/2026-10-10_US_Abdominal.docx
+        registro.json            (lista de todos los estudios)
+        Registro_Pacientes.csv   (lo mismo, se abre en Excel)
+        config.json              (sus logos y firma)
+  - Al escribir el nombre de un paciente le avisa si ya tiene estudios previos.
+  - En "Pacientes" busca por nombre, estudio o diagnóstico y abre cualquier informe.
+  - "Importar informes anteriores": seleccione sus Word viejos con nombre tipo
+    Nombre_Apellido_US_Estudio.docx y los ordena en la carpeta de cada paciente.
+  - En otra computadora: conecte la memoria, abra el programa y elija la misma
+    carpeta. Verá todos sus pacientes. En la PC no queda guardado ningún dato.
+  - Cuando reconecte la memoria, el programa le pedirá presionar "Reconectar".
+  SEGURIDAD: si la memoria se pierde, se pierden los datos de sus pacientes.
+  Cífrela con BitLocker (clic derecho sobre la memoria › Activar BitLocker) y
+  haga una copia de la carpeta "Archivo Pacientes" cada semana.
+
 PESTAÑAS
   1. Informe ........ Llene los datos, elija las frases de cada órgano y escriba
                       las medidas. Las conclusiones se generan solas (editables).
@@ -27,10 +49,9 @@ PESTAÑAS
                       y arterias renales (VPS, RAR, IR).
   3. Obstetricia .... EG por LCC/DBP/CC/CA/LF (Hadlock), PFE y percentil, FPP,
                       ILA/BVM, índice cerebroplacentario.
-  4. Registro ....... Cada informe generado queda registrado. Estadística por
-                      mes, estudio y procedencia. Exportar a CSV (se abre en Excel).
-                      IMPORTANTE: el registro vive en el navegador de esa PC;
-                      exporte el CSV cada mes como respaldo.
+  4. Registro ....... Estadística por mes, estudio y procedencia. Exportar a CSV.
+                      Sin carpeta conectada, el registro queda en el navegador de
+                      esa PC; al conectar la carpeta se pasa a la memoria.
   5. DICOM .......... Visor con ventana/nivel (arrastre el mouse), guardar JPG
                       y anonimizar (borra nombre, ID, fecha de nacimiento, etc.).
                       Solo DICOM sin compresión; para comprimidos use RadiAnt.
