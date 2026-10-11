@@ -1,0 +1,11 @@
+MANTENIMIENTO CELULARES - Android e iPhone por cable USB
+
+1. Descomprima el ZIP completo (clic derecho > Extraer todo).
+2. Abra la carpeta y haga doble clic en "Mantenimiento Celulares.exe".
+   Si Windows muestra "Windows protegio su PC": "Mas informacion" > "Ejecutar de todas formas".
+3. Conecte el celular por cable y presione "Buscar celular".
+
+ANDROID: la primera vez active la Depuracion USB (vea la pestana "Como conectar").
+IPHONE: instale una sola vez "Dispositivos Apple" (Microsoft Store) o iTunes, y toque "Confiar" en el iPhone.
+
+No necesita internet. No borre ningun archivo de esta carpeta.

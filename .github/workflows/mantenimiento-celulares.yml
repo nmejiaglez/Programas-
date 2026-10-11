@@ -1,0 +1,51 @@
+name: Mantenimiento Celulares
+on:
+  push:
+    branches: [claude/pensive-albattani-u87i1f, main]
+    paths: ["MantenimientoCelulares/**", ".github/workflows/mantenimiento-celulares.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Descargar herramientas de Android (Google) e iPhone (libimobiledevice)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          cd MantenimientoCelulares
+          mkdir -p bin/adb bin/imobiledevice
+          curl -fsSL -o pt.zip https://dl.google.com/android/repository/platform-tools-latest-windows.zip
+          unzip -q -j pt.zip 'platform-tools/adb.exe' 'platform-tools/AdbWinApi.dll' 'platform-tools/AdbWinUsbApi.dll' -d bin/adb
+          URL=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/repos/libimobiledevice-win32/imobiledevice-net/releases/latest \
+            | jq -r '.assets[].browser_download_url' | grep -i 'win-x64\.zip$' | head -1)
+          echo "libimobiledevice: $URL"
+          test -n "$URL"
+          curl -fsSL -o imd.zip "$URL"
+          unzip -q -j imd.zip -d bin/imobiledevice
+          ls bin/adb bin/imobiledevice
+          test -f bin/adb/adb.exe && test -f bin/imobiledevice/idevice_id.exe && test -f bin/imobiledevice/ideviceinfo.exe
+          rm -f pt.zip imd.zip
+      - name: Construir Mantenimiento Celulares.exe
+        run: |
+          npx --yes @electron/packager@18.3.6 MantenimientoCelulares "Mantenimiento Celulares" --platform=win32 --arch=x64 --electron-version=33.2.1 \
+            --out=dist --asar --ignore='^/bin' --ignore='LEAME' --extra-resource=MantenimientoCelulares/bin
+          D="dist/Mantenimiento Celulares-win32-x64"
+          find "$D/locales" -type f ! -name 'es*.pak' ! -name 'en-US.pak' -delete
+          cp MantenimientoCelulares/LEAME.txt "$D/LEAME.txt"
+          mv "$D" Mantenimiento_Celulares
+          zip -qr9 MantenimientoCelulares_Windows.zip Mantenimiento_Celulares
+      - name: Publicar descarga
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: mantenimiento-celulares
+          name: Mantenimiento Celulares para Windows (Android e iPhone)
+          body: "Descargue **MantenimientoCelulares_Windows.zip**, descomprímalo y abra **Mantenimiento Celulares.exe**. Conecte el celular por cable USB."
+          files: MantenimientoCelulares_Windows.zip
+          make_latest: false

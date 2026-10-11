@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'">
+<title>Mantenimiento Celulares</title>
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<header>
+  <div><b>MANTENIMIENTO CELULARES</b><span>Android e iPhone por cable USB · sin internet</span></div>
+  <button id="btnBuscar" class="claro">🔄 Buscar celular</button>
+</header>
+<nav>
+  <button data-tab="android" class="activo">🤖 Android</button>
+  <button data-tab="iphone">🍎 iPhone</button>
+  <button data-tab="ayuda">❓ Cómo conectar</button>
+</nav>
+
+<main>
+<!-- ================= ANDROID ================= -->
+<section id="android" class="tab activo">
+  <div id="aEstado" class="estado">Conecte el celular Android con el cable y presione «Buscar celular».</div>
+  <div id="aPanel" class="oculto">
+    <div class="cols">
+      <div class="tarjeta"><h2>📱 Equipo</h2><div id="aInfo"></div></div>
+      <div class="tarjeta"><h2>🔋 Batería</h2><div id="aBateria"></div></div>
+      <div class="tarjeta"><h2>💾 Almacenamiento y memoria</h2><div id="aAlmac"></div></div>
+    </div>
+
+    <div class="tarjeta"><h2>⚡ Mantenimiento rápido</h2>
+      <div class="acciones">
+        <button id="aCache" class="prim">🧹 Limpiar caché de todas las apps</button>
+        <button id="aAnimRapidas" class="sec">🚀 Animaciones rápidas</button>
+        <button id="aAnimNormales" class="sec">↩ Animaciones normales</button>
+        <button id="aReiniciar" class="sec">🔁 Reiniciar celular</button>
+      </div>
+      <div id="aRes" class="res oculto"></div>
+    </div>
+
+    <div class="tarjeta"><h2>💬 Limpieza de WhatsApp</h2>
+      <p class="nota">Muestra cuánto ocupan los archivos recibidos y enviados. Respalde antes de borrar: lo borrado no se recupera.</p>
+      <button id="aWaAnalizar" class="sec">🔍 Analizar WhatsApp</button>
+      <div id="aWa"></div>
+    </div>
+
+    <div class="tarjeta"><h2>📦 Archivos grandes (más de 50 MB)</h2>
+      <button id="aGrandes" class="sec">🔍 Buscar archivos grandes</button>
+      <div id="aGrandesLista"></div>
+    </div>
+
+    <div class="tarjeta"><h2>🖼 Respaldar fotos y videos a la computadora</h2>
+      <div class="acciones">
+        <button class="sec" data-respaldo="/sdcard/DCIM">📷 Cámara (DCIM)</button>
+        <button class="sec" data-respaldo="/sdcard/Pictures">🖼 Imágenes (Pictures)</button>
+        <button class="sec" data-respaldo="WA">💬 Multimedia de WhatsApp</button>
+        <button class="sec" data-respaldo="/sdcard/Download">⬇ Descargas</button>
+      </div>
+      <div id="aResp" class="res oculto"></div>
+    </div>
+
+    <div class="tarjeta"><h2>🧩 Aplicaciones</h2>
+      <p class="nota"><b>De fábrica (bloatware):</b> «Quitar» las desactiva solo para usted y libera espacio y memoria. Es reversible: el botón «Restaurar» las devuelve. Las marcadas ✅ son seguras de quitar. Las demás, quítelas solo si sabe qué son.</p>
+      <div class="grid"><label>Mostrar<select id="aTipoApps"><option value="bloat">Recomendadas para quitar</option><option value="3">Instaladas por el usuario</option><option value="s">Todas las del sistema</option><option value="quitadas">Quitadas (para restaurar)</option></select></label>
+        <label>Buscar<input id="aBuscarApp" placeholder="Nombre del paquete…"></label></div>
+      <button id="aCargarApps" class="sec">📋 Cargar lista</button>
+      <div id="aApps"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= IPHONE ================= -->
+<section id="iphone" class="tab">
+  <div id="iEstado" class="estado">Conecte el iPhone con el cable, desbloquéelo y presione «Buscar celular».</div>
+  <div id="iPanel" class="oculto">
+    <div class="cols">
+      <div class="tarjeta"><h2>📱 Equipo</h2><div id="iInfo"></div></div>
+      <div class="tarjeta"><h2>🔋 Salud de la batería</h2><div id="iBateria"></div></div>
+      <div class="tarjeta"><h2>💾 Almacenamiento</h2><div id="iAlmac"></div></div>
+    </div>
+    <div class="tarjeta"><h2>⚡ Mantenimiento</h2>
+      <div class="acciones">
+        <button id="iFotos" class="prim">🖼 Respaldar fotos a la computadora</button>
+        <button id="iLogs" class="sec">🧹 Limpiar registros de errores</button>
+        <button id="iReiniciar" class="sec">🔁 Reiniciar iPhone</button>
+      </div>
+      <div id="iRes" class="res oculto"></div>
+    </div>
+    <div class="tarjeta"><h2>💡 Para liberar espacio en el iPhone</h2>
+      <ol class="pasos">
+        <li><b>Ajustes › General › Almacenamiento del iPhone</b>: ahí ve qué ocupa más. Active <b>«Descargar apps sin usar»</b>.</li>
+        <li><b>WhatsApp › Ajustes › Almacenamiento y datos › Administrar almacenamiento</b>: borre videos y archivos grandes por chat.</li>
+        <li><b>Fotos › Álbumes › Eliminado</b>: vacíelo; las fotos borradas siguen ocupando espacio 30 días.</li>
+        <li><b>Fotos › Álbumes › Duplicados</b> (iOS 16 o más nuevo): combine las fotos repetidas.</li>
+        <li><b>Safari › Ajustes › Borrar historial y datos</b>.</li>
+        <li>Mantenga <b>iOS actualizado</b> y reinicie el iPhone una vez por semana.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ================= AYUDA ================= -->
+<section id="ayuda" class="tab">
+  <div class="cols">
+    <div class="tarjeta"><h2>🤖 Conectar un Android (solo la primera vez)</h2>
+      <ol class="pasos">
+        <li>En el celular: <b>Ajustes › Acerca del teléfono</b> y toque <b>7 veces</b> «Número de compilación». En Xiaomi es «Versión de MIUI/HyperOS»; en Samsung está dentro de «Información de software». Aparece «Ahora es desarrollador».</li>
+        <li>Vuelva a <b>Ajustes › Sistema › Opciones de desarrollador</b> (en Samsung está al final de Ajustes) y active <b>«Depuración USB»</b>.</li>
+        <li>En Xiaomi active también <b>«Depuración USB (ajustes de seguridad)»</b>.</li>
+        <li>Conecte el cable. En el celular aparece <b>«¿Permitir depuración USB?»</b>: marque «Permitir siempre desde esta computadora» y toque <b>Permitir</b>.</li>
+        <li>Presione <b>«Buscar celular»</b> en este programa.</li>
+        <li>Si no lo detecta: pruebe otro cable (algunos solo cargan) o instale el driver USB de la marca (por ejemplo «Samsung USB Driver»).</li>
+        <li>Al terminar puede desactivar la Depuración USB.</li>
+      </ol></div>
+    <div class="tarjeta"><h2>🍎 Conectar un iPhone</h2>
+      <ol class="pasos">
+        <li>La computadora necesita el driver de Apple: instale <b>«Dispositivos Apple»</b> (Apple Devices) desde Microsoft Store, o <b>iTunes</b>. Solo una vez.
+          <br><button class="sec chico" id="btnTienda">Abrir Microsoft Store</button></li>
+        <li>Conecte el iPhone con el cable y <b>desbloquéelo</b>.</li>
+        <li>En el iPhone aparece <b>«¿Confiar en esta computadora?»</b>: toque <b>Confiar</b> y escriba su código.</li>
+        <li>Presione <b>«Buscar celular»</b>.</li>
+      </ol>
+      <p class="nota">Apple no permite que ningún programa borre caché ni apps del iPhone desde la computadora. Este programa revisa la batería y el almacenamiento, respalda fotos, limpia registros y reinicia el equipo. Lo demás se hace desde los Ajustes del iPhone (vea los consejos en la pestaña iPhone).</p></div>
+  </div>
+</section>
+</main>
+<div id="cargando" class="oculto"><div><span class="spin"></span><span id="cargandoTxt">Trabajando…</span></div></div>
+<script src="app.js"></script>
+</body>
+</html>

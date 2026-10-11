@@ -1,0 +1,8 @@
+{
+  "name": "mantenimiento-celulares",
+  "productName": "Mantenimiento Celulares",
+  "version": "1.0.0",
+  "description": "Mantenimiento de celulares Android e iPhone por cable USB",
+  "main": "main.js",
+  "author": "Nestor Mejia"
+}
