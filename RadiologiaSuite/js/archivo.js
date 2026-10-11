@@ -40,13 +40,21 @@ function explicarError(e) {
 
 const Almacen = {
   dir: null, reg: [],
-  soportado: "showDirectoryPicker" in window,
+  soportado: "showDirectoryPicker" in window || !!window.nativo,
 
   local() { try { return JSON.parse(localStorage.getItem("registroEstudios")) || []; } catch { return []; } },
   guardarLocal(l) { try { localStorage.setItem("registroEstudios", JSON.stringify(l)); return true; } catch { return false; } },
   lista() { return this.dir ? this.reg : this.local(); },
 
   async init() {
+    if (window.nativo) { // programa de escritorio: carpeta automática en Documentos
+      try {
+        const cfg = await nativo.cfg();
+        let p = cfg.carpeta && nativo.esCarpeta(cfg.carpeta) ? cfg.carpeta : nativo.unir(nativo.documentos, "Archivo Pacientes");
+        if (!nativo.esCarpeta(p)) { if (cfg.carpeta && cfg.carpeta !== p) alert(`No se encontró la carpeta de pacientes:\n${cfg.carpeta}\n\n¿Está conectada la memoria USB? Mientras tanto se usará Documentos › Archivo Pacientes.`); nativo.crearCarpeta(p); }
+        return await this.conectar(new CarpetaNativa(p));
+      } catch (e) { alert(explicarError(e)); this.estado("sin"); return refrescarTodo(); }
+    }
     try {
       const h = await idbGet("carpeta");
       if (h && (await h.queryPermission({ mode: "readwrite" })) === "granted") return await this.conectar(h);
@@ -57,6 +65,13 @@ const Almacen = {
   async elegir() {
     if (!this.soportado) return alert("Este navegador no permite guardar en carpetas.\n\nAbra el programa con Google Chrome o Microsoft Edge.\n\nMientras tanto, los informes se descargan en Descargas y el registro queda en este navegador.");
     let h;
+    if (window.nativo) {
+      const p = await nativo.elegirCarpeta(); if (!p) return;
+      h = new CarpetaNativa(p);
+      try { await escribir(h, ".prueba_radsuite", "ok"); await h.removeEntry(".prueba_radsuite"); await this.conectar(h); await nativo.guardarCfg({ carpeta: p });
+        avisar(`✅ Ahora sus pacientes se guardan en <b>${esc(p)}</b>`); } catch (e) { alert(explicarError(e)); }
+      return;
+    }
     try { h = await showDirectoryPicker({ id: "radsuite", mode: "readwrite", startIn: "documents" }); }
     catch (e) { if (e.name === "AbortError") return; return alert(explicarError(e)); }
     try {
@@ -131,6 +146,7 @@ const Almacen = {
   },
 
   async abrir(ruta) {
+    if (window.nativo) { const p = nativo.unir(this.dir.p, ...ruta.split("/")); if (!nativo.existe(p)) throw Object.assign(new Error(""), { name: "NotFoundError" }); const r = await nativo.abrir(p); if (r) alert("No se pudo abrir el archivo: " + r); return; }
     const partes = ruta.split("/"); let dir = this.dir;
     for (const p of partes.slice(0, -1)) dir = await dir.getDirectoryHandle(p);
     const f = await (await dir.getFileHandle(partes.at(-1))).getFile();
@@ -141,11 +157,12 @@ const Almacen = {
     const s = $("aEstado"); if (!s) return;
     const nombre = this.dir ? this.dir.name : "";
     s.className = "estado " + e;
-    s.innerHTML = e === "ok" ? `✅ Carpeta conectada: <b>${esc(nombre)}</b> · ${new Set(this.reg.map(r => r.carpeta)).size} pacientes · ${this.reg.length} estudios`
+    s.innerHTML = e === "ok" ? `✅ Carpeta de pacientes: <b>${esc(window.nativo ? this.dir.p : nombre)}</b> · ${new Set(this.reg.map(r => r.carpeta)).size} pacientes · ${this.reg.length} estudios`
       : e === "reconectar" ? "🔌 La carpeta de pacientes está desconectada. Conecte la memoria (si la usa) y presione <b>Reconectar</b>."
       : "⚠️ Todavía no hay carpeta de pacientes. Puede trabajar igual: los informes se descargan en Descargas y el registro queda en este navegador. Para ordenarlos por paciente y por mes, presione <b>Elegir carpeta de pacientes</b>.";
     $("aReconectar").style.display = e === "reconectar" ? "" : "none";
-    $("aDesconectar").style.display = e === "ok" ? "" : "none";
+    $("aDesconectar").style.display = e === "ok" && !window.nativo ? "" : "none";
+    $("aVerCarpeta").style.display = e === "ok" && window.nativo ? "" : "none";
     $("barraCarpeta").innerHTML = e === "ok" ? `📁 ${esc(nombre)}` : `<span style="color:#ffd27a">📁 Sin carpeta</span>`;
   },
 };
@@ -269,3 +286,6 @@ $("aReconectar").addEventListener("click", () => Almacen.reconectar());
 $("aDesconectar").addEventListener("click", () => { if (confirm("¿Desconectar la carpeta de pacientes de esta computadora? Los archivos NO se borran.")) Almacen.desconectar(); });
 $("aBuscar").addEventListener("input", renderPacientes);
 $("aMes").addEventListener("change", renderPacientes);
+
+$("aVerCarpeta").addEventListener("click", () => { if (window.nativo && Almacen.dir) nativo.abrir(Almacen.dir.p); });
+if (window.nativo) { $("aElegir").textContent = "📁 Cambiar carpeta (por ejemplo, memoria USB)"; document.querySelector("details.ayuda").style.display = "none"; }

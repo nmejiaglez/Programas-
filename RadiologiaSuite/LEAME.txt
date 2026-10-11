@@ -66,3 +66,10 @@ CARPETA Herramientas (Windows)
                            Documentos\Informes Radiologia\Año\Mes\Modalidad.
 
 NOTA: las calculadoras son ayudas; la interpretación final es del radiólogo.
+
+VERSIÓN DE WINDOWS (sin navegador)
+  main.js, preload.js, package.json y js/nativo.js forman el programa de escritorio
+  (Electron). Se distribuye como "Radiologia Suite.exe" dentro de RadiologiaSuite_Windows.zip.
+  En esa versión los pacientes se guardan solos en Documentos\Archivo Pacientes.
+  Para reconstruir el .exe:
+    npx @electron/packager RadiologiaSuite "Radiologia Suite" --platform=win32 --arch=x64 --electron-version=33.2.1 --asar

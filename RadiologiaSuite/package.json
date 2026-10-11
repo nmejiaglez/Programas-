@@ -1,0 +1,8 @@
+{
+  "name": "radiologia-suite",
+  "productName": "Radiologia Suite",
+  "version": "1.0.0",
+  "description": "Informes radiologicos y archivo de pacientes - Dr. Nestor Jose Mejia Gonzalez",
+  "main": "main.js",
+  "author": "Dr. Nestor Jose Mejia Gonzalez"
+}
