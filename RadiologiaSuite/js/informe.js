@@ -225,15 +225,18 @@ async function generarWord() {
   const archivo = `${[n[0], n.length > 2 ? n[n.length - 2] : n[1]].filter(Boolean).join("_")}_${corto}.docx`;
   const reg = { fecha: a.iso, hora: a.hora, paciente: nombre, edad: $("pEdad").value, sexo: $("pSexo").value, medico: $("pMedico").value,
     procedencia: $("pProc").value, estudio, diagnostico: $("conclusiones").value.split("\n")[0] || "", archivo };
+  let guardado = false;
   if (Almacen.dir) {
-    const g = await Almacen.guardarArchivo(blob, nombre, `${a.iso}_${corto}.docx`);
-    Object.assign(reg, g); await Almacen.agregar(reg);
-    avisar(`✅ Informe guardado en <b>${esc(Almacen.dir.name)}/${esc(g.ruta)}</b>`);
-  } else {
+    try {
+      const g = await Almacen.guardarArchivo(blob, nombre, `${a.iso}_${corto}.docx`, a.iso);
+      Object.assign(reg, g); await Almacen.agregar(reg); guardado = true;
+      avisar(`✅ Informe guardado en <b>${esc(Almacen.dir.name)}/${esc(g.ruta)}</b>`);
+    } catch (e) { alert(explicarError(e) + "\n\nEl informe se descargará en Descargas para no perderlo."); }
+  }
+  if (!guardado) {
     const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = archivo; document.body.appendChild(link); link.click(); link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 5000);
-    await Almacen.agregar(reg);
-    avisar(`⬇ Informe descargado (${esc(archivo)}). Para guardarlo ordenado por paciente, conecte la carpeta en 🗂 Pacientes.`);
+    if (!Almacen.dir) { await Almacen.agregar(reg); avisar(`⬇ Informe descargado (${esc(archivo)}). Para guardarlo ordenado por paciente y mes, conecte la carpeta en 🗂 Pacientes.`); }
   }
 }
 function avisar(html) { const d = document.createElement("div"); d.className = "aviso"; d.innerHTML = html; document.body.appendChild(d); setTimeout(() => d.remove(), 6000); }

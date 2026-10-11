@@ -19,7 +19,7 @@ ARCHIVO DE PACIENTES EN MEMORIA USB (recomendado)
      (por ejemplo, cree una llamada "Archivo Pacientes") › Permitir.
   Desde ahí el programa crea y ordena solo:
      Archivo Pacientes/
-        Pacientes/Juan_Carlos_Perez_Lopez/2026-10-10_US_Abdominal.docx
+        Pacientes/2026/10 - Octubre/Juan_Carlos_Perez_Lopez/2026-10-10_US_Abdominal.docx
         registro.json            (lista de todos los estudios)
         Registro_Pacientes.csv   (lo mismo, se abre en Excel)
         config.json              (sus logos y firma)

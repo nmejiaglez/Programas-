@@ -60,13 +60,57 @@
     <h2>Archivo de pacientes</h2>
     <div id="aEstado" class="estado"></div>
     <div class="botones">
-      <button id="aElegir" class="prim">📁 Elegir carpeta (memoria USB)</button>
+      <button id="aElegir" class="prim">📁 Elegir carpeta de pacientes</button>
       <button id="aReconectar" class="sec" style="display:none">🔌 Reconectar</button>
       <button id="aDesconectar" class="peligro" style="display:none">Desconectar de esta PC</button>
-      <label class="sec boton-archivo">📥 Importar informes anteriores (.docx / .pdf)<input type="file" id="aImportar" multiple accept=".docx,.pdf,.doc" hidden></label>
     </div>
-    <p class="nota">Con la carpeta conectada, cada informe se guarda solo en <b>Pacientes › Nombre_Apellidos › AAAA-MM-DD_Estudio.docx</b>, junto con el registro (<b>registro.json</b> y <b>Registro_Pacientes.csv</b>, que se abre en Excel) y sus logos. En la computadora no queda guardado ningún dato de pacientes.</p>
-    <input id="aBuscar" placeholder="🔎 Buscar paciente, estudio o diagnóstico…">
+    <details class="ayuda"><summary>❓ ¿Cómo elegir la carpeta? (si le sale un error, lea aquí)</summary>
+      <ol>
+        <li>Presione <b>«Elegir carpeta de pacientes»</b>. Se abre una ventana de Windows.</li>
+        <li><b>NO elija directamente</b> «Escritorio», «Documentos», «Descargas» ni la raíz «C:». Windows no lo permite y aparece el error <i>«contiene archivos del sistema»</i>.</li>
+        <li>Entre a <b>Documentos</b> (o a su memoria USB), presione <b>«Nueva carpeta»</b> y llámela <b>Archivo Pacientes</b>.</li>
+        <li>Entre a esa carpeta nueva, presione <b>«Seleccionar carpeta»</b> y luego <b>«Ver archivos» / «Permitir»</b>; si pregunta por modificar archivos, presione <b>«Guardar cambios» / «Permitir»</b>.</li>
+        <li>Use <b>Google Chrome o Microsoft Edge</b>. En Firefox o Internet Explorer no funciona.</li>
+        <li>Si abrió el programa desde dentro del ZIP, primero descomprímalo (clic derecho › Extraer todo).</li>
+      </ol>
+    </details>
+  </div>
+
+  <div class="tarjeta">
+    <h2>Agregar pacientes</h2>
+    <p class="nota">Registre pacientes uno tras otro, de cualquier fecha o mes, aunque el informe lo haya hecho fuera del programa. Puede adjuntar el Word, PDF o imágenes. Después de guardar, la fecha y el estudio se mantienen para que agregue el siguiente rápido.</p>
+    <div class="grid">
+      <label>Paciente<input id="nNombre" placeholder="Nombre y apellidos"></label>
+      <label>Edad<input id="nEdad" placeholder="Ej.: 45 años"></label>
+      <label>Sexo<select id="nSexo"><option>Femenino</option><option>Masculino</option></select></label>
+      <label>Fecha del estudio<input id="nFecha" type="date"></label>
+      <label>Estudio<input id="nEstudio" list="listaEstudios" placeholder="Elija o escriba"></label>
+      <label>Procedencia<select id="nProc"></select></label>
+      <label>Médico solicitante<input id="nMedico"></label>
+      <label class="ancho">Diagnóstico principal<input id="nDx" placeholder="Opcional"></label>
+      <label class="ancho">Archivos del estudio (opcional, puede elegir varios)<input type="file" id="nArchivos" multiple></label>
+    </div>
+    <datalist id="listaEstudios"></datalist>
+    <div class="botones"><button id="nGuardar" class="prim">💾 Guardar y agregar otro</button><span id="nMsg" class="nota"></span></div>
+  </div>
+
+  <div class="tarjeta">
+    <h2>Importar varios informes anteriores</h2>
+    <p class="nota">Seleccione varios Word o PDF a la vez, por ejemplo todos los de un mes. Los archivos con nombre tipo <b>Nombre_Apellido_US_Estudio.docx</b> se reconocen solos; para los demás, el programa le preguntará el nombre del paciente.</p>
+    <div class="grid">
+      <label>Fecha que se asignará<select id="iModoFecha"><option value="archivo">La fecha del archivo</option><option value="fija">Una fecha que yo elijo</option></select></label>
+      <label id="iFechaL" style="display:none">Fecha<input id="iFecha" type="date"></label>
+    </div>
+    <label class="sec boton-archivo">📥 Elegir informes para importar<input type="file" id="aImportar" multiple accept=".docx,.pdf,.doc" hidden></label>
+  </div>
+
+  <div class="tarjeta">
+    <h2>Mis pacientes</h2>
+    <div class="grid">
+      <label>Mes<select id="aMes"></select></label>
+      <label>Buscar<input id="aBuscar" placeholder="🔎 Paciente, estudio o diagnóstico…"></label>
+    </div>
+    <div id="aResumen" class="nota"></div>
     <div id="aLista"></div>
   </div>
 </section>

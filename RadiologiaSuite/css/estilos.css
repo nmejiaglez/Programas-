@@ -62,3 +62,8 @@ button.chico { padding:4px 10px; font-size:12px; }
 #aBuscar { margin:8px 0; }
 .aviso { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--azul); color:#fff; padding:12px 18px; border-radius:8px; box-shadow:0 4px 16px #0004; z-index:20; max-width:90vw; }
 #barraCarpeta { font-size:12px; }
+
+details.ayuda { background:#eef3fb; border-radius:6px; padding:6px 10px; margin-top:8px; font-size:13px; }
+details.ayuda summary { cursor:pointer; font-weight:bold; color:var(--azul); }
+details.ayuda li { margin:4px 0; }
+.mes-titulo { color:var(--azul); font-weight:bold; margin:14px 0 4px; border-bottom:1px solid var(--borde); padding-bottom:3px; }
