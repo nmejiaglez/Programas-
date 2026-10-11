@@ -479,23 +479,61 @@ def fix_disco_mac():
     return c == 0, "Disco verificado: sin errores." if c == 0 else "Se detectaron problemas: use Utilidad de Discos > Primera ayuda."
 
 
-def fix_cerrar(pid, nombre):
-    def f():
-        try:
-            if psutil:
-                p = psutil.Process(pid); p.terminate()
-                try:
-                    p.wait(5)
-                except psutil.TimeoutExpired:
-                    p.kill()
-            elif SO == "Windows":
-                ejecutar(["taskkill", "/PID", str(pid)])
-            else:
-                os.kill(pid, 15)
-            return True, "Programa '%s' cerrado." % nombre
-        except Exception as e:
-            return False, "No se pudo cerrar '%s': %s" % (nombre, e)
-    return f
+def nombre_base(n):
+    n = os.path.basename(n or "?")
+    return n[:-4] if n.lower().endswith(".exe") else n
+
+def _mismo_programa(nombre):
+    n = nombre.lower()
+    return lambda x: nombre_base(x or "").lower() == n
+
+
+def cerrar_programa(nombre):
+    """Cierra TODOS los procesos de un programa (ej.: todas las ventanas y pestañas de Chrome)
+    y verifica el resultado. Devuelve (ok, mensaje)."""
+    es = _mismo_programa(nombre)
+    denegado = False
+    if psutil:
+        procs = [p for p in psutil.process_iter(["name"]) if es(p.info["name"]) and p.pid != os.getpid()]
+        for p in procs:
+            try:
+                p.terminate()
+            except psutil.AccessDenied:
+                denegado = True
+            except psutil.NoSuchProcess:
+                pass
+        _, vivos = psutil.wait_procs(procs, timeout=5)
+        for p in vivos:  # no respondieron: se fuerza el cierre
+            try:
+                p.kill()
+            except psutil.AccessDenied:
+                denegado = True
+            except psutil.NoSuchProcess:
+                pass
+        psutil.wait_procs(vivos, timeout=3)
+        quedan = [p for p in psutil.process_iter(["name"]) if es(p.info["name"]) and p.pid != os.getpid()]
+    elif SO == "Windows":
+        r = ejecutar(["taskkill", "/IM", nombre + ".exe", "/T", "/F"])
+        texto = r[1] if isinstance(r, tuple) else r
+        denegado = "denegado" in texto.lower() or "denied" in texto.lower()
+        time.sleep(1)
+        t = ejecutar(["tasklist", "/FI", "IMAGENAME eq %s.exe" % nombre, "/NH"])
+        quedan = [1] if (nombre.lower() + ".exe") in (t[1] if isinstance(t, tuple) else t).lower() else []
+    else:
+        ejecutar(["pkill", "-x", nombre]); time.sleep(3)
+        ejecutar(["pkill", "-9", "-x", nombre]); time.sleep(1)
+        t = ejecutar(["pgrep", "-x", nombre])
+        quedan = (t[1] if isinstance(t, tuple) else t).split()
+    if not quedan:
+        return True, "'%s' se cerró por completo." % nombre
+    if denegado:
+        return False, ("'%s' no se pudo cerrar: Windows no da permiso. Abra este programa con "
+                       "clic derecho > 'Ejecutar como administrador' y vuelva a intentarlo." % nombre)
+    return False, "'%s' se volvió a abrir solo (lo reinicia el sistema u otro programa). Desactívelo desde su propia configuración." % nombre
+
+
+def fix_cerrar(nombre):
+    return lambda: cerrar_programa(nombre)
 
 
 def fix_abrir_inicio():
@@ -629,14 +667,20 @@ def diagnosticar(log):
     # Procesos pesados
     log("Buscando programas que consumen muchos recursos...")
     mem_tot_mb = mb(tot) if tot else 4096
-    for nombre, pid, mem, c in procesos_pesados(10):
-        if nombre.lower() in PROTEGIDOS or pid == os.getpid():
+    grupos = {}
+    for nombre, pid, mem, c in procesos_pesados(400):
+        if pid == os.getpid():
+            continue
+        g = grupos.setdefault(nombre_base(nombre), [0.0, 0.0])
+        g[0] += mem; g[1] += c
+    for nombre, (mem, c) in sorted(grupos.items(), key=lambda x: x[1][0], reverse=True)[:10]:
+        if nombre.lower() in PROTEGIDOS or (nombre + ".exe").lower() in PROTEGIDOS:
             continue
         if mem > max(800, mem_tot_mb * 0.2) or c > 30:
             P.append(Problema("media", "Programa pesado: %s (%.0f MB, %.0f %% CPU)" % (nombre, mem, c),
                               "Está consumiendo muchos recursos. Si no lo usa, ciérrelo.",
-                              fix_cerrar(pid, nombre), "Cerrar",
-                              "¿Cerrar '%s'? Si tiene trabajo sin guardar en ese programa, guárdelo antes." % nombre))
+                              fix_cerrar(nombre), "Cerrar",
+                              "¿Cerrar '%s' por completo (todas sus ventanas)? Si tiene trabajo sin guardar en ese programa, guárdelo antes." % nombre))
 
     # Batería
     b = bateria()
@@ -731,6 +775,7 @@ def modo_grafico():
     ETIQ = {"alta": "GRAVE", "media": "MEDIO", "baja": "LEVE", "info": "HERRAMIENTA"}
 
     root = tk.Tk()
+    root.report_callback_exception = registrar_error
     root.title(APP)
     root.geometry("1000x680")
     root.minsize(820, 560)
@@ -879,6 +924,23 @@ def modo_grafico():
     root.mainloop()
 
 
+def registrar_error(exc_type, exc, tb):
+    """Guarda el error en un archivo y lo muestra en pantalla (en el .exe no hay consola)."""
+    import traceback
+    texto = "".join(traceback.format_exception(exc_type, exc, tb))
+    ruta = os.path.join(os.path.expanduser("~"), "%s_error.txt" % APP.split()[0].lower())
+    try:
+        with open(ruta, "a", encoding="utf-8") as f:
+            f.write("\n[%s]\n%s" % (time.strftime("%Y-%m-%d %H:%M:%S"), texto))
+    except OSError:
+        pass
+    try:
+        from tkinter import messagebox
+        messagebox.showerror(APP, "Ocurrió un error:\n\n%s\n\nDetalle guardado en:\n%s" % (exc, ruta))
+    except Exception:
+        pass
+
+
 def main():
     if "--consola" in sys.argv:
         return modo_consola()
@@ -888,6 +950,8 @@ def main():
             raise RuntimeError("sin entorno gráfico")
         modo_grafico()
     except Exception as e:
+        if sys.stdin is None:
+            registrar_error(type(e), e, e.__traceback__); return
         print("(Interfaz gráfica no disponible: %s. Usando modo consola.)" % e)
         modo_consola()
 

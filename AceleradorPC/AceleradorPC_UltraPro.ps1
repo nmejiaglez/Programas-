@@ -832,12 +832,21 @@ function Ventana-Procesos {
         if (-not $g.SelectedRows.Count) { return }
         $row = $g.SelectedRows[0]; $nom = $row.Cells[0].Value
         if ($nom -match $ProcesosSistema) { [Windows.Forms.MessageBox]::Show("'$nom' es un proceso de Windows o de seguridad y está protegido.", $AppNombre) | Out-Null; return }
-        if (Confirmar "¿Cerrar '$nom'? Si tiene trabajo sin guardar en ese programa, guárdelo antes.") {
-            $pr = Get-Process -Id $row.Cells[1].Value
-            if ($pr.CloseMainWindow()) { Start-Sleep 3 }
-            if (-not $pr.HasExited) { Stop-Process -Id $pr.Id -Force }
-            Start-Sleep -Milliseconds 500
-            if (Get-Process -Id $row.Cells[1].Value) { [Windows.Forms.MessageBox]::Show('No se pudo cerrar.') | Out-Null } else { Accion "Programa '$nom' cerrado para liberar recursos"; $g.Rows.Remove($row) }
+        if (Confirmar "¿Cerrar '$nom' por completo (todas sus ventanas y procesos)? Si tiene trabajo sin guardar en ese programa, guárdelo antes.") {
+            $f.Cursor = 'WaitCursor'
+            # Se cierran TODOS los procesos con ese nombre (ej.: todas las pestañas de Chrome)
+            Get-Process -Name $nom | ForEach-Object { [void]$_.CloseMainWindow() }
+            Start-Sleep 3
+            $resto = @(Get-Process -Name $nom)
+            if ($resto) { Ejecutar 'taskkill.exe' "/IM `"$nom.exe`" /T /F" | Out-Null; Start-Sleep 1 }
+            $f.Cursor = 'Default'
+            if (@(Get-Process -Name $nom).Count -eq 0) {
+                Accion "Programa '$nom' cerrado por completo para liberar recursos"
+                [Windows.Forms.MessageBox]::Show("'$nom' se cerró por completo.", $AppNombre) | Out-Null
+                & $cargar
+            } else {
+                [Windows.Forms.MessageBox]::Show("'$nom' no se pudo cerrar del todo: Windows no lo permite o se vuelve a abrir solo (lo reinicia el sistema u otro programa).", $AppNombre) | Out-Null
+            }
         }
     })
     $bReg.Add_Click({
