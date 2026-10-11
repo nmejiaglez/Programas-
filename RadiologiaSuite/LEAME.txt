@@ -1,0 +1,47 @@
+RADIOLOGÍA SUITE
+Dr. Néstor José Mejía González · Especialista en Radiología e Imagen · Código MINSA 37294
+Hospital Regional Escuela Camilo Ortega Saavedra · Juigalpa, Chontales
+=====================================================================
+
+CÓMO ABRIRLA
+  Doble clic en ABRIR_RADIOLOGIA_SUITE.bat (o en index.html).
+  Se abre en Chrome o Edge. No necesita internet ni instalación.
+  Copie la carpeta COMPLETA (no solo index.html) a la PC o a una memoria USB.
+
+PRIMERA VEZ
+  Pestaña "Logos": cargue el logo del hospital, el sello NM Radiología y,
+  si desea, su firma digital. Quedan guardados y salen en todos los informes.
+
+PESTAÑAS
+  1. Informe ........ Llene los datos, elija las frases de cada órgano y escriba
+                      las medidas. Las conclusiones se generan solas (editables).
+                      "Generar informe Word" descarga el .docx en FORMATO HOSPITAL:
+                      columna lateral con logos y datos, fecha y hora de Managua,
+                      volúmenes L×AP×T×0.523, conclusiones, análisis etiológico y firma.
+                      Estudios: abdominal completo y superior, renal, general
+                      femenino/masculino, pélvico, prostático, tiroides, mamas,
+                      Doppler venoso de miembros inferiores y obstétrico.
+  2. Calculadoras ... Volumen (próstata/peso, vejiga, tiroides, testículo),
+                      ACR TI-RADS con conducta PAAF, Bosniak 2019, BI-RADS,
+                      O-RADS US, índices Doppler (IR, IP), estenosis carotídea (SRU)
+                      y arterias renales (VPS, RAR, IR).
+  3. Obstetricia .... EG por LCC/DBP/CC/CA/LF (Hadlock), PFE y percentil, FPP,
+                      ILA/BVM, índice cerebroplacentario.
+  4. Registro ....... Cada informe generado queda registrado. Estadística por
+                      mes, estudio y procedencia. Exportar a CSV (se abre en Excel).
+                      IMPORTANTE: el registro vive en el navegador de esa PC;
+                      exporte el CSV cada mes como respaldo.
+  5. DICOM .......... Visor con ventana/nivel (arrastre el mouse), guardar JPG
+                      y anonimizar (borra nombre, ID, fecha de nacimiento, etc.).
+                      Solo DICOM sin compresión; para comprimidos use RadiAnt.
+
+CARPETA Plantillas_Word
+  Plantilla_US_Abdomen_Renal_Pelvis_Prostata.docx: plantilla con desplegables
+  (pestaña Programador de Word) para llenar directamente en Word.
+
+CARPETA Herramientas (Windows)
+  Word_a_PDF.bat ......... Convierte a PDF todos los Word de una carpeta (requiere Word).
+  Organizar_Informes.bat . Mueve los informes de Descargas a
+                           Documentos\Informes Radiologia\Año\Mes\Modalidad.
+
+NOTA: las calculadoras son ayudas; la interpretación final es del radiólogo.

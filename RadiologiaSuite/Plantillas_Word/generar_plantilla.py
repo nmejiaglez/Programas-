@@ -251,5 +251,5 @@ p = para(doc, 0); p.paragraph_format.space_before = Pt(36); p.alignment = WD_ALI
 run(p, "_______________________________\n"); run(p, "Dr. Néstor José Mejía González\n", True, AZUL)
 run(p, "Médico Especialista en Radiología e Imágenes\nCódigo MINSA: 37294")
 
-doc.save("PlantillasUS/Plantilla_US_Abdomen_Renal_Pelvis_Prostata.docx")
+import os; doc.save(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Plantilla_US_Abdomen_Renal_Pelvis_Prostata.docx"))
 print("ok")

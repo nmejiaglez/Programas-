@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radiología Suite · Dr. Néstor Mejía</title>
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<header>
+  <div><b>RADIOLOGÍA SUITE</b><span>Dr. Néstor José Mejía González · Código MINSA 37294 · HRECOS Juigalpa</span></div>
+  <div id="reloj"></div>
+</header>
+<nav>
+  <button data-tab="informe" class="activo">📝 Informe</button>
+  <button data-tab="calc">🧮 Calculadoras</button>
+  <button data-tab="obst">🤰 Obstetricia</button>
+  <button data-tab="registro">📊 Registro</button>
+  <button data-tab="dicom">🩻 DICOM</button>
+  <button data-tab="config">⚙️ Logos</button>
+</nav>
+
+<main>
+<!-- ================= INFORME ================= -->
+<section id="informe" class="tab activo">
+  <div class="tarjeta">
+    <h2>Datos del paciente</h2>
+    <div class="grid">
+      <label>Paciente<input id="pNombre" placeholder="Nombre y apellidos"></label>
+      <label>Edad<input id="pEdad" placeholder="Ej.: 45 años"></label>
+      <label>Sexo<select id="pSexo"><option>Femenino</option><option>Masculino</option></select></label>
+      <label>Médico solicitante<input id="pMedico"></label>
+      <label>Procedencia<select id="pProc"></select></label>
+      <label>Estudio<select id="pEstudio"></select></label>
+      <label class="ancho">Indicación clínica<input id="pIndicacion" placeholder="Motivo del estudio"></label>
+    </div>
+  </div>
+  <div class="tarjeta"><h2>Hallazgos</h2><p class="nota">Elija la frase de cada órgano. El comentario es opcional y se agrega al final de la frase.</p><div id="hallazgos"></div></div>
+  <div class="tarjeta"><h2>Cuadro de mediciones</h2><p class="nota">Use cm en las estructuras con tres medidas: el volumen (L × AP × T × 0.523) se calcula solo. Deje en blanco lo que no midió; no aparecerá en el informe.</p><table id="medidas" class="tabla"></table>
+    <button id="btnFila" class="sec">+ Agregar estructura</button></div>
+  <div class="tarjeta"><h2>Conclusiones</h2><p class="nota">Se generan solas según los hallazgos elegidos. Puede editarlas: una conclusión por línea, la más importante primero.</p>
+    <button id="btnConc" class="sec">↻ Regenerar conclusiones</button>
+    <textarea id="conclusiones" rows="5"></textarea>
+    <h2>Análisis etiológico / causa probable</h2>
+    <textarea id="etiologia" rows="3" placeholder="Breve y basado solo en los hallazgos."></textarea>
+    <label class="chk"><input type="checkbox" id="chkRec"> Incluir recomendaciones</label>
+    <textarea id="recomendaciones" rows="2" class="oculto"></textarea>
+  </div>
+  <div class="acciones">
+    <button id="btnWord" class="prim">⬇ Generar informe Word</button>
+    <button id="btnLimpiar" class="sec">Nuevo paciente</button>
+  </div>
+</section>
+
+<!-- ================= CALCULADORAS ================= -->
+<section id="calc" class="tab">
+  <div class="cols">
+    <div class="tarjeta"><h2>Volumen elipsoide</h2>
+      <div class="grid3"><label>L (cm)<input id="vL" type="number" step="0.01"></label><label>AP (cm)<input id="vAP" type="number" step="0.01"></label><label>T (cm)<input id="vT" type="number" step="0.01"></label></div>
+      <label>Estructura<select id="vTipo"><option value="gen">General</option><option value="prost">Próstata (peso)</option><option value="vej">Vejiga (mL)</option><option value="tir">Lóbulo tiroideo</option><option value="tes">Testículo</option></select></label>
+      <div class="res" id="vRes">—</div></div>
+
+    <div class="tarjeta"><h2>ACR TI-RADS</h2>
+      <label>Composición<select class="tr" id="trC"><option value="0">Quístico / casi completamente quístico (0)</option><option value="0">Espongiforme (0)</option><option value="1">Mixto quístico-sólido (1)</option><option value="2" selected>Sólido / casi completamente sólido (2)</option></select></label>
+      <label>Ecogenicidad<select class="tr" id="trE"><option value="0">Anecoico (0)</option><option value="1">Hiper / isoecoico (1)</option><option value="2" selected>Hipoecoico (2)</option><option value="3">Muy hipoecoico (3)</option></select></label>
+      <label>Forma<select class="tr" id="trF"><option value="0">Más ancho que alto (0)</option><option value="3">Más alto que ancho (3)</option></select></label>
+      <label>Márgenes<select class="tr" id="trM"><option value="0">Lisos / mal definidos (0)</option><option value="2">Lobulados / irregulares (2)</option><option value="3">Extensión extratiroidea (3)</option></select></label>
+      <fieldset><legend>Focos ecogénicos (puede marcar varios)</legend>
+        <label class="chk"><input type="checkbox" class="trf" value="1"> Macrocalcificaciones (1)</label>
+        <label class="chk"><input type="checkbox" class="trf" value="2"> Calcificaciones periféricas / en anillo (2)</label>
+        <label class="chk"><input type="checkbox" class="trf" value="3"> Focos ecogénicos puntiformes (3)</label></fieldset>
+      <label>Diámetro mayor (cm)<input id="trD" type="number" step="0.1"></label>
+      <div class="res" id="trRes">—</div></div>
+
+    <div class="tarjeta"><h2>Bosniak 2019 (guía US/TC)</h2>
+      <select id="bosniak"></select><div class="res" id="bosRes">—</div></div>
+
+    <div class="tarjeta"><h2>BI-RADS (guía)</h2>
+      <select id="birads"></select><div class="res" id="biRes">—</div></div>
+
+    <div class="tarjeta"><h2>O-RADS US (guía simplificada)</h2>
+      <select id="orads"></select><div class="res" id="orRes">—</div></div>
+
+    <div class="tarjeta"><h2>Índices Doppler</h2>
+      <div class="grid3"><label>VPS (cm/s)<input id="dPSV" type="number"></label><label>VFD (cm/s)<input id="dEDV" type="number"></label><label>Vmedia (cm/s)<input id="dVm" type="number" placeholder="opcional"></label></div>
+      <div class="res" id="dRes">—</div></div>
+
+    <div class="tarjeta"><h2>Estenosis carotídea (SRU 2003)</h2>
+      <div class="grid3"><label>VPS ACI (cm/s)<input id="cPSV" type="number"></label><label>VFD ACI (cm/s)<input id="cEDV" type="number"></label><label>VPS ACC (cm/s)<input id="cCCA" type="number"></label></div>
+      <label class="chk"><input type="checkbox" id="cPlaca"> Placa visible</label>
+      <div class="res" id="cRes">—</div></div>
+
+    <div class="tarjeta"><h2>Arterias renales</h2>
+      <div class="grid3"><label>VPS arteria renal<input id="rPSV" type="number"></label><label>VPS aorta<input id="rAo" type="number"></label><label>IR intrarrenal<input id="rIR" type="number" step="0.01"></label></div>
+      <div class="res" id="rRes">—</div></div>
+  </div>
+</section>
+
+<!-- ================= OBSTETRICIA ================= -->
+<section id="obst" class="tab">
+  <div class="cols">
+    <div class="tarjeta"><h2>Biometría fetal (Hadlock)</h2>
+      <div class="grid3">
+        <label>LCC (mm)<input id="oLCC" type="number" step="0.1"></label>
+        <label>DBP (mm)<input id="oDBP" type="number" step="0.1"></label>
+        <label>CC (mm)<input id="oCC" type="number" step="0.1"></label>
+        <label>CA (mm)<input id="oCA" type="number" step="0.1"></label>
+        <label>LF (mm)<input id="oLF" type="number" step="0.1"></label>
+      </div>
+      <div class="res" id="oRes">—</div></div>
+    <div class="tarjeta"><h2>Índice de líquido amniótico</h2>
+      <div class="grid3"><label>Q1 (cm)<input class="ila" type="number" step="0.1"></label><label>Q2 (cm)<input class="ila" type="number" step="0.1"></label><label>Q3 (cm)<input class="ila" type="number" step="0.1"></label><label>Q4 (cm)<input class="ila" type="number" step="0.1"></label></div>
+      <label>o bolsillo vertical máximo (cm)<input id="oBVM" type="number" step="0.1"></label>
+      <div class="res" id="ilaRes">—</div></div>
+    <div class="tarjeta"><h2>Doppler fetal</h2>
+      <div class="grid3"><label>IP arteria umbilical<input id="oIPAU" type="number" step="0.01"></label><label>IP ACM<input id="oIPACM" type="number" step="0.01"></label></div>
+      <div class="res" id="icpRes">—</div></div>
+  </div>
+  <p class="nota">Fórmulas: Hadlock 1984/1985 (EG por DBP, CC, CA, LF; PFE con 4 parámetros), Hadlock 1992 (LCC) y percentil de peso de Hadlock 1991. La FPP se calcula desde la fecha de hoy y la EG biométrica.</p>
+</section>
+
+<!-- ================= REGISTRO ================= -->
+<section id="registro" class="tab">
+  <div class="tarjeta">
+    <h2>Registro de estudios</h2>
+    <p class="nota">Cada informe generado se guarda aquí, solo en este navegador. Exporte el CSV con regularidad para no perder datos.</p>
+    <div class="grid3">
+      <label>Mes<input id="rMes" type="month"></label>
+      <label>Buscar<input id="rBuscar" placeholder="Nombre, estudio, diagnóstico…"></label>
+      <div class="botones"><button id="rCSV" class="sec">⬇ Exportar CSV (Excel)</button><button id="rBorrar" class="peligro">Borrar registro</button></div>
+    </div>
+    <div id="rStats" class="stats"></div>
+    <table class="tabla" id="rTabla"></table>
+  </div>
+</section>
+
+<!-- ================= DICOM ================= -->
+<section id="dicom" class="tab">
+  <div class="tarjeta">
+    <h2>Visor y anonimizador DICOM</h2>
+    <p class="nota">Abre DICOM sin compresión (US, RX, TC, RM, la mayoría de los exportados del equipo). Los archivos no salen de su computadora. Para ajustar ventana y nivel, arrastre el mouse sobre la imagen.</p>
+    <input type="file" id="dArchivo" accept=".dcm,application/dicom,*/*">
+    <div class="botones"><button id="dPNG" class="sec">⬇ Guardar JPG</button><button id="dAnon" class="sec">🛡 Descargar anonimizado</button><button id="dReset" class="sec">Restablecer W/L</button></div>
+    <div class="dicomwrap"><canvas id="dCanvas"></canvas><div id="dInfo" class="nota"></div></div>
+    <table class="tabla" id="dTags"></table>
+  </div>
+</section>
+
+<!-- ================= CONFIG ================= -->
+<section id="config" class="tab">
+  <div class="tarjeta">
+    <h2>Logos del informe</h2>
+    <p class="nota">Cargue una sola vez sus logos originales (PNG o JPG). Quedan guardados en este navegador y se insertan en cada informe sin deformarse.</p>
+    <div class="cols">
+      <div><label>Logo Hospital Camilo Ortega Saavedra<input type="file" id="logoHosp" accept="image/*"></label><img id="prevHosp" class="logo"></div>
+      <div><label>Sello NM Radiología<input type="file" id="logoNM" accept="image/*"></label><img id="prevNM" class="logo"></div>
+      <div><label>Firma / sello digital (opcional)<input type="file" id="logoFirma" accept="image/*"></label><img id="prevFirma" class="logo"></div>
+    </div>
+    <button id="btnQuitarLogos" class="peligro">Quitar logos</button>
+  </div>
+</section>
+</main>
+
+<script src="lib/docx.js"></script>
+<script src="lib/dicomParser.min.js"></script>
+<script src="js/datos.js"></script>
+<script src="js/calculos.js"></script>
+<script src="js/informe.js"></script>
+<script src="js/registro.js"></script>
+<script src="js/dicom.js"></script>
+</body>
+</html>
