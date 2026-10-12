@@ -182,6 +182,8 @@ def main():
     ap.add_argument("--mosaico", type=int, default=4,
                     help="Cortes por lado de cada imagen (4 = 16 cortes por imagen; 1 = sin mosaico)")
     ap.add_argument("--max-imagenes", type=int, default=5, help="Máximo de imágenes a enviar (def. 5)")
+    ap.add_argument("--pdf", action="store_true",
+                    help="Entregar TODO en un solo PDF (máx. 100 páginas; se divide en 2 si pasa de 28 MB)")
     ap.add_argument("--modo", choices=LIMITES, default="web", help="web = claude.ai | api = API")
     a = ap.parse_args()
 
@@ -198,6 +200,9 @@ def main():
         original_mb = sum(os.path.getsize(os.path.join(r, f))
                           for r, _, fs in os.walk(a.entrada) for f in fs) / 1e6
 
+    if a.pdf:
+        a.max_imagenes = min(a.max_imagenes, 100)
+        lim = dict(lim, imgs_por_paquete=10**6, mb_por_paquete=10**6)
     if a.mosaico > 1:
         lim = dict(lim, imgs_por_paquete=a.max_imagenes)
         fuente = mosaicos(recolectar(a.entrada, a.fps, a.umbral, umbral_dicom=0), a.mosaico, a.max_imagenes)
@@ -216,6 +221,19 @@ def main():
         sys.exit("No se encontraron videos, imágenes ni DICOM válidos.")
 
     lineas = []
+    if a.pdf:
+        hojas = [Image.open(io.BytesIO(d)) for p in paquetes for _, d in p]
+        partes = [hojas]
+        if total_mb > 28:
+            partes = [hojas[:len(hojas) // 2], hojas[len(hojas) // 2:]]
+        os.makedirs(salida, exist_ok=True)
+        for i, parte in enumerate(partes, 1):
+            nom = f"{nombre}_TC_RM.pdf" if len(partes) == 1 else f"{nombre}_parte{i}.pdf"
+            ruta_pdf = os.path.join(salida, nom)
+            parte[0].save(ruta_pdf, "PDF", save_all=True, append_images=parte[1:], resolution=150)
+            lineas.append(f"  {nom}: {len(parte)} páginas | {os.path.getsize(ruta_pdf) / 1e6:.2f} MB")
+        paquetes = []
+
     for i, p in enumerate(paquetes, 1):
         d = os.path.join(salida, f"Paquete_{i:02d}")
         os.makedirs(d, exist_ok=True)
@@ -232,7 +250,8 @@ def main():
         f"  Imágenes útiles generadas   : {n:8d}",
         f"  Tamaño total para enviar    : {total_mb:8.2f} MB",
         f"  Promedio por imagen         : {total_mb / n * 1000:8.0f} KB",
-        f"  Paquetes (1 paquete = 1 mensaje a Claude): {len(paquetes)}",
+        ("  ENVÍE A CLAUDE EL/LOS ARCHIVO(S) PDF:" if a.pdf else
+         f"  Paquetes (1 paquete = 1 mensaje a Claude): {len(paquetes)}"),
         *lineas, "",
         f"  Límites usados ({a.modo}): máx. {lim['imgs_por_paquete']} imágenes por mensaje, "
         f"{lim['mb_por_imagen']:.0f} MB por imagen" + (", 32 MB por solicitud" if a.modo == "api" else ""),

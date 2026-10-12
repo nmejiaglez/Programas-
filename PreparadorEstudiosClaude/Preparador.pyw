@@ -38,7 +38,7 @@ def procesar():
     caja.delete("1.0", "end")
     lado = {"9 (más detalle)": 3, "16 (recomendado)": 4, "25 (más cortes)": 5}[cantidad.get()]
     args = ["x", ruta.get(), "--paciente", paciente.get(), "--mosaico", str(lado),
-            "--max-imagenes", str(max_imgs.get())]
+            "--max-imagenes", str(max_imgs.get())] + (["--pdf"] if formato.get() == "pdf" else [])
 
     def tarea():
         import preparar_estudio
@@ -73,8 +73,8 @@ def revisar_cola():
                 if dato and os.path.isdir(dato):
                     ultima.set(dato)
                     btn_abrir.config(state="normal")
-                    messagebox.showinfo("Listo", "Imágenes listas.\n\nEnvíe a Claude todas las imágenes "
-                                                 "del Paquete_01 en un solo mensaje.")
+                    messagebox.showinfo("Listo", "Listo.\n\nEnvíe a Claude el archivo PDF que aparece "
+                                                 "en la carpeta (o las imágenes del Paquete_01).")
                     os.startfile(dato) if os.name == "nt" else None
     except queue.Empty:
         pass
@@ -93,7 +93,8 @@ v.title("Preparador de Estudios para Claude - Dr. Néstor Mejía")
 v.geometry("720x620")
 v.configure(bg="white")
 ruta, paciente, cantidad, ultima = tk.StringVar(), tk.StringVar(), tk.StringVar(value="16 (recomendado)"), tk.StringVar()
-max_imgs = tk.IntVar(value=5)
+max_imgs = tk.IntVar(value=100)
+formato = tk.StringVar(value="pdf")
 F = ("Arial", 11)
 
 tk.Label(v, text="PREPARADOR DE ESTUDIOS PARA CLAUDE", bg=AZUL, fg="white",
@@ -117,7 +118,13 @@ for t in ("9 (más detalle)", "16 (recomendado)", "25 (más cortes)"):
     tk.Radiobutton(f3, text=t, variable=cantidad, value=t, bg="white", font=F).pack(side="left", padx=4)
 
 f4 = tk.Frame(m, bg="white"); f4.pack(anchor="w", pady=(10, 0))
-tk.Label(f4, text="4.  Imágenes que puedo enviar:", bg="white", font=("Arial", 11, "bold")).pack(side="left")
+f5 = tk.Frame(m, bg="white"); f5.pack(anchor="w", pady=(10, 0))
+tk.Label(f5, text="5.  Entregar como:", bg="white", font=("Arial", 11, "bold")).pack(side="left")
+tk.Radiobutton(f5, text="UN SOLO PDF (recomendado)", variable=formato, value="pdf", bg="white", font=F,
+               command=lambda: max_imgs.set(100)).pack(side="left", padx=4)
+tk.Radiobutton(f5, text="Imágenes sueltas", variable=formato, value="img", bg="white", font=F,
+               command=lambda: max_imgs.set(5)).pack(side="left", padx=4)
+tk.Label(f4, text="4.  Páginas / imágenes máximas:", bg="white", font=("Arial", 11, "bold")).pack(side="left")
 tk.Spinbox(f4, from_=1, to=100, width=4, textvariable=max_imgs, font=("Arial", 12)).pack(side="left", padx=6)
 
 btn = tk.Button(m, text="▶  PREPARAR IMÁGENES", bg="#2E7D32", fg="white", font=("Arial", 13, "bold"),
