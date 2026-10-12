@@ -1,0 +1,30 @@
+PREPARADOR DE ESTUDIOS PARA CLAUDE (TC / RM / US / DOPPLER)
+============================================================
+
+QUE HACE
+- Claude no "ve" videos: analiza imagenes. El programa convierte los videos
+  (grabados del monitor o exportados del PACS) y los cortes DICOM en imagenes JPG,
+  quita los fotogramas repetidos, las optimiza (1568 px) y las agrupa en
+  PAQUETES listos para enviar. Al final muestra cuantos MB ocupa cada paciente.
+
+COMO USAR (Windows)
+1. Instale Python (python.org) marcando "Add Python to PATH".
+2. Arrastre la carpeta o el video del paciente sobre PreparadorEstudios.bat.
+3. Se crea la carpeta  NOMBRE_PARA_CLAUDE  con Paquete_01, Paquete_02... y RESUMEN.txt.
+4. En Claude envie un paquete por mensaje (todas sus imagenes juntas).
+
+LIMITES DE ENVIO (aprox., pueden cambiar)
+- claude.ai / app: hasta 20 archivos por mensaje, 30 MB por archivo.
+- API: hasta 100 imagenes por solicitud, 5 MB por imagen, 32 MB por solicitud.
+- Cada imagen optimizada pesa ~0.1-0.4 MB: un paciente tipico (30-60 imagenes)
+  ocupa 5-20 MB en total.
+- Ademas existe un limite de contexto: muchas imagenes en un chat lo agotan.
+  Lo ideal: 20-60 imagenes clave por paciente.
+
+OPCIONES (linea de comandos)
+  python preparar_estudio.py CARPETA --paciente "Maria Lopez" --fps 1 --umbral 10 --modo api
+  --fps     fotogramas por segundo del video (menos = menos imagenes)
+  --umbral  mas alto = descarta mas imagenes parecidas
+  --modo    web (claude.ai) o api
+
+PRIVACIDAD: anonimice nombre/ID visibles en las imagenes cuando sea posible.
