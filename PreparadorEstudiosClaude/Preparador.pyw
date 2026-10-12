@@ -36,9 +36,9 @@ def procesar():
         return
     btn.config(state="disabled", text="Procesando... espere")
     caja.delete("1.0", "end")
-    fps = {"Pocas imágenes": 1, "Normal": 2, "Muchas imágenes": 4}[cantidad.get()]
-    umbral = {"Pocas imágenes": 10, "Normal": 6, "Muchas imágenes": 3}[cantidad.get()]
-    args = ["x", ruta.get(), "--paciente", paciente.get(), "--fps", str(fps), "--umbral", str(umbral)]
+    lado = {"9 (más detalle)": 3, "16 (recomendado)": 4, "25 (más cortes)": 5}[cantidad.get()]
+    args = ["x", ruta.get(), "--paciente", paciente.get(), "--mosaico", str(lado),
+            "--max-imagenes", str(max_imgs.get())]
 
     def tarea():
         import preparar_estudio
@@ -73,8 +73,8 @@ def revisar_cola():
                 if dato and os.path.isdir(dato):
                     ultima.set(dato)
                     btn_abrir.config(state="normal")
-                    messagebox.showinfo("Listo", "Imágenes listas.\n\nEnvíe a Claude las imágenes de cada "
-                                                 "'Paquete' en un mensaje.")
+                    messagebox.showinfo("Listo", "Imágenes listas.\n\nEnvíe a Claude todas las imágenes "
+                                                 "del Paquete_01 en un solo mensaje.")
                     os.startfile(dato) if os.name == "nt" else None
     except queue.Empty:
         pass
@@ -92,7 +92,8 @@ v = tk.Tk()
 v.title("Preparador de Estudios para Claude - Dr. Néstor Mejía")
 v.geometry("720x620")
 v.configure(bg="white")
-ruta, paciente, cantidad, ultima = tk.StringVar(), tk.StringVar(), tk.StringVar(value="Normal"), tk.StringVar()
+ruta, paciente, cantidad, ultima = tk.StringVar(), tk.StringVar(), tk.StringVar(value="16 (recomendado)"), tk.StringVar()
+max_imgs = tk.IntVar(value=5)
 F = ("Arial", 11)
 
 tk.Label(v, text="PREPARADOR DE ESTUDIOS PARA CLAUDE", bg=AZUL, fg="white",
@@ -110,10 +111,14 @@ tk.Label(m, textvariable=ruta, bg="#EEF3F8", font=("Arial", 9), anchor="w", wrap
 tk.Label(m, text="2.  Nombre del paciente:", bg="white", font=("Arial", 11, "bold")).pack(anchor="w", pady=(12, 0))
 tk.Entry(m, textvariable=paciente, font=("Arial", 12)).pack(fill="x", pady=4)
 
-tk.Label(m, text="3.  Cantidad de imágenes:", bg="white", font=("Arial", 11, "bold")).pack(anchor="w", pady=(10, 0))
+tk.Label(m, text="3.  Cortes dentro de cada imagen:", bg="white", font=("Arial", 11, "bold")).pack(anchor="w", pady=(10, 0))
 f3 = tk.Frame(m, bg="white"); f3.pack(anchor="w")
-for t in ("Pocas imágenes", "Normal", "Muchas imágenes"):
+for t in ("9 (más detalle)", "16 (recomendado)", "25 (más cortes)"):
     tk.Radiobutton(f3, text=t, variable=cantidad, value=t, bg="white", font=F).pack(side="left", padx=4)
+
+f4 = tk.Frame(m, bg="white"); f4.pack(anchor="w", pady=(10, 0))
+tk.Label(f4, text="4.  Imágenes que puedo enviar:", bg="white", font=("Arial", 11, "bold")).pack(side="left")
+tk.Spinbox(f4, from_=1, to=100, width=4, textvariable=max_imgs, font=("Arial", 12)).pack(side="left", padx=6)
 
 btn = tk.Button(m, text="▶  PREPARAR IMÁGENES", bg="#2E7D32", fg="white", font=("Arial", 13, "bold"),
                 pady=6, command=procesar)

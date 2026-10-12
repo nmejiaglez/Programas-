@@ -116,7 +116,7 @@ def imagen_dicom(ruta):
     return orden, Image.fromarray(arr)
 
 
-def recolectar(entrada, fps, umbral):
+def recolectar(entrada, fps, umbral, umbral_dicom=None):
     rutas = [entrada] if os.path.isfile(entrada) else sorted(
         os.path.join(r, f) for r, _, fs in os.walk(entrada) for f in fs)
     dicoms = []
@@ -136,9 +136,41 @@ def recolectar(entrada, fps, umbral):
         previa = None
         for (serie, inst), img, r in sorted(dicoms, key=lambda d: d[0]):
             m = miniatura(img)
-            if diferencia(m, previa) >= umbral / 2:
+            if diferencia(m, previa) >= (umbral / 2 if umbral_dicom is None else umbral_dicom):
                 previa = m
                 yield f"S{serie:03d}_I{inst:04d}", img
+
+
+def mosaicos(fuente, lado, max_imgs):
+    """Reduce cientos/miles de cortes a pocas imágenes: cada una es una cuadrícula lado x lado."""
+    from PIL import ImageDraw
+    celda = LADO_MAX // lado
+    cortes = []
+    for etiqueta, img in fuente:                     # se guardan reducidos para no agotar la memoria
+        im = img.convert("L"); im.thumbnail((celda, celda), Image.LANCZOS)
+        b = io.BytesIO(); im.save(b, "JPEG", quality=92); cortes.append((etiqueta, b.getvalue()))
+    if not cortes:
+        return
+    cupo = lado * lado * max_imgs
+    if len(cortes) > cupo:                           # cortes equidistantes a lo largo de todo el estudio
+        cortes = [cortes[round(i * (len(cortes) - 1) / (cupo - 1))] for i in range(cupo)]
+    print(f"  Cortes elegidos: {len(cortes)} (de forma equidistante) -> mosaicos de {lado}x{lado}")
+    for k in range(0, len(cortes), lado * lado):
+        grupo = cortes[k:k + lado * lado]
+        hoja = Image.new("L", (celda * lado, celda * lado), 0)
+        d = ImageDraw.Draw(hoja)
+        try:
+            from PIL import ImageFont
+            fuente_txt = ImageFont.load_default(size=max(16, celda // 14))
+        except Exception:
+            fuente_txt = None
+        for j, (etq, datos) in enumerate(grupo):
+            im = Image.open(io.BytesIO(datos))
+            x, y = (j % lado) * celda, (j // lado) * celda
+            hoja.paste(im, (x + (celda - im.width) // 2, y + (celda - im.height) // 2))
+            d.rectangle([x, y, x + celda - 1, y + celda - 1], outline=90)
+            d.text((x + 6, y + 4), f"{k + j + 1}", fill=255, font=fuente_txt)
+        yield f"mosaico_cortes_{k + 1:04d}-{k + len(grupo):04d}", hoja
 
 
 def main():
@@ -147,6 +179,9 @@ def main():
     ap.add_argument("--paciente", default="", help="Nombre del paciente (para la carpeta de salida)")
     ap.add_argument("--fps", type=float, default=2.0, help="Fotogramas por segundo a muestrear (def. 2)")
     ap.add_argument("--umbral", type=float, default=6.0, help="Sensibilidad para descartar repetidos (def. 6)")
+    ap.add_argument("--mosaico", type=int, default=4,
+                    help="Cortes por lado de cada imagen (4 = 16 cortes por imagen; 1 = sin mosaico)")
+    ap.add_argument("--max-imagenes", type=int, default=5, help="Máximo de imágenes a enviar (def. 5)")
     ap.add_argument("--modo", choices=LIMITES, default="web", help="web = claude.ai | api = API")
     a = ap.parse_args()
 
@@ -163,7 +198,12 @@ def main():
         original_mb = sum(os.path.getsize(os.path.join(r, f))
                           for r, _, fs in os.walk(a.entrada) for f in fs) / 1e6
 
-    for etiqueta, img in recolectar(a.entrada, a.fps, a.umbral):
+    if a.mosaico > 1:
+        lim = dict(lim, imgs_por_paquete=a.max_imagenes)
+        fuente = mosaicos(recolectar(a.entrada, a.fps, a.umbral, umbral_dicom=0), a.mosaico, a.max_imagenes)
+    else:
+        fuente = recolectar(a.entrada, a.fps, a.umbral)
+    for etiqueta, img in fuente:
         datos = a_jpg(redimensionar(img))
         mb = len(datos) / 1e6 * (4 / 3 if a.modo == "api" else 1)   # base64 en API
         if actual and (len(actual) >= lim["imgs_por_paquete"] or mb_actual + mb > lim["mb_por_paquete"] * 0.95):
@@ -196,7 +236,7 @@ def main():
         *lineas, "",
         f"  Límites usados ({a.modo}): máx. {lim['imgs_por_paquete']} imágenes por mensaje, "
         f"{lim['mb_por_imagen']:.0f} MB por imagen" + (", 32 MB por solicitud" if a.modo == "api" else ""),
-        "  Recomendado para buena lectura: 20-60 imágenes clave por paciente.",
+        "  Cada imagen es un mosaico numerado de cortes del estudio." if a.mosaico > 1 else
         "  Si salen demasiadas: use --fps 1 o --umbral 10.",
         f"\n  Carpeta: {salida}", "=" * 62,
     ]
