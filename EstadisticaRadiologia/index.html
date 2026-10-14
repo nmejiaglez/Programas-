@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Estadística Radiología</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--tx:#1d2733;--mut:#667;--pri:#0b4f8a;--acc:#0e7c66;--warn:#c0392b;--bd:#d9dee6}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--tx)}
+header{background:var(--pri);color:#fff;padding:14px 16px}header h1{margin:0;font-size:20px}header p{margin:2px 0 0;font-size:13px;opacity:.85}
+nav{display:flex;flex-wrap:wrap;gap:4px;padding:8px 16px;background:#e3e9f2}
+nav button{border:0;background:transparent;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:14px}
+nav button.on{background:var(--pri);color:#fff}
+main{padding:16px;max-width:1200px;margin:auto}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:14px;margin-bottom:14px}
+.card h2{margin:0 0 10px;font-size:16px;color:var(--pri)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+label{font-size:12px;color:var(--mut);display:block;margin-bottom:3px}
+input,select{width:100%;padding:7px;border:1px solid var(--bd);border-radius:5px;font-size:14px}
+.btn{background:var(--acc);color:#fff;border:0;padding:9px 14px;border-radius:5px;cursor:pointer;font-size:14px}
+.btn.sec{background:#5b6b7d}.btn.del{background:var(--warn);padding:4px 8px;font-size:12px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border:1px solid var(--bd);padding:6px 8px;text-align:center}th{background:#eef2f7}
+td.l,th.l{text-align:left}tfoot td{font-weight:bold;background:#f6f8fb}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.kpi div{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:10px}
+.kpi b{display:block;font-size:24px;color:var(--pri)}.kpi span{font-size:12px;color:var(--mut)}
+.pend{color:var(--warn);font-weight:bold}.ok{color:var(--acc);font-weight:bold}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
+.hide{display:none}
+@media print{nav,.noprint{display:none!important}body{background:#fff}.card{border:0}}
+</style>
+</head>
+<body>
+<header><h1>Estadística del Departamento de Radiología</h1>
+<p>Hospital Regional Escuela Camilo Ortega Saavedra — Juigalpa, Chontales</p></header>
+<nav id="nav">
+<button data-t="reg" class="on">Registrar</button>
+<button data-t="disc">Discos pendientes</button>
+<button data-t="est">Estadísticas</button>
+<button data-t="list">Registros</button>
+<button data-t="cfg">Respaldo</button>
+</nav>
+<main>
+
+<section id="t-reg">
+<div class="card"><h2>Registrar estudios / lecturas</h2>
+<div class="grid">
+<div><label>Fecha</label><input type="date" id="fFecha"></div>
+<div><label>Médico</label><select id="fMed"></select></div>
+<div><label>Modalidad</label><select id="fMod"></select></div>
+<div><label>Turno</label><select id="fTurno"><option>Mañana</option><option>Tarde</option><option>Noche</option></select></div>
+<div><label>Estudios realizados</label><input type="number" min="0" id="fReal" value="0"></div>
+<div><label>Lecturas leídas (informadas)</label><input type="number" min="0" id="fLeid" value="0"></div>
+<div><label>Paciente (opcional)</label><input id="fPac"></div>
+<div><label>Observación</label><input id="fObs"></div>
+</div>
+<p class="row"><button class="btn" onclick="addReg()">Guardar registro</button>
+<span id="msg" class="ok"></span></p>
+<p style="font-size:12px;color:#667">Lecturas pendientes = realizados − leídos. Puede registrar un total diario o paciente por paciente.</p>
+</div>
+</section>
+
+<section id="t-disc" class="hide">
+<div class="card"><h2>Registrar disco faltante</h2>
+<div class="grid">
+<div><label>Fecha</label><input type="date" id="dFecha"></div>
+<div><label>Paciente</label><input id="dPac"></div>
+<div><label>Expediente</label><input id="dExp"></div>
+<div><label>Modalidad</label><select id="dMod"><option>RMN</option><option>TAC</option><option>RX</option><option>MX</option></select></div>
+<div><label>Médico asignado</label><select id="dMed"></select></div>
+<div><label>Observación</label><input id="dObs"></div>
+</div>
+<p><button class="btn" onclick="addDisc()">Agregar disco faltante</button></p>
+</div>
+<div class="card"><h2>Discos</h2>
+<div class="row noprint"><div><label>Mostrar</label><select id="dFil" onchange="renderDisc()"><option value="p">Pendientes</option><option value="e">Entregados</option><option value="t">Todos</option></select></div></div>
+<div class="tw"><table id="tDisc"></table></div></div>
+</section>
+
+<section id="t-est" class="hide">
+<div class="card noprint"><h2>Período</h2>
+<div class="row">
+<div><label>Desde</label><input type="date" id="eDesde"></div>
+<div><label>Hasta</label><input type="date" id="eHasta"></div>
+<button class="btn sec" onclick="per('hoy')">Hoy</button>
+<button class="btn sec" onclick="per('mes')">Este mes</button>
+<button class="btn sec" onclick="per('anio')">Este año</button>
+<button class="btn" onclick="renderEst()">Calcular</button>
+<button class="btn sec" onclick="window.print()">Imprimir</button>
+<button class="btn sec" onclick="csvEst()">Exportar Excel (CSV)</button>
+</div></div>
+<div class="kpi" id="kpi"></div><br>
+<div class="card"><h2>Estudios realizados por médico y modalidad</h2><div class="tw"><table id="tReal"></table></div></div>
+<div class="card"><h2>Lecturas leídas por médico y modalidad</h2><div class="tw"><table id="tLeid"></table></div></div>
+<div class="card"><h2>Lecturas pendientes por médico y modalidad</h2><div class="tw"><table id="tPend"></table></div></div>
+<div class="card"><h2>Discos faltantes pendientes (RMN / TAC / RX / MX)</h2><div class="tw"><table id="tDiscE"></table></div></div>
+</section>
+
+<section id="t-list" class="hide">
+<div class="card"><h2>Registros</h2>
+<div class="row noprint">
+<div><label>Médico</label><select id="lMed" onchange="renderList()"></select></div>
+<div><label>Modalidad</label><select id="lMod" onchange="renderList()"></select></div>
+</div><br>
+<div class="tw"><table id="tList"></table></div></div>
+</section>
+
+<section id="t-cfg" class="hide">
+<div class="card"><h2>Respaldo de datos</h2>
+<p style="font-size:13px">Los datos se guardan en este navegador. Descargue un respaldo con frecuencia.</p>
+<div class="row">
+<button class="btn" onclick="backup()">Descargar respaldo (.json)</button>
+<label class="btn sec" style="color:#fff;margin:0">Restaurar respaldo<input type="file" accept=".json" class="hide" onchange="restore(this)"></label>
+</div></div>
+<div class="card"><h2>Médicos</h2>
+<div class="row"><div><label>Nuevo médico</label><input id="nMed"></div><button class="btn" onclick="addMed()">Agregar</button></div>
+<ul id="medList"></ul></div>
+</section>
+</main>
+<script>
+const MODS=["Ultrasonido","Doppler","Radiografía (RX)","Mamografía (MX)","TAC","RMN"];
+const KEY="radioStats_v1";
+let DB={meds:["Dr. Erick Esquivel","Dr. Néstor Mejía","Dr. Campos","Dr. Yesman Suárez","Dra. Idania Mondragón"],regs:[],discs:[]};
+try{const s=localStorage.getItem(KEY);if(s)DB=JSON.parse(s)}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){alert("No se pudo guardar")}};
+const $=id=>document.getElementById(id);
+const today=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const opts=(a,all)=>(all?`<option value="">Todos</option>`:"")+a.map(x=>`<option>${esc(x)}</option>`).join("");
+
+function fillSel(){
+ $("fMed").innerHTML=$("dMed").innerHTML=opts(DB.meds);$("lMed").innerHTML=opts(DB.meds,1);
+ $("fMod").innerHTML=opts(MODS);$("lMod").innerHTML=opts(MODS,1);
+ $("medList").innerHTML=DB.meds.map((m,i)=>`<li>${esc(m)} <button class="btn del" onclick="delMed(${i})">quitar</button></li>`).join("");
+}
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("on",x===b));
+ document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="t-"+b.dataset.t));
+ ({disc:renderDisc,est:renderEst,list:renderList})[b.dataset.t]?.();
+});
+function addReg(){
+ const r={id:Date.now(),fecha:$("fFecha").value,med:$("fMed").value,mod:$("fMod").value,turno:$("fTurno").value,
+  real:+$("fReal").value||0,leid:+$("fLeid").value||0,pac:$("fPac").value.trim(),obs:$("fObs").value.trim()};
+ if(!r.fecha)return alert("Indique la fecha");
+ if(!r.real&&!r.leid)return alert("Indique cantidad realizada o leída");
+ DB.regs.push(r);save();$("fReal").value=$("fLeid").value=0;$("fPac").value=$("fObs").value="";
+ $("msg").textContent="Guardado ✔";setTimeout(()=>$("msg").textContent="",2000);
+}
+function addDisc(){
+ const d={id:Date.now(),fecha:$("dFecha").value,pac:$("dPac").value.trim(),exp:$("dExp").value.trim(),mod:$("dMod").value,med:$("dMed").value,obs:$("dObs").value.trim(),ent:""};
+ if(!d.pac)return alert("Indique el paciente");
+ DB.discs.push(d);save();$("dPac").value=$("dExp").value=$("dObs").value="";renderDisc();
+}
+function entDisc(id){const d=DB.discs.find(x=>x.id===id);d.ent=d.ent?"":today();save();renderDisc()}
+function delDisc(id){if(confirm("¿Eliminar?")){DB.discs=DB.discs.filter(x=>x.id!==id);save();renderDisc()}}
+function renderDisc(){
+ const f=$("dFil").value,L=DB.discs.filter(d=>f==="t"||(f==="p"?!d.ent:d.ent));
+ $("tDisc").innerHTML=`<tr><th>Fecha</th><th class="l">Paciente</th><th>Exp.</th><th>Modalidad</th><th class="l">Médico</th><th class="l">Obs.</th><th>Estado</th><th class="noprint"></th></tr>`+
+ (L.map(d=>`<tr><td>${d.fecha}</td><td class="l">${esc(d.pac)}</td><td>${esc(d.exp)}</td><td>${d.mod}</td><td class="l">${esc(d.med)}</td><td class="l">${esc(d.obs)}</td>
+ <td>${d.ent?`<span class="ok">Entregado ${d.ent}</span>`:`<span class="pend">Falta</span>`}</td>
+ <td class="noprint"><button class="btn" style="padding:4px 8px;font-size:12px" onclick="entDisc(${d.id})">${d.ent?"Revertir":"Entregado"}</button> <button class="btn del" onclick="delDisc(${d.id})">✕</button></td></tr>`).join("")||`<tr><td colspan="8">Sin registros</td></tr>`);
+}
+function per(p){const t=today();$("eHasta").value=t;$("eDesde").value=p==="hoy"?t:p==="mes"?t.slice(0,8)+"01":t.slice(0,5)+"01-01";renderEst()}
+let lastMat=null;
+function matrix(field){
+ const a=$("eDesde").value,b=$("eHasta").value,M={};
+ DB.meds.forEach(m=>{M[m]={};MODS.forEach(x=>M[m][x]=0)});
+ DB.regs.filter(r=>(!a||r.fecha>=a)&&(!b||r.fecha<=b)).forEach(r=>{M[r.med]??=Object.fromEntries(MODS.map(x=>[x,0]));
+  M[r.med][r.mod]+=field==="p"?r.real-r.leid:r[field]});
+ return M;
+}
+function table(id,M,cls){
+ let h=`<tr><th class="l">Médico</th>${MODS.map(m=>`<th>${m}</th>`).join("")}<th>Total</th></tr>`,col=MODS.map(()=>0),G=0;
+ for(const m in M){let t=0;h+=`<tr><td class="l">${esc(m)}</td>`+MODS.map((x,i)=>{const v=Math.max(0,M[m][x]);t+=v;col[i]+=v;return`<td>${v||""}</td>`}).join("")+`<td class="${cls||""}"><b>${t}</b></td></tr>`;G+=t}
+ $(id).innerHTML=h+`<tfoot><tr><td class="l">TOTAL</td>${col.map(v=>`<td>${v}</td>`).join("")}<td>${G}</td></tr></tfoot>`;return{col,G};
+}
+function renderEst(){
+ if(!$("eDesde").value&&!$("eHasta").value){per("mes");return}
+ const R=matrix("real"),Le=matrix("leid"),P=matrix("p");
+ const r=table("tReal",R),l=table("tLeid",Le),p=table("tPend",P,"pend");lastMat={R,Le,P};
+ const pd=DB.discs.filter(d=>!d.ent),DM=["RMN","TAC","RX","MX"],dm={};
+ DB.meds.forEach(m=>dm[m]=Object.fromEntries(DM.map(x=>[x,0])));pd.forEach(d=>{dm[d.med]??=Object.fromEntries(DM.map(x=>[x,0]));dm[d.med][d.mod]++});
+ let h=`<tr><th class="l">Médico</th>${DM.map(x=>`<th>${x}</th>`).join("")}<th>Total</th></tr>`;const c=DM.map(()=>0);
+ for(const m in dm){let t=0;h+=`<tr><td class="l">${esc(m)}</td>`+DM.map((x,i)=>{t+=dm[m][x];c[i]+=dm[m][x];return`<td>${dm[m][x]||""}</td>`}).join("")+`<td class="pend">${t}</td></tr>`}
+ $("tDiscE").innerHTML=h+`<tfoot><tr><td class="l">TOTAL</td>${c.map(v=>`<td>${v}</td>`).join("")}<td>${pd.length}</td></tr></tfoot>`;
+ const k=(n,s,c)=>`<div><b class="${c||""}">${n}</b><span>${s}</span></div>`;
+ $("kpi").innerHTML=k(r.G,"Estudios realizados")+k(r.col[0],"Ultrasonidos")+k(r.col[2],"Radiografías")+k(r.col[3],"Mamografías")+k(l.G,"Lecturas leídas")+k(p.G,"Lecturas pendientes","pend")+k(pd.length,"Discos faltantes","pend");
+}
+function csvEst(){
+ if(!lastMat)renderEst();const rows=[["Periodo",$("eDesde").value,$("eHasta").value]];
+ [["REALIZADOS","R"],["LEIDAS","Le"],["PENDIENTES","P"]].forEach(([t,k])=>{rows.push([],[t],["Médico",...MODS,"Total"]);
+  for(const m in lastMat[k]){const v=MODS.map(x=>Math.max(0,lastMat[k][m][x]));rows.push([m,...v,v.reduce((a,b)=>a+b,0)])}});
+ rows.push([],["DISCOS FALTANTES"],["Fecha","Paciente","Expediente","Modalidad","Médico","Obs"]);
+ DB.discs.filter(d=>!d.ent).forEach(d=>rows.push([d.fecha,d.pac,d.exp,d.mod,d.med,d.obs]));
+ dl("﻿"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n"),`Estadistica_${today()}.csv`,"text/csv");
+}
+function renderList(){
+ const m=$("lMed").value,x=$("lMod").value,L=DB.regs.filter(r=>(!m||r.med===m)&&(!x||r.mod===x)).sort((a,b)=>b.fecha.localeCompare(a.fecha));
+ $("tList").innerHTML=`<tr><th>Fecha</th><th class="l">Médico</th><th>Modalidad</th><th>Turno</th><th>Realiz.</th><th>Leídas</th><th>Pend.</th><th class="l">Paciente</th><th class="l">Obs.</th><th></th></tr>`+
+ (L.map(r=>`<tr><td>${r.fecha}</td><td class="l">${esc(r.med)}</td><td>${r.mod}</td><td>${r.turno}</td><td>${r.real}</td><td>${r.leid}</td><td class="${r.real>r.leid?"pend":""}">${Math.max(0,r.real-r.leid)}</td><td class="l">${esc(r.pac)}</td><td class="l">${esc(r.obs)}</td>
+ <td><button class="btn" style="padding:4px 8px;font-size:12px" onclick="leer(${r.id})">+ leída</button> <button class="btn del" onclick="delReg(${r.id})">✕</button></td></tr>`).join("")||`<tr><td colspan="10">Sin registros</td></tr>`);
+}
+function leer(id){const r=DB.regs.find(x=>x.id===id);const n=prompt("Lecturas leídas adicionales:", Math.max(0,r.real-r.leid));if(n===null)return;r.leid+=+n||0;save();renderList()}
+function delReg(id){if(confirm("¿Eliminar registro?")){DB.regs=DB.regs.filter(r=>r.id!==id);save();renderList()}}
+function addMed(){const n=$("nMed").value.trim();if(n&&!DB.meds.includes(n)){DB.meds.push(n);save();fillSel();$("nMed").value=""}}
+function delMed(i){if(confirm("¿Quitar médico de la lista? (sus registros se conservan)")){DB.meds.splice(i,1);save();fillSel()}}
+function dl(c,n,t){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click()}
+function backup(){dl(JSON.stringify(DB,null,1),`Respaldo_Radiologia_${today()}.json`,"application/json")}
+function restore(inp){const f=inp.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!d.regs)throw 0;if(confirm("¿Reemplazar datos actuales?")){DB=d;save();fillSel();alert("Restaurado")}}catch(e){alert("Archivo inválido")}})}
+$("fFecha").value=$("dFecha").value=today();fillSel();
+</script>
+</body>
+</html>
