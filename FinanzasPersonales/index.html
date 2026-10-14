@@ -91,8 +91,9 @@ td.l{text-align:left}tfoot td{font-weight:bold;background:#f6f8fb}
 </section>
 
 <section id="t-cfg" class="hide">
-<div class="card"><h2>Tipos de ultrasonido y precio</h2>
-<div class="row"><div><label>Estudio</label><input id="nT"></div><div><label>Precio</label><input type="number" id="nP"></div><button class="btn" onclick="addTipo()">Agregar / actualizar</button></div><br>
+<div class="card"><h2>Tipos de ultrasonido y precio <span id="pOk" class="in" style="font-size:13px"></span></h2>
+<p style="font-size:13px">Escriba el precio directamente en la casilla de cada estudio. Se guarda automáticamente.</p>
+<div class="row"><div><label>Estudio</label><input id="nT"></div><div><label>Precio</label><input type="number" id="nP"></div><button class="btn" onclick="addTipo()">Agregar estudio nuevo</button></div><br>
 <div class="tw"><table id="tTipos"></table></div></div>
 <div class="card"><h2>Lugares de trabajo</h2>
 <div class="row"><div><label>Lugar</label><input id="nL"></div><button class="btn" onclick="addLista('lugares','nL')">Agregar</button></div><ul id="uL"></ul></div>
@@ -122,7 +123,8 @@ const opts=a=>a.map(x=>`<option>${esc(x)}</option>`).join("");
 
 function fill(){
  $("iT").innerHTML=opts(Object.keys(DB.tipos));$("iL").innerHTML=opts(DB.lugares);$("gC").innerHTML=opts(DB.cats);
- $("tTipos").innerHTML="<tr><th>Estudio</th><th>Precio</th><th></th></tr>"+Object.entries(DB.tipos).map(([t,p])=>`<tr><td class="l">${esc(t)}</td><td>${$$(p)}</td><td><button class="btn x" onclick="delTipo('${esc(t).replace(/'/g,"\\'")}')">✕</button></td></tr>`).join("");
+ const TT=Object.keys(DB.tipos);
+ $("tTipos").innerHTML="<tr><th>Estudio</th><th>Precio ("+esc(DB.mon)+")</th><th></th></tr>"+TT.map((t,i)=>`<tr><td class="l">${esc(t)}</td><td><input type="number" min="0" step="0.01" inputmode="decimal" value="${DB.tipos[t]||""}" placeholder="Escriba el precio" oninput="setTipo(${i},this.value)" style="max-width:160px;text-align:right;font-size:15px;border:2px solid #0e7c66"></td><td><button class="btn x" onclick="delTipo(${i})">✕</button></td></tr>`).join("");
  $("uL").innerHTML=DB.lugares.map((x,i)=>`<li>${esc(x)} <button class="btn x" onclick="delLista('lugares',${i})">✕</button></li>`).join("");
  $("uG").innerHTML=DB.cats.map((x,i)=>`<li>${esc(x)} <button class="btn x" onclick="delLista('cats',${i})">✕</button></li>`).join("");
  $("mon").value=DB.mon;setPrecio();
@@ -190,7 +192,8 @@ function csv(){const m=$("rMes").value,rows=[["INGRESOS "+mesLbl(m)],["Fecha","E
  rows.push([],["GASTOS"],["Fecha","Categoría","Monto","Descripción"]);ofMes("gas",m).forEach(g=>rows.push([g.f,g.c,g.m,g.d]));
  dl("\ufeff"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n"),`Finanzas_${m}.csv`,"text/csv")}
 function addTipo(){const t=$("nT").value.trim();if(!t)return;DB.tipos[t]=+$("nP").value||0;save();fill();$("nT").value=$("nP").value=""}
-function delTipo(t){if(confirm("¿Quitar "+t+"?")){delete DB.tipos[t];save();fill()}}
+function setTipo(i,v){const t=Object.keys(DB.tipos)[i];DB.tipos[t]=+v||0;save();if($("iT").value===t)setPrecio();$("pOk").textContent="Precio guardado ✔";clearTimeout(window._po);window._po=setTimeout(()=>$("pOk").textContent="",1500)}
+function delTipo(i){const t=Object.keys(DB.tipos)[i];if(confirm("¿Quitar "+t+"?")){delete DB.tipos[t];save();fill()}}
 function addLista(k,id){const v=$(id).value.trim();if(v&&!DB[k].includes(v)){DB[k].push(v);save();fill();$(id).value=""}}
 function delLista(k,i){if(confirm("¿Quitar?")){DB[k].splice(i,1);save();fill()}}
 function dl(c,n,t){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click()}
