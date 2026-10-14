@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mis Finanzas</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--tx:#1d2733;--mut:#667;--pri:#0b4f8a;--in:#0e7c66;--out:#c0392b;--bd:#d9dee6}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--tx)}
+header{background:var(--pri);color:#fff;padding:14px 16px}header h1{margin:0;font-size:20px}header p{margin:2px 0 0;font-size:13px;opacity:.85}
+nav{display:flex;flex-wrap:wrap;gap:4px;padding:8px 16px;background:#e3e9f2}
+nav button{border:0;background:transparent;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:14px}
+nav button.on{background:var(--pri);color:#fff}
+main{padding:16px;max-width:1100px;margin:auto}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:14px;margin-bottom:14px}
+.card h2{margin:0 0 10px;font-size:16px;color:var(--pri)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+label{font-size:12px;color:var(--mut);display:block;margin-bottom:3px}
+input,select{width:100%;padding:7px;border:1px solid var(--bd);border-radius:5px;font-size:14px}
+.btn{background:var(--in);color:#fff;border:0;padding:9px 14px;border-radius:5px;cursor:pointer;font-size:14px}
+.btn.g{background:var(--out)}.btn.sec{background:#5b6b7d}.btn.x{background:var(--out);padding:3px 8px;font-size:12px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border:1px solid var(--bd);padding:6px 8px;text-align:right}th{background:#eef2f7;text-align:center}
+td.l{text-align:left}tfoot td{font-weight:bold;background:#f6f8fb}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.kpi div{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:10px}
+.kpi b{display:block;font-size:22px}.kpi span{font-size:12px;color:var(--mut)}
+.in{color:var(--in)}.out{color:var(--out)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:end}.hide{display:none}
+.bar{height:10px;background:var(--in);border-radius:3px}.bar.o{background:var(--out)}
+#tot{font-size:15px;font-weight:bold;color:var(--in)}
+@media print{nav,.noprint{display:none!important}body{background:#fff}}
+</style>
+</head>
+<body>
+<header><h1>Mis Finanzas — Ultrasonido</h1><p>Dr. Néstor José Mejía González</p></header>
+<nav id="nav">
+<button data-t="ing" class="on">Ingresos US</button>
+<button data-t="gas">Gastos</button>
+<button data-t="res">Resumen mensual</button>
+<button data-t="anio">Resumen anual</button>
+<button data-t="cfg">Precios y respaldo</button>
+</nav>
+<main>
+<section id="t-ing">
+<div class="card"><h2>Registrar ultrasonido realizado</h2>
+<div class="grid">
+<div><label>Fecha</label><input type="date" id="iF"></div>
+<div><label>Tipo de estudio</label><select id="iT" onchange="setPrecio()"></select></div>
+<div><label>Cantidad</label><input type="number" min="1" id="iC" value="1" oninput="calc()"></div>
+<div><label>Precio unitario</label><input type="number" min="0" step="0.01" id="iP" oninput="calc()"></div>
+<div><label>Lugar</label><select id="iL"></select></div>
+<div><label>Forma de pago</label><select id="iFp"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option><option>Pendiente de cobro</option></select></div>
+<div><label>Paciente / nota (opcional)</label><input id="iN"></div>
+</div>
+<p class="row"><button class="btn" onclick="addIng()">Guardar ingreso</button><span id="tot"></span></p>
+</div>
+<div class="card"><h2>Ingresos de <span id="iMesLbl"></span></h2>
+<div class="row noprint"><div><label>Mes</label><input type="month" id="iMes" onchange="renderIng()"></div></div><br>
+<div class="tw"><table id="tIng"></table></div></div>
+</section>
+
+<section id="t-gas" class="hide">
+<div class="card"><h2>Registrar gasto</h2>
+<div class="grid">
+<div><label>Fecha</label><input type="date" id="gF"></div>
+<div><label>Categoría</label><select id="gC"></select></div>
+<div><label>Monto</label><input type="number" min="0" step="0.01" id="gM"></div>
+<div><label>Descripción</label><input id="gD"></div>
+</div>
+<p><button class="btn g" onclick="addGas()">Guardar gasto</button></p></div>
+<div class="card"><h2>Gastos del mes</h2>
+<div class="row noprint"><div><label>Mes</label><input type="month" id="gMes" onchange="renderGas()"></div></div><br>
+<div class="tw"><table id="tGas"></table></div></div>
+</section>
+
+<section id="t-res" class="hide">
+<div class="row noprint"><div><label>Mes</label><input type="month" id="rMes" onchange="renderRes()"></div>
+<button class="btn sec" onclick="window.print()">Imprimir</button><button class="btn sec" onclick="csv()">Exportar Excel (CSV)</button></div><br>
+<div class="kpi" id="kpi"></div>
+<div class="card"><h2>Ingresos por tipo de estudio</h2><div class="tw"><table id="rTipo"></table></div></div>
+<div class="card"><h2>Ingresos por lugar</h2><div class="tw"><table id="rLug"></table></div></div>
+<div class="card"><h2>Gastos por categoría</h2><div class="tw"><table id="rGas"></table></div></div>
+<div class="card"><h2>Ingresos por día</h2><div class="tw"><table id="rDia"></table></div></div>
+</section>
+
+<section id="t-anio" class="hide">
+<div class="row noprint"><div><label>Año</label><input type="number" id="aA" onchange="renderAnio()"></div></div><br>
+<div class="kpi" id="aK"></div>
+<div class="card"><h2>Mes por mes</h2><div class="tw"><table id="aT"></table></div></div>
+</section>
+
+<section id="t-cfg" class="hide">
+<div class="card"><h2>Tipos de ultrasonido y precio</h2>
+<div class="row"><div><label>Estudio</label><input id="nT"></div><div><label>Precio</label><input type="number" id="nP"></div><button class="btn" onclick="addTipo()">Agregar / actualizar</button></div><br>
+<div class="tw"><table id="tTipos"></table></div></div>
+<div class="card"><h2>Lugares de trabajo</h2>
+<div class="row"><div><label>Lugar</label><input id="nL"></div><button class="btn" onclick="addLista('lugares','nL')">Agregar</button></div><ul id="uL"></ul></div>
+<div class="card"><h2>Categorías de gasto</h2>
+<div class="row"><div><label>Categoría</label><input id="nG"></div><button class="btn" onclick="addLista('cats','nG')">Agregar</button></div><ul id="uG"></ul></div>
+<div class="card"><h2>Moneda y respaldo</h2>
+<div class="row"><div><label>Símbolo de moneda</label><input id="mon" style="width:80px" onchange="DB.mon=this.value;save();"></div>
+<button class="btn" onclick="backup()">Descargar respaldo</button>
+<label class="btn sec" style="color:#fff;margin:0">Restaurar respaldo<input type="file" accept=".json" class="hide" onchange="restore(this)"></label></div>
+<p style="font-size:12px;color:#667">Los datos se guardan en este navegador. Descargue un respaldo con frecuencia.</p></div>
+</section>
+</main>
+<script>
+const KEY="misFinanzasUS_v1";
+let DB={mon:"C$",tipos:{"US Abdominal":0,"US Abdomen superior":0,"US Renal / Vías urinarias":0,"US Pélvico":0,"US Transvaginal":0,"US Obstétrico":0,"US Tiroides / Cuello":0,"US Mama":0,"US Testicular":0,"US Prostático":0,"US Tejidos blandos":0,"US Musculoesquelético":0,"Doppler venoso":0,"Doppler arterial":0,"Doppler carotídeo":0,"Doppler obstétrico":0},
+ lugares:["Hospital","Clínica privada","Consultorio"],cats:["Alimentación","Transporte / Combustible","Vivienda","Servicios (luz, agua, internet)","Salud","Educación","Familia","Equipo / Consultorio","Impuestos","Ahorro","Entretenimiento","Otros"],ing:[],gas:[]};
+try{const s=localStorage.getItem(KEY);if(s)DB=JSON.parse(s)}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){alert("No se pudo guardar")}};
+const $=id=>document.getElementById(id);
+const today=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $$=n=>DB.mon+" "+(+n).toLocaleString("es-NI",{minimumFractionDigits:2,maximumFractionDigits:2});
+const MESES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const mesLbl=m=>MESES[+m.slice(5)-1]+" "+m.slice(0,4);
+const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+const opts=a=>a.map(x=>`<option>${esc(x)}</option>`).join("");
+
+function fill(){
+ $("iT").innerHTML=opts(Object.keys(DB.tipos));$("iL").innerHTML=opts(DB.lugares);$("gC").innerHTML=opts(DB.cats);
+ $("tTipos").innerHTML="<tr><th>Estudio</th><th>Precio</th><th></th></tr>"+Object.entries(DB.tipos).map(([t,p])=>`<tr><td class="l">${esc(t)}</td><td>${$$(p)}</td><td><button class="btn x" onclick="delTipo('${esc(t).replace(/'/g,"\\'")}')">✕</button></td></tr>`).join("");
+ $("uL").innerHTML=DB.lugares.map((x,i)=>`<li>${esc(x)} <button class="btn x" onclick="delLista('lugares',${i})">✕</button></li>`).join("");
+ $("uG").innerHTML=DB.cats.map((x,i)=>`<li>${esc(x)} <button class="btn x" onclick="delLista('cats',${i})">✕</button></li>`).join("");
+ $("mon").value=DB.mon;setPrecio();
+}
+function setPrecio(){$("iP").value=DB.tipos[$("iT").value]||"";calc()}
+function calc(){const t=(+$("iC").value||0)*(+$("iP").value||0);$("tot").textContent=t?"Total: "+$$(t):""}
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("on",x===b));
+ document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="t-"+b.dataset.t));
+ ({ing:renderIng,gas:renderGas,res:renderRes,anio:renderAnio})[b.dataset.t]?.();
+});
+function addIng(){
+ const r={id:Date.now(),f:$("iF").value,t:$("iT").value,c:+$("iC").value||1,p:+$("iP").value||0,l:$("iL").value,fp:$("iFp").value,n:$("iN").value.trim()};
+ if(!r.f)return alert("Indique la fecha");if(!r.p)return alert("Indique el precio");
+ DB.ing.push(r);save();$("iC").value=1;$("iN").value="";calc();$("iMes").value=r.f.slice(0,7);renderIng();
+}
+function addGas(){
+ const g={id:Date.now(),f:$("gF").value,c:$("gC").value,m:+$("gM").value||0,d:$("gD").value.trim()};
+ if(!g.f||!g.m)return alert("Indique fecha y monto");
+ DB.gas.push(g);save();$("gM").value=$("gD").value="";$("gMes").value=g.f.slice(0,7);renderGas();
+}
+function del(k,id){if(confirm("¿Eliminar?")){DB[k]=DB[k].filter(x=>x.id!==id);save();k==="ing"?renderIng():renderGas()}}
+function cobrar(id){const r=DB.ing.find(x=>x.id===id);r.fp="Efectivo";save();renderIng()}
+const ofMes=(k,m)=>DB[k].filter(x=>x.f.startsWith(m)).sort((a,b)=>a.f.localeCompare(b.f));
+function renderIng(){
+ const m=$("iMes").value,L=ofMes("ing",m);$("iMesLbl").textContent=mesLbl(m);
+ $("tIng").innerHTML="<tr><th>Fecha</th><th>Estudio</th><th>Cant.</th><th>Precio</th><th>Total</th><th>Lugar</th><th>Pago</th><th>Nota</th><th class='noprint'></th></tr>"+
+ L.map(r=>`<tr><td>${r.f}</td><td class="l">${esc(r.t)}</td><td>${r.c}</td><td>${$$(r.p)}</td><td><b>${$$(r.c*r.p)}</b></td><td class="l">${esc(r.l)}</td>
+ <td class="${r.fp==="Pendiente de cobro"?"out":""}">${r.fp}${r.fp==="Pendiente de cobro"?` <button class="btn" style="padding:2px 6px;font-size:11px" onclick="cobrar(${r.id})">cobrado</button>`:""}</td><td class="l">${esc(r.n)}</td>
+ <td class="noprint"><button class="btn x" onclick="del('ing',${r.id})">✕</button></td></tr>`).join("")+
+ `<tfoot><tr><td class="l">TOTAL</td><td></td><td>${sum(L,r=>r.c)}</td><td></td><td class="in">${$$(sum(L,r=>r.c*r.p))}</td><td colspan="4"></td></tr></tfoot>`;
+}
+function renderGas(){
+ const L=ofMes("gas",$("gMes").value);
+ $("tGas").innerHTML="<tr><th>Fecha</th><th>Categoría</th><th>Monto</th><th>Descripción</th><th class='noprint'></th></tr>"+
+ L.map(g=>`<tr><td>${g.f}</td><td class="l">${esc(g.c)}</td><td>${$$(g.m)}</td><td class="l">${esc(g.d)}</td><td class="noprint"><button class="btn x" onclick="del('gas',${g.id})">✕</button></td></tr>`).join("")+
+ `<tfoot><tr><td class="l">TOTAL</td><td></td><td class="out">${$$(sum(L,g=>g.m))}</td><td colspan="2"></td></tr></tfoot>`;
+}
+function group(L,key,val){const o={};L.forEach(x=>o[key(x)]=(o[key(x)]||[0,0]).map((v,i)=>v+(i?val(x):(x.c||1))));return Object.entries(o).sort((a,b)=>b[1][1]-a[1][1])}
+function gtable(id,rows,cls,cnt){const T=sum(rows,r=>r[1][1])||1;
+ $(id).innerHTML=`<tr><th>Concepto</th>${cnt?"<th>Cant.</th>":""}<th>Monto</th><th>%</th><th style="width:30%"></th></tr>`+
+ (rows.map(([k,[c,v]])=>`<tr><td class="l">${esc(k)}</td>${cnt?`<td>${c}</td>`:""}<td>${$$(v)}</td><td>${(v/T*100).toFixed(1)}%</td><td class="l"><div class="bar ${cls}" style="width:${v/T*100}%"></div></td></tr>`).join("")||`<tr><td colspan="5" class="l">Sin datos</td></tr>`)}
+function renderRes(){
+ const m=$("rMes").value,I=ofMes("ing",m),G=ofMes("gas",m);
+ const ti=sum(I,r=>r.c*r.p),tg=sum(G,g=>g.m),pc=sum(I.filter(r=>r.fp==="Pendiente de cobro"),r=>r.c*r.p),n=sum(I,r=>r.c);
+ const dias=new Set(I.map(r=>r.f)).size;
+ const k=(v,s,c)=>`<div><b class="${c||""}">${v}</b><span>${s}</span></div>`;
+ $("kpi").innerHTML=k($$(ti),"Ingresos "+mesLbl(m),"in")+k($$(tg),"Gastos","out")+k($$(ti-tg),"Saldo (ahorro)",ti-tg>=0?"in":"out")+
+  k(n,"Ultrasonidos realizados")+k($$(n?ti/n:0),"Promedio por estudio")+k($$(dias?ti/dias:0),"Promedio por día trabajado")+k($$(pc),"Pendiente de cobro","out");
+ gtable("rTipo",group(I,r=>r.t,r=>r.c*r.p),"",1);gtable("rLug",group(I,r=>r.l,r=>r.c*r.p),"",1);gtable("rGas",group(G,g=>g.c,g=>g.m),"o");
+ const d={};I.forEach(r=>{d[r.f]??=[0,0];d[r.f][0]+=r.c;d[r.f][1]+=r.c*r.p});
+ $("rDia").innerHTML="<tr><th>Fecha</th><th>Estudios</th><th>Ingreso</th></tr>"+Object.keys(d).sort().map(f=>`<tr><td>${f}</td><td>${d[f][0]}</td><td>${$$(d[f][1])}</td></tr>`).join("");
+}
+function renderAnio(){
+ const a=$("aA").value;let TI=0,TG=0,TN=0;
+ const rows=MESES.map((nm,i)=>{const m=a+"-"+String(i+1).padStart(2,"0"),I=ofMes("ing",m),G=ofMes("gas",m);const ti=sum(I,r=>r.c*r.p),tg=sum(G,g=>g.m),n=sum(I,r=>r.c);TI+=ti;TG+=tg;TN+=n;
+  return`<tr><td class="l">${nm}</td><td>${n}</td><td class="in">${$$(ti)}</td><td class="out">${$$(tg)}</td><td class="${ti-tg>=0?"in":"out"}">${$$(ti-tg)}</td></tr>`});
+ $("aT").innerHTML="<tr><th>Mes</th><th>Estudios</th><th>Ingresos</th><th>Gastos</th><th>Saldo</th></tr>"+rows.join("")+
+ `<tfoot><tr><td class="l">TOTAL ${a}</td><td>${TN}</td><td>${$$(TI)}</td><td>${$$(TG)}</td><td>${$$(TI-TG)}</td></tr></tfoot>`;
+ const k=(v,s,c)=>`<div><b class="${c}">${v}</b><span>${s}</span></div>`;
+ $("aK").innerHTML=k($$(TI),"Ingresos del año","in")+k($$(TG),"Gastos del año","out")+k($$(TI-TG),"Saldo del año",TI-TG>=0?"in":"out")+k(TN,"Ultrasonidos del año","");
+}
+function csv(){const m=$("rMes").value,rows=[["INGRESOS "+mesLbl(m)],["Fecha","Estudio","Cantidad","Precio","Total","Lugar","Pago","Nota"]];
+ ofMes("ing",m).forEach(r=>rows.push([r.f,r.t,r.c,r.p,r.c*r.p,r.l,r.fp,r.n]));
+ rows.push([],["GASTOS"],["Fecha","Categoría","Monto","Descripción"]);ofMes("gas",m).forEach(g=>rows.push([g.f,g.c,g.m,g.d]));
+ dl("\ufeff"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n"),`Finanzas_${m}.csv`,"text/csv")}
+function addTipo(){const t=$("nT").value.trim();if(!t)return;DB.tipos[t]=+$("nP").value||0;save();fill();$("nT").value=$("nP").value=""}
+function delTipo(t){if(confirm("¿Quitar "+t+"?")){delete DB.tipos[t];save();fill()}}
+function addLista(k,id){const v=$(id).value.trim();if(v&&!DB[k].includes(v)){DB[k].push(v);save();fill();$(id).value=""}}
+function delLista(k,i){if(confirm("¿Quitar?")){DB[k].splice(i,1);save();fill()}}
+function dl(c,n,t){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click()}
+function backup(){dl(JSON.stringify(DB,null,1),`Respaldo_Finanzas_${today()}.json`,"application/json")}
+function restore(inp){const f=inp.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!d.ing)throw 0;if(confirm("¿Reemplazar datos actuales?")){DB=d;save();fill();alert("Restaurado")}}catch(e){alert("Archivo inválido")}})}
+const t=today();$("iF").value=$("gF").value=t;$("iMes").value=$("gMes").value=$("rMes").value=t.slice(0,7);$("aA").value=t.slice(0,4);
+fill();renderIng();
+</script>
+</body>
+</html>
