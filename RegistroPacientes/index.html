@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Registro de Pacientes</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--tx:#1d2733;--mut:#667;--pri:#0b4f8a;--ok:#0e7c66;--bad:#c0392b;--warn:#d68910;--bd:#d9dee6}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--tx)}
+header{background:var(--pri);color:#fff;padding:14px 16px}header h1{margin:0;font-size:20px}header p{margin:2px 0 0;font-size:13px;opacity:.85}
+nav{display:flex;flex-wrap:wrap;gap:4px;padding:8px 16px;background:#e3e9f2}
+nav button{border:0;background:transparent;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:14px}
+nav button.on{background:var(--pri);color:#fff}
+main{padding:16px;max-width:1150px;margin:auto}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:14px;margin-bottom:14px}
+.card h2{margin:0 0 10px;font-size:16px;color:var(--pri)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+label{font-size:12px;color:var(--mut);display:block;margin-bottom:3px}
+input,select,textarea{width:100%;padding:7px;border:1px solid var(--bd);border-radius:5px;font-size:14px;font-family:inherit}
+.btn{background:var(--ok);color:#fff;border:0;padding:9px 14px;border-radius:5px;cursor:pointer;font-size:14px;text-decoration:none;display:inline-block}
+.btn.sec{background:#5b6b7d}.btn.s{padding:4px 8px;font-size:12px}.btn.bad{background:var(--bad)}.btn.wa{background:#25a244}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border:1px solid var(--bd);padding:6px 8px;text-align:left;vertical-align:top}th{background:#eef2f7}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.kpi div{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:10px}
+.kpi b{display:block;font-size:24px;color:var(--pri)}.kpi span{font-size:12px;color:var(--mut)}
+.tag{padding:2px 7px;border-radius:10px;font-size:12px;color:#fff;white-space:nowrap}
+.Pendiente{background:var(--warn)}.Atendido{background:var(--ok)}.Noasistió{background:var(--bad)}.Cancelada{background:#7f8c8d}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:end}.hide{display:none}
+#cBox{border-left:3px solid var(--pri);padding-left:10px}
+@media print{nav,.noprint{display:none!important}body{background:#fff}}
+</style>
+</head>
+<body>
+<header><h1>Registro de Pacientes y Citas — Ultrasonido</h1><p>Dr. Néstor José Mejía González</p></header>
+<nav id="nav">
+<button data-t="reg" class="on">Registrar paciente</button>
+<button data-t="cit">Citas</button>
+<button data-t="pac">Pacientes</button>
+<button data-t="cfg">Ajustes y respaldo</button>
+</nav>
+<main>
+<section id="t-reg">
+<div class="card"><h2 id="regTit">Nuevo registro</h2>
+<div class="grid">
+<div><label>Nombre y apellidos *</label><input id="pN" list="dlPac" onchange="autoPac()"></div>
+<div><label>Edad</label><input id="pE"></div>
+<div><label>Sexo</label><select id="pS"><option>Femenino</option><option>Masculino</option></select></div>
+<div><label>Teléfono</label><input id="pT" type="tel"></div>
+<div><label>Cédula / Expediente</label><input id="pC"></div>
+<div><label>Dirección / procedencia</label><input id="pD"></div>
+<div><label>Médico solicitante</label><input id="pM"></div>
+<div><label>Fecha de atención</label><input type="date" id="pF"></div>
+<div><label>Tipo de ultrasonido</label><select id="pU"></select></div>
+<div><label>Estado del estudio</label><select id="pEs"><option>Realizado</option><option>Solo cita (aún no realizado)</option></select></div>
+<div><label>Precio cobrado (opcional)</label><input type="number" id="pP" min="0"></div>
+<div><label>Diagnóstico / hallazgo principal</label><input id="pDx"></div>
+</div>
+<p><label><input type="checkbox" id="pCit" style="width:auto" onchange="$('cBox').classList.toggle('hide',!this.checked)"> Dejar cita</label></p>
+<div id="cBox" class="grid hide">
+<div><label>Fecha de cita</label><input type="date" id="cF"></div>
+<div><label>Hora</label><input type="time" id="cH"></div>
+<div><label>Estudio de la cita</label><select id="cU"></select></div>
+<div><label>Motivo / indicaciones</label><input id="cM" placeholder="Control, vejiga llena, ayuno..."></div>
+</div>
+<p><label>Notas</label><textarea id="pNo" rows="2"></textarea></p>
+<p class="row"><button class="btn" onclick="guardar()">Guardar</button><button class="btn sec" onclick="limpiar()">Limpiar</button><span id="msg" style="color:var(--ok);font-weight:bold"></span></p>
+<datalist id="dlPac"></datalist>
+</div>
+</section>
+
+<section id="t-cit" class="hide">
+<div class="kpi" id="cK"></div>
+<div class="card"><h2>Citas</h2>
+<div class="row noprint">
+<div><label>Mostrar</label><select id="cFil" onchange="renderCit()"><option value="hoy">Hoy</option><option value="man">Mañana</option><option value="sem">Próximos 7 días</option><option value="prox">Todas las próximas</option><option value="venc">Pendientes vencidas</option><option value="todas">Todas</option></select></div>
+<div><label>Fecha específica</label><input type="date" id="cDia" onchange="$('cFil').value='dia';renderCit()"></div>
+<button class="btn sec" onclick="window.print()">Imprimir</button>
+</div><br>
+<div class="tw"><table id="tCit"></table></div></div>
+</section>
+
+<section id="t-pac" class="hide">
+<div class="card"><h2>Pacientes registrados</h2>
+<div class="row noprint">
+<div style="flex:1;min-width:200px"><label>Buscar (nombre, teléfono, cédula, estudio)</label><input id="q" oninput="renderPac()"></div>
+<div><label>Desde</label><input type="date" id="qD" onchange="renderPac()"></div>
+<div><label>Hasta</label><input type="date" id="qH" onchange="renderPac()"></div>
+<button class="btn sec" onclick="csv()">Exportar Excel (CSV)</button>
+</div><br>
+<div class="tw"><table id="tPac"></table></div></div>
+</section>
+
+<section id="t-cfg" class="hide">
+<div class="card"><h2>Tipos de ultrasonido</h2>
+<div class="row"><div><label>Nuevo estudio</label><input id="nU"></div><button class="btn" onclick="addU()">Agregar</button></div><ul id="uU"></ul></div>
+<div class="card"><h2>Mensaje de recordatorio por WhatsApp</h2>
+<textarea id="waT" rows="3" onchange="DB.wa=this.value;save()"></textarea>
+<p style="font-size:12px;color:#667">Use {nombre}, {fecha}, {hora}, {estudio}, {motivo}.</p>
+<div class="row"><div><label>Código de país</label><input id="cod" style="width:90px" onchange="DB.cod=this.value;save()"></div></div></div>
+<div class="card"><h2>Respaldo</h2>
+<div class="row"><button class="btn" onclick="backup()">Descargar respaldo</button>
+<label class="btn sec" style="margin:0">Restaurar respaldo<input type="file" accept=".json" class="hide" onchange="restore(this)"></label></div>
+<p style="font-size:12px;color:#667">Todo se guarda automáticamente en este navegador. Descargue un respaldo con frecuencia.</p></div>
+</section>
+</main>
+<script>
+const KEY="registroPacientesUS_v1";
+let DB={cod:"505",wa:"Buenas, {nombre}. Le recordamos su cita de {estudio} el {fecha} a las {hora}. {motivo}. Dr. Néstor Mejía – Radiología.",
+ tipos:["US Abdominal","US Abdomen superior","US Renal / Vías urinarias","US Pélvico","US Transvaginal","US Obstétrico","US Tiroides / Cuello","US Mama","US Testicular","US Prostático","US Tejidos blandos","US Musculoesquelético","Doppler venoso","Doppler arterial","Doppler carotídeo","Doppler obstétrico"],regs:[]};
+try{const s=localStorage.getItem(KEY);if(s)DB=JSON.parse(s)}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){alert("No se pudo guardar")}};
+const $=id=>document.getElementById(id);
+const iso=d=>new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const today=()=>iso(new Date()),addD=n=>iso(new Date(Date.now()+n*864e5));
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=f=>f?f.split("-").reverse().join("/"):"";
+const DIAS=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"],dia=f=>DIAS[new Date(f+"T12:00").getDay()];
+let editId=null;
+function fill(){
+ const o=DB.tipos.map(t=>`<option>${esc(t)}</option>`).join("");$("pU").innerHTML=$("cU").innerHTML=o;
+ $("uU").innerHTML=DB.tipos.map((t,i)=>`<li>${esc(t)} <button class="btn bad s" onclick="delU(${i})">✕</button></li>`).join("");
+ $("waT").value=DB.wa;$("cod").value=DB.cod;
+ $("dlPac").innerHTML=[...new Set(DB.regs.map(r=>r.n))].map(n=>`<option value="${esc(n)}">`).join("");
+}
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>tab(b.dataset.t));
+function tab(t){document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("on",x.dataset.t===t));
+ document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="t-"+t));({cit:renderCit,pac:renderPac})[t]?.()}
+const F=["n","e","s","t","c","d","m","f","u","es","p","dx","no"],IDS=["pN","pE","pS","pT","pC","pD","pM","pF","pU","pEs","pP","pDx","pNo"];
+function autoPac(){if(editId)return;const r=[...DB.regs].reverse().find(x=>x.n.toLowerCase()===$("pN").value.trim().toLowerCase());
+ if(r)["e","s","t","c","d"].forEach(k=>$(IDS[F.indexOf(k)]).value=r[k]||"")}
+function guardar(){
+ const r={};F.forEach((k,i)=>r[k]=$(IDS[i]).value.trim());if(!r.n)return alert("Escriba el nombre del paciente");
+ r.cita=$("pCit").checked?{f:$("cF").value,h:$("cH").value,u:$("cU").value,m:$("cM").value.trim(),st:"Pendiente"}:null;
+ if(r.cita&&!r.cita.f)return alert("Indique la fecha de la cita");
+ if(editId){const o=DB.regs.find(x=>x.id===editId);if(r.cita&&o.cita)r.cita.st=o.cita.st;Object.assign(o,r)}else{r.id=Date.now();DB.regs.push(r)}
+ save();fill();limpiar();$("msg").textContent="Guardado ✔";setTimeout(()=>$("msg").textContent="",2000);
+}
+function limpiar(){editId=null;$("regTit").textContent="Nuevo registro";IDS.forEach(i=>{if(!["pS","pU","pEs"].includes(i))$(i).value=""});
+ $("pF").value=today();$("pCit").checked=false;$("cBox").classList.add("hide");["cF","cH","cM"].forEach(i=>$(i).value="")}
+function editar(id){const r=DB.regs.find(x=>x.id===id);editId=id;F.forEach((k,i)=>$(IDS[i]).value=r[k]||"");
+ $("pCit").checked=!!r.cita;$("cBox").classList.toggle("hide",!r.cita);if(r.cita){$("cF").value=r.cita.f;$("cH").value=r.cita.h;$("cU").value=r.cita.u;$("cM").value=r.cita.m}
+ $("regTit").textContent="Editando: "+r.n;tab("reg");scrollTo(0,0)}
+function nuevaCita(id){const r=DB.regs.find(x=>x.id===id);limpiar();["n","e","s","t","c","d","m"].forEach(k=>$(IDS[F.indexOf(k)]).value=r[k]||"");
+ $("pEs").value="Solo cita (aún no realizado)";$("pCit").checked=true;$("cBox").classList.remove("hide");tab("reg");scrollTo(0,0)}
+function borrar(id){if(confirm("¿Eliminar este registro?")){DB.regs=DB.regs.filter(x=>x.id!==id);save();fill();renderPac();renderCit()}}
+function estado(id,st){DB.regs.find(x=>x.id===id).cita.st=st;save();renderCit()}
+function wa(r){const t=r.t.replace(/\D/g,"");if(!t)return"";const n=t.length<=8?DB.cod+t:t;
+ const m=DB.wa.replace("{nombre}",r.n).replace("{fecha}",dia(r.cita.f)+" "+fmt(r.cita.f)).replace("{hora}",r.cita.h||"").replace("{estudio}",r.cita.u).replace("{motivo}",r.cita.m||"").replace(/\s*\.\s*\./g,".");
+ return`<a class="btn wa s" target="_blank" href="https://wa.me/${n}?text=${encodeURIComponent(m)}">WhatsApp</a>`}
+function renderCit(){
+ const t=today(),f=$("cFil").value,C=DB.regs.filter(r=>r.cita);
+ const ok={hoy:c=>c.f===t,man:c=>c.f===addD(1),sem:c=>c.f>=t&&c.f<=addD(7),prox:c=>c.f>=t,venc:c=>c.f<t&&c.st==="Pendiente",todas:()=>1,dia:c=>c.f===$("cDia").value}[f];
+ const L=C.filter(r=>ok(r.cita)).sort((a,b)=>(a.cita.f+a.cita.h).localeCompare(b.cita.f+b.cita.h));
+ const k=(v,s)=>`<div><b>${v}</b><span>${s}</span></div>`;
+ $("cK").innerHTML=k(C.filter(r=>r.cita.f===t).length,"Citas hoy")+k(C.filter(r=>r.cita.f===addD(1)).length,"Citas mañana")+k(C.filter(r=>r.cita.f>=t&&r.cita.f<=addD(7)).length,"Próximos 7 días")+k(C.filter(r=>r.cita.f<t&&r.cita.st==="Pendiente").length,"Vencidas sin marcar");
+ $("tCit").innerHTML="<tr><th>Fecha</th><th>Hora</th><th>Paciente</th><th>Teléfono</th><th>Estudio</th><th>Motivo</th><th>Estado</th><th class='noprint'>Acciones</th></tr>"+
+ (L.map(r=>`<tr><td>${dia(r.cita.f)} ${fmt(r.cita.f)}</td><td>${r.cita.h||""}</td><td><b>${esc(r.n)}</b><br><small>${esc(r.e)} ${r.e?"años":""} · ${r.s[0]}</small></td><td>${r.t?`<a href="tel:${esc(r.t)}">${esc(r.t)}</a>`:""}</td><td>${esc(r.cita.u)}</td><td>${esc(r.cita.m)}</td>
+ <td><span class="tag ${r.cita.st.replace(/\s/g,"")}">${r.cita.st}</span></td>
+ <td class="noprint">${wa(r)} <button class="btn s" onclick="estado(${r.id},'Atendido')">Atendido</button> <button class="btn bad s" onclick="estado(${r.id},'No asistió')">No asistió</button> <button class="btn sec s" onclick="estado(${r.id},'Cancelada')">Cancelar</button> <button class="btn sec s" onclick="editar(${r.id})">Editar</button></td></tr>`).join("")||"<tr><td colspan='8'>No hay citas</td></tr>");
+}
+function renderPac(){
+ const q=$("q").value.toLowerCase(),d=$("qD").value,h=$("qH").value;
+ const L=DB.regs.filter(r=>(!q||[r.n,r.t,r.c,r.u,r.dx].join(" ").toLowerCase().includes(q))&&(!d||r.f>=d)&&(!h||r.f<=h)).sort((a,b)=>b.f.localeCompare(a.f)||b.id-a.id);
+ $("tPac").innerHTML=`<tr><th>Fecha</th><th>Paciente</th><th>Teléfono</th><th>Cédula/Exp.</th><th>Estudio</th><th>Dx / hallazgo</th><th>Cita</th><th class="noprint"></th></tr>`+
+ (L.map(r=>`<tr><td>${fmt(r.f)}</td><td><b>${esc(r.n)}</b><br><small>${esc(r.e)} ${r.e?"años":""} · ${r.s}${r.m?" · Sol: "+esc(r.m):""}</small></td><td>${esc(r.t)}</td><td>${esc(r.c)}</td><td>${esc(r.u)}<br><small>${esc(r.es)}</small></td><td>${esc(r.dx)}${r.no?`<br><small>${esc(r.no)}</small>`:""}</td>
+ <td>${r.cita?`${fmt(r.cita.f)} ${r.cita.h}<br><span class="tag ${r.cita.st.replace(/\s/g,"")}">${r.cita.st}</span>`:"—"}</td>
+ <td class="noprint"><button class="btn sec s" onclick="editar(${r.id})">Editar</button> <button class="btn s" onclick="nuevaCita(${r.id})">Nueva cita</button> <button class="btn bad s" onclick="borrar(${r.id})">✕</button></td></tr>`).join("")||"<tr><td colspan='8'>Sin registros</td></tr>")+
+ `<tr><td colspan="8"><b>${L.length}</b> registros</td></tr>`;
+}
+function csv(){const rows=[["Fecha","Paciente","Edad","Sexo","Teléfono","Cédula/Exp","Dirección","Médico solicitante","Estudio","Estado","Precio","Dx","Notas","Cita fecha","Cita hora","Cita estudio","Cita motivo","Cita estado"]];
+ DB.regs.forEach(r=>rows.push([r.f,r.n,r.e,r.s,r.t,r.c,r.d,r.m,r.u,r.es,r.p,r.dx,r.no,r.cita?.f,r.cita?.h,r.cita?.u,r.cita?.m,r.cita?.st]));
+ dl("﻿"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n"),`Pacientes_${today()}.csv`,"text/csv")}
+function addU(){const v=$("nU").value.trim();if(v&&!DB.tipos.includes(v)){DB.tipos.push(v);save();fill();$("nU").value=""}}
+function delU(i){if(confirm("¿Quitar?")){DB.tipos.splice(i,1);save();fill()}}
+function dl(c,n,t){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click()}
+function backup(){dl(JSON.stringify(DB,null,1),`Respaldo_Pacientes_${today()}.json`,"application/json")}
+function restore(inp){const f=inp.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!d.regs)throw 0;if(confirm("¿Reemplazar datos actuales?")){DB=d;save();fill();alert("Restaurado")}}catch(e){alert("Archivo inválido")}})}
+fill();limpiar();
+</script>
+</body>
+</html>
