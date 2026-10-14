@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mi Inicio</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--tx:#1d2733;--mut:#667;--pri:#0b4f8a;--bd:#d9dee6}
+@media (prefers-color-scheme:dark){:root{--bg:#111827;--card:#1f2937;--tx:#e5e7eb;--mut:#9ca3af;--pri:#60a5fa;--bd:#374151}}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--tx)}
+main{max-width:900px;margin:auto;padding:28px 16px}
+h1{text-align:center;color:var(--pri);margin:0 0 4px;font-size:24px}#hora{text-align:center;color:var(--mut);margin:0 0 20px}
+form{display:flex;gap:6px;margin-bottom:24px}
+form input{flex:1;padding:13px 16px;font-size:16px;border:1px solid var(--bd);border-radius:24px;background:var(--card);color:var(--tx)}
+form select,form button{padding:0 14px;border:1px solid var(--bd);border-radius:24px;background:var(--card);color:var(--tx);font-size:14px;cursor:pointer}
+form button{background:var(--pri);color:#fff;border:0}
+h2{font-size:14px;color:var(--mut);margin:18px 0 8px;text-transform:uppercase}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.g a{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 8px;background:var(--card);border:1px solid var(--bd);border-radius:10px;text-decoration:none;color:var(--tx);font-size:14px;text-align:center}
+.g a:hover{border-color:var(--pri)}
+.ic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;font-size:18px}
+.x{position:absolute;top:3px;right:6px;color:#c0392b;font-size:13px;display:none}.edit .x{display:block}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px;align-items:end}
+.bar input{padding:8px;border:1px solid var(--bd);border-radius:6px;background:var(--card);color:var(--tx)}
+.bar button{padding:8px 12px;border:0;border-radius:6px;background:var(--pri);color:#fff;cursor:pointer}
+.hide{display:none}
+</style>
+</head>
+<body>
+<main>
+<h1>Bienvenido, Dr. Mejía</h1><p id="hora"></p>
+<form onsubmit="buscar(event)">
+<input id="q" placeholder="Buscar en internet o preguntar a la IA..." autofocus>
+<select id="m"><option value="g">Google</option><option value="c">Claude</option><option value="o">ChatGPT</option><option value="y">YouTube</option></select>
+<button>Ir</button>
+</form>
+<div id="sec"></div>
+<div class="bar">
+<button onclick="document.body.classList.toggle('edit');$('add').classList.toggle('hide')">✏ Editar accesos</button>
+<span id="add" class="hide" style="display:contents">
+<input id="aN" placeholder="Nombre"><input id="aU" placeholder="https://..."><button onclick="agregar()">Agregar</button><button onclick="if(confirm('¿Restaurar accesos originales?')){localStorage.removeItem(K);location.reload()}">Restaurar</button>
+</span></div>
+</main>
+<script>
+const K="miInicio_v1",$=i=>document.getElementById(i);
+const DEF={"Inteligencia artificial":[["Claude","https://claude.ai"],["ChatGPT","https://chatgpt.com"],["Gemini","https://gemini.google.com"],["Copilot","https://copilot.microsoft.com"],["Perplexity","https://www.perplexity.ai"]],
+"Google":[["Google","https://www.google.com"],["Gmail","https://mail.google.com"],["Drive","https://drive.google.com"],["YouTube","https://www.youtube.com"],["Traductor","https://translate.google.com"],["Maps","https://maps.google.com"]],
+"Radiología":[["Radiopaedia","https://radiopaedia.org"],["ACR TI-RADS","https://www.acr.org/Clinical-Resources/Clinical-Tools-and-Reference/Reporting-and-Data-Systems"],["PubMed","https://pubmed.ncbi.nlm.nih.gov"],["e-Anatomy","https://www.imaios.com/en/e-anatomy"]],
+"Otros":[["WhatsApp Web","https://web.whatsapp.com"],["Facebook","https://www.facebook.com"],["Outlook","https://outlook.live.com"]]};
+let D;try{D=JSON.parse(localStorage.getItem(K))}catch(e){}D=D||DEF;
+const COL=["#0b4f8a","#0e7c66","#c0392b","#8e44ad","#d68910","#16a085","#2c3e50","#e67e22"];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function render(){$("sec").innerHTML=Object.entries(D).map(([s,L])=>`<h2>${esc(s)}</h2><div class="g">`+L.map(([n,u],i)=>`<a href="${esc(u)}" target="_blank" rel="noopener"><span class="ic" style="background:${COL[(n.charCodeAt(0)+n.length)%COL.length]}">${esc(n[0].toUpperCase())}</span>${esc(n)}<span class="x" onclick="quitar(event,'${esc(s)}',${i})">✕</span></a>`).join("")+`</div>`).join("")}
+function save(){try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}}
+function quitar(e,s,i){e.preventDefault();e.stopPropagation();D[s].splice(i,1);save();render()}
+function agregar(){let n=$("aN").value.trim(),u=$("aU").value.trim();if(!n||!u)return;if(!/^https?:/.test(u))u="https://"+u;(D["Mis accesos"]??=[]).push([n,u]);save();render();$("aN").value=$("aU").value=""}
+function buscar(e){e.preventDefault();const q=encodeURIComponent($("q").value.trim());if(!q)return;
+ open({g:"https://www.google.com/search?q=",c:"https://claude.ai/new?q=",o:"https://chatgpt.com/?q=",y:"https://www.youtube.com/results?search_query="}[$("m").value]+q,"_blank")}
+function reloj(){$("hora").textContent=new Date().toLocaleString("es-NI",{timeZone:"America/Managua",weekday:"long",day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"})}
+render();reloj();setInterval(reloj,30000);
+</script>
+</body>
+</html>
