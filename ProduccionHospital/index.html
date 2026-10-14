@@ -31,6 +31,12 @@ tr.cat td{background:#e3e9f2;font-weight:bold}tfoot td,tr.tot td{font-weight:bol
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:end}.hide{display:none}
 #hoy td{font-size:13px}
 .rep{display:none}
+#modo{padding:8px 12px;border-radius:6px;margin-bottom:10px;font-weight:bold;font-size:14px;background:#e8f6f1;color:#0e7c66;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+#modo.ed{background:#fff4d6;color:#8a5a00;border:1px solid #f0c040}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#1d2733;color:#fff;padding:12px 16px;border-radius:8px;font-size:14px;display:none;gap:12px;align-items:center;z-index:9;box-shadow:0 4px 14px #0004;max-width:92vw}
+#toast button{background:#f0c040;color:#000;border:0;padding:6px 10px;border-radius:5px;cursor:pointer;font-weight:bold}
+tr.edit td{background:#fff4d6!important}tr.nuevo td{animation:fl 1.5s}@keyframes fl{from{background:#c8f0e0}}
+.big{font-size:16px;padding:11px 22px}
 @media print{
  @page{size:letter;margin:15mm 15mm 22mm}
  body{background:#fff}header,nav,main>section,.noprint{display:none!important}
@@ -53,7 +59,7 @@ tr.cat td{background:#e3e9f2;font-weight:bold}tfoot td,tr.tot td{font-weight:bol
 </nav>
 <main>
 <section id="t-reg">
-<div class="card"><h2>Registrar estudio</h2>
+<div class="card"><div id="modo"></div>
 <div class="cats" id="cats"></div>
 <div class="grid">
 <div><label>Fecha</label><input type="date" id="rF"></div>
@@ -66,9 +72,9 @@ tr.cat td{background:#e3e9f2;font-weight:bold}tfoot td,tr.tot td{font-weight:bol
 <div id="bxRes" class="hide"><label>Resultado / muestra</label><select id="rR"><option>Muestra obtenida</option><option>Muestra insuficiente</option><option>Pendiente patología</option><option>Drenaje exitoso</option></select></div>
 <div style="grid-column:span 2"><label>Observación</label><input id="rO"></div>
 </div>
-<p class="row"><button class="btn" onclick="guardar()">Guardar</button><span id="msg" style="color:var(--ok);font-weight:bold"></span></p>
+<p class="row"><button class="btn big" id="bG" onclick="guardar()">Guardar</button><button class="btn sec" onclick="nuevo()">Limpiar / Nuevo paciente</button><span style="font-size:12px;color:#667">Atajo: Enter en el nombre = Guardar</span></p>
 </div>
-<div class="card"><h2>Registrados hoy (<span id="nHoy">0</span>)</h2><div class="tw"><table id="hoy"></table></div></div>
+<div class="card"><h2>Pacientes del <span id="lHoy"></span> (<span id="nHoy">0</span>)</h2><div class="tw"><table id="hoy"></table></div></div>
 </section>
 
 <section id="t-mes" class="hide">
@@ -100,6 +106,7 @@ tr.cat td{background:#e3e9f2;font-weight:bold}tfoot td,tr.tot td{font-weight:bol
 </section>
 </main>
 <div class="rep" id="rep"></div>
+<div id="toast"><span id="tMsg"></span><button id="tBtn" class="hide">Deshacer</button></div>
 <script>
 const KEY="produccionHospital_v1";
 let DB={cats:{
@@ -111,6 +118,7 @@ let DB={cats:{
  "Lectura Mamografía":["Mamografía de tamizaje","Mamografía diagnóstica","Mamografía + US complementario","Proyecciones adicionales"],
  "Lectura Radiografía":["RX tórax","RX abdomen","RX columna","RX extremidades","RX cráneo / senos paranasales","RX pelvis / cadera","Otro RX"]},regs:[]};
 try{const s=localStorage.getItem(KEY);if(s)DB=JSON.parse(s)}catch(e){}
+{const seen=new Set();let fix=0;DB.regs.forEach((r,i)=>{r.id=String(r.id);if(seen.has(r.id)){r.id=r.id+"_"+i;fix=1}seen.add(r.id)});if(fix)try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){alert("No se pudo guardar")}};
 const $=id=>document.getElementById(id);
 const today=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
@@ -127,21 +135,38 @@ function fillCats(){
  $("lC").innerHTML=`<option value="">Todas</option>`+C.map(c=>`<option>${c}</option>`).join("");$("cC").innerHTML=C.map(c=>`<option>${c}</option>`).join("");
  $("cL").innerHTML=C.map(c=>`<h3 style="font-size:14px;color:#0b4f8a">${c}</h3>`+DB.cats[c].map((t,i)=>`<span style="display:inline-block;margin:2px 6px 2px 0;background:#eef2f7;padding:3px 8px;border-radius:12px;font-size:13px">${esc(t)} <a href="#" onclick="delT('${c}',${i});return false" style="color:#c0392b">✕</a></span>`).join("")).join("");
 }
-function selCat(c){cat=c;fillCats()}
+function selCat(c){cat=c;fillCats();$("rN").focus()}
 document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{
  document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("on",x===b));
  document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="t-"+b.dataset.t));
  ({mes:renderMes,lis:renderLis})[b.dataset.t]?.()});
+let editId=null,busy=false,lastId=null,tT;
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+function toast(m,undo){$("tMsg").textContent=m;$("toast").style.display="flex";const b=$("tBtn");b.classList.toggle("hide",!undo);b.onclick=()=>{undo();$("toast").style.display="none"};
+ clearTimeout(tT);tT=setTimeout(()=>$("toast").style.display="none",undo?9000:2500)}
+function modo(){const m=$("modo");if(editId){const r=DB.regs.find(x=>x.id===editId);m.className="ed";m.innerHTML=`<span>✏ EDITANDO: ${esc(r.n)}</span><button class="btn sec s" onclick="nuevo()">Cancelar edición</button>`;$("bG").textContent="Guardar cambios"}
+ else{m.className="";m.innerHTML="<span>➕ NUEVO PACIENTE</span>";$("bG").textContent="Guardar"}}
+function nuevo(){editId=null;["rN","rX","rE","rO"].forEach(i=>$(i).value="");modo();renderHoy();$("rN").focus()}
 function guardar(){
- const r={id:Date.now(),f:$("rF").value,n:$("rN").value.trim(),x:$("rX").value.trim(),e:$("rE").value.trim(),s:$("rS").value,c:cat,t:$("rT").value,p:$("rP").value,r:cat==="Biopsia / Procedimiento"?$("rR").value:"",o:$("rO").value.trim()};
- if(!r.n)return alert("Escriba el nombre del paciente");if(!r.f)return alert("Indique la fecha");
- DB.regs.push(r);save();["rN","rX","rE","rO"].forEach(i=>$(i).value="");$("rN").focus();
- $("msg").textContent="Guardado ✔";setTimeout(()=>$("msg").textContent="",1500);renderHoy();
+ const n=$("rN").value.trim();if(!n){alert("Escriba el nombre del paciente");$("rN").focus();return}
+ const f=$("rF").value;if(!f)return alert("Indique la fecha");
+ const d={f,n,x:$("rX").value.trim(),e:$("rE").value.trim(),s:$("rS").value,c:cat,t:$("rT").value,p:$("rP").value,r:cat==="Biopsia / Procedimiento"?$("rR").value:"",o:$("rO").value.trim()};
+ if(editId){Object.assign(DB.regs.find(x=>x.id===editId),d);save();lastId=editId;toast("✔ Cambios guardados: "+n);editId=null}
+ else{if(busy)return;if(DB.regs.some(x=>x.f===f&&x.t===d.t&&x.n.toLowerCase()===n.toLowerCase())&&!confirm(n+" ya tiene registrado "+d.t+" en esta fecha.\n¿Registrarlo otra vez?"))return;
+  busy=true;setTimeout(()=>busy=false,600);d.id=uid();DB.regs.push(d);save();lastId=d.id;
+  toast("✔ Guardado: "+n+" — "+d.t+" (#"+DB.regs.filter(x=>x.f===f).length+" del día)")}
+ ["rN","rX","rE","rO"].forEach(i=>$(i).value="");modo();renderHoy();$("rN").focus();
 }
-function borrar(id){if(confirm("¿Eliminar registro?")){DB.regs=DB.regs.filter(r=>r.id!==id);save();renderHoy();renderLis()}}
-const del=id=>`<button class="btn bad s" onclick="borrar(${id})">✕</button>`;
-function renderHoy(){const f=$("rF").value,L=DB.regs.filter(r=>r.f===f).reverse();$("nHoy").textContent=L.length;
- $("hoy").innerHTML="<tr><th>Paciente</th><th>Categoría</th><th>Estudio</th><th>Procedencia</th><th></th></tr>"+(L.map(r=>`<tr><td>${esc(r.n)}</td><td>${r.c}</td><td>${esc(r.t)}${r.r?" — "+r.r:""}</td><td>${r.p}</td><td>${del(r.id)}</td></tr>`).join("")||"<tr><td colspan=5>Nada registrado en esta fecha</td></tr>")}
+function editar(id){const r=DB.regs.find(x=>x.id===id);if(!r)return;editId=id;cat=r.c;fillCats();
+ $("rF").value=r.f;$("rN").value=r.n;$("rX").value=r.x;$("rE").value=r.e;$("rS").value=r.s;$("rT").value=r.t;$("rP").value=r.p;if(r.r)$("rR").value=r.r;$("rO").value=r.o;
+ document.querySelectorAll("#nav button")[0].click();modo();renderHoy();scrollTo({top:0,behavior:"smooth"});$("rN").focus()}
+function borrar(id){const i=DB.regs.findIndex(r=>r.id===id);if(i<0)return;const r=DB.regs[i];
+ if(!confirm("¿Eliminar a "+r.n+" ("+r.t+")?"))return;DB.regs.splice(i,1);if(editId===id)nuevo();save();renderHoy();renderLis();
+ toast("Eliminado: "+r.n,()=>{DB.regs.splice(i,0,r);save();renderHoy();renderLis()})}
+const acc=id=>`<button class="btn sec s" onclick="editar('${id}')">Editar</button> <button class="btn bad s" onclick="borrar('${id}')">✕</button>`;
+function renderHoy(){const f=$("rF").value,L=DB.regs.filter(r=>r.f===f).sort((a,b)=>DB.regs.indexOf(b)-DB.regs.indexOf(a));$("nHoy").textContent=L.length;$("lHoy").textContent=fmt(f);
+ $("hoy").innerHTML="<tr><th class='n'>#</th><th>Paciente</th><th>Categoría</th><th>Estudio</th><th>Procedencia</th><th></th></tr>"+(L.map((r,i)=>`<tr class="${r.id===editId?"edit":r.id===lastId?"nuevo":""}"><td class="n">${L.length-i}</td><td><b>${esc(r.n)}</b>${r.e||r.x?`<br><small>${esc(r.e)} ${r.s} ${r.x?"· Exp "+esc(r.x):""}</small>`:""}</td><td>${r.c}</td><td>${esc(r.t)}${r.r?" — "+r.r:""}</td><td>${r.p}</td><td style="white-space:nowrap">${acc(r.id)}</td></tr>`).join("")||"<tr><td colspan=6>Nada registrado en esta fecha</td></tr>");lastId=null}
+$("rN").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();guardar()}});
 $("rF").onchange=renderHoy;
 const ofMes=m=>DB.regs.filter(r=>r.f.startsWith(m)).sort((a,b)=>a.f.localeCompare(b.f)||a.id-b.id);
 function desglose(L){
@@ -170,7 +195,7 @@ function imprimir(){const m=$("mM").value,L=ofMes(m);
 function renderLis(){const m=$("lM").value,c=$("lC").value,q=$("lQ").value.toLowerCase();
  const L=ofMes(m).filter(r=>(!c||r.c===c)&&(!q||r.n.toLowerCase().includes(q)));
  $("lT").innerHTML="<tr><th>Fecha</th><th>Paciente</th><th>Exp.</th><th>Edad/Sexo</th><th>Categoría</th><th>Estudio</th><th>Procedencia</th><th>Obs.</th><th></th></tr>"+
- L.map(r=>`<tr><td>${fmt(r.f)}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${esc(r.e)} ${r.s}</td><td>${r.c}</td><td>${esc(r.t)}${r.r?" — "+r.r:""}</td><td>${r.p}</td><td>${esc(r.o)}</td><td>${del(r.id)}</td></tr>`).join("")+`<tr class="tot"><td colspan=9>${L.length} registros</td></tr>`}
+ L.map(r=>`<tr><td>${fmt(r.f)}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${esc(r.e)} ${r.s}</td><td>${r.c}</td><td>${esc(r.t)}${r.r?" — "+r.r:""}</td><td>${r.p}</td><td>${esc(r.o)}</td><td><span style="white-space:nowrap">${acc(r.id)}</span></td></tr>`).join("")+`<tr class="tot"><td colspan=9>${L.length} registros</td></tr>`}
 function csv(){const rows=[["Fecha","Paciente","Expediente","Edad","Sexo","Categoría","Estudio","Resultado","Procedencia","Observación"]];
  ofMes($("lM").value).forEach(r=>rows.push([r.f,r.n,r.x,r.e,r.s,r.c,r.t,r.r,r.p,r.o]));
  dl("﻿"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n"),`Produccion_${$("lM").value}.csv`,"text/csv")}
@@ -178,8 +203,8 @@ function addT(){const c=$("cC").value,v=$("cN").value.trim();if(v&&!DB.cats[c].i
 function delT(c,i){if(confirm("¿Quitar "+DB.cats[c][i]+"?")){DB.cats[c].splice(i,1);save();fillCats()}}
 function dl(c,n,t){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click()}
 function backup(){dl(JSON.stringify(DB,null,1),`Respaldo_Produccion_${today()}.json`,"application/json")}
-function restore(inp){const f=inp.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!d.regs)throw 0;if(confirm("¿Reemplazar datos actuales?")){DB=d;save();fillCats();renderHoy();alert("Restaurado")}}catch(e){alert("Archivo inválido")}})}
-const t=today();$("rF").value=t;$("mM").value=$("lM").value=t.slice(0,7);fillCats();renderHoy();
+function restore(inp){const f=inp.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!d.regs)throw 0;if(confirm("¿Reemplazar datos actuales?")){DB=d;save();location.reload();alert("Restaurado")}}catch(e){alert("Archivo inválido")}})}
+const t=today();$("rF").value=t;$("mM").value=$("lM").value=t.slice(0,7);fillCats();modo();renderHoy();
 </script>
 </body>
 </html>
