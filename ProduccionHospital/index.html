@@ -153,7 +153,7 @@ function guardar(){
  const d={f,n,x:$("rX").value.trim(),e:$("rE").value.trim(),s:$("rS").value,c:cat,t:$("rT").value,p:$("rP").value,r:cat==="Biopsia / Procedimiento"?$("rR").value:"",o:$("rO").value.trim()};
  if(editId){Object.assign(DB.regs.find(x=>x.id===editId),d);save();lastId=editId;toast("✔ Cambios guardados: "+n);editId=null}
  else{if(busy)return;if(DB.regs.some(x=>x.f===f&&x.t===d.t&&x.n.toLowerCase()===n.toLowerCase())&&!confirm(n+" ya tiene registrado "+d.t+" en esta fecha.\n¿Registrarlo otra vez?"))return;
-  busy=true;setTimeout(()=>busy=false,600);d.id=uid();DB.regs.push(d);save();lastId=d.id;
+  busy=true;setTimeout(()=>busy=false,350);d.id=uid();DB.regs.push(d);save();lastId=d.id;
   toast("✔ Guardado: "+n+" — "+d.t+" (#"+DB.regs.filter(x=>x.f===f).length+" del día)")}
  ["rN","rX","rE","rO"].forEach(i=>$(i).value="");modo();renderHoy();$("rN").focus();
 }
