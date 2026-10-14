@@ -63,6 +63,7 @@ tr.edit td{background:#fff4d6!important}tr.nuevo td{animation:fl 1.5s}@keyframes
 <div class="cats" id="cats"></div>
 <div class="grid">
 <div><label>Fecha</label><input type="date" id="rF"></div>
+<div><label>Hora (automática)</label><input type="time" id="rH"></div>
 <div style="grid-column:span 2"><label>Nombre del paciente *</label><input id="rN"></div>
 <div><label>Expediente</label><input id="rX"></div>
 <div><label>Edad</label><input id="rE"></div>
@@ -141,34 +142,36 @@ document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{
  document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="t-"+b.dataset.t));
  ({mes:renderMes,lis:renderLis})[b.dataset.t]?.()});
 let editId=null,busy=false,lastId=null,tT;
+const hora=()=>new Date().toLocaleTimeString("en-GB",{timeZone:"America/Managua",hour:"2-digit",minute:"2-digit"});
+let hTouched=false;
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 function toast(m,undo){$("tMsg").textContent=m;$("toast").style.display="flex";const b=$("tBtn");b.classList.toggle("hide",!undo);b.onclick=()=>{undo();$("toast").style.display="none"};
  clearTimeout(tT);tT=setTimeout(()=>$("toast").style.display="none",undo?9000:2500)}
 function modo(){const m=$("modo");if(editId){const r=DB.regs.find(x=>x.id===editId);m.className="ed";m.innerHTML=`<span>✏ EDITANDO: ${esc(r.n)}</span><button class="btn sec s" onclick="nuevo()">Cancelar edición</button>`;$("bG").textContent="Guardar cambios"}
  else{m.className="";m.innerHTML="<span>➕ NUEVO PACIENTE</span>";$("bG").textContent="Guardar"}}
-function nuevo(){editId=null;["rN","rX","rE","rO"].forEach(i=>$(i).value="");modo();renderHoy();$("rN").focus()}
+function nuevo(){editId=null;hTouched=false;$("rH").value=hora();["rN","rX","rE","rO"].forEach(i=>$(i).value="");modo();renderHoy();$("rN").focus()}
 function guardar(){
  const n=$("rN").value.trim();if(!n){alert("Escriba el nombre del paciente");$("rN").focus();return}
  const f=$("rF").value;if(!f)return alert("Indique la fecha");
- const d={f,n,x:$("rX").value.trim(),e:$("rE").value.trim(),s:$("rS").value,c:cat,t:$("rT").value,p:$("rP").value,r:cat==="Biopsia / Procedimiento"?$("rR").value:"",o:$("rO").value.trim()};
+ const d={f,h:$("rH").value||hora(),n,x:$("rX").value.trim(),e:$("rE").value.trim(),s:$("rS").value,c:cat,t:$("rT").value,p:$("rP").value,r:cat==="Biopsia / Procedimiento"?$("rR").value:"",o:$("rO").value.trim()};
  if(editId){Object.assign(DB.regs.find(x=>x.id===editId),d);save();lastId=editId;toast("✔ Cambios guardados: "+n);editId=null}
  else{if(busy)return;if(DB.regs.some(x=>x.f===f&&x.t===d.t&&x.n.toLowerCase()===n.toLowerCase())&&!confirm(n+" ya tiene registrado "+d.t+" en esta fecha.\n¿Registrarlo otra vez?"))return;
   busy=true;setTimeout(()=>busy=false,350);d.id=uid();DB.regs.push(d);save();lastId=d.id;
   toast("✔ Guardado: "+n+" — "+d.t+" (#"+DB.regs.filter(x=>x.f===f).length+" del día)")}
- ["rN","rX","rE","rO"].forEach(i=>$(i).value="");modo();renderHoy();$("rN").focus();
+ ["rN","rX","rE","rO"].forEach(i=>$(i).value="");hTouched=false;$("rH").value=hora();modo();renderHoy();$("rN").focus();
 }
 function editar(id){const r=DB.regs.find(x=>x.id===id);if(!r)return;editId=id;cat=r.c;fillCats();
- $("rF").value=r.f;$("rN").value=r.n;$("rX").value=r.x;$("rE").value=r.e;$("rS").value=r.s;$("rT").value=r.t;$("rP").value=r.p;if(r.r)$("rR").value=r.r;$("rO").value=r.o;
+ $("rF").value=r.f;$("rH").value=r.h||"";hTouched=true;$("rN").value=r.n;$("rX").value=r.x;$("rE").value=r.e;$("rS").value=r.s;$("rT").value=r.t;$("rP").value=r.p;if(r.r)$("rR").value=r.r;$("rO").value=r.o;
  document.querySelectorAll("#nav button")[0].click();modo();renderHoy();scrollTo({top:0,behavior:"smooth"});$("rN").focus()}
 function borrar(id){const i=DB.regs.findIndex(r=>r.id===id);if(i<0)return;const r=DB.regs[i];
  if(!confirm("¿Eliminar a "+r.n+" ("+r.t+")?"))return;DB.regs.splice(i,1);if(editId===id)nuevo();save();renderHoy();renderLis();
  toast("Eliminado: "+r.n,()=>{DB.regs.splice(i,0,r);save();renderHoy();renderLis()})}
 const acc=id=>`<button class="btn sec s" onclick="editar('${id}')">Editar</button> <button class="btn bad s" onclick="borrar('${id}')">✕</button>`;
-function renderHoy(){const f=$("rF").value,L=DB.regs.filter(r=>r.f===f).sort((a,b)=>DB.regs.indexOf(b)-DB.regs.indexOf(a));$("nHoy").textContent=L.length;$("lHoy").textContent=fmt(f);
- $("hoy").innerHTML="<tr><th class='n'>#</th><th>Paciente</th><th>Categoría</th><th>Estudio</th><th>Procedencia</th><th></th></tr>"+(L.map((r,i)=>`<tr class="${r.id===editId?"edit":r.id===lastId?"nuevo":""}"><td class="n">${L.length-i}</td><td><b>${esc(r.n)}</b>${r.e||r.x?`<br><small>${esc(r.e)} ${r.s} ${r.x?"· Exp "+esc(r.x):""}</small>`:""}</td><td>${r.c}</td><td>${esc(r.t)}${r.r?" — "+r.r:""}</td><td>${r.p}</td><td style="white-space:nowrap">${acc(r.id)}</td></tr>`).join("")||"<tr><td colspan=6>Nada registrado en esta fecha</td></tr>");lastId=null}
+function renderHoy(){const f=$("rF").value,L=DB.regs.filter(r=>r.f===f).sort((a,b)=>(b.h||"").localeCompare(a.h||"")||DB.regs.indexOf(b)-DB.regs.indexOf(a));$("nHoy").textContent=L.length;$("lHoy").textContent=fmt(f);
+ $("hoy").innerHTML="<tr><th class='n'>#</th><th>Hora</th><th>Paciente</th><th>Categoría</th><th>Estudio</th><th>Procedencia</th><th></th></tr>"+(L.map((r,i)=>`<tr class="${r.id===editId?"edit":r.id===lastId?"nuevo":""}"><td class="n">${L.length-i}</td><td>${r.h||""}</td><td><b>${esc(r.n)}</b>${r.e||r.x?`<br><small>${esc(r.e)} ${r.s} ${r.x?"· Exp "+esc(r.x):""}</small>`:""}</td><td>${r.c}</td><td>${esc(r.t)}${r.r?" — "+r.r:""}</td><td>${r.p}</td><td style="white-space:nowrap">${acc(r.id)}</td></tr>`).join("")||"<tr><td colspan=7>Nada registrado en esta fecha</td></tr>");lastId=null}
 $("rN").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();guardar()}});
 $("rF").onchange=renderHoy;
-const ofMes=m=>DB.regs.filter(r=>r.f.startsWith(m)).sort((a,b)=>a.f.localeCompare(b.f)||a.id-b.id);
+const ofMes=m=>DB.regs.filter(r=>r.f.startsWith(m)).sort((a,b)=>a.f.localeCompare(b.f)||(a.h||"").localeCompare(b.h||"")||DB.regs.indexOf(a)-DB.regs.indexOf(b));
 function desglose(L){
  const C={};L.forEach(r=>{C[r.c]??={};C[r.c][r.t]=(C[r.c][r.t]||0)+1});
  let h="<tr><th>Estudio</th><th class='n'>Cantidad</th></tr>";
@@ -190,21 +193,21 @@ function imprimir(){const m=$("mM").value,L=ofMes(m);
  <h3>DESGLOSE POR TIPO DE ESTUDIO</h3><table>${desglose(L)}</table>
  <h3>POR PROCEDENCIA</h3><table>${porProc(L)}</table>
  <div class="firma"><div>Dr. Néstor José Mejía González<br>Médico Especialista en Radiología e Imágenes<br>Código MINSA: 37294</div></div>
- ${$("mL").checked?`<div class="pb"></div><h3>LISTADO DE PACIENTES — ${mesLbl(m)}</h3><table><tr><th class="n">#</th><th>Fecha</th><th>Paciente</th><th>Exp.</th><th>Edad/Sexo</th><th>Estudio</th><th>Procedencia</th></tr>${L.map((r,i)=>`<tr><td class="n">${i+1}</td><td>${fmt(r.f)}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${esc(r.e)} ${r.s}</td><td>${esc(r.t)}${r.r?" ("+r.r+")":""}</td><td>${r.p}</td></tr>`).join("")}</table>`:""}`;
+ ${$("mL").checked?`<div class="pb"></div><h3>LISTADO DE PACIENTES — ${mesLbl(m)}</h3><table><tr><th class="n">#</th><th>Fecha</th><th>Hora</th><th>Paciente</th><th>Exp.</th><th>Edad/Sexo</th><th>Estudio</th><th>Procedencia</th></tr>${L.map((r,i)=>`<tr><td class="n">${i+1}</td><td>${fmt(r.f)}</td><td>${r.h||""}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${esc(r.e)} ${r.s}</td><td>${esc(r.t)}${r.r?" ("+r.r+")":""}</td><td>${r.p}</td></tr>`).join("")}</table>`:""}`;
  window.print()}
 function renderLis(){const m=$("lM").value,c=$("lC").value,q=$("lQ").value.toLowerCase();
  const L=ofMes(m).filter(r=>(!c||r.c===c)&&(!q||r.n.toLowerCase().includes(q)));
- $("lT").innerHTML="<tr><th>Fecha</th><th>Paciente</th><th>Exp.</th><th>Edad/Sexo</th><th>Categoría</th><th>Estudio</th><th>Procedencia</th><th>Obs.</th><th></th></tr>"+
- L.map(r=>`<tr><td>${fmt(r.f)}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${esc(r.e)} ${r.s}</td><td>${r.c}</td><td>${esc(r.t)}${r.r?" — "+r.r:""}</td><td>${r.p}</td><td>${esc(r.o)}</td><td><span style="white-space:nowrap">${acc(r.id)}</span></td></tr>`).join("")+`<tr class="tot"><td colspan=9>${L.length} registros</td></tr>`}
-function csv(){const rows=[["Fecha","Paciente","Expediente","Edad","Sexo","Categoría","Estudio","Resultado","Procedencia","Observación"]];
- ofMes($("lM").value).forEach(r=>rows.push([r.f,r.n,r.x,r.e,r.s,r.c,r.t,r.r,r.p,r.o]));
+ $("lT").innerHTML="<tr><th>Fecha</th><th>Hora</th><th>Paciente</th><th>Exp.</th><th>Edad/Sexo</th><th>Categoría</th><th>Estudio</th><th>Procedencia</th><th>Obs.</th><th></th></tr>"+
+ L.map(r=>`<tr><td>${fmt(r.f)}</td><td>${r.h||""}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${esc(r.e)} ${r.s}</td><td>${r.c}</td><td>${esc(r.t)}${r.r?" — "+r.r:""}</td><td>${r.p}</td><td>${esc(r.o)}</td><td><span style="white-space:nowrap">${acc(r.id)}</span></td></tr>`).join("")+`<tr class="tot"><td colspan=10>${L.length} registros</td></tr>`}
+function csv(){const rows=[["Fecha","Hora","Paciente","Expediente","Edad","Sexo","Categoría","Estudio","Resultado","Procedencia","Observación"]];
+ ofMes($("lM").value).forEach(r=>rows.push([r.f,r.h,r.n,r.x,r.e,r.s,r.c,r.t,r.r,r.p,r.o]));
  dl("﻿"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n"),`Produccion_${$("lM").value}.csv`,"text/csv")}
 function addT(){const c=$("cC").value,v=$("cN").value.trim();if(v&&!DB.cats[c].includes(v)){DB.cats[c].push(v);save();fillCats();$("cN").value=""}}
 function delT(c,i){if(confirm("¿Quitar "+DB.cats[c][i]+"?")){DB.cats[c].splice(i,1);save();fillCats()}}
 function dl(c,n,t){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click()}
 function backup(){dl(JSON.stringify(DB,null,1),`Respaldo_Produccion_${today()}.json`,"application/json")}
 function restore(inp){const f=inp.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!d.regs)throw 0;if(confirm("¿Reemplazar datos actuales?")){DB=d;save();location.reload();alert("Restaurado")}}catch(e){alert("Archivo inválido")}})}
-const t=today();$("rF").value=t;$("mM").value=$("lM").value=t.slice(0,7);fillCats();modo();renderHoy();
+const t=today();$("rF").value=t;$("mM").value=$("lM").value=t.slice(0,7);$("rH").value=hora();$("rH").oninput=()=>hTouched=true;setInterval(()=>{if(!hTouched&&!editId)$("rH").value=hora()},20000);fillCats();modo();renderHoy();
 </script>
 </body>
 </html>
