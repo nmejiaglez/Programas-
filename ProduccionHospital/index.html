@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Producción Hospital</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--tx:#1d2733;--mut:#667;--pri:#0b4f8a;--ok:#0e7c66;--bad:#c0392b;--bd:#d9dee6}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--tx)}
+header{background:var(--pri);color:#fff;padding:14px 16px}header h1{margin:0;font-size:20px}header p{margin:2px 0 0;font-size:13px;opacity:.85}
+nav{display:flex;flex-wrap:wrap;gap:4px;padding:8px 16px;background:#e3e9f2}
+nav button{border:0;background:transparent;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:14px}
+nav button.on{background:var(--pri);color:#fff}
+main{padding:16px;max-width:1100px;margin:auto}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:14px;margin-bottom:14px}
+.card h2{margin:0 0 10px;font-size:16px;color:var(--pri)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+label{font-size:12px;color:var(--mut);display:block;margin-bottom:3px}
+input,select{width:100%;padding:8px;border:1px solid var(--bd);border-radius:5px;font-size:14px}
+.btn{background:var(--ok);color:#fff;border:0;padding:9px 14px;border-radius:5px;cursor:pointer;font-size:14px}
+.btn.sec{background:#5b6b7d}.btn.s{padding:3px 8px;font-size:12px}.btn.bad{background:var(--bad)}
+.cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.cats button{border:2px solid var(--pri);background:#fff;color:var(--pri);padding:8px 12px;border-radius:20px;cursor:pointer;font-size:14px}
+.cats button.on{background:var(--pri);color:#fff}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border:1px solid var(--bd);padding:5px 8px;text-align:left}th{background:#eef2f7}td.n,th.n{text-align:center}
+tr.cat td{background:#e3e9f2;font-weight:bold}tfoot td,tr.tot td{font-weight:bold;background:#f6f8fb}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.kpi div{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:10px}
+.kpi b{display:block;font-size:24px;color:var(--pri)}.kpi span{font-size:12px;color:var(--mut)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:end}.hide{display:none}
+#hoy td{font-size:13px}
+.rep{display:none}
+@media print{
+ @page{size:letter;margin:15mm 15mm 22mm}
+ body{background:#fff}header,nav,main>section,.noprint{display:none!important}
+ .rep{display:block!important;font-size:11pt}.rep table{font-size:10.5pt}.rep th{background:#e3e9f2!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .rep tr.cat td{background:#eef2f7!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .rep h3{page-break-after:avoid}.pb{page-break-before:always}
+}
+.rep h1{font-size:15pt;margin:0;color:#0b4f8a;text-align:center}.rep .sub{text-align:center;font-size:10.5pt;margin:2px 0}
+.rep h2{text-align:center;font-size:13pt;margin:10px 0 4px;border-top:2px solid #0b4f8a;padding-top:8px}
+.rep h3{font-size:11.5pt;color:#0b4f8a;margin:14px 0 4px}.firma{margin-top:50px;text-align:center}.firma div{border-top:1px solid #000;width:340px;margin:0 auto;padding-top:4px}
+</style>
+</head>
+<body>
+<header><h1>Mi Producción — Hospital</h1><p>Hospital Regional Escuela Camilo Ortega Saavedra · Dr. Néstor José Mejía González</p></header>
+<nav id="nav">
+<button data-t="reg" class="on">Registrar</button>
+<button data-t="mes">Estadística del mes</button>
+<button data-t="lis">Registros</button>
+<button data-t="cfg">Estudios y respaldo</button>
+</nav>
+<main>
+<section id="t-reg">
+<div class="card"><h2>Registrar estudio</h2>
+<div class="cats" id="cats"></div>
+<div class="grid">
+<div><label>Fecha</label><input type="date" id="rF"></div>
+<div style="grid-column:span 2"><label>Nombre del paciente *</label><input id="rN"></div>
+<div><label>Expediente</label><input id="rX"></div>
+<div><label>Edad</label><input id="rE"></div>
+<div><label>Sexo</label><select id="rS"><option>F</option><option>M</option></select></div>
+<div style="grid-column:span 2"><label id="lT">Tipo de estudio</label><select id="rT"></select></div>
+<div><label>Procedencia</label><select id="rP"><option>Consulta externa</option><option>Emergencia</option><option>Hospitalización</option><option>UCI</option><option>Maternidad / Gineco-obstetricia</option><option>Pediatría</option><option>Cirugía</option><option>Medicina interna</option><option>Ortopedia</option><option>Otro</option></select></div>
+<div id="bxRes" class="hide"><label>Resultado / muestra</label><select id="rR"><option>Muestra obtenida</option><option>Muestra insuficiente</option><option>Pendiente patología</option><option>Drenaje exitoso</option></select></div>
+<div style="grid-column:span 2"><label>Observación</label><input id="rO"></div>
+</div>
+<p class="row"><button class="btn" onclick="guardar()">Guardar</button><span id="msg" style="color:var(--ok);font-weight:bold"></span></p>
+</div>
+<div class="card"><h2>Registrados hoy (<span id="nHoy">0</span>)</h2><div class="tw"><table id="hoy"></table></div></div>
+</section>
+
+<section id="t-mes" class="hide">
+<div class="row noprint"><div><label>Mes</label><input type="month" id="mM" onchange="renderMes()"></div>
+<label style="font-size:13px;color:#333"><input type="checkbox" id="mL" checked style="width:auto"> Incluir listado de pacientes al imprimir</label>
+<button class="btn" onclick="imprimir()">🖨 Imprimir estadística del mes</button></div><br>
+<div class="kpi" id="mK"></div>
+<div class="card"><h2>Desglose por estudio</h2><div class="tw"><table id="mT"></table></div></div>
+<div class="card"><h2>Por procedencia</h2><div class="tw"><table id="mP"></table></div></div>
+</section>
+
+<section id="t-lis" class="hide">
+<div class="card"><h2>Registros</h2>
+<div class="row"><div><label>Mes</label><input type="month" id="lM" onchange="renderLis()"></div>
+<div><label>Categoría</label><select id="lC" onchange="renderLis()"></select></div>
+<div style="flex:1;min-width:180px"><label>Buscar paciente</label><input id="lQ" oninput="renderLis()"></div>
+<button class="btn sec" onclick="csv()">Exportar Excel (CSV)</button></div><br>
+<div class="tw"><table id="lT"></table></div></div>
+</section>
+
+<section id="t-cfg" class="hide">
+<div class="card"><h2>Tipos de estudio por categoría</h2>
+<div class="row"><div><label>Categoría</label><select id="cC"></select></div><div style="flex:1"><label>Nuevo tipo</label><input id="cN"></div><button class="btn" onclick="addT()">Agregar</button></div><br>
+<div id="cL"></div></div>
+<div class="card"><h2>Respaldo</h2>
+<div class="row"><button class="btn" onclick="backup()">Descargar respaldo</button>
+<label class="btn sec" style="margin:0">Restaurar respaldo<input type="file" accept=".json" class="hide" onchange="restore(this)"></label></div>
+<p style="font-size:12px;color:#667">Todo se guarda automáticamente en este navegador al presionar Guardar. Descargue un respaldo con frecuencia.</p></div>
+</section>
+</main>
+<div class="rep" id="rep"></div>
+<script>
+const KEY="produccionHospital_v1";
+let DB={cats:{
+ "Ultrasonido":["US Abdominal completo","US Abdomen superior","US Hepatobiliar","US Renal / Vías urinarias","US Pélvico suprapúbico","US Transvaginal","US Obstétrico 1er trimestre","US Obstétrico 2do/3er trimestre","US Perfil biofísico","US Tiroides","US Cuello / Partes blandas cuello","US Mama","US Axila","US Testicular / Escrotal","US Prostático","US Tejidos blandos","US Musculoesquelético","US Inguinal / Pared abdominal","US Transfontanelar","US Cadera pediátrica","US Torácico / Pleural","US FAST"],
+ "Doppler":["Doppler venoso MMII","Doppler arterial MMII","Doppler venoso MMSS","Doppler arterial MMSS","Doppler carotídeo","Doppler renal","Doppler portal / hepático","Doppler testicular","Doppler obstétrico","Doppler tiroideo"],
+ "Biopsia / Procedimiento":["Biopsia de mama guiada por US","BAAF tiroides guiada por US","Biopsia de ganglio guiada por US","Biopsia hepática guiada por US","Biopsia renal guiada por US","Biopsia de tejidos blandos guiada por US","Biopsia prostática guiada","Paracentesis guiada","Toracocentesis guiada","Drenaje de absceso / colección guiado","Aspiración de quiste guiada","Marcaje prequirúrgico"],
+ "Lectura TAC":["TAC cerebral simple","TAC cerebral contrastada","TAC cuello","TAC tórax","TAC abdomen","TAC abdomen y pelvis","TAC columna","TAC senos paranasales","TAC extremidades","AngioTAC","Uro-TAC"],
+ "Lectura RMN":["RMN cerebral","RMN columna cervical","RMN columna dorsal","RMN columna lumbar","RMN rodilla","RMN hombro","RMN abdomen","RMN pelvis","RMN mama","RMN otra articulación"],
+ "Lectura Mamografía":["Mamografía de tamizaje","Mamografía diagnóstica","Mamografía + US complementario","Proyecciones adicionales"],
+ "Lectura Radiografía":["RX tórax","RX abdomen","RX columna","RX extremidades","RX cráneo / senos paranasales","RX pelvis / cadera","Otro RX"]},regs:[]};
+try{const s=localStorage.getItem(KEY);if(s)DB=JSON.parse(s)}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){alert("No se pudo guardar")}};
+const $=id=>document.getElementById(id);
+const today=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=f=>f.split("-").reverse().join("/");
+const MESES=["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
+const mesLbl=m=>MESES[+m.slice(5)-1]+" "+m.slice(0,4);
+let cat=Object.keys(DB.cats)[0];
+function fillCats(){
+ const C=Object.keys(DB.cats);
+ $("cats").innerHTML=C.map(c=>`<button class="${c===cat?"on":""}" onclick="selCat('${c}')">${c}</button>`).join("");
+ $("rT").innerHTML=DB.cats[cat].map(t=>`<option>${esc(t)}</option>`).join("");$("lT").textContent="Tipo de "+cat.toLowerCase();
+ $("bxRes").classList.toggle("hide",cat!=="Biopsia / Procedimiento");
+ $("lC").innerHTML=`<option value="">Todas</option>`+C.map(c=>`<option>${c}</option>`).join("");$("cC").innerHTML=C.map(c=>`<option>${c}</option>`).join("");
+ $("cL").innerHTML=C.map(c=>`<h3 style="font-size:14px;color:#0b4f8a">${c}</h3>`+DB.cats[c].map((t,i)=>`<span style="display:inline-block;margin:2px 6px 2px 0;background:#eef2f7;padding:3px 8px;border-radius:12px;font-size:13px">${esc(t)} <a href="#" onclick="delT('${c}',${i});return false" style="color:#c0392b">✕</a></span>`).join("")).join("");
+}
+function selCat(c){cat=c;fillCats()}
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("on",x===b));
+ document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="t-"+b.dataset.t));
+ ({mes:renderMes,lis:renderLis})[b.dataset.t]?.()});
+function guardar(){
+ const r={id:Date.now(),f:$("rF").value,n:$("rN").value.trim(),x:$("rX").value.trim(),e:$("rE").value.trim(),s:$("rS").value,c:cat,t:$("rT").value,p:$("rP").value,r:cat==="Biopsia / Procedimiento"?$("rR").value:"",o:$("rO").value.trim()};
+ if(!r.n)return alert("Escriba el nombre del paciente");if(!r.f)return alert("Indique la fecha");
+ DB.regs.push(r);save();["rN","rX","rE","rO"].forEach(i=>$(i).value="");$("rN").focus();
+ $("msg").textContent="Guardado ✔";setTimeout(()=>$("msg").textContent="",1500);renderHoy();
+}
+function borrar(id){if(confirm("¿Eliminar registro?")){DB.regs=DB.regs.filter(r=>r.id!==id);save();renderHoy();renderLis()}}
+const del=id=>`<button class="btn bad s" onclick="borrar(${id})">✕</button>`;
+function renderHoy(){const f=$("rF").value,L=DB.regs.filter(r=>r.f===f).reverse();$("nHoy").textContent=L.length;
+ $("hoy").innerHTML="<tr><th>Paciente</th><th>Categoría</th><th>Estudio</th><th>Procedencia</th><th></th></tr>"+(L.map(r=>`<tr><td>${esc(r.n)}</td><td>${r.c}</td><td>${esc(r.t)}${r.r?" — "+r.r:""}</td><td>${r.p}</td><td>${del(r.id)}</td></tr>`).join("")||"<tr><td colspan=5>Nada registrado en esta fecha</td></tr>")}
+$("rF").onchange=renderHoy;
+const ofMes=m=>DB.regs.filter(r=>r.f.startsWith(m)).sort((a,b)=>a.f.localeCompare(b.f)||a.id-b.id);
+function desglose(L){
+ const C={};L.forEach(r=>{C[r.c]??={};C[r.c][r.t]=(C[r.c][r.t]||0)+1});
+ let h="<tr><th>Estudio</th><th class='n'>Cantidad</th></tr>";
+ Object.keys(DB.cats).concat(Object.keys(C).filter(c=>!DB.cats[c])).forEach(c=>{if(!C[c])return;const tot=Object.values(C[c]).reduce((a,b)=>a+b,0);
+  h+=`<tr class="cat"><td>${c.toUpperCase()}</td><td class="n">${tot}</td></tr>`+Object.entries(C[c]).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<tr><td style="padding-left:22px">${esc(t)}</td><td class="n">${n}</td></tr>`).join("")});
+ return h+`<tr class="tot"><td>TOTAL GENERAL</td><td class="n">${L.length}</td></tr>`;
+}
+function porProc(L){const P={};L.forEach(r=>P[r.p]=(P[r.p]||0)+1);return"<tr><th>Procedencia</th><th class='n'>Cantidad</th></tr>"+Object.entries(P).sort((a,b)=>b[1]-a[1]).map(([p,n])=>`<tr><td>${p}</td><td class="n">${n}</td></tr>`).join("")}
+function resumen(L){return Object.keys(DB.cats).map(c=>[c,L.filter(r=>r.c===c).length])}
+function renderMes(){const L=ofMes($("mM").value);
+ $("mK").innerHTML=`<div><b>${L.length}</b><span>Total del mes</span></div>`+resumen(L).map(([c,n])=>`<div><b>${n}</b><span>${c}</span></div>`).join("");
+ $("mT").innerHTML=desglose(L);$("mP").innerHTML=porProc(L)}
+function imprimir(){const m=$("mM").value,L=ofMes(m);
+ const now=new Date().toLocaleString("es-NI",{timeZone:"America/Managua",dateStyle:"short",timeStyle:"short"});
+ $("rep").innerHTML=`<h1>HOSPITAL REGIONAL ESCUELA CAMILO ORTEGA SAAVEDRA</h1><p class="sub">Juigalpa, Chontales · Departamento de Radiología e Imágenes Médicas</p>
+ <h2>INFORME ESTADÍSTICO MENSUAL DE PRODUCCIÓN — ${mesLbl(m)}</h2>
+ <p class="sub"><b>Médico:</b> Dr. Néstor José Mejía González · Especialista en Radiología e Imagen · Código MINSA 37294</p><p class="sub" style="font-size:9pt">Generado: ${now}</p>
+ <h3>RESUMEN POR CATEGORÍA</h3><table><tr><th>Categoría</th><th class="n">Cantidad</th></tr>${resumen(L).map(([c,n])=>`<tr><td>${c}</td><td class="n">${n}</td></tr>`).join("")}<tr class="tot"><td>TOTAL</td><td class="n">${L.length}</td></tr></table>
+ <h3>DESGLOSE POR TIPO DE ESTUDIO</h3><table>${desglose(L)}</table>
+ <h3>POR PROCEDENCIA</h3><table>${porProc(L)}</table>
+ <div class="firma"><div>Dr. Néstor José Mejía González<br>Médico Especialista en Radiología e Imágenes<br>Código MINSA: 37294</div></div>
+ ${$("mL").checked?`<div class="pb"></div><h3>LISTADO DE PACIENTES — ${mesLbl(m)}</h3><table><tr><th class="n">#</th><th>Fecha</th><th>Paciente</th><th>Exp.</th><th>Edad/Sexo</th><th>Estudio</th><th>Procedencia</th></tr>${L.map((r,i)=>`<tr><td class="n">${i+1}</td><td>${fmt(r.f)}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${esc(r.e)} ${r.s}</td><td>${esc(r.t)}${r.r?" ("+r.r+")":""}</td><td>${r.p}</td></tr>`).join("")}</table>`:""}`;
+ window.print()}
+function renderLis(){const m=$("lM").value,c=$("lC").value,q=$("lQ").value.toLowerCase();
+ const L=ofMes(m).filter(r=>(!c||r.c===c)&&(!q||r.n.toLowerCase().includes(q)));
+ $("lT").innerHTML="<tr><th>Fecha</th><th>Paciente</th><th>Exp.</th><th>Edad/Sexo</th><th>Categoría</th><th>Estudio</th><th>Procedencia</th><th>Obs.</th><th></th></tr>"+
+ L.map(r=>`<tr><td>${fmt(r.f)}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${esc(r.e)} ${r.s}</td><td>${r.c}</td><td>${esc(r.t)}${r.r?" — "+r.r:""}</td><td>${r.p}</td><td>${esc(r.o)}</td><td>${del(r.id)}</td></tr>`).join("")+`<tr class="tot"><td colspan=9>${L.length} registros</td></tr>`}
+function csv(){const rows=[["Fecha","Paciente","Expediente","Edad","Sexo","Categoría","Estudio","Resultado","Procedencia","Observación"]];
+ ofMes($("lM").value).forEach(r=>rows.push([r.f,r.n,r.x,r.e,r.s,r.c,r.t,r.r,r.p,r.o]));
+ dl("﻿"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n"),`Produccion_${$("lM").value}.csv`,"text/csv")}
+function addT(){const c=$("cC").value,v=$("cN").value.trim();if(v&&!DB.cats[c].includes(v)){DB.cats[c].push(v);save();fillCats();$("cN").value=""}}
+function delT(c,i){if(confirm("¿Quitar "+DB.cats[c][i]+"?")){DB.cats[c].splice(i,1);save();fillCats()}}
+function dl(c,n,t){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click()}
+function backup(){dl(JSON.stringify(DB,null,1),`Respaldo_Produccion_${today()}.json`,"application/json")}
+function restore(inp){const f=inp.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!d.regs)throw 0;if(confirm("¿Reemplazar datos actuales?")){DB=d;save();fillCats();renderHoy();alert("Restaurado")}}catch(e){alert("Archivo inválido")}})}
+const t=today();$("rF").value=t;$("mM").value=$("lM").value=t.slice(0,7);fillCats();renderHoy();
+</script>
+</body>
+</html>
