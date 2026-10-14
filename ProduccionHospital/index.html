@@ -71,6 +71,7 @@ tr.edit td{background:#fff4d6!important}tr.nuevo td{animation:fl 1.5s}@keyframes
 <div><label>Edad</label><input id="rE"></div>
 <div><label>Sexo</label><select id="rS"><option>F</option><option>M</option></select></div>
 <div style="grid-column:span 2"><label id="lT">Tipo de estudio</label><select id="rT"></select></div>
+<div style="grid-column:span 2"><label>Médico que solicita</label><input id="rSo" list="dlSo" placeholder="Escriba o escoja de la lista"><datalist id="dlSo"></datalist></div>
 <div><label>Procedencia</label><select id="rP"><option>Consulta externa</option><option>Emergencia</option><option>Hospitalización</option><option>UCI</option><option>Maternidad / Gineco-obstetricia</option><option>Pediatría</option><option>Cirugía</option><option>Medicina interna</option><option>Ortopedia</option><option>Otro</option></select></div>
 <div id="bxRes" class="hide"><label>Resultado / muestra</label><select id="rR"><option>Muestra obtenida</option><option>Muestra insuficiente</option><option>Pendiente patología</option><option>Drenaje exitoso</option></select></div>
 <div id="bxLec" class="hide"><label>Estado de la lectura</label><select id="rL"><option value="Leído">Leído</option><option value="Pendiente">Disco pendiente de leer</option></select></div>
@@ -95,6 +96,7 @@ tr.edit td{background:#fff4d6!important}tr.nuevo td{animation:fl 1.5s}@keyframes
 <div class="card"><h2>Desglose por estudio</h2><div class="tw"><table id="mT"></table></div></div>
 <div class="card" id="cDia"><h2>Por día</h2><div class="tw"><table id="mDia"></table></div></div>
 <div class="card"><h2>Por procedencia</h2><div class="tw"><table id="mP"></table></div></div>
+<div class="card"><h2>Por médico solicitante</h2><div class="tw"><table id="mSo"></table></div></div>
 </section>
 
 <section id="t-dis" class="hide">
@@ -109,7 +111,7 @@ tr.edit td{background:#fff4d6!important}tr.nuevo td{animation:fl 1.5s}@keyframes
 <div class="card"><h2>Registros</h2>
 <div class="row"><div><label>Mes</label><input type="month" id="lM" onchange="renderLis()"></div>
 <div><label>Categoría</label><select id="lC" onchange="renderLis()"></select></div>
-<div style="flex:1;min-width:180px"><label>Buscar paciente</label><input id="lQ" oninput="renderLis()"></div>
+<div style="flex:1;min-width:180px"><label>Buscar paciente o solicitante</label><input id="lQ" oninput="renderLis()"></div>
 <button class="btn sec" onclick="csv()">Exportar Excel (CSV)</button></div><br>
 <div class="tw"><table id="lT"></table></div></div>
 </section>
@@ -175,26 +177,27 @@ function toast(m,undo){$("tMsg").textContent=m;$("toast").style.display="flex";c
  clearTimeout(tT);tT=setTimeout(()=>$("toast").style.display="none",undo?9000:2500)}
 function modo(){const m=$("modo");if(editId){const r=DB.regs.find(x=>x.id===editId);m.className="ed";m.innerHTML=`<span>✏ EDITANDO: ${esc(r.n)}</span><button class="btn sec s" onclick="nuevo()">Cancelar edición</button>`;$("bG").textContent="Guardar cambios"}
  else{m.className="";m.innerHTML="<span>➕ NUEVO PACIENTE</span>";$("bG").textContent="Guardar"}}
-function nuevo(){editId=null;hTouched=false;$("rH").value=hora();["rN","rX","rE","rO"].forEach(i=>$(i).value="");modo();renderHoy();$("rN").focus()}
+function nuevo(){editId=null;hTouched=false;$("rH").value=hora();["rN","rX","rE","rO","rSo"].forEach(i=>$(i).value="");modo();renderHoy();$("rN").focus()}
 function guardar(){
  const n=$("rN").value.trim();if(!n){alert("Escriba el nombre del paciente");$("rN").focus();return}
  const f=$("rF").value;if(!f)return alert("Indique la fecha");
- const lec=esLec(cat)?$("rL").value:"";const d={m:$("rM").value,l:lec,fl:lec==="Leído"?f:"",f,h:$("rH").value||hora(),n,x:$("rX").value.trim(),e:$("rE").value.trim(),s:$("rS").value,c:cat,t:$("rT").value,p:$("rP").value,r:cat==="Biopsia / Procedimiento"?$("rR").value:"",o:$("rO").value.trim()};
+ const lec=esLec(cat)?$("rL").value:"";const d={so:$("rSo").value.trim(),m:$("rM").value,l:lec,fl:lec==="Leído"?f:"",f,h:$("rH").value||hora(),n,x:$("rX").value.trim(),e:$("rE").value.trim(),s:$("rS").value,c:cat,t:$("rT").value,p:$("rP").value,r:cat==="Biopsia / Procedimiento"?$("rR").value:"",o:$("rO").value.trim()};
  if(editId){const o=DB.regs.find(x=>x.id===editId);if(o.l==="Leído"&&d.l==="Leído")d.fl=o.fl||d.fl;Object.assign(o,d);save();lastId=editId;toast("✔ Cambios guardados: "+n);editId=null}
  else{if(busy)return;if(DB.regs.some(x=>x.f===f&&x.t===d.t&&x.n.toLowerCase()===n.toLowerCase())&&!confirm(n+" ya tiene registrado "+d.t+" en esta fecha.\n¿Registrarlo otra vez?"))return;
   busy=true;setTimeout(()=>busy=false,350);d.id=uid();DB.regs.push(d);save();lastId=d.id;
   toast("✔ Guardado: "+n+" — "+d.t+" (#"+DB.regs.filter(x=>x.f===f).length+" del día)")}
- ["rN","rX","rE","rO"].forEach(i=>$(i).value="");hTouched=false;$("rH").value=hora();modo();renderHoy();$("rN").focus();
+ ["rN","rX","rE","rO","rSo"].forEach(i=>$(i).value="");hTouched=false;$("rH").value=hora();modo();renderHoy();$("rN").focus();
 }
 function editar(id){const r=DB.regs.find(x=>x.id===id);if(!r)return;editId=id;cat=r.c;fillCats();
- $("rF").value=r.f;$("rM").value=r.m;$("rH").value=r.h||"";if(r.l)$("rL").value=r.l;hTouched=true;$("rN").value=r.n;$("rX").value=r.x;$("rE").value=r.e;$("rS").value=r.s;$("rT").value=r.t;$("rP").value=r.p;if(r.r)$("rR").value=r.r;$("rO").value=r.o;
+ $("rF").value=r.f;$("rM").value=r.m;$("rSo").value=r.so||"";$("rH").value=r.h||"";if(r.l)$("rL").value=r.l;hTouched=true;$("rN").value=r.n;$("rX").value=r.x;$("rE").value=r.e;$("rS").value=r.s;$("rT").value=r.t;$("rP").value=r.p;if(r.r)$("rR").value=r.r;$("rO").value=r.o;
  document.querySelectorAll("#nav button")[0].click();modo();renderHoy();scrollTo({top:0,behavior:"smooth"});$("rN").focus()}
 function borrar(id){const i=DB.regs.findIndex(r=>r.id===id);if(i<0)return;const r=DB.regs[i];
  if(!confirm("¿Eliminar a "+r.n+" ("+r.t+")?"))return;DB.regs.splice(i,1);if(editId===id)nuevo();save();renderHoy();renderLis();
  toast("Eliminado: "+r.n,()=>{DB.regs.splice(i,0,r);save();renderHoy();renderLis()})}
 const acc=id=>`<button class="btn sec s" onclick="editar('${id}')">Editar</button> <button class="btn bad s" onclick="borrar('${id}')">✕</button>`;
-function renderHoy(){cntDis();const f=$("rF").value,L=DB.regs.filter(r=>r.f===f).sort((a,b)=>(b.h||"").localeCompare(a.h||"")||DB.regs.indexOf(b)-DB.regs.indexOf(a));$("nHoy").textContent=L.length;$("lHoy").textContent=fmt(f);
- $("hoy").innerHTML="<tr><th class='n'>#</th><th>Hora</th><th>Paciente</th><th>Categoría</th><th>Estudio</th><th>Procedencia</th><th></th></tr>"+(L.map((r,i)=>`<tr class="${r.id===editId?"edit":r.id===lastId?"nuevo":""}"><td class="n">${L.length-i}</td><td>${r.h||""}</td><td><b>${esc(r.n)}</b><br><small style="color:#0b4f8a">${esc(r.m)}</small>${r.e||r.x?`<br><small>${esc(r.e)} ${r.s} ${r.x?"· Exp "+esc(r.x):""}</small>`:""}</td><td>${r.c}</td><td>${esc(r.t)}${partes(r)?` <small style="color:#0e7c66">(cuenta ${partes(r).length}: ${partes(r).map(x=>x.replace("US ","")).join(" + ")})</small>`:""}${r.r?" — "+r.r:""}${r.l==="Pendiente"?' <span style="color:#c0392b;font-weight:bold">(disco pendiente)</span>':""}</td><td>${r.p}</td><td style="white-space:nowrap">${acc(r.id)}</td></tr>`).join("")||"<tr><td colspan=7>Nada registrado en esta fecha</td></tr>");lastId=null}
+function fillSo(){$("dlSo").innerHTML=[...new Set(DB.regs.map(r=>r.so).filter(Boolean))].sort().map(x=>`<option value="${esc(x)}">`).join("")}
+function renderHoy(){cntDis();fillSo();const f=$("rF").value,L=DB.regs.filter(r=>r.f===f).sort((a,b)=>(b.h||"").localeCompare(a.h||"")||DB.regs.indexOf(b)-DB.regs.indexOf(a));$("nHoy").textContent=L.length;$("lHoy").textContent=fmt(f);
+ $("hoy").innerHTML="<tr><th class='n'>#</th><th>Hora</th><th>Paciente</th><th>Categoría</th><th>Estudio</th><th>Procedencia</th><th></th></tr>"+(L.map((r,i)=>`<tr class="${r.id===editId?"edit":r.id===lastId?"nuevo":""}"><td class="n">${L.length-i}</td><td>${r.h||""}</td><td><b>${esc(r.n)}</b><br><small style="color:#0b4f8a">${esc(r.m)}</small>${r.so?`<br><small>Solicita: ${esc(r.so)}</small>`:""}${r.e||r.x?`<br><small>${esc(r.e)} ${r.s} ${r.x?"· Exp "+esc(r.x):""}</small>`:""}</td><td>${r.c}</td><td>${esc(r.t)}${partes(r)?` <small style="color:#0e7c66">(cuenta ${partes(r).length}: ${partes(r).map(x=>x.replace("US ","")).join(" + ")})</small>`:""}${r.r?" — "+r.r:""}${r.l==="Pendiente"?' <span style="color:#c0392b;font-weight:bold">(disco pendiente)</span>':""}</td><td>${r.p}</td><td style="white-space:nowrap">${acc(r.id)}</td></tr>`).join("")||"<tr><td colspan=7>Nada registrado en esta fecha</td></tr>");lastId=null}
 $("rN").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();guardar()}});
 $("rF").onchange=renderHoy;
 const ofMes=m=>DB.regs.filter(r=>r.f.startsWith(m)).sort((a,b)=>a.f.localeCompare(b.f)||(a.h||"").localeCompare(b.h||"")||DB.regs.indexOf(a)-DB.regs.indexOf(b));
@@ -207,6 +210,7 @@ function desglose(L){
   h+=`<tr class="cat"><td>${c.toUpperCase()}</td><td class="n">${tot}</td></tr>`+Object.entries(C[c]).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<tr><td style="padding-left:22px">${esc(t)}</td><td class="n">${n}</td></tr>`).join("")});
  return h+`<tr class="tot"><td>TOTAL GENERAL</td><td class="n">${L.length}</td></tr>`;
 }
+function porSol(L){const P={};L.forEach(r=>{const k=r.so||"(Sin especificar)";P[k]=(P[k]||0)+1});return"<tr><th>Médico solicitante</th><th class='n'>Estudios</th></tr>"+Object.entries(P).sort((a,b)=>b[1]-a[1]).map(([p,n])=>`<tr><td>${esc(p)}</td><td class="n">${n}</td></tr>`).join("")}
 function porProc(L){const P={};L.forEach(r=>P[r.p]=(P[r.p]||0)+1);return"<tr><th>Procedencia</th><th class='n'>Cantidad</th></tr>"+Object.entries(P).sort((a,b)=>b[1]-a[1]).map(([p,n])=>`<tr><td>${p}</td><td class="n">${n}</td></tr>`).join("")}
 function resumen(L){return Object.keys(DB.cats).map(c=>[c,L.filter(r=>r.c===c).length])}
 let per="m";
@@ -236,7 +240,7 @@ function porDia(L,a,b){const C=Object.keys(DB.cats),ab={"Ultrasonido":"US","Dopp
  return h+`<tr class="tot"><td>TOTAL</td>${T.map(v=>`<td class="n">${v}</td>`).join("")}<td class="n">${L.length}</td></tr>`}
 function renderMes(){const[a,b]=rango(),L=ofRango(a,b),E=expand(L);$("mTit").textContent="ESTADÍSTICA "+PT[per]+" — "+perLbl()+($("mMed").value?" — "+$("mMed").value:"");$("bImp").textContent="🖨 Imprimir estadística "+PT[per].toLowerCase();
  $("mK").innerHTML=`<div><b>${E.length}</b><span>Total estudios</span></div><div><b>${L.length}</b><span>Pacientes</span></div>`+resumen(E).map(([c,n])=>`<div><b>${n}</b><span>${c}</span></div>`).join("");
- $("mMd").innerHTML=porMed(E);$("mD2").innerHTML=discos(a,b);$("mT").innerHTML=desglose(E);$("mP").innerHTML=porProc(E);$("cDia").classList.toggle("hide",per==="d");if(per!=="d")$("mDia").innerHTML=porDia(E,a,b)}
+ $("mMd").innerHTML=porMed(E);$("mD2").innerHTML=discos(a,b);$("mT").innerHTML=desglose(E);$("mP").innerHTML=porProc(E);$("mSo").innerHTML=porSol(E);$("cDia").classList.toggle("hide",per==="d");if(per!=="d")$("mDia").innerHTML=porDia(E,a,b)}
 function imprimir(){const[a,b]=rango(),L=ofRango(a,b),E=expand(L);
  const now=new Date().toLocaleString("es-NI",{timeZone:"America/Managua",dateStyle:"short",timeStyle:"short"});
  $("rep").innerHTML=`<h1>HOSPITAL REGIONAL ESCUELA CAMILO ORTEGA SAAVEDRA</h1><p class="sub">Juigalpa, Chontales · Departamento de Radiología e Imágenes Médicas</p>
@@ -247,8 +251,9 @@ function imprimir(){const[a,b]=rango(),L=ofRango(a,b),E=expand(L);
  <h3>DESGLOSE POR TIPO DE ESTUDIO</h3><table>${desglose(E)}</table>
  ${per!=="d"?`<h3>PRODUCCIÓN POR DÍA</h3><table>${porDia(E,a,b)}</table>`:""}
  <h3>POR PROCEDENCIA</h3><table>${porProc(E)}</table>
+ <h3>POR MÉDICO SOLICITANTE</h3><table>${porSol(E)}</table>
  <div class="firma"><div>Dr. Néstor José Mejía González<br>Médico Especialista en Radiología e Imágenes<br>Código MINSA: 37294</div></div>
- ${$("mL").checked?`<div class="pb"></div><h3>LISTADO DE PACIENTES — ${perLbl()}</h3><table><tr><th class="n">#</th><th>Fecha</th><th>Hora</th><th>Paciente</th><th>Exp.</th><th>Edad/Sexo</th><th>Estudio</th><th>Médico</th><th>Procedencia</th></tr>${L.map((r,i)=>`<tr><td class="n">${i+1}</td><td>${fmt(r.f)}</td><td>${r.h||""}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${esc(r.e)} ${r.s}</td><td>${esc(r.t)}${partes(r)?" (cuenta "+partes(r).length+")":""}${r.r?" ("+r.r+")":""}${r.l==="Pendiente"?" (PENDIENTE)":""}</td><td>${esc(r.m)}</td><td>${r.p}</td></tr>`).join("")}</table>`:""}`;
+ ${$("mL").checked?`<div class="pb"></div><h3>LISTADO DE PACIENTES — ${perLbl()}</h3><table><tr><th class="n">#</th><th>Fecha</th><th>Hora</th><th>Paciente</th><th>Exp.</th><th>Edad/Sexo</th><th>Estudio</th><th>Médico</th><th>Solicitante</th><th>Procedencia</th></tr>${L.map((r,i)=>`<tr><td class="n">${i+1}</td><td>${fmt(r.f)}</td><td>${r.h||""}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${esc(r.e)} ${r.s}</td><td>${esc(r.t)}${partes(r)?" (cuenta "+partes(r).length+")":""}${r.r?" ("+r.r+")":""}${r.l==="Pendiente"?" (PENDIENTE)":""}</td><td>${esc(r.m)}</td><td>${esc(r.so)}</td><td>${r.p}</td></tr>`).join("")}</table>`:""}`;
  window.print()}
 function pend(){return DB.regs.filter(r=>r.l==="Pendiente").sort((a,b)=>a.f.localeCompare(b.f))}
 function cntDis(){const n=pend().length;$("nDis").textContent=n||""}
@@ -261,11 +266,11 @@ function renderDis(){cntDis();const c=$("dC").value,P=pend().filter(r=>!c||r.c==
 function imprimirDis(){const P=pend();$("rep").innerHTML=`<h1>HOSPITAL REGIONAL ESCUELA CAMILO ORTEGA SAAVEDRA</h1><p class="sub">Departamento de Radiología e Imágenes Médicas</p><h2>DISCOS PENDIENTES DE LECTURA — ${fmt(today())}</h2><p class="sub">Dr. Néstor José Mejía González · Código MINSA 37294</p>
  <table><tr><th class="n">#</th><th>Recibido</th><th>Paciente</th><th>Exp.</th><th>Modalidad</th><th>Estudio</th><th>Procedencia</th></tr>${P.map((r,i)=>`<tr><td class="n">${i+1}</td><td>${fmt(r.f)}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${r.c.replace("Lectura ","")}</td><td>${esc(r.t)}</td><td>${r.p}</td></tr>`).join("")}<tr class="tot"><td colspan=7>Total pendientes: ${P.length}</td></tr></table>`;window.print()}
 function renderLis(){const m=$("lM").value,c=$("lC").value,q=$("lQ").value.toLowerCase();
- const L=ofMes(m).filter(r=>(!c||r.c===c)&&(!q||r.n.toLowerCase().includes(q)));
- $("lT").innerHTML="<tr><th>Fecha</th><th>Hora</th><th>Médico</th><th>Paciente</th><th>Exp.</th><th>Edad/Sexo</th><th>Categoría</th><th>Estudio</th><th>Procedencia</th><th>Obs.</th><th></th></tr>"+
- L.map(r=>`<tr><td>${fmt(r.f)}</td><td>${r.h||""}</td><td>${esc(r.m)}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${esc(r.e)} ${r.s}</td><td>${r.c}</td><td>${esc(r.t)}${r.r?" — "+r.r:""}</td><td>${r.p}</td><td>${esc(r.o)}</td><td><span style="white-space:nowrap">${acc(r.id)}</span></td></tr>`).join("")+`<tr class="tot"><td colspan=11>${L.length} registros</td></tr>`}
-function csv(){const rows=[["Fecha","Hora","Médico","Paciente","Expediente","Edad","Sexo","Categoría","Estudio","Resultado","Procedencia","Observación"]];
- ofMes($("lM").value).forEach(r=>rows.push([r.f,r.h,r.m,r.n,r.x,r.e,r.s,r.c,r.t,r.r,r.p,r.o]));
+ const L=ofMes(m).filter(r=>(!c||r.c===c)&&(!q||(r.n+" "+(r.so||"")).toLowerCase().includes(q)));
+ $("lT").innerHTML="<tr><th>Fecha</th><th>Hora</th><th>Médico</th><th>Paciente</th><th>Exp.</th><th>Edad/Sexo</th><th>Categoría</th><th>Estudio</th><th>Solicitante</th><th>Procedencia</th><th>Obs.</th><th></th></tr>"+
+ L.map(r=>`<tr><td>${fmt(r.f)}</td><td>${r.h||""}</td><td>${esc(r.m)}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${esc(r.e)} ${r.s}</td><td>${r.c}</td><td>${esc(r.t)}${r.r?" — "+r.r:""}</td><td>${esc(r.so)}</td><td>${r.p}</td><td>${esc(r.o)}</td><td><span style="white-space:nowrap">${acc(r.id)}</span></td></tr>`).join("")+`<tr class="tot"><td colspan=12>${L.length} registros</td></tr>`}
+function csv(){const rows=[["Fecha","Hora","Médico","Paciente","Expediente","Edad","Sexo","Categoría","Estudio","Resultado","Médico solicitante","Procedencia","Observación"]];
+ ofMes($("lM").value).forEach(r=>rows.push([r.f,r.h,r.m,r.n,r.x,r.e,r.s,r.c,r.t,r.r,r.so,r.p,r.o]));
  dl("﻿"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n"),`Produccion_${$("lM").value}.csv`,"text/csv")}
 function renderCombo(){$("kT").innerHTML=Object.values(DB.cats).flat().map(t=>`<option>${esc(t)}</option>`).join("");
  $("kL").innerHTML=Object.entries(DB.combo).map(([t,c],i)=>`<div class="card" style="padding:10px"><b>${esc(t)}</b> <a href="#" style="color:#c0392b;float:right" onclick="delCombo(${i});return false">quitar</a>
