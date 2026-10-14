@@ -115,6 +115,10 @@ tr.edit td{background:#fff4d6!important}tr.nuevo td{animation:fl 1.5s}@keyframes
 <div class="card"><h2>Tipos de estudio por categoría</h2>
 <div class="row"><div><label>Categoría</label><select id="cC"></select></div><div style="flex:1"><label>Nuevo tipo</label><input id="cN"></div><button class="btn" onclick="addT()">Agregar</button></div><br>
 <div id="cL"></div></div>
+<div class="card"><h2>Estudios que cuentan como varios</h2>
+<p style="font-size:13px">Escriba los estudios que incluye, separados por coma. Uno para mujer (F) y otro para hombre (M).</p>
+<div class="row"><div style="flex:1;min-width:180px"><label>Estudio</label><select id="kT"></select></div><button class="btn" onclick="addCombo()">Agregar / editar</button></div><br>
+<div id="kL"></div></div>
 <div class="card"><h2>Respaldo</h2>
 <div class="row"><button class="btn" onclick="backup()">Descargar respaldo</button>
 <label class="btn sec" style="margin:0">Restaurar respaldo<input type="file" accept=".json" class="hide" onchange="restore(this)"></label></div>
@@ -134,6 +138,7 @@ let DB={cats:{
  "Lectura Mamografía":["Mamografía de tamizaje","Mamografía diagnóstica","Mamografía + US complementario","Proyecciones adicionales"],
  "Lectura Radiografía":["RX tórax","RX abdomen","RX columna","RX extremidades","RX cráneo / senos paranasales","RX pelvis / cadera","Otro RX"]},regs:[]};
 try{const s=localStorage.getItem(KEY);if(s)DB=JSON.parse(s)}catch(e){}
+DB.combo??={"US Abdominal completo":{F:["US Abdominal","US Renal / Vías urinarias","US Pélvico suprapúbico"],M:["US Abdominal","US Renal / Vías urinarias","US Prostático"]}};
 {const seen=new Set();let fix=0;DB.regs.forEach((r,i)=>{r.id=String(r.id);if(seen.has(r.id)){r.id=r.id+"_"+i;fix=1}seen.add(r.id)});if(fix)try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){alert("No se pudo guardar")}};
 const $=id=>document.getElementById(id);
@@ -183,10 +188,12 @@ function borrar(id){const i=DB.regs.findIndex(r=>r.id===id);if(i<0)return;const 
  toast("Eliminado: "+r.n,()=>{DB.regs.splice(i,0,r);save();renderHoy();renderLis()})}
 const acc=id=>`<button class="btn sec s" onclick="editar('${id}')">Editar</button> <button class="btn bad s" onclick="borrar('${id}')">✕</button>`;
 function renderHoy(){cntDis();const f=$("rF").value,L=DB.regs.filter(r=>r.f===f).sort((a,b)=>(b.h||"").localeCompare(a.h||"")||DB.regs.indexOf(b)-DB.regs.indexOf(a));$("nHoy").textContent=L.length;$("lHoy").textContent=fmt(f);
- $("hoy").innerHTML="<tr><th class='n'>#</th><th>Hora</th><th>Paciente</th><th>Categoría</th><th>Estudio</th><th>Procedencia</th><th></th></tr>"+(L.map((r,i)=>`<tr class="${r.id===editId?"edit":r.id===lastId?"nuevo":""}"><td class="n">${L.length-i}</td><td>${r.h||""}</td><td><b>${esc(r.n)}</b>${r.e||r.x?`<br><small>${esc(r.e)} ${r.s} ${r.x?"· Exp "+esc(r.x):""}</small>`:""}</td><td>${r.c}</td><td>${esc(r.t)}${r.r?" — "+r.r:""}${r.l==="Pendiente"?' <span style="color:#c0392b;font-weight:bold">(disco pendiente)</span>':""}</td><td>${r.p}</td><td style="white-space:nowrap">${acc(r.id)}</td></tr>`).join("")||"<tr><td colspan=7>Nada registrado en esta fecha</td></tr>");lastId=null}
+ $("hoy").innerHTML="<tr><th class='n'>#</th><th>Hora</th><th>Paciente</th><th>Categoría</th><th>Estudio</th><th>Procedencia</th><th></th></tr>"+(L.map((r,i)=>`<tr class="${r.id===editId?"edit":r.id===lastId?"nuevo":""}"><td class="n">${L.length-i}</td><td>${r.h||""}</td><td><b>${esc(r.n)}</b>${r.e||r.x?`<br><small>${esc(r.e)} ${r.s} ${r.x?"· Exp "+esc(r.x):""}</small>`:""}</td><td>${r.c}</td><td>${esc(r.t)}${partes(r)?` <small style="color:#0e7c66">(cuenta ${partes(r).length}: ${partes(r).map(x=>x.replace("US ","")).join(" + ")})</small>`:""}${r.r?" — "+r.r:""}${r.l==="Pendiente"?' <span style="color:#c0392b;font-weight:bold">(disco pendiente)</span>':""}</td><td>${r.p}</td><td style="white-space:nowrap">${acc(r.id)}</td></tr>`).join("")||"<tr><td colspan=7>Nada registrado en esta fecha</td></tr>");lastId=null}
 $("rN").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();guardar()}});
 $("rF").onchange=renderHoy;
 const ofMes=m=>DB.regs.filter(r=>r.f.startsWith(m)).sort((a,b)=>a.f.localeCompare(b.f)||(a.h||"").localeCompare(b.h||"")||DB.regs.indexOf(a)-DB.regs.indexOf(b));
+function partes(r){const c=DB.combo[r.t];return c?(c[r.s]||c.F):null}
+function expand(L){const E=[];L.forEach(r=>{const P=partes(r);if(P)P.forEach(t=>E.push({...r,t,de:r.t}));else E.push(r)});return E}
 function desglose(L){
  const C={};L.forEach(r=>{C[r.c]??={};C[r.c][r.t]=(C[r.c][r.t]||0)+1});
  let h="<tr><th>Estudio</th><th class='n'>Cantidad</th></tr>";
@@ -217,21 +224,21 @@ function porDia(L,a,b){const C=Object.keys(DB.cats),ab={"Ultrasonido":"US","Dopp
  let h=`<tr><th>Día</th>${C.map(c=>`<th class="n">${ab[c]||c}</th>`).join("")}<th class="n">Total</th></tr>`,f=a;const T=C.map(()=>0);const DS=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
  while(f<=b){const D=L.filter(r=>r.f===f);if(D.length||per==="s"){h+=`<tr><td>${DS[new Date(f+"T12:00").getDay()]} ${fmt(f)}</td>${C.map((c,i)=>{const n=D.filter(r=>r.c===c).length;T[i]+=n;return`<td class="n">${n||""}</td>`}).join("")}<td class="n"><b>${D.length}</b></td></tr>`}f=addDays(f,1)}
  return h+`<tr class="tot"><td>TOTAL</td>${T.map(v=>`<td class="n">${v}</td>`).join("")}<td class="n">${L.length}</td></tr>`}
-function renderMes(){const[a,b]=rango(),L=ofRango(a,b);$("mTit").textContent="ESTADÍSTICA "+PT[per]+" — "+perLbl();$("bImp").textContent="🖨 Imprimir estadística "+PT[per].toLowerCase();
- $("mK").innerHTML=`<div><b>${L.length}</b><span>Total del período</span></div>`+resumen(L).map(([c,n])=>`<div><b>${n}</b><span>${c}</span></div>`).join("");
- $("mD2").innerHTML=discos(a,b);$("mT").innerHTML=desglose(L);$("mP").innerHTML=porProc(L);$("cDia").classList.toggle("hide",per==="d");if(per!=="d")$("mDia").innerHTML=porDia(L,a,b)}
-function imprimir(){const[a,b]=rango(),L=ofRango(a,b);
+function renderMes(){const[a,b]=rango(),L=ofRango(a,b),E=expand(L);$("mTit").textContent="ESTADÍSTICA "+PT[per]+" — "+perLbl();$("bImp").textContent="🖨 Imprimir estadística "+PT[per].toLowerCase();
+ $("mK").innerHTML=`<div><b>${E.length}</b><span>Total estudios</span></div><div><b>${L.length}</b><span>Pacientes</span></div>`+resumen(E).map(([c,n])=>`<div><b>${n}</b><span>${c}</span></div>`).join("");
+ $("mD2").innerHTML=discos(a,b);$("mT").innerHTML=desglose(E);$("mP").innerHTML=porProc(E);$("cDia").classList.toggle("hide",per==="d");if(per!=="d")$("mDia").innerHTML=porDia(E,a,b)}
+function imprimir(){const[a,b]=rango(),L=ofRango(a,b),E=expand(L);
  const now=new Date().toLocaleString("es-NI",{timeZone:"America/Managua",dateStyle:"short",timeStyle:"short"});
  $("rep").innerHTML=`<h1>HOSPITAL REGIONAL ESCUELA CAMILO ORTEGA SAAVEDRA</h1><p class="sub">Juigalpa, Chontales · Departamento de Radiología e Imágenes Médicas</p>
  <h2>INFORME ESTADÍSTICO ${PT[per]} DE PRODUCCIÓN — ${perLbl()}</h2>
  <p class="sub"><b>Médico:</b> Dr. Néstor José Mejía González · Especialista en Radiología e Imagen · Código MINSA 37294</p><p class="sub" style="font-size:9pt">Generado: ${now}</p>
- <h3>RESUMEN POR CATEGORÍA</h3><table><tr><th>Categoría</th><th class="n">Cantidad</th></tr>${resumen(L).map(([c,n])=>`<tr><td>${c}</td><td class="n">${n}</td></tr>`).join("")}<tr class="tot"><td>TOTAL</td><td class="n">${L.length}</td></tr></table>
+ <h3>RESUMEN POR CATEGORÍA</h3><table><tr><th>Categoría</th><th class="n">Cantidad</th></tr>${resumen(E).map(([c,n])=>`<tr><td>${c}</td><td class="n">${n}</td></tr>`).join("")}<tr class="tot"><td>TOTAL ESTUDIOS</td><td class="n">${E.length}</td></tr><tr><td>Pacientes atendidos</td><td class="n">${L.length}</td></tr></table>
  <h3>DISCOS / LECTURAS</h3><table>${discos(a,b)}</table>
- <h3>DESGLOSE POR TIPO DE ESTUDIO</h3><table>${desglose(L)}</table>
- ${per!=="d"?`<h3>PRODUCCIÓN POR DÍA</h3><table>${porDia(L,a,b)}</table>`:""}
- <h3>POR PROCEDENCIA</h3><table>${porProc(L)}</table>
+ <h3>DESGLOSE POR TIPO DE ESTUDIO</h3><table>${desglose(E)}</table>
+ ${per!=="d"?`<h3>PRODUCCIÓN POR DÍA</h3><table>${porDia(E,a,b)}</table>`:""}
+ <h3>POR PROCEDENCIA</h3><table>${porProc(E)}</table>
  <div class="firma"><div>Dr. Néstor José Mejía González<br>Médico Especialista en Radiología e Imágenes<br>Código MINSA: 37294</div></div>
- ${$("mL").checked?`<div class="pb"></div><h3>LISTADO DE PACIENTES — ${perLbl()}</h3><table><tr><th class="n">#</th><th>Fecha</th><th>Hora</th><th>Paciente</th><th>Exp.</th><th>Edad/Sexo</th><th>Estudio</th><th>Procedencia</th></tr>${L.map((r,i)=>`<tr><td class="n">${i+1}</td><td>${fmt(r.f)}</td><td>${r.h||""}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${esc(r.e)} ${r.s}</td><td>${esc(r.t)}${r.r?" ("+r.r+")":""}${r.l==="Pendiente"?" (PENDIENTE)":""}</td><td>${r.p}</td></tr>`).join("")}</table>`:""}`;
+ ${$("mL").checked?`<div class="pb"></div><h3>LISTADO DE PACIENTES — ${perLbl()}</h3><table><tr><th class="n">#</th><th>Fecha</th><th>Hora</th><th>Paciente</th><th>Exp.</th><th>Edad/Sexo</th><th>Estudio</th><th>Procedencia</th></tr>${L.map((r,i)=>`<tr><td class="n">${i+1}</td><td>${fmt(r.f)}</td><td>${r.h||""}</td><td>${esc(r.n)}</td><td>${esc(r.x)}</td><td>${esc(r.e)} ${r.s}</td><td>${esc(r.t)}${partes(r)?" (cuenta "+partes(r).length+")":""}${r.r?" ("+r.r+")":""}${r.l==="Pendiente"?" (PENDIENTE)":""}</td><td>${r.p}</td></tr>`).join("")}</table>`:""}`;
  window.print()}
 function pend(){return DB.regs.filter(r=>r.l==="Pendiente").sort((a,b)=>a.f.localeCompare(b.f))}
 function cntDis(){const n=pend().length;$("nDis").textContent=n||""}
@@ -250,12 +257,19 @@ function renderLis(){const m=$("lM").value,c=$("lC").value,q=$("lQ").value.toLow
 function csv(){const rows=[["Fecha","Hora","Paciente","Expediente","Edad","Sexo","Categoría","Estudio","Resultado","Procedencia","Observación"]];
  ofMes($("lM").value).forEach(r=>rows.push([r.f,r.h,r.n,r.x,r.e,r.s,r.c,r.t,r.r,r.p,r.o]));
  dl("﻿"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\n"),`Produccion_${$("lM").value}.csv`,"text/csv")}
-function addT(){const c=$("cC").value,v=$("cN").value.trim();if(v&&!DB.cats[c].includes(v)){DB.cats[c].push(v);save();fillCats();$("cN").value=""}}
+function renderCombo(){$("kT").innerHTML=Object.values(DB.cats).flat().map(t=>`<option>${esc(t)}</option>`).join("");
+ $("kL").innerHTML=Object.entries(DB.combo).map(([t,c],i)=>`<div class="card" style="padding:10px"><b>${esc(t)}</b> <a href="#" style="color:#c0392b;float:right" onclick="delCombo(${i});return false">quitar</a>
+ <label style="margin-top:6px">Mujer (F) — cuenta ${c.F.length}</label><input value="${esc(c.F.join(", "))}" onchange="setCombo(${i},'F',this.value)">
+ <label style="margin-top:6px">Hombre (M) — cuenta ${c.M.length}</label><input value="${esc(c.M.join(", "))}" onchange="setCombo(${i},'M',this.value)"></div>`).join("")||"Ninguno"}
+function setCombo(i,s,v){const t=Object.keys(DB.combo)[i],L=v.split(",").map(x=>x.trim()).filter(Boolean);if(!L.length)return alert("Escriba al menos un estudio");DB.combo[t][s]=L;save();renderCombo();toast("✔ Guardado")}
+function addCombo(){const t=$("kT").value;if(!DB.combo[t]){DB.combo[t]={F:[t],M:[t]};save()}renderCombo()}
+function delCombo(i){const t=Object.keys(DB.combo)[i];if(confirm("¿"+t+" contará como 1 solo estudio?")){delete DB.combo[t];save();renderCombo()}}
+function addT(){const c=$("cC").value,v=$("cN").value.trim();if(v&&!DB.cats[c].includes(v)){DB.cats[c].push(v);save();fillCats();renderCombo();$("cN").value=""}}
 function delT(c,i){if(confirm("¿Quitar "+DB.cats[c][i]+"?")){DB.cats[c].splice(i,1);save();fillCats()}}
 function dl(c,n,t){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click()}
 function backup(){dl(JSON.stringify(DB,null,1),`Respaldo_Produccion_${today()}.json`,"application/json")}
 function restore(inp){const f=inp.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!d.regs)throw 0;if(confirm("¿Reemplazar datos actuales?")){DB=d;save();location.reload();alert("Restaurado")}}catch(e){alert("Archivo inválido")}})}
-const t=today();$("rF").value=t;$("mD").value=t;$("mM").value=$("lM").value=t.slice(0,7);$("rH").value=hora();$("rH").oninput=()=>hTouched=true;setInterval(()=>{if(!hTouched&&!editId)$("rH").value=hora()},20000);fillCats();modo();renderHoy();cntDis();
+const t=today();$("rF").value=t;$("mD").value=t;$("mM").value=$("lM").value=t.slice(0,7);$("rH").value=hora();$("rH").oninput=()=>hTouched=true;setInterval(()=>{if(!hTouched&&!editId)$("rH").value=hora()},20000);fillCats();renderCombo();modo();renderHoy();cntDis();
 </script>
 </body>
 </html>
