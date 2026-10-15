@@ -20,7 +20,20 @@ description: Informes radiológicos de nivel subespecialista del Dr. Néstor Mej
 - Limitaciones técnicas reales sí se dicen en lenguaje radiológico: "valoración limitada por interposición de gas",
   "no evaluable por escasa repleción vesical", "el segmento ureteral no se visualiza".
 - El script bloquea el Word si detecta estas frases: reescribir la línea indicada y volver a generar.
- Y SELLOS: YA ESTÁN INCLUIDOS — NUNCA PEDIRLOS
+
+## COBERTURA COMPLETA OBLIGATORIA (aunque el doctor solo envíe medidas y "resto normal")
+- Cada estudio lleva @protocolo. TODAS las estructuras del protocolo se describen como "# TÍTULO" con su párrafo
+  completo (estandar_detalle.md), incluidas cavidad peritoneal, retroperitoneo, espacios extraperitoneales,
+  suprarrenales, uréteres, asas, pared, ganglios, etc. Nada se omite. Sin patología = descripción normal COMPLETA.
+- Orden de los títulos = orden del protocolo (cefálico → caudal, anterior → posterior; derecho antes que izquierdo).
+- Hay protocolo para TODO estudio de US convexo, lineal y endocavitario, Rx, mamografía, TC y RM
+  (lista completa en referencias/protocolos.md). "@protocolo libre" SOLO si el estudio no existe en la lista; en ese
+  caso construir igualmente la lista completa cefálico → caudal de la región y describir cada estructura.
+- Estructura no visualizada: decirlo con causa técnica ("no visualizada por interposición de gas").
+- El script BLOQUEA el Word si falta alguna estructura del protocolo y dice cuáles: agregarlas y regenerar.
+- Estudios combinados (p. ej. abdominal + tiroides) = dos informes, cada uno con su protocolo.
+
+## LOGOS Y SELLOS: YA ESTÁN INCLUIDOS — NUNCA PEDIRLOS
 - Todos los logos y el sello NM están en la carpeta `assets/` de ESTA habilidad (junto a este SKILL.md).
 - El script `generar_informe.py` (misma carpeta) los inserta solo. NO pedir al doctor que suba sellos ni logos,
   NO buscar logos en el chat, NO dibujarlos. Solo usar otros si el doctor los envía y pide cambiarlos.
