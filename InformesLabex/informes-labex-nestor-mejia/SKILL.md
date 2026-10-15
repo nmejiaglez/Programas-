@@ -30,7 +30,11 @@ description: Informes radiológicos de nivel subespecialista del Dr. Néstor Mej
   (lista completa en referencias/protocolos.md). "@protocolo libre" SOLO si el estudio no existe en la lista; en ese
   caso construir igualmente la lista completa cefálico → caudal de la región y describir cada estructura.
 - Estructura no visualizada: decirlo con causa técnica ("no visualizada por interposición de gas").
-- El script BLOQUEA el Word si falta alguna estructura del protocolo y dice cuáles: agregarlas y regenerar.
+- El script BLOQUEA el Word si falta alguna estructura del protocolo y dice cuáles: Claude las agrega SOLO (con su
+  descripción normal completa) y regenera. Ese aviso es interno: NUNCA mostrarlo ni preguntarle nada al doctor por ello.
+- NUNCA pedir al doctor medidas de estructuras que no midió. Estructura sin medida = descripción cualitativa completa
+  ("dimensiones dentro de parámetros esperados"), sin inventar números. Solo preguntar si falta un dato CRÍTICO del
+  hallazgo principal (y aun así, en el chat, en una línea).
 - Estudios combinados (p. ej. abdominal + tiroides) = dos informes, cada uno con su protocolo.
 
 ## LOGOS Y SELLOS: YA ESTÁN INCLUIDOS — NUNCA PEDIRLOS
