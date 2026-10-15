@@ -436,6 +436,9 @@ def unidades(datos, secciones, hallazgos):
             U.append(("barra", titulo))
             if clave == "CONCLUSIONES":
                 U.append(("conclusiones", secciones[clave]))
+                if datos.get("atlas"):
+                    U.append(("barra", "ESQUEMA ANATÓMICO DEL PROBLEMA PRINCIPAL"))
+                    U.append(("atlas", datos["atlas"]))
             else:
                 for t in secciones[clave]:
                     pid += 1
@@ -467,6 +470,13 @@ def pintar(cont, U, ancho, base):
             tabla_imagenes(cont, u[1], base, ancho)
         elif tipo == "conclusiones":
             conclusiones(cont, u[1])
+        elif tipo == "atlas":
+            ruta = os.path.join(ASSETS, "atlas", u[1].strip() + ".png")
+            if not os.path.exists(ruta):
+                disp = sorted(f[:-4] for f in os.listdir(os.path.join(ASSETS, "atlas")))
+                raise SystemExit(f"@atlas desconocido: {u[1]}. Disponibles: {', '.join(disp)}")
+            p = imagen(cont, ruta, min(ancho, 150), despues=4)
+            p.paragraph_format.keep_together = True
         elif tipo == "firma":
             firma(cont)
 

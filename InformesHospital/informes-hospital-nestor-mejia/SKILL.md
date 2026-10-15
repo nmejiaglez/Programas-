@@ -32,6 +32,7 @@ description: Informes radiológicos de nivel subespecialista del Dr. Néstor Mej
 @paciente Nombre Apellidos
 @edad 45 años   @sexo / @medico / @procedencia / @modalidad   (una por línea)
 @archivo Nombre_Apellido_US_Abdominal
+@atlas litiasis_renal_derecho_superior   (opcional: esquema anatómico del PROBLEMA PRINCIPAL)
 ## ESTUDIO
 Indicación clínica.
 # HÍGADO !                   (# = órgano; ! = HALLAZGO RELEVANTE)
@@ -60,3 +61,9 @@ Nunca calcular volúmenes a mano: usar `{v:}` o `auto` (L×AP×T×0.523). Con 2 
   bazo, riñones, vejiga, retroperitoneo, grandes vasos, peritoneo); femenino + útero, endometrio, ovarios, anexos,
   fondo de saco; masculino + próstata; cuello; Doppler (permeabilidad, compresibilidad, flujo, espectro, índices);
   obstetricia (fetos, vitalidad, FCF, biometría, EG, PFE, placenta/Grannum, cordón, LA/ILA, FPP).
+
+## Esquema anatómico (@atlas) — sin costo extra
+Si el PROBLEMA PRINCIPAL tiene esquema disponible, agregar SIEMPRE la línea @atlas (el script inserta la imagen tras
+las conclusiones; Claude NO dibuja nada). Disponibles (carpeta assets/atlas):
+- litiasis_renal_{derecho|izquierdo}_{superior|medio|inferior|pelvis|union_pieloureteral}
+Si no hay esquema para el diagnóstico, omitir @atlas (no inventar ni dibujar).
