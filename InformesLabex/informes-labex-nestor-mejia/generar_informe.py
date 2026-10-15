@@ -109,7 +109,7 @@ PROHIBIDAS = [
     (r"\bno se (le )?(document|aport|proporcion|suministr|facilit|envi|adjunt|consign|especific|indic|report)\w*", "omitir el dato o describir lo evaluado"),
     (r"\bno (fue|fueron|ha sido|han sido) (document|aportad|proporcionad|suministrad|facilitad|enviad|consignad|especificad)\w*", "omitir el dato"),
     (r"\b(no )?(aportad|proporcionad|suministrad|facilitad|enviad|adjuntad|compartid)[oa]s? (por|en)\b", "omitir la referencia a la fuente"),
-    (r"\b(no )?consignad[oa]s?\b", "dejar el campo vacío u omitir"),
+    (r"\bno consignad[oa]s?\b", "dejar el campo vacío u omitir"),
     (r"\bno especificad[oa]s?\b|\bno disponible\b|\bno se dispone\b|\bsin datos\b|\bdato[s]? faltante", "omitir"),
     (r"\b(pusiste|pusistes|enviaste|enviastes|mandaste|mandastes|proporcionaste|subiste|dictaste|indicaste|me (pasaste|diste))\b", "nunca dirigirse al doctor"),
     (r"\b(tu|su|el) dictado\b|\bsegún (lo )?(dictado|indicado|referido por el médico)\b", "redactar como observación propia"),
