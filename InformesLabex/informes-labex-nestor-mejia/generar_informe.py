@@ -740,11 +740,23 @@ def main():
         while k > 0 and not corte_valido(U, k):
             k -= 1
     else:
-        # sin LibreOffice: estimación por caracteres
-        total = 0
+        # sin LibreOffice (p. ej. ChatGPT): estimación por líneas calibrada con LibreOffice
+        import math
+        lineas, pid, buf = 0.0, None, 0
         for i, u in enumerate(U[:limite]):
-            total += len(u[2]) if u[0] == "frase" else 120
-            if total > 2600:
+            if u[0] == "frase":
+                if u[1] != pid and buf:
+                    lineas += math.ceil(buf / 86) + 0.3
+                    buf = 0
+                pid = u[1]
+                buf += len(u[2]) + 1
+            else:
+                if buf:
+                    lineas += math.ceil(buf / 86) + 0.3
+                    buf = 0
+                pid = None
+                lineas += 1.7
+            if lineas + (math.ceil(buf / 86) if buf else 0) > 64:
                 break
             if corte_valido(U, i + 1):
                 k = i + 1

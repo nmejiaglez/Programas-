@@ -84,3 +84,32 @@ def _extraer_activos():
     with open(salida, "w", encoding="utf-8") as f:
         f.write(cab + cuerpo + "\n\n# ------------------------- logos, sellos y esquemas (no editar)\n" + activos_py + '\nASSETS = _extraer_activos()\n\nif __name__ == "__main__":\n    main()\n')
     print(salida, round(os.path.getsize(salida) / 1e6, 2), "MB")
+
+
+# ------------------------------------------------ versión ChatGPT (solo hospital)
+src = open(os.path.join(BASE, "ARCHIVO_UNICO_HOSPITAL.py"), encoding="utf-8").read()
+fin = src.index("==================================== FIN DE INSTRUCCIONES")
+cab, resto = src[:fin], src[fin:]
+REEMPLAZOS = [
+    ('''INSTRUCCIONES PARA CLAUDE
+>>> LEER SOLO DESDE AQUÍ HASTA LA LÍNEA "FIN DE INSTRUCCIONES". NO leer el resto del archivo: es código y logos
+>>> codificados y leerlo gastaría muchísimo uso. Para usarlo basta con EJECUTARLO.''', open(os.path.join(BASE, "herramientas", "cabecera_chatgpt.txt"), encoding="utf-8").read().rstrip("\n")),
+    ("- Todos los informes de este chat son FORMATO HOSPITAL.\n- Para cada paciente: escribir el dictado .txt con el formato descrito abajo y ejecutar\n      python3 ESTE_ARCHIVO.py dictado.txt carpeta_salida\n  (si falta python-docx: pip install python-docx). Entregar el .docx generado.\n",
+     "- Todos los informes de este chat son FORMATO HOSPITAL.\n"),
+    ("Claude las agrega SOLO", "el asistente las agrega SOLO"), ("Claude NO dibuja nada", "el asistente NO dibuja nada"),
+    ("el informe lo firma el radiólogo, no una IA", "el informe lo firma el radiólogo, no una IA; nunca mencionar ChatGPT ni IA"),
+    ("- Ejecutar con la ruta de esta habilidad: `python3 ESTE_ARCHIVO.py dictado.txt salida`\n  (si falta python-docx: `pip install python-docx`).",
+     "- Ejecutar siempre con el PASO 1 de arriba."),
+    ("4. Revisar SOLO una vez el PDF de vista previa (pdftoppm -r 50). No re-renderizar salvo error real.",
+     "4. Revisar el texto del dictado una vez antes de entregar (ortografía, lateralidad, nombre, medidas)."),
+    ("## Flujo (ahorro de uso: NO diseñar el Word a mano)",
+     "## Flujo (NO diseñar el Word a mano: el programa hace el diseño)\n- NUNCA crear el Word con otro método ni cambiar la plantilla. NUNCA acortar hallazgos.\n- Responder siempre en español. Respuesta final breve: el .docx y en pocas líneas los hallazgos principales."),
+    (" — FORMATO HOSPITAL — ", " — FORMATO HOSPITAL (VERSIÓN CHATGPT) — "),
+]
+for a, b in REEMPLAZOS:
+    assert a in cab, a[:60]
+    cab = cab.replace(a, b)
+assert "Claude" not in cab
+salida = os.path.join(BASE, "CHATGPT_HOSPITAL.py")
+open(salida, "w", encoding="utf-8").write(cab + resto)
+print(salida, round(os.path.getsize(salida) / 1e6, 2), "MB")
