@@ -11,27 +11,31 @@
 Ultrasonido abdominal, renal y pélvico. Paciente con antecedente de cáncer cervicouterino.
 
 # HÍGADO !
-De situación, morfología y dimensiones conservadas, con contornos lisos y cápsula de Glisson íntegra. El parénquima es homogéneo, de ecotextura fina, y muestra !!múltiples imágenes ecogénicas de morfología irregular!!, en número aproximado de cinco; la de mayor tamaño se localiza en el segmento VII y mide {m:12.70x16.18x15.99} (volumen: {v:12.70x16.18x15.99}). El sistema portal es de calibre conservado y los vasos intrahepáticos no muestran alteraciones.
+De situación habitual en el hipocondrio derecho, de forma conservada y dimensiones dentro de parámetros esperados, con contornos lisos, cápsula de Glisson íntegra y bordes de ángulo agudo conservado. El parénquima presenta ecogenicidad comparable a la de la corteza renal ipsilateral, con ecotextura fina y sin atenuación posterior del haz ultrasónico.
+En el espesor parenquimatoso se identifican !!múltiples imágenes ecogénicas focales!!, en número aproximado de cinco, distribuidas en ambos lóbulos, de morfología irregular, contornos parcialmente definidos y ecoestructura heterogénea, sin halo hipoecoico periférico demostrable ni sombra acústica posterior. La de mayor tamaño se localiza en el segmento VII, mide {m:12.70x16.18x15.99} (volumen: {v:12.70x16.18x15.99}), no ejerce efecto de masa sobre las estructuras vasculares adyacentes ni deforma el contorno capsular. No se identifican lesiones quísticas, colecciones ni calcificaciones groseras asociadas.
+# SISTEMA PORTAL Y VENAS HEPÁTICAS
+La vena porta es de calibre conservado, permeable, con flujo hepatópeto en la exploración Doppler color y sin imágenes intraluminales que sugieran trombosis. Las ramas portales intrahepáticas muestran trayecto y calibre habituales. Las venas hepáticas convergen de forma habitual hacia la vena cava inferior, son permeables y de calibre conservado. No se identifican signos ecográficos de hipertensión portal ni circulación colateral.
 # VESÍCULA BILIAR Y VÍAS BILIARES
-Vesícula de tamaño conservado, con paredes finas, sin imágenes de litiasis ni ecos en su interior. El colédoco y las vías biliares intrahepáticas son de aspecto conservado, sin evidencia de dilatación.
+Vesícula biliar en adecuada repleción, de situación, forma y tamaño conservados, con paredes finas y regulares que conservan su patrón en capas, sin edema ni engrosamiento parietal. Su contenido es anecoico y homogéneo, sin imágenes de litiasis, barro biliar ni lesiones polipoideas. El signo de Murphy ecográfico es negativo y no se identifica líquido perivesicular. La vía biliar intrahepática no muestra dilatación y el colédoco es de calibre conservado en su trayecto evaluable, sin imágenes intraluminales en su porción distal visualizada.
 # PÁNCREAS
-Sin alteraciones morfológicas ni ecoestructurales demostrables en la porción evaluada.
+Se visualizan la cabeza y el cuerpo pancreáticos, de tamaño, contornos y ecogenicidad conservados, con ecotextura homogénea y sin lesiones focales sólidas ni quísticas demostrables. El conducto de Wirsung no se encuentra dilatado. La cola se evalúa parcialmente por interposición de gas intestinal. No se identifican colecciones peripancreáticas ni líquido en el espacio pararrenal anterior.
 # BAZO
-De tamaño y ecoestructura conservados, sin lesiones focales identificables.
+De situación habitual en el hipocondrio izquierdo, de forma y dimensiones conservadas, con contornos lisos y ecotextura homogénea. No se identifican lesiones focales sólidas ni quísticas, ni bazos accesorios. El hilio esplénico y la vena esplénica muestran calibre habitual.
 # RIÑÓN DERECHO !
-Con alteración de su forma y espesor cortical disminuido. La ecogenicidad cortical es habitual y la diferenciación cortico-medular se encuentra disminuida. No se identifican imágenes de litiasis ni lesiones focales. Presenta !!dilatación del sistema excretor!!, con ectasia de los cálices hasta 31.38 mm y de la pelvis renal hasta 18.12 mm; el segmento ureteral no pudo ser definido.
+De situación habitual en la fosa renal, con !!alteración de su morfología!! y adelgazamiento del espesor cortical, con dimensiones y volumen consignados en el cuadro. La ecogenicidad cortical es habitual en relación con el parénquima hepático, mientras que la diferenciación corticomedular se encuentra disminuida.
+El sistema excretor presenta !!dilatación pielocalicial!!, con ectasia de los cálices hasta 31.38 mm y de la pelvis renal hasta 18.12 mm, con cálices de aspecto redondeado y ensanchamiento de la pelvis extrarrenal. El segmento ureteral proximal no pudo ser definido en su trayecto, lo que impide precisar el nivel de la obstrucción. No se identifican imágenes de litiasis con sombra acústica posterior, quistes ni lesiones sólidas parenquimatosas, ni colecciones perirrenales.
 # RIÑÓN IZQUIERDO
-De forma conservada. La ecogenicidad cortical es habitual y la diferenciación cortico-medular está conservada. Sin litiasis, sin dilatación del sistema excretor y sin lesiones focales.
+De situación, eje y forma conservados, con contornos lisos y dimensiones y volumen dentro de parámetros esperados. El espesor cortical está preservado, con ecogenicidad cortical habitual y diferenciación corticomedular conservada. El seno renal es de aspecto habitual y el sistema pielocalicial no muestra dilatación. No se identifican imágenes de litiasis, quistes ni lesiones focales sólidas, ni colecciones perirrenales.
 # VEJIGA URINARIA !
-Con escasa repleción al momento del estudio, lo que limita la valoración parietal. Sus paredes se muestran !!engrosadas e irregulares!!, con un espesor de 12.76 mm. No se identifican imágenes patológicas en su interior.
+Con escasa repleción al momento del estudio, lo que limita la valoración parietal y no permite evaluar residuo postmiccional. Sus paredes se muestran !!engrosadas de forma difusa e irregular!!, con un espesor de 12.76 mm, sin lesiones polipoideas o masas endoluminales claramente definidas en las condiciones del estudio. El contenido es anecoico, sin ecos en suspensión, coágulos ni imágenes de litiasis. Los meatos ureterales no pudieron identificarse por la escasa distensión.
 # ÚTERO
-En anteversoflexión, de contornos regulares. El miometrio es homogéneo, con calcificaciones fisiológicas de las arterias arcuatas. La cavidad endometrial se encuentra libre.
+En anteversoflexión, de forma conservada, contornos regulares y dimensiones y volumen consignados en el cuadro. El miometrio es de ecotextura homogénea, sin imágenes nodulares sugestivas de miomatosis, con calcificaciones lineales periféricas en relación con calcificación fisiológica de las arterias arcuatas. El endometrio es fino, lineal y regular, de 3.38 mm, con cavidad endometrial libre, sin colecciones ni lesiones ocupantes. El cérvix es de morfología habitual en lo evaluable.
 # OVARIO DERECHO
-Con presencia de folículos. Sin lesiones sólidas ni quísticas.
+De situación habitual, forma ovoidea, contornos regulares y dimensiones y volumen dentro de parámetros esperados. El estroma es de ecogenicidad habitual y presenta folículos de pequeño tamaño distribuidos de forma periférica. No se identifican lesiones sólidas ni quísticas complejas.
 # OVARIO IZQUIERDO
-Con presencia de folículos. Sin lesiones sólidas ni quísticas.
-# ESPACIO DE DOUGLAS Y FONDO DE SACO POSTERIOR
-Sin evidencia de líquido libre.
+De situación habitual, forma ovoidea, contornos regulares y dimensiones y volumen dentro de parámetros esperados. El estroma es de ecogenicidad habitual y presenta folículos de pequeño tamaño. No se identifican lesiones sólidas ni quísticas complejas.
+# ANEXOS, ESPACIO DE DOUGLAS Y CAVIDAD PERITONEAL
+Regiones anexiales sin masas sólidas ni quísticas y sin imágenes tubulares que sugieran hidrosálpinx. No se identifica líquido libre en el espacio de Douglas ni en los recesos peritoneales evaluados. No se observan colecciones, adenopatías retroperitoneales accesibles ni alteraciones del calibre de la aorta abdominal y de la vena cava inferior en sus segmentos visualizados.
 
 ## MEDICIONES
 Hígado | Longitud | 131.05 | | Dimensión conservada

@@ -4,6 +4,13 @@ description: Informes radiológicos de nivel subespecialista del Dr. Néstor Mej
 ---
 # Informes FORMATO HOSPITAL — Dr. Néstor José Mejía González (Código MINSA 37294)
 
+## ANTES DE REDACTAR (OBLIGATORIO EN CADA INFORME)
+1. Leer `referencias/estandar_detalle.md` (nivel de detalle mínimo por órgano y plantilla de lesión).
+2. Leer `referencias/reglas_completas.md` (reglas originales completas del doctor; la sección 6 de diseño la aplica el script).
+3. Redactar hallazgos EXTENSOS y minuciosos: 4–8 oraciones por órgano, 6–12 por hallazgo patológico.
+   Un informe con hallazgos breves o telegráficos es un ERROR: rehacerlo antes de entregar.
+   El ahorro de uso viene del script (diseño), NUNCA de acortar los hallazgos.
+
 ## LOGOS Y SELLOS: YA ESTÁN INCLUIDOS — NUNCA PEDIRLOS
 - Todos los logos y el sello NM están en la carpeta `assets/` de ESTA habilidad (junto a este SKILL.md).
 - El script `generar_informe.py` (misma carpeta) los inserta solo. NO pedir al doctor que suba sellos ni logos,
