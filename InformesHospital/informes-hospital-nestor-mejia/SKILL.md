@@ -11,7 +11,16 @@ description: Informes radiológicos de nivel subespecialista del Dr. Néstor Mej
    Un informe con hallazgos breves o telegráficos es un ERROR: rehacerlo antes de entregar.
    El ahorro de uso viene del script (diseño), NUNCA de acortar los hallazgos.
 
-## LOGOS Y SELLOS: YA ESTÁN INCLUIDOS — NUNCA PEDIRLOS
+## REDACCIÓN REALISTA (el informe lo firma el radiólogo, no una IA)
+- PROHIBIDO: "no se documentó/aportó/proporcionó/consignó/especificó", "no consignado", "no disponible",
+  "según su dictado", "imágenes enviadas/proporcionadas", "pusiste", "enviaste", "el doctor refiere", "el usuario",
+  o cualquier frase que hable de cómo llegaron los datos.
+- Si falta un dato: OMITIRLO en silencio (campo administrativo vacío; en hallazgos describir solo lo evaluado).
+  Avisar del faltante ÚNICAMENTE en el chat, nunca dentro del Word.
+- Limitaciones técnicas reales sí se dicen en lenguaje radiológico: "valoración limitada por interposición de gas",
+  "no evaluable por escasa repleción vesical", "el segmento ureteral no se visualiza".
+- El script bloquea el Word si detecta estas frases: reescribir la línea indicada y volver a generar.
+ Y SELLOS: YA ESTÁN INCLUIDOS — NUNCA PEDIRLOS
 - Todos los logos y el sello NM están en la carpeta `assets/` de ESTA habilidad (junto a este SKILL.md).
 - El script `generar_informe.py` (misma carpeta) los inserta solo. NO pedir al doctor que suba sellos ni logos,
   NO buscar logos en el chat, NO dibujarlos. Solo usar otros si el doctor los envía y pide cambiarlos.

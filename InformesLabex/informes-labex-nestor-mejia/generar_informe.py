@@ -103,6 +103,36 @@ def expandir(texto):
     return texto
 
 
+# Frases que delatan redacción automática o hablan con el doctor: el informe debe leerse
+# como escrito por el radiólogo. Si aparece alguna, NO se genera el Word.
+PROHIBIDAS = [
+    (r"\bno se (le )?(document|aport|proporcion|suministr|facilit|envi|adjunt|consign|especific|indic|report)\w*", "omitir el dato o describir lo evaluado"),
+    (r"\bno (fue|fueron|ha sido|han sido) (document|aportad|proporcionad|suministrad|facilitad|enviad|consignad|especificad)\w*", "omitir el dato"),
+    (r"\b(no )?(aportad|proporcionad|suministrad|facilitad|enviad|adjuntad|compartid)[oa]s? (por|en)\b", "omitir la referencia a la fuente"),
+    (r"\b(no )?consignad[oa]s?\b", "dejar el campo vacío u omitir"),
+    (r"\bno especificad[oa]s?\b|\bno disponible\b|\bno se dispone\b|\bsin datos\b|\bdato[s]? faltante", "omitir"),
+    (r"\b(pusiste|pusistes|enviaste|enviastes|mandaste|mandastes|proporcionaste|subiste|dictaste|indicaste|me (pasaste|diste))\b", "nunca dirigirse al doctor"),
+    (r"\b(tu|su|el) dictado\b|\bsegún (lo )?(dictado|indicado|referido por el médico)\b", "redactar como observación propia"),
+    (r"\b(imágenes|fotos|fotografías|capturas)( de pantalla)? (enviadas|proporcionadas|aportadas|adjuntas|suministradas)\b", "decir 'el estudio'"),
+    (r"\bsegún (las |los )?(imágenes|fotos|fotografías|capturas|datos|mediciones) (proporcionad|aportad|enviad|suministrad)\w*", "omitir"),
+    (r"\binteligencia artificial\b|\bcomo (modelo|asistente)\b|\bel usuario\b|\bel doctor (indica|refiere|envía|dicta)", "eliminar"),
+    (r"\binformación (no )?(aportada|proporcionada|suministrada|insuficiente)\b", "omitir"),
+]
+
+
+def revisar_frases(ruta):
+    errores = []
+    with open(ruta, encoding="utf-8") as f:
+        for n, ln in enumerate(f, 1):
+            if ln.strip().startswith(("@archivo", "@formato", "@atlas", "//")):
+                continue
+            for pat, sug in PROHIBIDAS:
+                for mt in re.finditer(pat, ln, re.IGNORECASE):
+                    errores.append(f"  línea {n}: «{mt.group(0)}» → {sug}")
+    if errores:
+        raise SystemExit("FRASES NO PERMITIDAS (reescribir como radiólogo y volver a generar):\n" + "\n".join(errores))
+
+
 def leer(ruta):
     datos = {"formato": "HOSPITAL"}
     secciones = {}
@@ -497,10 +527,10 @@ def lateral(celda, datos, F, fecha, hora):
     celda.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.TOP
     imagen(celda, os.path.join(ASSETS, F["logo"]), LAT - 6, despues=4)
     imagen(celda, os.path.join(ASSETS, "sello_nm.png"), LAT - 6, despues=8)
-    for etiqueta, clave, defecto in (("PACIENTE", "paciente", ""), ("EDAD", "edad", "No consignada"),
-                                     ("SEXO", "sexo", "No consignado"),
-                                     ("MÉDICO SOLICITANTE", "medico", "No consignado"),
-                                     ("PROCEDENCIA", "procedencia", "No consignada"),
+    for etiqueta, clave, defecto in (("PACIENTE", "paciente", ""), ("EDAD", "edad", " "),
+                                     ("SEXO", "sexo", " "),
+                                     ("MÉDICO SOLICITANTE", "medico", " "),
+                                     ("PROCEDENCIA", "procedencia", " "),
                                      ("MODALIDAD", "modalidad", "")):
         parrafo(celda, etiqueta, 7.5, True, AZUL, despues=0, antes=3)
         p = parrafo(celda, datos.get(clave) or defecto, 9.5, True, "111827", despues=2, interlineado=1.0)
@@ -675,6 +705,7 @@ def main():
     entrada = sys.argv[1]
     salida = sys.argv[2] if len(sys.argv) > 2 else os.path.dirname(os.path.abspath(entrada))
     base = os.path.dirname(os.path.abspath(entrada))
+    revisar_frases(entrada)
     datos, secciones, hallazgos = leer(entrada)
     F = FORMATOS[datos["formato"]]
     U = unidades(datos, secciones, hallazgos)
