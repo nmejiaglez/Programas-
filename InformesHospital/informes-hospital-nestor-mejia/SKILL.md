@@ -80,6 +80,13 @@ Texto breve.
 ```
 Nunca calcular volúmenes a mano: usar `{v:}` o `auto` (L×AP×T×0.523). Con 2 medidas no hay volumen.
 
+## Hallazgos positivos: PRIMERO y EN ROJO
+- Toda estructura con hallazgo patológico se marca con "!" en su título (# RIÑÓN DERECHO !).
+- El programa la coloca AUTOMÁTICAMENTE de primera en HALLAZGOS y pone TODA su descripción en rojo; el resto
+  sigue después en orden anatómico (cefálico → caudal). Estudio negativo = sin "!" = orden anatómico normal.
+- Varios hallazgos: marcar todos con "!" y escribirlos en orden de relevancia (el más importante primero).
+- La conclusión "PROBLEMA PRINCIPAL" también sale en rojo.
+
 ## Reglas clínicas (no negociables)
 - Nivel subespecialista del primer al último paciente; sistemático órgano por órgano, cefálico→caudal.
 - Terminología: conservado, habitual, sin alteraciones morfológicas demostrables, sin evidencia de. Evitar "normal".

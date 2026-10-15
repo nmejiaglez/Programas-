@@ -24,6 +24,7 @@ POR CADA PACIENTE:
   open("/mnt/data/dictado.txt","w",encoding="utf-8").write(DICTADO)
   import subprocess, sys
   r = subprocess.run([sys.executable, ruta, "/mnt/data/dictado.txt", "/mnt/data/salida"], capture_output=True, text=True); print(r.stdout, r.stderr)
+3b. Estudio POSITIVO: marcar con "!" el título de cada estructura con hallazgo patológico (ej. "# RIÑÓN DERECHO !"), el más importante primero. El programa los coloca AUTOMÁTICAMENTE de primeros en HALLAZGOS y con TODA su descripción en rojo; el resto sigue en orden anatómico. Estudio negativo: sin "!".
 4. Si el programa avisa FRASES NO PERMITIDAS o ESTRUCTURAS DEL PROTOCOLO SIN DESCRIBIR: corrige y vuelve a ejecutar, sin preguntarle nada al doctor.
 5. Entrega SOLO el enlace de descarga del .docx y 2–3 líneas con los hallazgos principales.
 

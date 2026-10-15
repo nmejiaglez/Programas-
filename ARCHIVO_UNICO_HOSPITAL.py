@@ -97,6 +97,13 @@ Texto breve.
 ```
 Nunca calcular volúmenes a mano: usar `{v:}` o `auto` (L×AP×T×0.523). Con 2 medidas no hay volumen.
 
+## Hallazgos positivos: PRIMERO y EN ROJO
+- Toda estructura con hallazgo patológico se marca con "!" en su título (# RIÑÓN DERECHO !).
+- El programa la coloca AUTOMÁTICAMENTE de primera en HALLAZGOS y pone TODA su descripción en rojo; el resto
+  sigue después en orden anatómico (cefálico → caudal). Estudio negativo = sin "!" = orden anatómico normal.
+- Varios hallazgos: marcar todos con "!" y escribirlos en orden de relevancia (el más importante primero).
+- La conclusión "PROBLEMA PRINCIPAL" también sale en rojo.
+
 ## Reglas clínicas (no negociables)
 - Nivel subespecialista del primer al último paciente; sistemático órgano por órgano, cefálico→caudal.
 - Terminología: conservado, habitual, sin alteraciones morfológicas demostrables, sin evidencia de. Evitar "normal".
@@ -1783,8 +1790,8 @@ def organo(cont, texto, relevante):
     return p
 
 
-def cuerpo(cont, texto):
-    return parrafo(cont, texto, alin=WD_ALIGN_PARAGRAPH.JUSTIFY, despues=3)
+def cuerpo(cont, texto, color=None):
+    return parrafo(cont, texto, color=color, alin=WD_ALIGN_PARAGRAPH.JUSTIFY, despues=3)
 
 
 def tabla_mediciones(cont, filas, ancho):
@@ -1843,7 +1850,7 @@ def conclusiones(cont, lineas):
             fmt(p.add_run(m.group(1).strip() + " "), 11, True, NAVY)
         if m.group(2):
             fmt(p.add_run("PROBLEMA PRINCIPAL: "), 11, True, ROJO)
-        texto_rico(p, expandir(m.group(3)))
+        texto_rico(p, expandir(m.group(3)), color=ROJO if m.group(2) else None)
 
 
 def firma(cont):
@@ -1859,21 +1866,24 @@ def unidades(datos, secciones, hallazgos):
     """Lista ordenada de unidades del flujo. Los párrafos largos se dividen por
     oraciones para poder llenar la página 1 justo hasta el final."""
     U = []
-    def texto_largo(tipo_id, texto):
+    def texto_largo(tipo_id, texto, color=None):
         oraciones = re.split(r"(?<=[.;:])\s+(?=[A-ZÁÉÍÓÚÑ(])", texto)
         for i, o in enumerate(oraciones):
-            U.append(("frase", tipo_id, o, i == 0))
+            U.append(("frase", tipo_id, o, i == 0, color))
     U.append(("barra", "ESTUDIO / INDICACIÓN CLÍNICA"))
     pid = 0
     for t in secciones.get("ESTUDIO", [datos.get("estudio", datos["modalidad"])]):
         pid += 1
         texto_largo(pid, expandir(t))
     U.append(("barra", "HALLAZGOS"))
-    for titulo, rel, parrafos in hallazgos:
+    # Estudio positivo: los hallazgos patológicos (# ... !) van PRIMERO y en rojo;
+    # el resto sigue en orden anatómico. Estudio negativo: orden anatómico normal.
+    ordenados = [h for h in hallazgos if h[1]] + [h for h in hallazgos if not h[1]]
+    for titulo, rel, parrafos in ordenados:
         U.append(("organo", titulo, rel))
         for t in parrafos:
             pid += 1
-            texto_largo(pid, t)
+            texto_largo(pid, t, ROJO if rel else None)
     if secciones.get("MEDICIONES"):
         U.append(("barra", "CUADRO DE MEDICIONES"))
         U.append(("mediciones", filas_mediciones(secciones["MEDICIONES"])))
@@ -1903,11 +1913,12 @@ def pintar(cont, U, ancho, base):
     for u in U:
         tipo = u[0]
         if tipo == "frase":
-            _, pid, texto, inicio = u
+            _, pid, texto, inicio = u[:4]
+            color = u[4] if len(u) > 4 else None
             if pid == ultimo_pid and p_actual is not None and not inicio:
-                texto_rico(p_actual, " " + texto)
+                texto_rico(p_actual, " " + texto, color=color)
             else:
-                p_actual = cuerpo(cont, texto)
+                p_actual = cuerpo(cont, texto, color)
             ultimo_pid = pid
             continue
         ultimo_pid = p_actual = None
@@ -2057,7 +2068,7 @@ def construir(datos, U, k, base, F):
     pintar(der, U[:k], CONT - 5, base)
     resto = U[k:]
     # si la primera unidad del resto continúa una frase, abrir párrafo nuevo
-    pintar(doc, [("frase", -1, u[2], True) if i == 0 and u[0] == "frase" else u
+    pintar(doc, [("frase", -1, u[2], True) + tuple(u[4:]) if i == 0 and u[0] == "frase" else u
                  for i, u in enumerate(resto)], UTIL, base)
     # quitar el párrafo vacío final que Word agrega tras la tabla si no hay resto
     if not resto:
