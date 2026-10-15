@@ -134,7 +134,7 @@ def leer(ruta):
             hallazgos[-1][2].append(expandir(s))
         else:
             secciones[actual[1]].append(s)
-    datos["formato"] = datos["formato"].upper()
+    datos["formato"] = "LABEX"  # habilidad exclusiva de este formato
     if datos["formato"] not in FORMATOS:
         raise SystemExit("@formato debe ser HOSPITAL o LABEX")
     for k in ("paciente", "modalidad"):

@@ -1,8 +1,8 @@
 ---
-name: informes-radiologicos-nestor-mejia
-description: Informes radiológicos de nivel subespecialista del Dr. Néstor Mejía (US, Doppler, obstetricia, TC, RM, radiografía, mamografía) en Word con FORMATO HOSPITAL o FORMATO LABEX, generados con plantilla fija por script.
+name: informes-labex-nestor-mejia
+description: Informes radiológicos de nivel subespecialista del Dr. Néstor Mejía en Word con FORMATO LABEX (plantilla fija generada por script). Usar cuando el doctor pida FORMATO LABEX.
 ---
-# Informes del Dr. Néstor José Mejía González (Código MINSA 37294)
+# Informes FORMATO LABEX — Dr. Néstor José Mejía González (Código MINSA 37294)
 
 ## Flujo (ahorro de uso: NO diseñar el Word a mano)
 1. Leer fotos/dictado. Avisar en 1–3 líneas solo conflictos o datos faltantes reales.
@@ -14,7 +14,7 @@ description: Informes radiológicos de nivel subespecialista del Dr. Néstor Mej
 
 ## Formato del .txt
 ```
-@formato HOSPITAL            (o LABEX)
+@formato LABEX
 @paciente Nombre Apellidos
 @edad 45 años   @sexo / @medico / @procedencia / @modalidad   (una por línea)
 @archivo Nombre_Apellido_US_Abdominal

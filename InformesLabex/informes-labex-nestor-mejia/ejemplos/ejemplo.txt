@@ -5,7 +5,7 @@
 @medico Dra. Ejemplo
 @procedencia Ginecología
 @modalidad Ultrasonido abdominal, renal y pélvico
-@archivo Ejemplo_LABEX
+@archivo Paciente_Ejemplo_US_Abdominopelvico
 
 ## ESTUDIO
 Ultrasonido abdominal, renal y pélvico. Paciente con antecedente de cáncer cervicouterino.
