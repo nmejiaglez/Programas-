@@ -1,0 +1,62 @@
+@formato LABEX
+@paciente Paciente De Ejemplo
+@edad 52 años
+@sexo Femenino
+@medico Dra. Ejemplo
+@procedencia Ginecología
+@modalidad Ultrasonido abdominal, renal y pélvico
+@archivo Ejemplo_LABEX
+
+## ESTUDIO
+Ultrasonido abdominal, renal y pélvico. Paciente con antecedente de cáncer cervicouterino.
+
+# HÍGADO !
+De situación, morfología y dimensiones conservadas, con contornos lisos y cápsula de Glisson íntegra. El parénquima es homogéneo, de ecotextura fina, y muestra !!múltiples imágenes ecogénicas de morfología irregular!!, en número aproximado de cinco; la de mayor tamaño se localiza en el segmento VII y mide {m:12.70x16.18x15.99} (volumen: {v:12.70x16.18x15.99}). El sistema portal es de calibre conservado y los vasos intrahepáticos no muestran alteraciones.
+# VESÍCULA BILIAR Y VÍAS BILIARES
+Vesícula de tamaño conservado, con paredes finas, sin imágenes de litiasis ni ecos en su interior. El colédoco y las vías biliares intrahepáticas son de aspecto conservado, sin evidencia de dilatación.
+# PÁNCREAS
+Sin alteraciones morfológicas ni ecoestructurales demostrables en la porción evaluada.
+# BAZO
+De tamaño y ecoestructura conservados, sin lesiones focales identificables.
+# RIÑÓN DERECHO !
+Con alteración de su forma y espesor cortical disminuido. La ecogenicidad cortical es habitual y la diferenciación cortico-medular se encuentra disminuida. No se identifican imágenes de litiasis ni lesiones focales. Presenta !!dilatación del sistema excretor!!, con ectasia de los cálices hasta 31.38 mm y de la pelvis renal hasta 18.12 mm; el segmento ureteral no pudo ser definido.
+# RIÑÓN IZQUIERDO
+De forma conservada. La ecogenicidad cortical es habitual y la diferenciación cortico-medular está conservada. Sin litiasis, sin dilatación del sistema excretor y sin lesiones focales.
+# VEJIGA URINARIA !
+Con escasa repleción al momento del estudio, lo que limita la valoración parietal. Sus paredes se muestran !!engrosadas e irregulares!!, con un espesor de 12.76 mm. No se identifican imágenes patológicas en su interior.
+# ÚTERO
+En anteversoflexión, de contornos regulares. El miometrio es homogéneo, con calcificaciones fisiológicas de las arterias arcuatas. La cavidad endometrial se encuentra libre.
+# OVARIO DERECHO
+Con presencia de folículos. Sin lesiones sólidas ni quísticas.
+# OVARIO IZQUIERDO
+Con presencia de folículos. Sin lesiones sólidas ni quísticas.
+# ESPACIO DE DOUGLAS Y FONDO DE SACO POSTERIOR
+Sin evidencia de líquido libre.
+
+## MEDICIONES
+Hígado | Longitud | 131.05 | | Dimensión conservada
+Hígado | Imagen ecogénica mayor, segmento VII | 12.70 x 16.18 x 15.99 | auto | Una de ≈5 imágenes !
+Vena porta | Diámetro | 9.86 | | Calibre conservado
+Colédoco | Diámetro | 4.08 | | Sin dilatación
+Vesícula | Longitud × altura | 65.60 x 22.37 | | Tamaño conservado
+Vesícula | Espesor de pared | 3.26 | | Paredes finas
+Bazo | Longitud | 110.92 | | Dimensión conservada
+Riñón derecho | Longitud × anchura × altura | 115.03 x 36.81 x 51.64 | auto | Forma alterada
+Riñón derecho | Espesor cortical | 4.65 | | Dif. cortico-medular disminuida
+Riñón derecho | Ectasia de cálices | 31.38 | | Dilatación del sistema excretor !
+Riñón derecho | Ectasia de pelvis renal | 18.12 | | Dilatación del sistema excretor !
+Riñón izquierdo | Longitud × anchura × altura | 106.65 x 45.60 x 58.71 | auto | Forma conservada
+Riñón izquierdo | Espesor cortical | 12.35 | | Dif. cortico-medular conservada
+Vejiga | Espesor de pared | 12.76 | | Engrosada e irregular !
+Útero | Longitud × anchura × altura | 61.44 x 24.65 x 32.73 | auto | Contornos regulares
+Endometrio | Espesor | 3.38 | | Cavidad libre
+Ovario derecho | Longitud × anchura × altura | 28.48 x 16.90 x 22.40 | auto | Con folículos
+Ovario izquierdo | Longitud × anchura × altura | 33.83 x 16.54 x 18.50 | auto | Con folículos
+
+## CONCLUSIONES
+1. PROBLEMA PRINCIPAL: dilatación del sistema excretor del riñón derecho (ectasia de cálices hasta 31.38 mm y de pelvis hasta 18.12 mm), con disminución de la diferenciación cortico-medular, alteración de la forma renal y uréter no definido, asociada a engrosamiento parietal vesical irregular de 12.76 mm, en paciente con antecedente de cáncer cervicouterino.
+2. Múltiples imágenes hepáticas ecogénicas de morfología irregular (≈5), la mayor en el segmento VII de {m:12.70x16.18x15.99} ({v:12.70x16.18x15.99}), hallazgo de relevancia en el contexto oncológico de la paciente.
+3. Riñón izquierdo, vesícula y vías biliares, páncreas y bazo sin alteraciones morfológicas significativas. Útero con endometrio de 3.38 mm y cavidad libre; ovarios con folículos y sin lesiones sólidas ni quísticas. Sin líquido libre en el espacio de Douglas.
+
+## ETIOLOGIA
+La dilatación pielocalicial derecha con uréter no visualizado y el engrosamiento irregular de la pared vesical orientan a un mecanismo obstructivo de la porción distal del uréter o de la unión ureterovesical derecha, plausiblemente por extensión locorregional de la enfermedad pélvica de base o por cambios posterapéuticos. La escasa repleción vesical limita la valoración parietal. Las imágenes hepáticas ecogénicas, múltiples e irregulares, admiten como posibilidades lesiones benignas de naturaleza vascular o compromiso secundario, sin que el estudio permita diferenciarlas.
