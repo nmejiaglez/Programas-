@@ -707,6 +707,17 @@ def main():
     base = os.path.dirname(os.path.abspath(entrada))
     revisar_frases(entrada)
     datos, secciones, hallazgos = leer(entrada)
+    sys.path.insert(0, AQUI)
+    from protocolos import faltantes
+    prot = datos.get("protocolo", "").strip()
+    if not prot:
+        raise SystemExit("Falta @protocolo (ej. general_femenino, abdominal, tiroides, doppler_venoso_mmii; "
+                         "use 'libre' solo para estudios sin protocolo). Ver referencias/protocolos.md")
+    if prot.lower() != "libre":
+        f = faltantes(prot.lower(), [h[0] for h in hallazgos])
+        if f:
+            raise SystemExit("ESTRUCTURAS DEL PROTOCOLO SIN DESCRIBIR (agregar cada una como '# TÍTULO' con su "
+                             "descripción completa y volver a generar):\n  - " + "\n  - ".join(f))
     F = FORMATOS[datos["formato"]]
     U = unidades(datos, secciones, hallazgos)
     # solo unidades de texto pueden ir en la página 1

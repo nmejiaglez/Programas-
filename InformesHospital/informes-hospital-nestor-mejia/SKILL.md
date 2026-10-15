@@ -41,6 +41,7 @@ description: Informes radiológicos de nivel subespecialista del Dr. Néstor Mej
 @paciente Nombre Apellidos
 @edad 45 años   @sexo / @medico / @procedencia / @modalidad   (una por línea)
 @archivo Nombre_Apellido_US_Abdominal
+@protocolo general_femenino   (OBLIGATORIO; ver referencias/protocolos.md)
 @atlas litiasis_renal_derecho_superior   (opcional: esquema anatómico del PROBLEMA PRINCIPAL)
 ## ESTUDIO
 Indicación clínica.

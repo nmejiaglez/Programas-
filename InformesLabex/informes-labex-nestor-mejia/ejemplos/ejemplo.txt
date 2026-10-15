@@ -6,6 +6,7 @@
 @procedencia Ginecología
 @modalidad Ultrasonido abdominal, renal y pélvico
 @archivo Paciente_Ejemplo_US_Abdominopelvico
+@protocolo general_femenino
 
 ## ESTUDIO
 Ultrasonido abdominal, renal y pélvico. Paciente con antecedente de cáncer cervicouterino.
@@ -26,16 +27,28 @@ De situación habitual en la fosa renal, con !!alteración de su morfología!! y
 El sistema excretor presenta !!dilatación pielocalicial!!, con ectasia de los cálices hasta 31.38 mm y de la pelvis renal hasta 18.12 mm, con cálices de aspecto redondeado y ensanchamiento de la pelvis extrarrenal. El segmento ureteral proximal no pudo ser definido en su trayecto, lo que impide precisar el nivel de la obstrucción. No se identifican imágenes de litiasis con sombra acústica posterior, quistes ni lesiones sólidas parenquimatosas, ni colecciones perirrenales.
 # RIÑÓN IZQUIERDO
 De situación, eje y forma conservados, con contornos lisos y dimensiones y volumen dentro de parámetros esperados. El espesor cortical está preservado, con ecogenicidad cortical habitual y diferenciación corticomedular conservada. El seno renal es de aspecto habitual y el sistema pielocalicial no muestra dilatación. No se identifican imágenes de litiasis, quistes ni lesiones focales sólidas, ni colecciones perirrenales.
+# URÉTERES
+El uréter proximal derecho no se logra definir en su trayecto, a pesar de la dilatación pielocalicial ipsilateral, por lo que no es posible precisar su calibre ni el nivel de la obstrucción. El uréter izquierdo no se visualiza dilatado en sus segmentos proximal y distal evaluables, lo que corresponde a un calibre conservado. No se identifican imágenes de litiasis con sombra acústica posterior en los segmentos ureterales accesibles ni en las regiones yuxtavesicales.
 # VEJIGA URINARIA !
 Con escasa repleción al momento del estudio, lo que limita la valoración parietal y no permite evaluar residuo postmiccional. Sus paredes se muestran !!engrosadas de forma difusa e irregular!!, con un espesor de 12.76 mm, sin lesiones polipoideas o masas endoluminales claramente definidas en las condiciones del estudio. El contenido es anecoico, sin ecos en suspensión, coágulos ni imágenes de litiasis. Los meatos ureterales no pudieron identificarse por la escasa distensión.
+# GLÁNDULAS SUPRARRENALES (REGIONES)
+Las regiones suprarrenales derecha e izquierda se exploran sin evidencia de masas sólidas ni quísticas, sin efecto de masa sobre los polos renales superiores ni sobre las estructuras vasculares adyacentes. Las glándulas no se individualizan como estructuras aumentadas de tamaño.
+# RETROPERITONEO Y GRANDES VASOS
+La aorta abdominal presenta calibre conservado y uniforme en sus segmentos visualizados, sin dilataciones aneurismáticas, placas groseras ni trombos murales. La vena cava inferior es permeable, de calibre habitual y con variación respiratoria conservada. No se identifican adenopatías retroperitoneales paraaórticas, aortocavas ni paracavas, ni colecciones en los espacios perirrenales y pararrenales anteriores y posteriores.
+# ASAS INTESTINALES Y PARED ABDOMINAL
+Las asas intestinales evaluables presentan calibre conservado, con peristaltismo presente, sin engrosamientos parietales, distensión ni contenido líquido anómalo. No se identifican imágenes en diana ni signos de obstrucción. La pared abdominal muestra planos cutáneo, subcutáneo, aponeurótico y muscular de espesor y ecoestructura habituales, sin defectos herniarios, colecciones ni lesiones focales en las regiones exploradas.
 # ÚTERO
-En anteversoflexión, de forma conservada, contornos regulares y dimensiones y volumen consignados en el cuadro. El miometrio es de ecotextura homogénea, sin imágenes nodulares sugestivas de miomatosis, con calcificaciones lineales periféricas en relación con calcificación fisiológica de las arterias arcuatas. El endometrio es fino, lineal y regular, de 3.38 mm, con cavidad endometrial libre, sin colecciones ni lesiones ocupantes. El cérvix es de morfología habitual en lo evaluable.
+En anteversoflexión, de forma conservada, contornos regulares y dimensiones y volumen consignados en el cuadro. El miometrio es de ecotextura homogénea, sin imágenes nodulares sugestivas de miomatosis, con calcificaciones lineales periféricas en relación con calcificación fisiológica de las arterias arcuatas. No se identifican lesiones focales miometriales ni áreas de adenomiosis.
+# ENDOMETRIO
+El endometrio es fino, lineal y regular, de 3.38 mm de espesor, de ecogenicidad homogénea, con línea media central y bien definida. La interfase endometrio-miometrio es nítida y regular. La cavidad endometrial se encuentra libre, sin colecciones, pólipos ni lesiones ocupantes, y no se identifican dispositivos intrauterinos.
+# CÉRVIX
+El cuello uterino es de morfología y dimensiones habituales, con estroma de ecogenicidad homogénea y contornos regulares. El canal endocervical es lineal y no se encuentra dilatado. No se identifican quistes de Naboth de tamaño significativo, masas cervicales ni extensión parametrial evidente en lo evaluable por vía transabdominal.
 # OVARIO DERECHO
 De situación habitual, forma ovoidea, contornos regulares y dimensiones y volumen dentro de parámetros esperados. El estroma es de ecogenicidad habitual y presenta folículos de pequeño tamaño distribuidos de forma periférica. No se identifican lesiones sólidas ni quísticas complejas.
 # OVARIO IZQUIERDO
 De situación habitual, forma ovoidea, contornos regulares y dimensiones y volumen dentro de parámetros esperados. El estroma es de ecogenicidad habitual y presenta folículos de pequeño tamaño. No se identifican lesiones sólidas ni quísticas complejas.
-# ANEXOS, ESPACIO DE DOUGLAS Y CAVIDAD PERITONEAL
-Regiones anexiales sin masas sólidas ni quísticas y sin imágenes tubulares que sugieran hidrosálpinx. No se identifica líquido libre en el espacio de Douglas ni en los recesos peritoneales evaluados. No se observan colecciones, adenopatías retroperitoneales accesibles ni alteraciones del calibre de la aorta abdominal y de la vena cava inferior en sus segmentos visualizados.
+# REGIONES ANEXIALES, ESPACIO DE DOUGLAS Y CAVIDAD PERITONEAL
+Regiones anexiales sin masas sólidas ni quísticas y sin imágenes tubulares que sugieran hidrosálpinx. No se identifica líquido libre en el espacio de Douglas, en los espacios hepatorrenal (Morison) y esplenorrenal, ni en las goteras parietocólicas. No se observan colecciones intraperitoneales ni extraperitoneales, implantes peritoneales ni engrosamiento del omento en las regiones exploradas.
 
 ## MEDICIONES
 Hígado | Longitud | 131.05 | | Dimensión conservada
