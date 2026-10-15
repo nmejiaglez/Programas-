@@ -426,7 +426,7 @@ def conclusiones(cont, lineas):
 
 
 def firma(cont):
-    p = parrafo(cont, "______________________________", alin=WD_ALIGN_PARAGRAPH.CENTER, antes=26, despues=0)
+    p = parrafo(cont, "______________________________", alin=WD_ALIGN_PARAGRAPH.CENTER, antes=20, despues=0)
     p.paragraph_format.keep_with_next = True
     for i, (txt, neg) in enumerate(((MEDICO, True), (TITULO_FIRMA, False), (CODIGO, False))):
         p = parrafo(cont, txt, 11 if neg else 10, neg, NAVY if neg else None, WD_ALIGN_PARAGRAPH.CENTER, despues=0)
@@ -508,6 +508,9 @@ def pintar(cont, U, ancho, base):
             p = imagen(cont, ruta, min(ancho, 150), despues=4)
             p.paragraph_format.keep_together = True
         elif tipo == "firma":
+            # la firma nunca queda sola: viaja con el último párrafo del informe
+            if cont.paragraphs:
+                cont.paragraphs[-1].paragraph_format.keep_with_next = True
             firma(cont)
 
 
