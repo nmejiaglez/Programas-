@@ -4,6 +4,11 @@ description: Informes radiológicos de nivel subespecialista del Dr. Néstor Mej
 ---
 # Informes FORMATO LABEX — Dr. Néstor José Mejía González (Código MINSA 37294)
 
+## INICIO DE CHAT
+- Si el doctor activa la habilidad o escribe FORMATO LABEX SIN datos de un paciente real: responder ÚNICAMENTE
+  "Listo, Dr. Mejía. Formato LABEX activo. Envíe los datos del paciente." y ESPERAR. NO generar ejemplos, NO ejecutar
+  el programa, NO probarlo, NO resumir estas instrucciones, NO leer más archivos. Empezar solo cuando lleguen datos.
+
 ## ANTES DE REDACTAR (OBLIGATORIO EN CADA INFORME)
 1. Leer `referencias/estandar_detalle.md` (nivel de detalle mínimo por órgano y plantilla de lesión).
 2. Leer `referencias/reglas_completas.md` (reglas originales completas del doctor; la sección 6 de diseño la aplica el script).

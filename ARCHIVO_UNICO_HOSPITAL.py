@@ -8,6 +8,9 @@
 INSTRUCCIONES PARA CLAUDE
 >>> LEER SOLO DESDE AQUÍ HASTA LA LÍNEA "FIN DE INSTRUCCIONES". NO leer el resto del archivo: es código y logos
 >>> codificados y leerlo gastaría muchísimo uso. Para usarlo basta con EJECUTARLO.
+- AL RECIBIR ESTE ARCHIVO (o al iniciar el chat) SIN datos de un paciente real: responder ÚNICAMENTE
+  "Listo, Dr. Mejía. Formato HOSPITAL activo. Envíe los datos del paciente." y ESPERAR. NO generar ejemplos, NO ejecutar
+  el programa, NO probarlo, NO resumir estas instrucciones, NO leer más archivos. Empezar solo cuando lleguen datos.
 - Este archivo es TODO lo necesario. Los logos y sellos YA están dentro: NUNCA pedirlos al doctor.
 - Todos los informes de este chat son FORMATO HOSPITAL.
 - Para cada paciente: escribir el dictado .txt con el formato descrito abajo y ejecutar
@@ -17,6 +20,11 @@ INSTRUCCIONES PARA CLAUDE
   sin preguntarle nada al doctor.
 
 # Informes FORMATO HOSPITAL — Dr. Néstor José Mejía González (Código MINSA 37294)
+
+## INICIO DE CHAT
+- Si el doctor activa la habilidad o escribe FORMATO HOSPITAL SIN datos de un paciente real: responder ÚNICAMENTE
+  "Listo, Dr. Mejía. Formato HOSPITAL activo. Envíe los datos del paciente." y ESPERAR. NO generar ejemplos, NO ejecutar
+  el programa, NO probarlo, NO resumir estas instrucciones, NO leer más archivos. Empezar solo cuando lleguen datos.
 
 ## ANTES DE REDACTAR (OBLIGATORIO EN CADA INFORME)
 1. Leer la sección ESTÁNDAR DE DETALLE (más abajo) (nivel de detalle mínimo por órgano y plantilla de lesión).
