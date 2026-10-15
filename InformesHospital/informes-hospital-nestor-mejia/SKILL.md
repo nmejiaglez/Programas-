@@ -4,6 +4,13 @@ description: Informes radiológicos de nivel subespecialista del Dr. Néstor Mej
 ---
 # Informes FORMATO HOSPITAL — Dr. Néstor José Mejía González (Código MINSA 37294)
 
+## LOGOS Y SELLOS: YA ESTÁN INCLUIDOS — NUNCA PEDIRLOS
+- Todos los logos y el sello NM están en la carpeta `assets/` de ESTA habilidad (junto a este SKILL.md).
+- El script `generar_informe.py` (misma carpeta) los inserta solo. NO pedir al doctor que suba sellos ni logos,
+  NO buscar logos en el chat, NO dibujarlos. Solo usar otros si el doctor los envía y pide cambiarlos.
+- Ejecutar con la ruta de esta habilidad: `python3 <carpeta_de_esta_skill>/generar_informe.py dictado.txt salida`
+  (si falta python-docx: `pip install python-docx`).
+
 ## Flujo (ahorro de uso: NO diseñar el Word a mano)
 1. Leer fotos/dictado. Avisar en 1–3 líneas solo conflictos o datos faltantes reales.
 2. Escribir UN archivo `.txt` con el formato de abajo (solo contenido clínico).
