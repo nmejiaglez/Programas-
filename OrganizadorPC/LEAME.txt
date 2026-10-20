@@ -6,8 +6,9 @@ Funciona en Windows 7, 8, 10 y 11. No necesita instalar nada.
 2. Doble clic sobre OrganizadorPC.bat (no necesita administrador).
    Si Windows muestra "Windows protegio su PC": clic en "Mas informacion"
    y luego en "Ejecutar de todas formas".
-3. Empiece SIEMPRE con la opcion 1: le muestra que haria SIN mover nada.
-4. Si le gusta, use la opcion 2 y escriba SI.
+3. Elija la opcion 1 (Organizar TODO). Le muestra que va a ordenar y le
+   pregunta "Organizar AHORA?". Escriba S y pulse Enter.
+4. Al terminar se abre sola la carpeta ORGANIZADO con todo ordenado.
 
 COMO QUEDA ORGANIZADO (en Documentos\ORGANIZADO):
    Word\2025\01 - Enero\consultas.docx
@@ -31,8 +32,10 @@ SEGURIDAD:
 - Si un archivo esta abierto (Word, Excel) no se mueve; cierrelo y repita.
 
 OTRAS OPCIONES:
-- 5: ordena las carpetas Imagenes, Videos y Musica.
-- 7: ordena cualquier carpeta que usted elija (USB, disco externo).
-- 8: muestra cuantos archivos hay en cada lugar.
+- 2 y 3: solo Descargas o solo Escritorio.
+- 4: ordena las carpetas Imagenes, Videos y Musica.
+- 5: ordena cualquier carpeta que usted elija (USB, disco externo, o una
+     carpeta llena de archivos), incluso lo que esta dentro de subcarpetas.
+- 7: muestra cuantos archivos hay en cada lugar.
 
-CONSEJO: repita la opcion 2 una vez al mes y la computadora seguira ordenada.
+CONSEJO: repita la opcion 1 una vez al mes y la computadora seguira ordenada.

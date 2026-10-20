@@ -124,33 +124,43 @@ function Archivos-De($carpeta, $subcarpetas) {
     return @($todos)
 }
 
-# Organiza una lista de carpetas. $simular = $true solo muestra lo que haria.
-function Organizar($carpetas, $simular, $subcarpetas) {
+# Muestra lo que se va a ordenar en cada carpeta y PREGUNTA antes de mover.
+function Organizar($carpetas, $subcarpetas) {
     $plan = @()
+    Titulo 'Revisando carpetas...'
     foreach ($c in $carpetas) {
-        foreach ($a in (Archivos-De $c $subcarpetas)) {
-            if (Esta-Protegido $a) { continue }
+        if (-not (Test-Path -LiteralPath $c)) { continue }
+        $archivos = @(Archivos-De $c $subcarpetas)
+        $antes = $plan.Count; $quedan = 0
+        foreach ($a in $archivos) {
+            if (Esta-Protegido $a) { $quedan++; continue }
             $cat = Categoria-De $a $c
-            if (-not $cat) { continue }
+            if (-not $cat) { $quedan++; continue }
             $f = Fecha-De $a
             $carpetaDestino = Join-Path (Join-Path (Join-Path $Destino $cat) $f.Year) $Meses[$f.Month - 1]
             $plan += New-Object PSObject -Property @{ Archivo = $a; Categoria = $cat; Anio = $f.Year; Carpeta = $carpetaDestino }
         }
+        $subs = 0
+        if (-not $subcarpetas) { $subs = @(Get-ChildItem -LiteralPath $c -Force | Where-Object { $_.PSIsContainer -and $_.FullName -ne $Destino -and -not ($_.Attributes -band [IO.FileAttributes]::Hidden) }).Count }
+        Write-Host ("   {0}" -f $c) -ForegroundColor White
+        Write-Host ("      {0} archivos para ordenar, {1} se quedan (accesos directos, programas), {2} carpetas que no se tocan" -f ($plan.Count - $antes), $quedan, $subs) -ForegroundColor Gray
     }
 
-    if ($plan.Count -eq 0) { Aviso 'No hay archivos para organizar en esas carpetas.'; return }
+    if ($plan.Count -eq 0) {
+        Aviso 'No hay archivos sueltos para ordenar en esas carpetas.'
+        Write-Host '   (Las carpetas no se mueven. Para ordenar lo que hay DENTRO de una carpeta use la opcion 5.)' -ForegroundColor Gray
+        return
+    }
 
-    Titulo "Se organizaran $($plan.Count) archivos asi:"
+    Titulo "Se ordenaran $($plan.Count) archivos asi:"
     $plan | Group-Object Categoria | Sort-Object Name | ForEach-Object {
         $anios = ($_.Group | Group-Object Anio | Sort-Object Name | ForEach-Object { "$($_.Name): $($_.Count)" }) -join ', '
         Write-Host ("   {0,-24} {1,5} archivos   ({2})" -f $_.Name, $_.Count, $anios)
     }
-    Write-Host "`n   Destino: $Destino" -ForegroundColor Gray
+    Write-Host "`n   Quedaran en: $Destino" -ForegroundColor Gray
 
-    if ($simular) { Aviso 'SIMULACION: no se movio nada.'; return }
-
-    $r = Read-Host "`n   Escriba SI para mover los archivos"
-    if ($r -ne 'SI' -and $r -ne 'si' -and $r -ne 'Si') { Aviso 'Cancelado. No se movio nada.'; return }
+    $r = Read-Host "`n   Organizar AHORA? Escriba S y pulse Enter (N = no)"
+    if ($r -notmatch '^\s*[sS]') { Aviso 'Cancelado. No se movio nada.'; return }
 
     New-Item -ItemType Directory -Path $Registros -Force | Out-Null
     $log = Join-Path $Registros ('movimientos_' + (Get-Date -Format 'yyyy-MM-dd_HH-mm-ss') + '.csv')
@@ -171,6 +181,7 @@ function Organizar($carpetas, $simular, $subcarpetas) {
     if ($fallos) { Aviso "$fallos archivos no se movieron (estaban abiertos o en uso). Cierrelos y repita." }
     Write-Host "   Si algo no le gusta, use la opcion 6 para DESHACER." -ForegroundColor Gray
     Crear-Acceso
+    if ($movidos.Count) { Ok 'Abriendo la carpeta ORGANIZADO...'; Invoke-Item $Destino }
 }
 
 function Crear-Acceso {
@@ -251,34 +262,32 @@ do {
     Write-Host '   Ordena por tipo (Word, PDF, Excel, Fotos...) > Ano > Mes' -ForegroundColor Gray
     Write-Host '============================================================' -ForegroundColor Cyan
     Write-Host "  Todo queda en: $Destino`n" -ForegroundColor Gray
-    Write-Host '  1. VER PRIMERO que se haria (no mueve nada)  << empiece aqui'
-    Write-Host '  2. Organizar TODO (Escritorio, Descargas y Documentos)'
-    Write-Host '  3. Organizar solo DESCARGAS'
-    Write-Host '  4. Organizar solo ESCRITORIO'
-    Write-Host '  5. Organizar Imagenes, Videos y Musica'
+    Write-Host '  1. Organizar TODO (Escritorio, Descargas y Documentos)'
+    Write-Host '  2. Organizar solo DESCARGAS'
+    Write-Host '  3. Organizar solo ESCRITORIO'
+    Write-Host '  4. Organizar Imagenes, Videos y Musica'
+    Write-Host '  5. Organizar otra carpeta que yo elija (USB, disco, carpeta llena)'
     Write-Host '  6. DESHACER una organizacion'
-    Write-Host '  7. Organizar otra carpeta que yo elija (USB, disco, etc.)'
-    Write-Host '  8. Ver cuantos archivos hay en cada carpeta'
-    Write-Host '  9. Abrir la carpeta ORGANIZADO'
+    Write-Host '  7. Ver cuantos archivos hay en cada carpeta'
+    Write-Host '  8. Abrir la carpeta ORGANIZADO'
     Write-Host '  0. Salir'
+    Write-Host "`n  (Antes de mover, siempre le muestra que hara y le pregunta.)" -ForegroundColor Gray
     $op = Read-Host "`n  Elija una opcion"
     switch ($op) {
-        '1' { Organizar $Principales $true $false }
-        '2' { Organizar $Principales $false $false }
-        '3' { Organizar @($Descargas) $false $false }
-        '4' { Organizar @($Escritorio) $false $false }
-        '5' { Organizar @($Imagenes, $Videos, $Musica) $false $false }
-        '6' { Deshacer }
-        '7' {
+        '1' { Organizar $Principales $false }
+        '2' { Organizar @($Descargas) $false }
+        '3' { Organizar @($Escritorio) $false }
+        '4' { Organizar @($Imagenes, $Videos, $Musica) $false }
+        '5' {
             $c = Elegir-Carpeta
             if ($c -and (Test-Path -LiteralPath $c)) {
-                $sub = (Read-Host '   Incluir tambien las subcarpetas? (S/N)') -match '^[sS]'
-                Organizar @($c) $true $sub
-                if ((Read-Host "`n   Desea hacerlo de verdad? (S/N)") -match '^[sS]') { Organizar @($c) $false $sub }
+                $sub = (Read-Host '   Ordenar tambien lo que esta dentro de sus subcarpetas? (S/N)') -match '^\s*[sS]'
+                Organizar @($c) $sub
             }
         }
-        '8' { Diagnostico }
-        '9' { New-Item -ItemType Directory -Path $Destino -Force | Out-Null; Invoke-Item $Destino }
+        '6' { Deshacer }
+        '7' { Diagnostico }
+        '8' { New-Item -ItemType Directory -Path $Destino -Force | Out-Null; Invoke-Item $Destino }
     }
     if ($op -ne '0') { Read-Host "`n  Pulse Enter para volver al menu" | Out-Null }
 } while ($op -ne '0')
