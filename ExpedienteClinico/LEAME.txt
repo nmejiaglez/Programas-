@@ -4,31 +4,31 @@ Funciona SIN INTERNET. No necesita instalar nada. Es un solo archivo.
 
 1. Copie ExpedienteClinico.html a la computadora (por ejemplo en Documentos).
 2. Doble clic para abrirlo. Se recomienda Google Chrome o Microsoft Edge.
-   (Clic derecho > Abrir con > Chrome, si se abre con otro programa.)
 3. Abralo SIEMPRE desde la misma ubicacion y con el mismo navegador:
    los datos se guardan dentro de ese navegador.
-4. En "Respaldo y configuracion" escriba el nombre de la clinica y del medico.
 
-QUE HACE:
-- Pacientes: nombre, edad (se actualiza sola cada ano), sexo, procedencia,
-  telefono, cedula, alergias y APP (HTA, diabetes, EPOC, cardiopatia...).
-- Consultas en formato SOAP: S, signos vitales (TA, FC, FR, SO2, temperatura,
-  glicemia, peso, talla, IMC automatico), examen fisico, laboratorio,
-  estudios (Doppler, US, EKG), diagnostico, tratamiento y proxima cita.
-- Avisa en rojo si la TA, SO2, FC, temperatura o glicemia estan alteradas.
-- Boton para copiar el tratamiento de la consulta anterior.
-- Buscador: por nombre, telefono, diagnostico o medicamento.
-- Consultas del dia y citas programadas.
-- Imprime recetas, historia clinica y la lista del dia.
-- Exporta a Word (historia de un paciente, el dia o todo) y a Excel.
-- Estadisticas: consultas por mes, diagnosticos y procedencias.
-- Atajos: Ctrl+S guarda el formulario, Esc lo cierra.
+PACIENTE NUEVO:
+- Escriba: paciente, edad, sexo, telefono, procedencia, antecedentes
+  personales y familiares, motivo de consulta, lo encontrado en la
+  consulta, laboratorio, conclusiones, tratamiento y proxima cita.
+- La fecha y la hora se ponen solas.
+- Pulse "Guardar consulta" (o Ctrl+S).
+
+PACIENTE QUE REGRESA:
+- Escriba su nombre o telefono en el buscador de arriba y elijalo.
+- Aparecen sus datos, sus antecedentes y abajo todas sus consultas
+  anteriores. Escriba solo la consulta de hoy y guarde.
+- Boton "Copiar el tratamiento de la ultima consulta" para repetirlo.
+
+OTRAS FUNCIONES:
+- Imprimir la consulta, la receta o la historia completa; pasar a Word.
+- "Proximas citas": lista de pacientes citados.
+- "Todos los pacientes": lista completa.
+- Pasar todas las consultas a Excel.
 
 RESPALDO (MUY IMPORTANTE):
-- Si borra el historial/datos del navegador o formatea la PC se pierden
-  los datos. Haga "Descargar respaldo ahora" cada semana y guarde el
-  archivo en una USB o en su correo. El programa le recuerda cada 7 dias.
-- En Chrome/Edge puede activar "Guardado automatico en un archivo":
-  cada cambio se guarda tambien en un archivo .json que usted elija.
-- Para pasar los datos a otra computadora: lleve el archivo de respaldo
-  y use "Restaurar desde respaldo".
+- Si borra el historial del navegador o formatea la PC se pierden los
+  datos. En "Respaldo y configuracion" pulse "Descargar respaldo" cada
+  semana y guarde el archivo en una USB o en su correo.
+- En Chrome/Edge puede activar el guardado automatico en un archivo.
+- Para pasar los datos a otra computadora use "Restaurar respaldo".

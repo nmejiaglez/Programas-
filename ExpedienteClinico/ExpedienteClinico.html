@@ -5,283 +5,212 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Expediente Clínico</title>
 <style>
-:root{
-  --azul:#1f4e79; --azul2:#2e75b6; --claro:#eaf2fb; --borde:#c9d6e3; --texto:#1d2733;
-  --gris:#6b7785; --rojo:#c0392b; --verde:#1e8449; --amarillo:#fff4d6; --fondo:#f4f7fa;
-}
+:root{--azul:#1f4e79;--azul2:#2e75b6;--claro:#eaf2fb;--borde:#c9d6e3;--texto:#1d2733;--gris:#6b7785;--rojo:#c0392b;--verde:#1e8449;--amarillo:#fff4d6;--fondo:#f4f7fa}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:var(--texto);background:var(--fondo)}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;font-size:16px;color:var(--texto);background:var(--fondo)}
 header{background:var(--azul);color:#fff;padding:10px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-header h1{font-size:19px;margin:0;font-weight:bold}
-header .sub{font-size:12px;opacity:.85}
-header .buscar{margin-left:auto;flex:1;max-width:420px}
-header .buscar input{width:100%;padding:8px 12px;border-radius:6px;border:0;font-size:15px}
+header h1{font-size:20px;margin:0}
+#reloj{margin-left:auto;font-size:15px;text-align:right}
+#reloj b{font-size:18px}
 nav{background:#fff;border-bottom:1px solid var(--borde);display:flex;gap:2px;padding:0 12px;flex-wrap:wrap}
-nav button{background:none;border:0;border-bottom:3px solid transparent;padding:11px 14px;font-size:15px;cursor:pointer;color:var(--gris)}
+nav button{background:none;border:0;border-bottom:3px solid transparent;padding:12px 16px;font-size:16px;cursor:pointer;color:var(--gris)}
 nav button.act{color:var(--azul);border-bottom-color:var(--azul2);font-weight:bold}
-main{padding:16px 18px;max-width:1200px;margin:0 auto}
+main{padding:16px 18px;max-width:1100px;margin:0 auto}
 .vista{display:none}.vista.act{display:block}
 .tarjeta{background:#fff;border:1px solid var(--borde);border-radius:8px;padding:14px 16px;margin-bottom:14px}
 .fila{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .esp{flex:1}
 h2{font-size:18px;margin:0 0 10px;color:var(--azul)}
-h3{font-size:15px;margin:12px 0 6px;color:var(--azul)}
-.btn{background:var(--azul2);color:#fff;border:0;border-radius:6px;padding:8px 14px;font-size:14px;cursor:pointer;white-space:nowrap}
+.btn{background:var(--azul2);color:#fff;border:0;border-radius:6px;padding:10px 16px;font-size:15px;cursor:pointer;white-space:nowrap}
 .btn:hover{filter:brightness(1.1)}
 .btn.sec{background:#fff;color:var(--azul);border:1px solid var(--azul2)}
 .btn.rojo{background:#fff;color:var(--rojo);border:1px solid var(--rojo)}
 .btn.verde{background:var(--verde)}
+.btn.grande{font-size:17px;padding:12px 26px;font-weight:bold}
 .btn.peq{padding:5px 10px;font-size:13px}
-table{width:100%;border-collapse:collapse}
-th,td{text-align:left;padding:8px;border-bottom:1px solid #e3e9ef;vertical-align:top}
-th{background:var(--claro);color:var(--azul);font-size:13px}
-tr.clic{cursor:pointer}tr.clic:hover td{background:#f2f7fc}
-.muted{color:var(--gris);font-size:13px}
-.vacio{color:var(--gris);text-align:center;padding:24px}
-label{display:block;font-size:13px;color:var(--gris);margin-bottom:3px}
-input,select,textarea{font-family:inherit;font-size:15px;padding:7px 9px;border:1px solid var(--borde);border-radius:5px;width:100%;background:#fff;color:var(--texto)}
-textarea{resize:vertical;min-height:62px}
-input:focus,select:focus,textarea:focus{outline:2px solid var(--azul2);outline-offset:-1px}
-.grid{display:grid;gap:10px}
-.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g6{grid-template-columns:repeat(6,1fr)}
-.span2{grid-column:span 2}.span3{grid-column:span 3}.todo{grid-column:1/-1}
-@media(max-width:760px){.g2,.g3,.g4,.g6{grid-template-columns:1fr 1fr}.span3{grid-column:span 2}}
-.chip{display:inline-block;background:var(--claro);color:var(--azul);border-radius:12px;padding:2px 9px;font-size:12px;margin:2px 3px 2px 0}
-.chip.pos{background:#fde7e4;color:var(--rojo)}
-.consulta{border-left:4px solid var(--azul2);background:#fff;border-radius:6px;padding:12px 14px;margin-bottom:12px;border-top:1px solid var(--borde);border-right:1px solid var(--borde);border-bottom:1px solid var(--borde)}
-.consulta .cab{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+label{display:block;font-size:14px;font-weight:bold;color:var(--azul);margin-bottom:4px}
+input,textarea{font-family:inherit;font-size:16px;padding:8px 10px;border:1px solid var(--borde);border-radius:5px;width:100%;background:#fff;color:var(--texto)}
+textarea{resize:vertical;min-height:70px;line-height:1.4}
+input:focus,textarea:focus{outline:2px solid var(--azul2);outline-offset:-1px}
+input[readonly]{background:#f1f5f9}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:1fr 1fr}.g4{grid-template-columns:2fr 1fr 1fr 1fr}
+.todo{grid-column:1/-1}
+@media(max-width:720px){.g2,.g4{grid-template-columns:1fr}}
+.sexo{display:flex;gap:14px;padding:8px 0}
+.sexo label{font-weight:normal;color:var(--texto);display:flex;align-items:center;gap:5px;font-size:16px;margin:0;cursor:pointer}
+.sexo input{width:auto}
+.buscador{position:relative}
+.buscador input{font-size:18px;padding:12px 14px;border:2px solid var(--azul2)}
+#resultados{position:absolute;left:0;right:0;top:100%;background:#fff;border:1px solid var(--borde);border-radius:0 0 8px 8px;box-shadow:0 8px 20px rgba(0,0,0,.15);z-index:5;max-height:360px;overflow:auto;display:none}
+#resultados div{padding:10px 14px;cursor:pointer;border-bottom:1px solid #eef2f6}
+#resultados div:hover,#resultados div.sel{background:var(--claro)}
+.muted{color:var(--gris);font-size:14px}
+.estado{padding:10px 14px;border-radius:6px;margin-bottom:14px;font-weight:bold}
+.estado.nuevo{background:#e8f6ee;color:var(--verde);border:1px solid #b9e2c8}
+.estado.regresa{background:var(--claro);color:var(--azul);border:1px solid var(--borde)}
+.estado.editar{background:var(--amarillo);color:#8a5a00;border:1px solid #f0d58a}
+.consulta{border-left:4px solid var(--azul2);background:#fbfdff;border-radius:6px;padding:10px 14px;margin-bottom:10px;border-top:1px solid var(--borde);border-right:1px solid var(--borde);border-bottom:1px solid var(--borde)}
+.consulta .cab{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:4px}
 .consulta .cab b{color:var(--azul)}
 .consulta p{margin:4px 0;white-space:pre-wrap}
-.consulta p span.et{font-weight:bold;color:var(--azul)}
+.consulta p span{font-weight:bold;color:var(--azul)}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid #e3e9ef;vertical-align:top}
+th{background:var(--claro);color:var(--azul);font-size:14px}
+tr.clic{cursor:pointer}tr.clic:hover td{background:#f2f7fc}
+.vacio{color:var(--gris);text-align:center;padding:22px}
 .aviso{background:var(--amarillo);border:1px solid #f0d58a;border-radius:6px;padding:9px 12px;margin-bottom:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.app-tabla td{padding:4px 6px;border:0}
-.app-tabla select{width:80px}
-.modal-fondo{position:fixed;inset:0;background:rgba(20,30,45,.55);display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:24px 10px;z-index:10}
-.modal-fondo.act{display:flex}
-.modal{background:#fff;border-radius:10px;max-width:920px;width:100%;padding:18px 20px}
-.modal .pie{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;position:sticky;bottom:-18px;background:#fff;padding:10px 0}
-.barra{background:var(--azul2);height:16px;border-radius:3px;min-width:2px}
-.stat{font-size:28px;font-weight:bold;color:var(--azul)}
-.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#233;color:#fff;padding:10px 18px;border-radius:6px;display:none;z-index:20}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#233;color:#fff;padding:12px 20px;border-radius:6px;display:none;z-index:20;font-size:16px}
 #imprimir{display:none}
 @media print{
   @page{size:letter;margin:18mm 16mm 22mm}
-  body{background:#fff;font-size:12pt}
+  body{background:#fff}
   body>*:not(#imprimir){display:none!important}
   #imprimir{display:block}
 }
 .doc{font-family:Arial,Helvetica,sans-serif;font-size:11pt;color:#000}
-.doc .enc{border-bottom:2px solid #1f4e79;padding-bottom:6px;margin-bottom:10px}
-.doc .enc .n{font-size:15pt;font-weight:bold;color:#1f4e79}
-.doc h4{color:#1f4e79;margin:12px 0 4px;font-size:12pt;border-bottom:1px solid #c9d6e3}
-.doc p{margin:3px 0;white-space:pre-wrap}
-.doc .firma{margin-top:60px;text-align:center}
-.doc .rx{font-size:26pt;font-weight:bold;color:#1f4e79}
 </style>
 </head>
 <body>
 
 <header>
-  <div>
-    <h1 id="tituloClinica">Expediente Clínico</h1>
-    <div class="sub" id="subClinica">Funciona sin internet · los datos se guardan en esta computadora</div>
-  </div>
-  <div class="buscar"><input id="buscarGlobal" placeholder="Buscar paciente, teléfono, diagnóstico, medicamento…" autocomplete="off"></div>
+  <h1 id="tituloClinica">Expediente Clínico</h1>
+  <div id="reloj"></div>
 </header>
 
 <nav>
-  <button data-v="pacientes" class="act">Pacientes</button>
-  <button data-v="dia">Consultas del día</button>
-  <button data-v="estad">Estadísticas</button>
+  <button data-v="consulta" class="act">Consulta</button>
+  <button data-v="pacientes">Todos los pacientes</button>
+  <button data-v="citas">Próximas citas</button>
   <button data-v="config">Respaldo y configuración</button>
 </nav>
 
 <main>
   <div id="avisos"></div>
 
-  <!-- PACIENTES -->
-  <section class="vista act" id="v-pacientes">
+  <!-- ================= CONSULTA ================= -->
+  <section class="vista act" id="v-consulta">
     <div class="tarjeta">
       <div class="fila">
-        <h2 style="margin:0">Pacientes <span class="muted" id="cuentaPac"></span></h2>
-        <div class="esp"></div>
-        <select id="ordenPac" style="width:auto">
-          <option value="ultima">Última consulta primero</option>
-          <option value="nombre">Por nombre (A–Z)</option>
-          <option value="nuevo">Registrados recientemente</option>
-        </select>
-        <button class="btn" onclick="abrirPaciente()">+ Nuevo paciente</button>
+        <div class="buscador esp">
+          <input id="buscar" placeholder="🔍 Buscar paciente que regresa (nombre o teléfono)…" autocomplete="off">
+          <div id="resultados"></div>
+        </div>
+        <button class="btn verde" onclick="nuevoPaciente()">+ Paciente nuevo</button>
       </div>
+    </div>
+
+    <div id="estado" class="estado nuevo">Paciente nuevo</div>
+
+    <div class="tarjeta">
+      <h2>Datos del paciente</h2>
+      <div class="grid g4">
+        <div><label>Paciente (nombre y apellidos)</label><input id="fNombre"></div>
+        <div><label>Edad</label><input id="fEdad" placeholder="años"></div>
+        <div><label>Sexo</label>
+          <div class="sexo"><label><input type="radio" name="sexo" value="Femenino"> Femenino</label><label><input type="radio" name="sexo" value="Masculino"> Masculino</label></div>
+        </div>
+        <div><label>Fecha y hora</label><input id="fFechaHora" readonly></div>
+        <div><label>Teléfono</label><input id="fTel"></div>
+        <div class="esp" style="grid-column:span 3"><label>Procedencia</label><input id="fProc"></div>
+      </div>
+      <div class="grid g2" style="margin-top:12px">
+        <div><label>Antecedentes personales</label><textarea id="fAP" placeholder="Ej.: HTA hace 30 años, EPOC, gastritis, celulitis en pierna izquierda, cirugías, alergias…"></textarea></div>
+        <div><label>Antecedentes familiares</label><textarea id="fAF" placeholder="Ej.: Madre diabética, padre hipertenso…"></textarea></div>
+      </div>
+    </div>
+
+    <div class="tarjeta">
+      <h2>Consulta de hoy</h2>
+      <div class="grid">
+        <div><label>Motivo de consulta</label><textarea id="fMotivo"></textarea></div>
+        <div><label>Lo encontrado en la consulta (examen físico, signos vitales)</label><textarea id="fExamen" placeholder="Ej.: TA 110/60, FC 80, SO2 96%. Consciente, obesa…"></textarea></div>
+        <div><label>Datos de laboratorio actuales</label><textarea id="fLab" placeholder="Ej.: BHC, glucosa, creatinina, HbA1c, ácido úrico, Doppler…"></textarea></div>
+        <div><label>Conclusiones del médico</label><textarea id="fConclusion"></textarea></div>
+        <div><label>Tratamiento</label><textarea id="fTx" style="min-height:100px"></textarea>
+          <div class="fila" style="margin-top:6px"><button class="btn sec peq" id="btnCopiarTx" style="display:none" onclick="copiarTxAnterior()">Copiar el tratamiento de la última consulta</button></div></div>
+        <div style="max-width:260px"><label>Próxima cita</label><input type="date" id="fProx"></div>
+      </div>
+    </div>
+
+    <div class="fila" style="margin-bottom:20px">
+      <button class="btn grande" onclick="guardar()">💾 Guardar consulta</button>
+      <button class="btn sec" onclick="imprimirActual()">Imprimir</button>
+      <button class="btn sec" onclick="recetaActual()">Receta</button>
+      <button class="btn sec" onclick="wordActual()">Word</button>
+      <div class="esp"></div>
+      <button class="btn sec" id="btnCancelarEd" style="display:none" onclick="cancelarEdicion()">Cancelar edición</button>
+    </div>
+
+    <div id="historial"></div>
+  </section>
+
+  <!-- ================= PACIENTES ================= -->
+  <section class="vista" id="v-pacientes">
+    <div class="tarjeta">
+      <div class="fila"><h2 style="margin:0">Todos los pacientes <span class="muted" id="cuentaPac"></span></h2><div class="esp"></div>
+        <input id="filtroPac" placeholder="Filtrar…" style="max-width:280px"></div>
     </div>
     <div class="tarjeta" style="padding:0;overflow:auto">
-      <table>
-        <thead><tr><th>Nombre</th><th>Edad</th><th>Sexo</th><th>Procedencia</th><th>Teléfono</th><th>Consultas</th><th>Última consulta</th></tr></thead>
-        <tbody id="tablaPac"></tbody>
-      </table>
+      <table><thead><tr><th>Paciente</th><th>Edad</th><th>Sexo</th><th>Teléfono</th><th>Procedencia</th><th>Consultas</th><th>Última</th></tr></thead>
+      <tbody id="tablaPac"></tbody></table>
     </div>
   </section>
 
-  <!-- DETALLE PACIENTE -->
-  <section class="vista" id="v-paciente"></section>
+  <!-- ================= CITAS ================= -->
+  <section class="vista" id="v-citas"></section>
 
-  <!-- DÍA -->
-  <section class="vista" id="v-dia">
-    <div class="tarjeta">
-      <div class="fila">
-        <button class="btn sec peq" onclick="moverDia(-1)">◀</button>
-        <input type="date" id="fechaDia" style="width:auto">
-        <button class="btn sec peq" onclick="moverDia(1)">▶</button>
-        <button class="btn sec peq" onclick="irHoy()">Hoy</button>
-        <h2 id="tituloDia" style="margin:0 0 0 8px"></h2>
-        <div class="esp"></div>
-        <button class="btn sec" onclick="imprimirDia()">Imprimir</button>
-        <button class="btn" onclick="wordDia()">Exportar a Word</button>
-      </div>
-    </div>
-    <div id="citasDia"></div>
-    <div id="listaDia"></div>
-  </section>
-
-  <!-- ESTADÍSTICAS -->
-  <section class="vista" id="v-estad"></section>
-
-  <!-- CONFIG -->
+  <!-- ================= CONFIG ================= -->
   <section class="vista" id="v-config">
     <div class="tarjeta">
-      <h2>Datos de la clínica (aparecen en recetas e impresiones)</h2>
+      <h2>Datos que salen en impresiones y recetas</h2>
       <div class="grid g2">
         <div><label>Nombre de la clínica</label><input id="cfgClinica"></div>
         <div><label>Médico</label><input id="cfgMedico"></div>
         <div><label>Especialidad / código</label><input id="cfgEspecialidad"></div>
         <div><label>Dirección y teléfono</label><input id="cfgDireccion"></div>
       </div>
-      <div class="fila" style="margin-top:10px"><button class="btn" onclick="guardarConfig()">Guardar datos</button></div>
+      <div class="fila" style="margin-top:12px"><button class="btn" onclick="guardarConfig()">Guardar</button></div>
     </div>
-
     <div class="tarjeta">
-      <h2>Respaldo (MUY IMPORTANTE)</h2>
-      <p class="muted" style="margin-top:0">Los datos viven dentro del navegador de esta computadora. Si se borra el historial del navegador o se formatea la PC, se pierden. Haga un respaldo cada semana y guárdelo en una USB o envíelo a su correo.</p>
+      <h2>Respaldo (muy importante)</h2>
+      <p class="muted" style="margin-top:0">Los datos se guardan dentro del navegador de esta computadora. Si se borra el historial del navegador o se formatea la PC, se pierden. Haga un respaldo cada semana y guárdelo en una USB o en su correo.</p>
       <div class="fila">
-        <button class="btn verde" onclick="descargarRespaldo()">⬇ Descargar respaldo ahora</button>
-        <button class="btn sec" onclick="document.getElementById('archRestaurar').click()">⬆ Restaurar desde respaldo</button>
-        <input type="file" id="archRestaurar" accept=".json,application/json" style="display:none">
+        <button class="btn verde" onclick="descargarRespaldo()">⬇ Descargar respaldo</button>
+        <button class="btn sec" onclick="$('archRestaurar').click()">⬆ Restaurar respaldo</button>
+        <input type="file" id="archRestaurar" accept=".json" style="display:none">
         <span class="muted" id="ultimoRespaldo"></span>
       </div>
-      <h3>Guardado automático en un archivo (Chrome o Edge)</h3>
-      <p class="muted" style="margin-top:0">Elija un archivo (por ejemplo en Documentos o en una USB) y cada cambio se guardará allí automáticamente, además de en el navegador.</p>
+      <h2 style="margin-top:16px">Guardado automático en archivo (Chrome / Edge)</h2>
+      <p class="muted" style="margin-top:0">Cada cambio se guarda también en un archivo que usted elija (por ejemplo en una USB).</p>
       <div class="fila">
-        <button class="btn sec" onclick="vincularArchivo()">Elegir archivo de guardado automático</button>
-        <button class="btn sec" onclick="abrirArchivoDatos()">Abrir datos desde un archivo</button>
+        <button class="btn sec" onclick="vincularArchivo()">Elegir archivo</button>
         <button class="btn rojo peq" onclick="desvincularArchivo()">Dejar de usar archivo</button>
         <span class="muted" id="estadoArchivo"></span>
       </div>
     </div>
-
     <div class="tarjeta">
       <h2>Exportar</h2>
       <div class="fila">
-        <button class="btn sec" onclick="exportarExcel('pacientes')">Pacientes a Excel</button>
-        <button class="btn sec" onclick="exportarExcel('consultas')">Consultas a Excel</button>
-        <button class="btn sec" onclick="wordTodo()">Todo el archivo a Word</button>
+        <button class="btn sec" onclick="exportarExcel()">Todas las consultas a Excel</button>
+        <button class="btn sec" onclick="wordTodo()">Todos los pacientes a Word</button>
       </div>
-    </div>
-
-    <div class="tarjeta">
-      <h2>Zona peligrosa</h2>
-      <button class="btn rojo" onclick="borrarTodo()">Borrar TODOS los datos</button>
     </div>
   </section>
 </main>
 
-<!-- MODAL PACIENTE -->
-<div class="modal-fondo" id="mPaciente">
-  <div class="modal">
-    <h2 id="mPacTitulo">Nuevo paciente</h2>
-    <div class="grid g6">
-      <div class="span3"><label>Nombre completo *</label><input id="pNombre"></div>
-      <div><label>Sexo</label><select id="pSexo"><option value="">—</option><option>Femenino</option><option>Masculino</option></select></div>
-      <div><label>Fecha de nacimiento</label><input type="date" id="pNac"></div>
-      <div><label>Edad (si no sabe la fecha)</label><input type="number" min="0" max="130" id="pEdad"></div>
-      <div class="span2"><label>Procedencia</label><input id="pProc" list="listaProc"></div>
-      <div class="span2"><label>Teléfono</label><input id="pTel"></div>
-      <div class="span2"><label>Cédula / Nº expediente</label><input id="pCed"></div>
-      <div class="span3"><label>Ocupación</label><input id="pOcup"></div>
-      <div class="span3"><label>Alergias</label><input id="pAlerg" placeholder="Ej.: Penicilina, AINES… (vacío = no conocidas)"></div>
-    </div>
-    <h3>Antecedentes personales patológicos (APP)</h3>
-    <div style="overflow:auto"><table class="app-tabla"><tbody id="pAppTabla"></tbody></table></div>
-    <div class="grid g2" style="margin-top:6px">
-      <div><label>Otros antecedentes (cirugías, quirúrgicos, gineco-obstétricos…)</label><textarea id="pAppOtros"></textarea></div>
-      <div><label>Notas del paciente</label><textarea id="pNotas"></textarea></div>
-    </div>
-    <div class="pie">
-      <button class="btn sec" onclick="cerrarModal('mPaciente')">Cancelar</button>
-      <button class="btn" onclick="guardarPaciente()">Guardar paciente</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL CONSULTA -->
-<div class="modal-fondo" id="mConsulta">
-  <div class="modal">
-    <h2 id="mConTitulo">Nueva consulta</h2>
-    <div class="muted" id="mConPaciente" style="margin:-6px 0 10px"></div>
-    <div class="grid g4">
-      <div><label>Fecha</label><input type="date" id="cFecha"></div>
-      <div><label>Hora</label><input type="time" id="cHora"></div>
-      <div class="span2"><label>Tipo</label><select id="cTipo"><option>Primera vez</option><option>Subsecuente</option><option>Control</option><option>Emergencia</option><option>Procedimiento</option></select></div>
-      <div class="todo"><label>S: Subjetivo (motivo de consulta / síntomas)</label><textarea id="cS"></textarea></div>
-    </div>
-    <h3>O: Signos vitales</h3>
-    <div class="grid g6">
-      <div><label>TA (mmHg)</label><input id="cTA" placeholder="120/80"></div>
-      <div><label>FC (x')</label><input id="cFC" inputmode="numeric"></div>
-      <div><label>FR (x')</label><input id="cFR" inputmode="numeric"></div>
-      <div><label>SO2 (%)</label><input id="cSO2" inputmode="numeric"></div>
-      <div><label>Temp (°C)</label><input id="cTemp" inputmode="decimal"></div>
-      <div><label>Glicemia (mg/dl)</label><input id="cGlic" inputmode="numeric"></div>
-      <div><label>Peso (kg)</label><input id="cPeso" inputmode="decimal"></div>
-      <div><label>Talla (cm)</label><input id="cTalla" inputmode="decimal"></div>
-      <div class="span2"><label>IMC (automático)</label><input id="cIMC" readonly style="background:#f3f6f9"></div>
-      <div class="span2" id="cAlertaVit" style="align-self:end;font-size:13px;color:var(--rojo)"></div>
-    </div>
-    <div class="grid g2" style="margin-top:10px">
-      <div class="todo"><label>O: Examen físico</label><textarea id="cO"></textarea></div>
-      <div><label>Exámenes de laboratorio (BHC, glucosa, creatinina, HbA1c…)</label><textarea id="cLab"></textarea></div>
-      <div><label>Estudios de imagen / otros (Doppler, US, EKG, Rx…)</label><textarea id="cEst"></textarea></div>
-      <div class="todo"><label>A: Diagnóstico(s) / impresión diagnóstica</label><textarea id="cDx" style="min-height:44px"></textarea></div>
-      <div class="todo"><label>P: Tratamiento / plan (un medicamento por línea o separados por “+”)</label><textarea id="cTx" style="min-height:90px"></textarea>
-        <div class="fila" style="margin-top:4px"><button class="btn sec peq" id="btnRepetirTx" onclick="repetirTx()">Copiar tratamiento de la consulta anterior</button></div></div>
-      <div><label>Próxima cita</label><input type="date" id="cProx"></div>
-      <div><label>Notas / indicaciones</label><input id="cNotas"></div>
-    </div>
-    <div class="pie">
-      <button class="btn sec" onclick="cerrarModal('mConsulta')">Cancelar</button>
-      <button class="btn" onclick="guardarConsulta()">Guardar consulta</button>
-    </div>
-  </div>
-</div>
-
-<datalist id="listaProc"></datalist>
 <div id="imprimir"></div>
 <div class="toast" id="toast"></div>
 
 <script>
 'use strict';
-/* ================== DATOS Y ALMACENAMIENTO ================== */
-const APP_LISTA = ['HTA','Diabetes','EPOC / Asma','Cardiopatía','Gastritis','Enfermedad renal','Tiroides','Dislipidemia','Neuropatía','COVID','Cáncer','Celulitis / infecciones'];
-let DB = {version:1, config:{clinica:'Aesthetic Clinic', medico:'', especialidad:'', direccion:''}, pacientes:[], consultas:[], ultimoRespaldo:null};
+/* ================= ALMACENAMIENTO ================= */
+let DB = {version:2, config:{clinica:'Aesthetic Clinic', medico:'', especialidad:'', direccion:''}, pacientes:[], consultas:[], ultimoRespaldo:null};
 let archivoHandle = null, archivoOK = false;
-let pacienteActual = null, editPacId = null, editConId = null, conPacId = null, formSucio = false;
+let pacId = null, editConId = null;
 
-function idbAbrir(){
-  return new Promise((res, rej) => {
-    const r = indexedDB.open('expedienteClinico', 1);
-    r.onupgradeneeded = () => r.result.createObjectStore('kv');
-    r.onsuccess = () => res(r.result);
-    r.onerror = () => rej(r.error);
-  });
-}
+function idbAbrir(){ return new Promise((res, rej) => { const r = indexedDB.open('expedienteClinico', 1); r.onupgradeneeded = () => r.result.createObjectStore('kv'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
 async function idbGet(k){
   try{ const db = await idbAbrir(); return await new Promise((res, rej) => { const r = db.transaction('kv').objectStore('kv').get(k); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
   catch(e){ const v = localStorage.getItem('ec_'+k); return v ? JSON.parse(v) : undefined; }
@@ -290,8 +219,7 @@ async function idbSet(k, v){
   try{ const db = await idbAbrir(); await new Promise((res, rej) => { const t = db.transaction('kv','readwrite'); t.objectStore('kv').put(v, k); t.oncomplete = res; t.onerror = () => rej(t.error); }); }
   catch(e){ if (k !== 'archivo') localStorage.setItem('ec_'+k, JSON.stringify(v)); }
 }
-
-async function guardar(){
+async function persistir(){
   await idbSet('db', DB);
   try{ localStorage.setItem('ec_copia', JSON.stringify(DB)); }catch(e){}
   if (archivoHandle && archivoOK){
@@ -299,413 +227,340 @@ async function guardar(){
     catch(e){ archivoOK = false; pintarAvisos(); }
   }
 }
-
 async function cargar(){
   let d = await idbGet('db');
   if (!d){ try{ const c = localStorage.getItem('ec_copia'); if (c) d = JSON.parse(c); }catch(e){} }
   if (d && d.pacientes) DB = Object.assign(DB, d);
+  migrar();
   try{
     archivoHandle = await idbGet('archivo') || null;
     if (archivoHandle && archivoHandle.queryPermission) archivoOK = (await archivoHandle.queryPermission({mode:'readwrite'})) === 'granted';
   }catch(e){ archivoHandle = null; }
 }
+// Convierte datos de la versión anterior del programa (antecedentes por casillas, consultas SOAP)
+function migrar(){
+  DB.pacientes.forEach(p => {
+    if (p.app && p.ap === undefined){
+      const t = Object.entries(p.app).filter(([k,a]) => a && (a.v || a.d)).map(([k,a]) => `${k}${a.v ? ' (' + a.v + ')' : ''}${a.d ? ' ' + a.d : ''}`);
+      if (p.appOtros) t.push(p.appOtros); if (p.alergias) t.push('Alergias: ' + p.alergias);
+      p.ap = t.join(', '); delete p.app;
+    }
+    if (p.af === undefined) p.af = '';
+  });
+  DB.consultas.forEach(c => {
+    if (c.motivo === undefined && (c.s !== undefined || c.o !== undefined)){
+      const sv = [c.ta && 'TA ' + c.ta, c.fc && 'FC ' + c.fc, c.fr && 'FR ' + c.fr, c.so2 && 'SO2 ' + c.so2 + '%', c.temp && 'T ' + c.temp, c.peso && 'Peso ' + c.peso + ' kg'].filter(Boolean).join(', ');
+      c.motivo = c.s || ''; c.examen = [sv, c.o].filter(Boolean).join('. ');
+      c.lab = [c.lab, c.est].filter(Boolean).join('\n'); c.conclusion = c.dx || '';
+    }
+  });
+  DB.version = 2;
+}
 
-/* ================== UTILIDADES ================== */
+/* ================= UTILIDADES ================= */
 const $ = id => document.getElementById(id);
 const nuevoId = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const sinAcentos = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().trim();
+const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 function hoy(){ const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0,10); }
 function horaAhora(){ const d = new Date(); return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0'); }
-const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 function fechaLarga(f){ if (!f) return ''; const [a,m,d] = f.split('-'); return `${+d} de ${MESES[+m-1]} de ${a}`; }
 function fechaCorta(f){ if (!f) return ''; const [a,m,d] = f.split('-'); return `${d}/${m}/${a}`; }
-function sumarDias(f, n){ const d = new Date(f + 'T12:00:00'); d.setDate(d.getDate() + n); return d.toISOString().slice(0,10); }
+function hora12(h){ if (!h) return ''; let [H,M] = h.split(':').map(Number); const s = H >= 12 ? 'p.m.' : 'a.m.'; H = H % 12 || 12; return `${H}:${String(M).padStart(2,'0')} ${s}`; }
 function toast(t){ const e = $('toast'); e.textContent = t; e.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(() => e.style.display = 'none', 2600); }
-
-function edadDe(p){
-  if (p.fechaNac){
-    const n = new Date(p.fechaNac + 'T12:00:00'), h = new Date();
-    let e = h.getFullYear() - n.getFullYear();
-    if (h.getMonth() < n.getMonth() || (h.getMonth() === n.getMonth() && h.getDate() < n.getDate())) e--;
-    return e;
-  }
-  if (p.edad === '' || p.edad == null) return '';
-  const pasados = Math.floor((Date.now() - new Date((p.edadFecha || hoy()) + 'T12:00:00')) / (365.25*864e5));
-  return +p.edad + Math.max(0, pasados);
-}
-const consultasDe = pid => DB.consultas.filter(c => c.pacienteId === pid).sort((a,b) => (a.fecha+a.hora).localeCompare(b.fecha+b.hora));
 const pacientePor = id => DB.pacientes.find(p => p.id === id);
-function appTexto(p){
-  const partes = [];
-  APP_LISTA.forEach(k => { const a = (p.app || {})[k]; if (a && a.v) partes.push(`${k}: (${a.v})${a.d ? ' ' + a.d : ''}`); });
-  return partes.join(', ');
+const consultasDe = id => DB.consultas.filter(c => c.pacienteId === id).sort((a,b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora));
+// La edad escrita aumenta sola con los años desde que se anotó
+function edadDe(p){
+  if (!p || p.edad === '' || p.edad == null) return '';
+  const n = parseInt(p.edad, 10); if (isNaN(n)) return p.edad;
+  const anios = Math.floor((Date.now() - new Date((p.edadFecha || hoy()) + 'T12:00:00')) / (365.25*864e5));
+  return String(n + Math.max(0, anios));
 }
-function imc(peso, talla){ const p = parseFloat(String(peso).replace(',','.')), t = parseFloat(String(talla).replace(',','.')) / 100; if (!p || !t) return ''; const v = p/(t*t); let c = v < 18.5 ? 'bajo peso' : v < 25 ? 'normal' : v < 30 ? 'sobrepeso' : 'obesidad'; return v.toFixed(1) + ' (' + c + ')'; }
-function vitalesTexto(c){
-  const v = [];
-  if (c.ta) v.push('TA: ' + c.ta); if (c.fc) v.push('FC: ' + c.fc + " x'"); if (c.fr) v.push('FR: ' + c.fr + " x'");
-  if (c.so2) v.push('SO2: ' + c.so2 + '%'); if (c.temp) v.push('T: ' + c.temp + ' °C'); if (c.glic) v.push('Glicemia: ' + c.glic + ' mg/dl');
-  if (c.peso) v.push('Peso: ' + c.peso + ' kg'); if (c.talla) v.push('Talla: ' + c.talla + ' cm');
-  const i = imc(c.peso, c.talla); if (i) v.push('IMC: ' + i);
-  return v.join(', ');
-}
-function alertasVitales(c){
-  const a = [];
-  const m = String(c.ta || '').match(/(\d{2,3})\s*\/\s*(\d{2,3})/);
-  if (m){ if (+m[1] >= 140 || +m[2] >= 90) a.push('TA elevada'); if (+m[1] < 90) a.push('TA baja'); }
-  if (c.so2 && +c.so2 < 92) a.push('SO2 baja'); if (c.fc && (+c.fc > 100)) a.push('Taquicardia'); if (c.fc && +c.fc < 50) a.push('Bradicardia');
-  if (c.temp && parseFloat(String(c.temp).replace(',','.')) >= 38) a.push('Fiebre'); if (c.glic && +c.glic >= 200) a.push('Hiperglicemia'); if (c.glic && +c.glic < 70) a.push('Hipoglicemia');
-  return a;
-}
+const sexoSel = () => (document.querySelector('input[name=sexo]:checked') || {}).value || '';
 
-/* ================== NAVEGACIÓN ================== */
+/* ================= RELOJ ================= */
+function tic(){
+  const d = new Date(), f = hoy(), h = horaAhora();
+  $('reloj').innerHTML = `<b>${hora12(h)}</b><br>${['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][d.getDay()]}, ${fechaLarga(f)}`;
+  if (!editConId) $('fFechaHora').value = `${fechaCorta(f)}  ${hora12(h)}`;
+}
+setInterval(tic, 15000);
+
+/* ================= NAVEGACIÓN ================= */
 function irVista(v){
   document.querySelectorAll('.vista').forEach(s => s.classList.toggle('act', s.id === 'v-' + v));
-  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('act', b.dataset.v === v || (v === 'paciente' && b.dataset.v === 'pacientes')));
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('act', b.dataset.v === v));
   if (v === 'pacientes') pintarPacientes();
-  if (v === 'dia') pintarDia();
-  if (v === 'estad') pintarEstad();
+  if (v === 'citas') pintarCitas();
   if (v === 'config') pintarConfig();
   window.scrollTo(0,0);
 }
 document.querySelectorAll('nav button').forEach(b => b.onclick = () => irVista(b.dataset.v));
-
 function pintarAvisos(){
   const av = [];
   if (archivoHandle && !archivoOK) av.push(`<div class="aviso">⚠ El guardado automático en archivo está en pausa. <button class="btn peq" onclick="reactivarArchivo()">Reactivar</button></div>`);
   const dias = DB.ultimoRespaldo ? Math.floor((Date.now() - DB.ultimoRespaldo) / 864e5) : null;
-  if (DB.consultas.length && !archivoOK && (dias === null || dias >= 7))
+  if (DB.consultas.length >= 3 && !archivoOK && (dias === null || dias >= 7))
     av.push(`<div class="aviso">💾 ${dias === null ? 'Aún no ha hecho ningún respaldo.' : 'Su último respaldo fue hace ' + dias + ' días.'} <button class="btn verde peq" onclick="descargarRespaldo()">Hacer respaldo ahora</button></div>`);
   $('avisos').innerHTML = av.join('');
   $('tituloClinica').textContent = DB.config.clinica || 'Expediente Clínico';
   document.title = (DB.config.clinica || 'Expediente') + ' · Expediente Clínico';
 }
 
-/* ================== LISTA DE PACIENTES / BÚSQUEDA ================== */
-function textoBusqueda(p){
-  const cs = consultasDe(p.id);
-  return sinAcentos([p.nombre, p.telefono, p.procedencia, p.cedula, appTexto(p), p.appOtros, ...cs.map(c => c.dx + ' ' + c.tx + ' ' + c.est)].join(' '));
+/* ================= BUSCADOR ================= */
+let selIdx = -1;
+function buscarPacientes(q){
+  const t = norm(q).split(/\s+/).filter(Boolean); if (!t.length) return [];
+  return DB.pacientes.filter(p => { const s = norm(p.nombre + ' ' + p.telefono + ' ' + p.procedencia); return t.every(x => s.includes(x)); })
+    .map(p => ({p, cs: consultasDe(p.id)})).sort((a,b) => a.p.nombre.localeCompare(b.p.nombre,'es')).slice(0, 30);
 }
-function pintarPacientes(){
-  const q = sinAcentos($('buscarGlobal').value.trim());
-  let lista = DB.pacientes.map(p => { const cs = consultasDe(p.id); return {p, n: cs.length, ult: cs.length ? cs[cs.length-1].fecha : ''}; });
-  if (q) lista = lista.filter(x => q.split(/\s+/).every(t => textoBusqueda(x.p).includes(t)));
-  const o = $('ordenPac').value;
-  lista.sort((a,b) => o === 'nombre' ? a.p.nombre.localeCompare(b.p.nombre,'es') : o === 'nuevo' ? (b.p.creado||0) - (a.p.creado||0) : (b.ult||'').localeCompare(a.ult||''));
-  $('cuentaPac').textContent = q ? `(${lista.length} de ${DB.pacientes.length})` : `(${DB.pacientes.length})`;
-  $('tablaPac').innerHTML = lista.length ? lista.map(x => `<tr class="clic" onclick="verPaciente('${x.p.id}')">
-      <td><b>${esc(x.p.nombre)}</b>${x.p.alergias ? ' <span class="chip pos">Alergia</span>' : ''}</td><td>${esc(edadDe(x.p))}</td><td>${esc(x.p.sexo ? x.p.sexo[0] : '')}</td>
-      <td>${esc(x.p.procedencia)}</td><td>${esc(x.p.telefono)}</td><td>${x.n}</td><td>${fechaCorta(x.ult)}</td></tr>`).join('')
-    : `<tr><td colspan="7" class="vacio">${DB.pacientes.length ? 'No se encontraron pacientes con esa búsqueda.' : 'Todavía no hay pacientes. Pulse “+ Nuevo paciente”.'}</td></tr>`;
+function pintarResultados(){
+  const q = $('buscar').value, r = buscarPacientes(q), box = $('resultados');
+  selIdx = r.length ? 0 : -1;
+  if (!q.trim()){ box.style.display = 'none'; return; }
+  box.innerHTML = r.length ? r.map((x,i) => { const u = x.cs[x.cs.length-1];
+      return `<div data-id="${x.p.id}" class="${i === 0 ? 'sel' : ''}"><b>${esc(x.p.nombre)}</b> <span class="muted">· ${esc(edadDe(x.p))} años · ${esc(x.p.telefono || 'sin teléfono')} · ${esc(x.p.procedencia || '')} · ${x.cs.length} consulta(s)${u ? ', última ' + fechaCorta(u.fecha) : ''}</span></div>`; }).join('')
+    : `<div style="cursor:default" class="muted">No se encontró. Escriba los datos abajo como paciente nuevo.</div>`;
+  box.style.display = 'block';
+  box.querySelectorAll('div[data-id]').forEach(d => d.onmousedown = e => { e.preventDefault(); cargarPaciente(d.dataset.id); });
 }
-$('buscarGlobal').addEventListener('input', () => { if (!$('v-pacientes').classList.contains('act')) irVista('pacientes'); else pintarPacientes(); });
-$('ordenPac').onchange = pintarPacientes;
+$('buscar').addEventListener('input', pintarResultados);
+$('buscar').addEventListener('focus', pintarResultados);
+$('buscar').addEventListener('blur', () => setTimeout(() => $('resultados').style.display = 'none', 150));
+$('buscar').addEventListener('keydown', e => {
+  const items = [...$('resultados').querySelectorAll('div[data-id]')];
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp'){ e.preventDefault(); if (!items.length) return;
+    selIdx = (selIdx + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length; items.forEach((d,i) => d.classList.toggle('sel', i === selIdx)); items[selIdx].scrollIntoView({block:'nearest'}); }
+  if (e.key === 'Enter' && items[selIdx]) cargarPaciente(items[selIdx].dataset.id);
+  if (e.key === 'Escape') $('resultados').style.display = 'none';
+});
 
-/* ================== DETALLE DE PACIENTE ================== */
-function bloqueConsulta(c, n, conBotones){
-  const al = alertasVitales(c);
-  const fila = (et, v) => v ? `<p><span class="et">${et}:</span> ${esc(v)}</p>` : '';
-  return `<div class="consulta">
-    <div class="cab"><b>Consulta Nº ${n}</b> <span>${fechaLarga(c.fecha)}${c.hora ? ' · ' + c.hora : ''}</span> <span class="chip">${esc(c.tipo || '')}</span>
-      ${al.map(a => `<span class="chip pos">${a}</span>`).join('')}
-      <div class="esp"></div>
-      ${conBotones ? `<button class="btn sec peq" onclick="imprimirReceta('${c.id}')">Receta</button>
-      <button class="btn sec peq" onclick="abrirConsulta('${c.pacienteId}','${c.id}')">Editar</button>
-      <button class="btn rojo peq" onclick="eliminarConsulta('${c.id}')">Eliminar</button>` : ''}
-    </div>
-    ${fila('S', c.s)}${fila('Signos vitales', vitalesTexto(c))}${fila('O', c.o)}${fila('Laboratorio', c.lab)}${fila('Estudios', c.est)}
-    ${fila('Diagnóstico', c.dx)}${fila('Tx', c.tx)}${fila('Notas', c.notas)}${c.prox ? fila('Próxima cita', fechaLarga(c.prox)) : ''}
-  </div>`;
+/* ================= FORMULARIO ================= */
+const CAMPOS_CONSULTA = ['fMotivo','fExamen','fLab','fConclusion','fTx','fProx'];
+function hayTextoNuevo(){ return CAMPOS_CONSULTA.some(id => $(id).value.trim()) || (!pacId && $('fNombre').value.trim()); }
+function limpiarConsulta(){ CAMPOS_CONSULTA.forEach(id => $(id).value = ''); }
+function nuevoPaciente(){
+  if (hayTextoNuevo() && !confirm('Hay datos escritos sin guardar. ¿Borrarlos y empezar un paciente nuevo?')) return;
+  pacId = null; editConId = null;
+  ['fNombre','fEdad','fTel','fProc','fAP','fAF','buscar'].forEach(id => $(id).value = '');
+  document.querySelectorAll('input[name=sexo]').forEach(r => r.checked = false);
+  limpiarConsulta(); actualizarEstado(); pintarHistorial(); tic(); irVista('consulta'); $('fNombre').focus();
 }
-function verPaciente(id){
-  const p = pacientePor(id); if (!p) return irVista('pacientes');
-  pacienteActual = id;
-  const cs = consultasDe(id);
-  const appChips = APP_LISTA.filter(k => (p.app||{})[k] && p.app[k].v).map(k => `<span class="chip ${p.app[k].v === '+' ? 'pos' : ''}">${k} (${p.app[k].v})${p.app[k].d ? ' ' + esc(p.app[k].d) : ''}</span>`).join('');
-  $('v-paciente').innerHTML = `
-    <div class="fila" style="margin-bottom:10px"><button class="btn sec peq" onclick="irVista('pacientes')">◀ Volver a la lista</button></div>
-    <div class="tarjeta">
-      <div class="fila">
-        <h2 style="margin:0">${esc(p.nombre)}</h2>
-        <span class="muted">${[edadDe(p) !== '' ? edadDe(p) + ' años' : '', p.sexo, p.procedencia, p.telefono ? 'Telf. ' + p.telefono : '', p.cedula].filter(Boolean).map(esc).join(' · ')}</span>
-        <div class="esp"></div>
-        <button class="btn" onclick="abrirConsulta('${id}')">+ Nueva consulta</button>
-        <button class="btn sec" onclick="abrirPaciente('${id}')">Editar datos</button>
-        <button class="btn sec" onclick="imprimirHistoria('${id}')">Imprimir</button>
-        <button class="btn sec" onclick="wordHistoria('${id}')">Word</button>
-        <button class="btn rojo peq" onclick="eliminarPaciente('${id}')">Eliminar</button>
-      </div>
-      ${p.alergias ? `<p style="color:var(--rojo);margin:8px 0 0"><b>⚠ Alergias:</b> ${esc(p.alergias)}</p>` : ''}
-      <div style="margin-top:8px"><b style="color:var(--azul)">APP:</b> ${appChips || '<span class="muted">Sin antecedentes registrados</span>'}</div>
-      ${p.appOtros ? `<p style="margin:6px 0 0;white-space:pre-wrap"><b style="color:var(--azul)">Otros:</b> ${esc(p.appOtros)}</p>` : ''}
-      ${p.ocupacion ? `<p style="margin:6px 0 0"><b style="color:var(--azul)">Ocupación:</b> ${esc(p.ocupacion)}</p>` : ''}
-      ${p.notas ? `<p style="margin:6px 0 0;white-space:pre-wrap"><b style="color:var(--azul)">Notas:</b> ${esc(p.notas)}</p>` : ''}
-    </div>
-    <h2>Consultas (${cs.length})</h2>
-    ${cs.length ? cs.map((c,i) => [c,i+1]).reverse().map(([c,n]) => bloqueConsulta(c, n, true)).join('') : '<div class="tarjeta vacio">Sin consultas. Pulse “+ Nueva consulta”.</div>'}`;
-  irVista('paciente');
+function cargarPaciente(id, sinPreguntar){
+  if (!sinPreguntar && CAMPOS_CONSULTA.some(x => $(x).value.trim()) && pacId !== id && !confirm('Hay una consulta escrita sin guardar. ¿Descartarla y abrir otro paciente?')) return;
+  const p = pacientePor(id); if (!p) return;
+  if (pacId !== id){ limpiarConsulta(); }
+  pacId = id; editConId = null;
+  $('fNombre').value = p.nombre || ''; $('fEdad').value = edadDe(p); $('fTel').value = p.telefono || ''; $('fProc').value = p.procedencia || '';
+  $('fAP').value = p.ap || ''; $('fAF').value = p.af || '';
+  document.querySelectorAll('input[name=sexo]').forEach(r => r.checked = r.value === p.sexo);
+  $('buscar').value = ''; $('resultados').style.display = 'none';
+  actualizarEstado(); pintarHistorial(); tic(); irVista('consulta');
+  $('fMotivo').focus();
 }
-
-/* ================== FORMULARIO PACIENTE ================== */
-function abrirPaciente(id){
-  editPacId = id || null;
-  const p = id ? pacientePor(id) : {app:{}};
-  $('mPacTitulo').textContent = id ? 'Editar paciente' : 'Nuevo paciente';
-  $('pNombre').value = p.nombre || ''; $('pSexo').value = p.sexo || ''; $('pNac').value = p.fechaNac || '';
-  $('pEdad').value = id ? (p.fechaNac ? '' : edadDe(p)) : ''; $('pProc').value = p.procedencia || ''; $('pTel').value = p.telefono || '';
-  $('pCed').value = p.cedula || ''; $('pOcup').value = p.ocupacion || ''; $('pAlerg').value = p.alergias || '';
-  $('pAppOtros').value = p.appOtros || ''; $('pNotas').value = p.notas || '';
-  $('pAppTabla').innerHTML = APP_LISTA.map((k,i) => { const a = (p.app||{})[k] || {};
-    return `<tr><td style="width:190px">${k}</td><td><select id="app_v_${i}"><option value="">—</option><option ${a.v==='+'?'selected':''}>+</option><option ${a.v==='-'?'selected':''}>-</option></select></td>
-      <td><input id="app_d_${i}" value="${esc(a.d||'')}" placeholder="Detalle (ej.: 30 años, desde nov 2024, pierna izquierda…)"></td></tr>`; }).join('');
-  $('listaProc').innerHTML = [...new Set(DB.pacientes.map(x => x.procedencia).filter(Boolean))].map(x => `<option value="${esc(x)}">`).join('');
-  abrirModal('mPaciente'); $('pNombre').focus();
+function actualizarEstado(){
+  const e = $('estado'), cs = pacId ? consultasDe(pacId) : [];
+  $('btnCancelarEd').style.display = editConId ? '' : 'none';
+  $('btnCopiarTx').style.display = cs.some(c => c.tx && c.id !== editConId) ? '' : 'none';
+  if (editConId){ const c = DB.consultas.find(x => x.id === editConId); e.className = 'estado editar'; e.textContent = `✏ Editando la consulta del ${fechaLarga(c.fecha)}. Al guardar se corrige esa consulta.`; }
+  else if (pacId){ const u = cs[cs.length-1]; e.className = 'estado regresa';
+    e.textContent = `↩ Paciente que regresa · ${cs.length} consulta(s) anterior(es)${u ? ' · última: ' + fechaLarga(u.fecha) : ''}. Sus consultas anteriores están abajo.`; }
+  else { e.className = 'estado nuevo'; e.textContent = '★ Paciente nuevo. Escriba sus datos; si ya vino antes, búsquelo arriba.'; }
 }
-function guardarPaciente(){
-  const nombre = $('pNombre').value.trim();
-  if (!nombre){ alert('Escriba el nombre del paciente.'); return $('pNombre').focus(); }
-  const app = {};
-  APP_LISTA.forEach((k,i) => { const v = $('app_v_'+i).value, d = $('app_d_'+i).value.trim(); if (v || d) app[k] = {v, d}; });
-  let p = editPacId ? pacientePor(editPacId) : null;
+function guardar(){
+  const nombre = $('fNombre').value.trim();
+  if (!nombre){ alert('Escriba el nombre del paciente.'); return $('fNombre').focus(); }
+  if (!CAMPOS_CONSULTA.some(id => $(id).value.trim()) && !confirm('La consulta está vacía. ¿Guardar solo los datos del paciente?')) return;
+  let p = pacId ? pacientePor(pacId) : null;
   if (!p){
-    const dup = DB.pacientes.find(x => sinAcentos(x.nombre) === sinAcentos(nombre));
-    if (dup && !confirm(`Ya existe un paciente llamado "${dup.nombre}". ¿Crear otro de todos modos?`)) return;
-    p = {id: nuevoId(), creado: Date.now()}; DB.pacientes.push(p);
+    const dup = DB.pacientes.find(x => norm(x.nombre) === norm(nombre));
+    if (dup){
+      if (confirm(`Ya existe "${dup.nombre}" (${edadDe(dup)} años, ${dup.telefono || 'sin teléfono'}).\n\nACEPTAR = es la misma persona, agregar la consulta a su expediente.\nCANCELAR = es otra persona con el mismo nombre.`)) p = dup;
+    }
+    if (!p){ p = {id: nuevoId(), creado: Date.now()}; DB.pacientes.push(p); }
   }
-  const edadNueva = $('pEdad').value;
-  if (String(edadNueva) !== String(edadDe(p)) || !p.edadFecha){ p.edad = edadNueva; p.edadFecha = hoy(); }
-  Object.assign(p, {nombre, sexo:$('pSexo').value, fechaNac:$('pNac').value, procedencia:$('pProc').value.trim(), telefono:$('pTel').value.trim(),
-    cedula:$('pCed').value.trim(), ocupacion:$('pOcup').value.trim(), alergias:$('pAlerg').value.trim(), app, appOtros:$('pAppOtros').value.trim(), notas:$('pNotas').value.trim()});
-  guardar(); formSucio = false; cerrarModal('mPaciente', true); toast('Paciente guardado'); verPaciente(p.id);
+  const edad = $('fEdad').value.trim();
+  if (edad !== edadDe(p)){ p.edad = edad; p.edadFecha = hoy(); }
+  Object.assign(p, {nombre, sexo: sexoSel(), telefono: $('fTel').value.trim(), procedencia: $('fProc').value.trim(), ap: $('fAP').value.trim(), af: $('fAF').value.trim()});
+  pacId = p.id;
+  let c = null;
+  if (CAMPOS_CONSULTA.some(id => $(id).value.trim()) || editConId){
+    c = editConId ? DB.consultas.find(x => x.id === editConId) : {id: nuevoId(), pacienteId: p.id, fecha: hoy(), hora: horaAhora()};
+    Object.assign(c, {motivo: $('fMotivo').value.trim(), examen: $('fExamen').value.trim(), lab: $('fLab').value.trim(), conclusion: $('fConclusion').value.trim(), tx: $('fTx').value.trim(), prox: $('fProx').value});
+    if (!editConId) DB.consultas.push(c);
+  }
+  persistir();
+  toast(c ? (editConId ? 'Consulta corregida' : 'Consulta guardada') : 'Datos del paciente guardados');
+  editConId = null; limpiarConsulta(); actualizarEstado(); pintarHistorial(); pintarAvisos(); tic();
+  window.scrollTo({top: $('historial').offsetTop - 10, behavior:'smooth'});
 }
-function eliminarPaciente(id){
-  const p = pacientePor(id), n = consultasDe(id).length;
-  if (!confirm(`¿Eliminar a ${p.nombre} y sus ${n} consulta(s)? Esto no se puede deshacer.`)) return;
-  DB.pacientes = DB.pacientes.filter(x => x.id !== id); DB.consultas = DB.consultas.filter(c => c.pacienteId !== id);
-  guardar(); toast('Paciente eliminado'); irVista('pacientes');
+function editarConsulta(cid){
+  const c = DB.consultas.find(x => x.id === cid); if (!c) return;
+  if (CAMPOS_CONSULTA.some(id => $(id).value.trim()) && !editConId && !confirm('Hay una consulta escrita sin guardar. ¿Descartarla para editar la anterior?')) return;
+  editConId = cid;
+  $('fMotivo').value = c.motivo || ''; $('fExamen').value = c.examen || ''; $('fLab').value = c.lab || '';
+  $('fConclusion').value = c.conclusion || ''; $('fTx').value = c.tx || ''; $('fProx').value = c.prox || '';
+  $('fFechaHora').value = `${fechaCorta(c.fecha)}  ${hora12(c.hora)}`;
+  actualizarEstado(); window.scrollTo({top: 0, behavior:'smooth'}); $('fMotivo').focus();
 }
-
-/* ================== FORMULARIO CONSULTA ================== */
-const CAMPOS_C = {fecha:'cFecha', hora:'cHora', tipo:'cTipo', s:'cS', ta:'cTA', fc:'cFC', fr:'cFR', so2:'cSO2', temp:'cTemp', glic:'cGlic', peso:'cPeso', talla:'cTalla', o:'cO', lab:'cLab', est:'cEst', dx:'cDx', tx:'cTx', prox:'cProx', notas:'cNotas'};
-function abrirConsulta(pid, cid){
-  conPacId = pid; editConId = cid || null;
-  const p = pacientePor(pid), prev = consultasDe(pid);
-  const c = cid ? DB.consultas.find(x => x.id === cid) : {fecha: hoy(), hora: horaAhora(), tipo: prev.length ? 'Subsecuente' : 'Primera vez',
-    talla: prev.length ? prev[prev.length-1].talla : ''};
-  for (const k in CAMPOS_C) $(CAMPOS_C[k]).value = c[k] || '';
-  if (!c.tipo) $('cTipo').value = 'Subsecuente';
-  $('mConTitulo').textContent = cid ? 'Editar consulta' : 'Nueva consulta';
-  $('mConPaciente').innerHTML = `<b>${esc(p.nombre)}</b> · ${esc(edadDe(p))} años${p.alergias ? ` · <span style="color:var(--rojo)">⚠ Alergias: ${esc(p.alergias)}</span>` : ''}${appTexto(p) ? '<br>APP: ' + esc(appTexto(p)) : ''}`;
-  $('btnRepetirTx').style.display = prev.filter(x => x.id !== cid && x.tx).length ? '' : 'none';
-  calcVitales(); abrirModal('mConsulta'); $('cS').focus();
-}
-function calcVitales(){
-  $('cIMC').value = imc($('cPeso').value, $('cTalla').value);
-  $('cAlertaVit').textContent = alertasVitales({ta:$('cTA').value, so2:$('cSO2').value, fc:$('cFC').value, temp:$('cTemp').value, glic:$('cGlic').value}).join(' · ');
-}
-['cPeso','cTalla','cTA','cSO2','cFC','cTemp','cGlic'].forEach(i => $(i).addEventListener('input', calcVitales));
-function repetirTx(){
-  const prev = consultasDe(conPacId).filter(x => x.id !== editConId && x.tx);
-  const ult = prev[prev.length-1]; if (!ult) return;
-  if ($('cTx').value.trim() && !confirm('¿Reemplazar el tratamiento escrito por el de la consulta anterior?')) return;
-  $('cTx').value = ult.tx; formSucio = true;
-}
-function guardarConsulta(){
-  const c = editConId ? DB.consultas.find(x => x.id === editConId) : {id: nuevoId(), pacienteId: conPacId, creado: Date.now()};
-  for (const k in CAMPOS_C) c[k] = $(CAMPOS_C[k]).value.trim();
-  if (!c.fecha){ alert('Indique la fecha de la consulta.'); return; }
-  if (!editConId) DB.consultas.push(c);
-  guardar(); formSucio = false; cerrarModal('mConsulta', true); toast('Consulta guardada');
-  if ($('v-dia').classList.contains('act')) pintarDia(); else verPaciente(conPacId);
-}
+function cancelarEdicion(){ editConId = null; limpiarConsulta(); actualizarEstado(); tic(); }
 function eliminarConsulta(cid){
   const c = DB.consultas.find(x => x.id === cid);
-  if (!confirm(`¿Eliminar la consulta del ${fechaLarga(c.fecha)}?`)) return;
-  DB.consultas = DB.consultas.filter(x => x.id !== cid); guardar(); toast('Consulta eliminada'); verPaciente(c.pacienteId);
+  if (!confirm(`¿Eliminar la consulta del ${fechaLarga(c.fecha)}? No se puede deshacer.`)) return;
+  DB.consultas = DB.consultas.filter(x => x.id !== cid);
+  if (editConId === cid) cancelarEdicion();
+  persistir(); pintarHistorial(); actualizarEstado(); toast('Consulta eliminada');
+}
+function eliminarPaciente(){
+  const p = pacientePor(pacId); if (!p) return;
+  if (!confirm(`¿Eliminar a ${p.nombre} con todas sus consultas? No se puede deshacer.`)) return;
+  DB.pacientes = DB.pacientes.filter(x => x.id !== pacId); DB.consultas = DB.consultas.filter(c => c.pacienteId !== pacId);
+  persistir(); pacId = null; nuevoPaciente(); toast('Paciente eliminado');
+}
+function copiarTxAnterior(){
+  const cs = consultasDe(pacId).filter(c => c.tx && c.id !== editConId), u = cs[cs.length-1]; if (!u) return;
+  if ($('fTx').value.trim() && !confirm('¿Reemplazar el tratamiento escrito?')) return;
+  $('fTx').value = u.tx;
+}
+function bloqueConsulta(c, n, botones){
+  const f = (et, v) => v ? `<p><span>${et}:</span> ${esc(v)}</p>` : '';
+  return `<div class="consulta"><div class="cab"><b>Consulta Nº ${n}</b><span>${fechaLarga(c.fecha)} · ${hora12(c.hora)}</span><div class="esp"></div>
+    ${botones ? `<button class="btn sec peq" onclick="imprimirConsulta('${c.id}')">Imprimir</button><button class="btn sec peq" onclick="imprimirReceta('${c.id}')">Receta</button>
+    <button class="btn sec peq" onclick="editarConsulta('${c.id}')">Editar</button><button class="btn rojo peq" onclick="eliminarConsulta('${c.id}')">Eliminar</button>` : ''}</div>
+    ${f('Motivo de consulta', c.motivo)}${f('Lo encontrado', c.examen)}${f('Laboratorio', c.lab)}${f('Conclusiones', c.conclusion)}${f('Tratamiento', c.tx)}${c.prox ? f('Próxima cita', fechaLarga(c.prox)) : ''}</div>`;
+}
+function pintarHistorial(){
+  if (!pacId){ $('historial').innerHTML = ''; return; }
+  const cs = consultasDe(pacId);
+  $('historial').innerHTML = `<div class="tarjeta"><div class="fila" style="margin-bottom:10px"><h2 style="margin:0">Consultas anteriores (${cs.length})</h2><div class="esp"></div>
+      <button class="btn sec peq" onclick="imprimirHistoria('${pacId}')">Imprimir historia completa</button><button class="btn sec peq" onclick="wordHistoria('${pacId}')">Historia a Word</button>
+      <button class="btn rojo peq" onclick="eliminarPaciente()">Eliminar paciente</button></div>
+    ${cs.length ? cs.map((c,i) => [c, i+1]).reverse().map(([c,n]) => bloqueConsulta(c, n, true)).join('') : '<div class="vacio">Todavía no tiene consultas guardadas.</div>'}</div>`;
 }
 
-/* ================== MODALES ================== */
-function abrirModal(id){ formSucio = false; $(id).classList.add('act'); }
-function cerrarModal(id, forzar){
-  if (!forzar && formSucio && !confirm('Hay cambios sin guardar. ¿Cerrar de todos modos?')) return;
-  $(id).classList.remove('act'); formSucio = false;
+/* ================= LISTA Y CITAS ================= */
+function pintarPacientes(){
+  const t = norm($('filtroPac').value).split(/\s+/).filter(Boolean);
+  const lista = DB.pacientes.filter(p => { const s = norm(p.nombre + ' ' + p.telefono + ' ' + p.procedencia); return t.every(x => s.includes(x)); })
+    .map(p => { const cs = consultasDe(p.id); return {p, n: cs.length, u: cs.length ? cs[cs.length-1].fecha : ''}; })
+    .sort((a,b) => a.p.nombre.localeCompare(b.p.nombre,'es'));
+  $('cuentaPac').textContent = `(${DB.pacientes.length})`;
+  $('tablaPac').innerHTML = lista.length ? lista.map(x => `<tr class="clic" onclick="cargarPaciente('${x.p.id}')"><td><b>${esc(x.p.nombre)}</b></td><td>${esc(edadDe(x.p))}</td>
+    <td>${esc(x.p.sexo || '')}</td><td>${esc(x.p.telefono || '')}</td><td>${esc(x.p.procedencia || '')}</td><td>${x.n}</td><td>${fechaCorta(x.u)}</td></tr>`).join('')
+    : `<tr><td colspan="7" class="vacio">No hay pacientes.</td></tr>`;
 }
-document.querySelectorAll('.modal').forEach(m => m.addEventListener('input', () => formSucio = true));
-document.addEventListener('keydown', e => {
-  const abierto = document.querySelector('.modal-fondo.act');
-  if (e.key === 'Escape' && abierto) cerrarModal(abierto.id);
-  if (e.ctrlKey && (e.key === 's' || e.key === 'S') && abierto){ e.preventDefault(); abierto.id === 'mPaciente' ? guardarPaciente() : guardarConsulta(); }
-});
-window.addEventListener('beforeunload', e => { if (document.querySelector('.modal-fondo.act') && formSucio){ e.preventDefault(); e.returnValue = ''; } });
-
-/* ================== VISTA DEL DÍA ================== */
-function pintarDia(){
-  if (!$('fechaDia').value) $('fechaDia').value = hoy();
-  const f = $('fechaDia').value;
-  $('tituloDia').textContent = fechaLarga(f);
-  const cs = DB.consultas.filter(c => c.fecha === f).sort((a,b) => (a.hora||'').localeCompare(b.hora||''));
-  const citas = DB.consultas.filter(c => c.prox === f).map(c => c.pacienteId).filter((v,i,a) => a.indexOf(v) === i)
-    .filter(pid => !cs.some(c => c.pacienteId === pid)).map(pacientePor).filter(Boolean);
-  $('citasDia').innerHTML = citas.length ? `<div class="tarjeta"><h3 style="margin-top:0">Citas programadas pendientes (${citas.length})</h3>
-    ${citas.map(p => `<div class="fila" style="padding:4px 0"><b>${esc(p.nombre)}</b><span class="muted">${esc(p.telefono || '')}</span><div class="esp"></div>
-    <button class="btn peq" onclick="abrirConsulta('${p.id}')">Atender</button><button class="btn sec peq" onclick="verPaciente('${p.id}')">Ver</button></div>`).join('')}</div>` : '';
-  $('listaDia').innerHTML = cs.length ? cs.map((c, i) => { const p = pacientePor(c.pacienteId) || {nombre:'(paciente eliminado)'};
-      const n = consultasDe(c.pacienteId).findIndex(x => x.id === c.id) + 1;
-      return `<div class="tarjeta" style="padding:10px 12px"><div class="fila" style="margin-bottom:6px"><b style="font-size:16px">${i+1}. <a href="#" onclick="verPaciente('${p.id}');return false">${esc(p.nombre)}</a></b>
-        <span class="muted">${[edadDe(p) !== '' ? edadDe(p) + ' años' : '', p.sexo, p.procedencia, p.telefono ? 'Telf. ' + p.telefono : ''].filter(Boolean).map(esc).join(' · ')}</span></div>
-        ${appTexto(p) ? `<p class="muted" style="margin:0 0 6px">APP: ${esc(appTexto(p))}</p>` : ''}${bloqueConsulta(c, n, true)}</div>`; }).join('')
-    : '<div class="tarjeta vacio">No hay consultas registradas en esta fecha.</div>';
+$('filtroPac').addEventListener('input', pintarPacientes);
+function pintarCitas(){
+  const h = hoy(), porPac = {};
+  DB.consultas.forEach(c => { const u = porPac[c.pacienteId]; if (!u || (c.fecha + c.hora) > (u.fecha + u.hora)) porPac[c.pacienteId] = c; });
+  // Solo la próxima cita indicada en la última consulta de cada paciente
+  const citas = Object.values(porPac).filter(c => c.prox && c.prox >= sumarDias(h, -7)).sort((a,b) => a.prox.localeCompare(b.prox));
+  $('v-citas').innerHTML = `<div class="tarjeta"><h2>Próximas citas</h2>${citas.length ? `<table><thead><tr><th>Fecha</th><th>Paciente</th><th>Teléfono</th><th>Conclusión de la última consulta</th></tr></thead><tbody>
+    ${citas.map(c => { const p = pacientePor(c.pacienteId) || {}; const pasada = c.prox < h, esHoy = c.prox === h;
+      return `<tr class="clic" onclick="cargarPaciente('${p.id}')" style="${esHoy ? 'background:#e8f6ee' : pasada ? 'color:#999' : ''}"><td><b>${fechaCorta(c.prox)}</b>${esHoy ? ' (HOY)' : pasada ? ' (pasó)' : ''}</td>
+      <td>${esc(p.nombre)}</td><td>${esc(p.telefono || '')}</td><td>${esc((c.conclusion || '').slice(0,90))}</td></tr>`; }).join('')}</tbody></table>`
+    : '<div class="vacio">No hay citas programadas.</div>'}</div>`;
 }
-$('fechaDia').onchange = pintarDia;
-function moverDia(n){ $('fechaDia').value = sumarDias($('fechaDia').value || hoy(), n); pintarDia(); }
-function irHoy(){ $('fechaDia').value = hoy(); pintarDia(); }
+function sumarDias(f, n){ const d = new Date(f + 'T12:00:00'); d.setDate(d.getDate() + n); return d.toISOString().slice(0,10); }
 
-/* ================== ESTADÍSTICAS ================== */
-function pintarEstad(){
-  const ahora = hoy(), mes = ahora.slice(0,7);
-  const porMes = {}; DB.consultas.forEach(c => { const m = (c.fecha||'').slice(0,7); porMes[m] = (porMes[m]||0) + 1; });
-  const meses = Object.keys(porMes).sort().slice(-12), max = Math.max(1, ...meses.map(m => porMes[m]));
-  const cuenta = arr => { const o = {}; arr.forEach(x => { x = (x||'').trim(); if (x) o[x] = (o[x]||0) + 1; }); return Object.entries(o).sort((a,b) => b[1]-a[1]).slice(0,10); };
-  const dxs = cuenta(DB.consultas.flatMap(c => (c.dx||'').split(/[\n+,;]/).map(s => s.trim().replace(/^\d+[.)-]\s*/,''))).map(s => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()));
-  const procs = cuenta(DB.pacientes.map(p => p.procedencia));
-  const apps = APP_LISTA.map(k => [k, DB.pacientes.filter(p => (p.app||{})[k] && p.app[k].v === '+').length]).filter(x => x[1]).sort((a,b) => b[1]-a[1]);
-  const tabla = (t, filas) => `<div class="tarjeta"><h3 style="margin-top:0">${t}</h3>${filas.length ? `<table>${filas.map(([k,v]) => `<tr><td>${esc(k)}</td><td style="text-align:right;width:60px"><b>${v}</b></td></tr>`).join('')}</table>` : '<p class="muted">Sin datos aún.</p>'}</div>`;
-  $('v-estad').innerHTML = `
-    <div class="grid g4">
-      <div class="tarjeta"><div class="muted">Pacientes</div><div class="stat">${DB.pacientes.length}</div></div>
-      <div class="tarjeta"><div class="muted">Consultas totales</div><div class="stat">${DB.consultas.length}</div></div>
-      <div class="tarjeta"><div class="muted">Consultas este mes</div><div class="stat">${porMes[mes] || 0}</div></div>
-      <div class="tarjeta"><div class="muted">Consultas hoy</div><div class="stat">${DB.consultas.filter(c => c.fecha === ahora).length}</div></div>
-    </div>
-    <div class="tarjeta"><h3 style="margin-top:0">Consultas por mes (últimos 12)</h3>
-      ${meses.length ? `<table>${meses.map(m => `<tr><td style="width:130px">${MESES[+m.slice(5)-1]} ${m.slice(0,4)}</td><td><div class="barra" style="width:${porMes[m]/max*100}%"></div></td><td style="width:50px;text-align:right"><b>${porMes[m]}</b></td></tr>`).join('')}</table>` : '<p class="muted">Sin datos aún.</p>'}</div>
-    <div class="grid g3">${tabla('Diagnósticos más frecuentes', dxs)}${tabla('Procedencias', procs)}${tabla('Antecedentes (+) más frecuentes', apps)}</div>`;
-}
-
-/* ================== IMPRESIÓN Y WORD ================== */
-function encabezadoDoc(titulo){
+/* ================= IMPRESIÓN / WORD ================= */
+function encabezado(titulo){
   const c = DB.config;
-  return `<div class="enc" style="border-bottom:2px solid #1f4e79;padding-bottom:6px;margin-bottom:10px">
-    <div class="n" style="font-size:15pt;font-weight:bold;color:#1f4e79">${esc(c.clinica || '')}</div>
-    <div>${esc(c.medico || '')}${c.especialidad ? ' · ' + esc(c.especialidad) : ''}</div>
+  return `<div style="border-bottom:2px solid #1f4e79;padding-bottom:6px;margin-bottom:10px">
+    <div style="font-size:15pt;font-weight:bold;color:#1f4e79">${esc(c.clinica || '')}</div>
+    ${c.medico ? `<div>${esc(c.medico)}${c.especialidad ? ' · ' + esc(c.especialidad) : ''}</div>` : ''}
     ${c.direccion ? `<div style="font-size:9pt">${esc(c.direccion)}</div>` : ''}
     ${titulo ? `<div style="margin-top:6px;font-weight:bold;font-size:12pt">${esc(titulo)}</div>` : ''}</div>`;
 }
+const P = (et, v) => v ? `<p style="margin:3pt 0"><b>${et}:</b> ${esc(v).replace(/\n/g,'<br>')}</p>` : '';
+function datosPacDoc(p){
+  return `<p style="margin:3pt 0"><b>Paciente:</b> ${esc(p.nombre)} &nbsp; <b>Edad:</b> ${esc(edadDe(p))} años &nbsp; <b>Sexo:</b> ${esc(p.sexo || '')}</p>
+    <p style="margin:3pt 0"><b>Teléfono:</b> ${esc(p.telefono || '')} &nbsp; <b>Procedencia:</b> ${esc(p.procedencia || '')}</p>
+    ${P('Antecedentes personales', p.ap || 'No referidos')}${P('Antecedentes familiares', p.af || 'No referidos')}`;
+}
 function consultaDoc(c, n){
-  const f = (et, v) => v ? `<p style="margin:3px 0"><b>${et}:</b> ${esc(v).replace(/\n/g,'<br>')}</p>` : '';
-  return `<h4 style="color:#1f4e79;margin:12px 0 4px;font-size:12pt;border-bottom:1px solid #c9d6e3">Consulta Nº ${n} · ${fechaLarga(c.fecha)}${c.hora ? ' · ' + c.hora : ''} ${c.tipo ? '(' + esc(c.tipo) + ')' : ''}</h4>
-    ${f('S', c.s)}${f('O', [vitalesTexto(c), c.o].filter(Boolean).join('. '))}${f('Laboratorio', c.lab)}${f('Estudios', c.est)}${f('Diagnóstico', c.dx)}${f('Tx', c.tx)}${f('Notas', c.notas)}${c.prox ? f('Próxima cita', fechaLarga(c.prox)) : ''}`;
+  return `<p style="margin:12pt 0 4pt;color:#1f4e79;font-weight:bold;border-bottom:1px solid #c9d6e3">Consulta Nº ${n} · ${fechaLarga(c.fecha)} · ${hora12(c.hora)}</p>
+    ${P('Motivo de consulta', c.motivo)}${P('Lo encontrado en la consulta', c.examen)}${P('Laboratorio', c.lab)}${P('Conclusiones', c.conclusion)}${P('Tratamiento', c.tx)}${c.prox ? P('Próxima cita', fechaLarga(c.prox)) : ''}`;
 }
-function pacienteDoc(p){
-  return `<p style="margin:3px 0"><b>Paciente:</b> ${esc(p.nombre)} &nbsp; <b>Edad:</b> ${esc(edadDe(p))} años &nbsp; <b>Sexo:</b> ${esc(p.sexo || '')} &nbsp; <b>Procedencia:</b> ${esc(p.procedencia || '')} &nbsp; <b>Telf.:</b> ${esc(p.telefono || '')}</p>
-    ${p.cedula ? `<p style="margin:3px 0"><b>Cédula/Exp.:</b> ${esc(p.cedula)}</p>` : ''}
-    ${p.alergias ? `<p style="margin:3px 0"><b>Alergias:</b> ${esc(p.alergias)}</p>` : ''}
-    <p style="margin:3px 0"><b>APP:</b> ${esc(appTexto(p) || 'No referidos')}${p.appOtros ? '. ' + esc(p.appOtros) : ''}</p>`;
-}
-const historiaHTML = id => { const p = pacientePor(id); return encabezadoDoc('HISTORIA CLÍNICA') + pacienteDoc(p) + consultasDe(id).map((c,i) => consultaDoc(c, i+1)).join(''); };
-function diaHTML(f){
-  const cs = DB.consultas.filter(c => c.fecha === f).sort((a,b) => (a.hora||'').localeCompare(b.hora||''));
-  return encabezadoDoc('Consultas del ' + fechaLarga(f)) + (cs.length ? cs.map((c,i) => { const p = pacientePor(c.pacienteId) || {nombre:'(eliminado)'};
-    return `<div style="margin-bottom:14px"><p style="margin:10px 0 3px;font-size:12pt"><b>${i+1}. ${esc(p.nombre.toUpperCase())}</b> &nbsp; ${esc(edadDe(p))} años &nbsp; ${esc(p.sexo||'')} &nbsp; ${esc(p.procedencia||'')} &nbsp; Telf. ${esc(p.telefono||'')}</p>
-      <p style="margin:3px 0"><b>APP:</b> ${esc(appTexto(p) || 'No referidos')}${p.appOtros ? '. ' + esc(p.appOtros) : ''}</p>
-      ${consultaDoc(c, consultasDe(c.pacienteId).findIndex(x => x.id === c.id) + 1)}</div>`; }).join('') : '<p>Sin consultas.</p>');
+const firma = () => `<div style="margin-top:50pt;text-align:center">_______________________________<br>${esc(DB.config.medico || 'Firma del médico')}<br>${esc(DB.config.especialidad || '')}</div>`;
+const numDe = c => consultasDe(c.pacienteId).findIndex(x => x.id === c.id) + 1;
+const historiaHTML = id => encabezado('HISTORIA CLÍNICA') + datosPacDoc(pacientePor(id)) + consultasDe(id).map((c,i) => consultaDoc(c, i+1)).join('') + firma();
+function consultaHTML(cid){ const c = DB.consultas.find(x => x.id === cid); return encabezado('NOTA DE CONSULTA') + datosPacDoc(pacientePor(c.pacienteId)) + consultaDoc(c, numDe(c)) + firma(); }
+function recetaHTML(p, fecha, conclusion, tx, prox){
+  const items = (tx || '').split(/\n|\s\+\s/).map(s => s.trim()).filter(Boolean);
+  return `${encabezado('')}<p><b>Paciente:</b> ${esc(p.nombre)} &nbsp; <b>Edad:</b> ${esc(edadDe(p))} años &nbsp; <b>Fecha:</b> ${fechaLarga(fecha)}</p>
+    ${conclusion ? `<p><b>Dx:</b> ${esc(conclusion.replace(/\s*\n\s*/g,'; '))}</p>` : ''}
+    <div style="font-size:26pt;font-weight:bold;color:#1f4e79">℞</div>
+    <ol style="font-size:12pt;line-height:1.7">${items.map(i => `<li>${esc(i)}</li>`).join('') || '<li>&nbsp;</li>'}</ol>
+    ${prox ? `<p><b>Próxima cita:</b> ${fechaLarga(prox)}</p>` : ''}${firma()}`;
 }
 function imprimirHTML(html){ $('imprimir').innerHTML = `<div class="doc">${html}</div>`; window.print(); }
 function descargar(nombre, contenido, tipo){
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([contenido], {type: tipo})); a.download = nombre;
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 }
-const nombreArchivo = s => sinAcentos(s).replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'') || 'documento';
+const nombreArchivo = s => norm(s).replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'') || 'documento';
 function exportarWord(nombre, html){
   const doc = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
 <head><meta charset="utf-8"><title>${esc(nombre)}</title><!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
-<style>@page{size:8.5in 11in;margin:2cm 2cm 2.3cm}body{font-family:Arial;font-size:11pt}p{margin:3pt 0}</style></head><body>${html}</body></html>`;
-  descargar(nombre + '.doc', '﻿' + doc, 'application/msword'); toast('Documento Word descargado');
+<style>@page{size:8.5in 11in;margin:2cm 2cm 2.3cm}body{font-family:Arial;font-size:11pt}</style></head><body>${html}</body></html>`;
+  descargar(nombre + '.doc', '﻿' + doc, 'application/msword'); toast('Documento de Word descargado');
 }
+// Lo que está escrito en pantalla (aunque no se haya guardado todavía)
+function formularioComoDatos(){
+  const p = {nombre: $('fNombre').value.trim(), edad: $('fEdad').value.trim(), edadFecha: hoy(), sexo: sexoSel(), telefono: $('fTel').value.trim(), procedencia: $('fProc').value.trim(), ap: $('fAP').value.trim(), af: $('fAF').value.trim()};
+  const c = {fecha: hoy(), hora: horaAhora(), motivo: $('fMotivo').value.trim(), examen: $('fExamen').value.trim(), lab: $('fLab').value.trim(), conclusion: $('fConclusion').value.trim(), tx: $('fTx').value.trim(), prox: $('fProx').value};
+  if (editConId){ const o = DB.consultas.find(x => x.id === editConId); c.fecha = o.fecha; c.hora = o.hora; }
+  return {p, c, n: pacId ? consultasDe(pacId).filter(x => x.id !== editConId).length + 1 : 1};
+}
+function actualHTML(){ const {p,c,n} = formularioComoDatos(); return encabezado('NOTA DE CONSULTA') + datosPacDoc(p) + consultaDoc(c, n) + firma(); }
+function verificarNombre(){ if (!$('fNombre').value.trim()){ alert('Escriba primero el nombre del paciente.'); return false; } return true; }
+function imprimirActual(){ if (verificarNombre()) imprimirHTML(actualHTML()); }
+function wordActual(){ if (verificarNombre()) exportarWord(nombreArchivo($('fNombre').value) + '_consulta_' + hoy(), actualHTML()); }
+function recetaActual(){ if (!verificarNombre()) return; const {p,c} = formularioComoDatos(); imprimirHTML(recetaHTML(p, c.fecha, c.conclusion, c.tx, c.prox)); }
+function imprimirConsulta(cid){ imprimirHTML(consultaHTML(cid)); }
+function imprimirReceta(cid){ const c = DB.consultas.find(x => x.id === cid); imprimirHTML(recetaHTML(pacientePor(c.pacienteId), c.fecha, c.conclusion, c.tx, c.prox)); }
 function imprimirHistoria(id){ imprimirHTML(historiaHTML(id)); }
 function wordHistoria(id){ exportarWord(nombreArchivo(pacientePor(id).nombre) + '_historia', historiaHTML(id)); }
-function imprimirDia(){ imprimirHTML(diaHTML($('fechaDia').value || hoy())); }
-function wordDia(){ const f = $('fechaDia').value || hoy(); exportarWord('consultas_' + f, diaHTML(f)); }
-function wordTodo(){
-  const ps = [...DB.pacientes].sort((a,b) => a.nombre.localeCompare(b.nombre,'es'));
-  exportarWord('expediente_completo_' + hoy(), ps.map(p => historiaHTML(p.id)).join('<br style="page-break-before:always" clear="all">'));
-}
-function imprimirReceta(cid){
-  const c = DB.consultas.find(x => x.id === cid), p = pacientePor(c.pacienteId), cfg = DB.config;
-  const items = (c.tx || '').split(/\n|\s\+\s/).map(s => s.trim()).filter(Boolean);
-  imprimirHTML(`${encabezadoDoc('')}
-    <p><b>Paciente:</b> ${esc(p.nombre)} &nbsp; <b>Edad:</b> ${esc(edadDe(p))} años &nbsp; <b>Fecha:</b> ${fechaLarga(c.fecha)}</p>
-    ${c.dx ? `<p><b>Dx:</b> ${esc(c.dx.replace(/\s*\n\s*/g, "; "))}</p>` : ''}${p.alergias ? `<p><b>Alergias:</b> ${esc(p.alergias)}</p>` : ''}
-    <div class="rx">℞</div>
-    <ol style="font-size:12pt;line-height:1.7">${items.map(i => `<li>${esc(i)}</li>`).join('') || '<li>&nbsp;</li>'}</ol>
-    ${c.notas ? `<p><b>Indicaciones:</b> ${esc(c.notas)}</p>` : ''}${c.prox ? `<p><b>Próxima cita:</b> ${fechaLarga(c.prox)}</p>` : ''}
-    <div class="firma">_______________________________<br>${esc(cfg.medico || '')}<br>${esc(cfg.especialidad || '')}</div>`);
+function wordTodo(){ exportarWord('todos_los_pacientes_' + hoy(), [...DB.pacientes].sort((a,b) => a.nombre.localeCompare(b.nombre,'es')).map(p => historiaHTML(p.id)).join('<br clear="all" style="page-break-before:always">')); }
+function exportarExcel(){
+  const filas = [['Fecha','Hora','Paciente','Edad','Sexo','Teléfono','Procedencia','Antecedentes personales','Antecedentes familiares','Motivo de consulta','Lo encontrado','Laboratorio','Conclusiones','Tratamiento','Próxima cita'],
+    ...[...DB.consultas].sort((a,b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora)).map(c => { const p = pacientePor(c.pacienteId) || {};
+      return [fechaCorta(c.fecha), c.hora, p.nombre, edadDe(p), p.sexo, p.telefono, p.procedencia, p.ap, p.af, c.motivo, c.examen, c.lab, c.conclusion, c.tx, fechaCorta(c.prox)]; })];
+  descargar('consultas_' + hoy() + '.csv', '﻿' + filas.map(f => f.map(v => '"' + String(v == null ? '' : v).replace(/"/g,'""') + '"').join(';')).join('\r\n'), 'text/csv');
+  toast('Archivo para Excel descargado');
 }
 
-/* ================== RESPALDO / ARCHIVO ================== */
+/* ================= RESPALDO ================= */
 function descargarRespaldo(){
-  DB.ultimoRespaldo = Date.now(); guardar();
-  descargar('respaldo_expediente_' + hoy() + '.json', JSON.stringify(DB, null, 1), 'application/json');
+  DB.ultimoRespaldo = Date.now(); persistir();
+  descargar('respaldo_expediente_' + hoy() + '.json', JSON.stringify(DB), 'application/json');
   pintarAvisos(); pintarConfig(); toast('Respaldo descargado. Guárdelo en USB o correo.');
 }
-function validarDatos(d){ return d && Array.isArray(d.pacientes) && Array.isArray(d.consultas); }
 $('archRestaurar').onchange = async e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f) return;
   try{
     const d = JSON.parse(await f.text());
-    if (!validarDatos(d)) throw new Error('formato');
-    if (!confirm(`El respaldo tiene ${d.pacientes.length} pacientes y ${d.consultas.length} consultas.\n\nACEPTAR = reemplazar los datos actuales (${DB.pacientes.length} pacientes).\nTras esto podrá elegir combinar en su lugar.`)){
-      if (!confirm('¿Combinar el respaldo con los datos actuales (sin borrar nada)?')) return;
-      combinar(d);
-    } else DB = Object.assign({config:DB.config}, d);
-    await guardar(); pintarAvisos(); irVista('pacientes'); toast('Datos restaurados');
+    if (!d || !Array.isArray(d.pacientes) || !Array.isArray(d.consultas)) throw 0;
+    if (DB.pacientes.length && !confirm(`El respaldo tiene ${d.pacientes.length} pacientes y ${d.consultas.length} consultas. Reemplazará los ${DB.pacientes.length} pacientes actuales. ¿Continuar?`)) return;
+    DB = Object.assign({config: DB.config}, d); migrar();
+    await persistir(); pacId = null; nuevoPaciente(); pintarAvisos(); toast('Respaldo restaurado');
   }catch(err){ alert('Ese archivo no es un respaldo válido.'); }
 };
-function combinar(d){
-  const ids = new Set(DB.pacientes.map(p => p.id)), cids = new Set(DB.consultas.map(c => c.id));
-  d.pacientes.forEach(p => { if (!ids.has(p.id)) DB.pacientes.push(p); });
-  d.consultas.forEach(c => { if (!cids.has(c.id)) DB.consultas.push(c); });
-}
 async function vincularArchivo(){
-  if (!window.showSaveFilePicker) return alert('Esta función requiere Google Chrome o Microsoft Edge recientes. Use "Descargar respaldo" en su lugar.');
+  if (!window.showSaveFilePicker) return alert('Esta función requiere Google Chrome o Microsoft Edge. Use "Descargar respaldo".');
   try{
     archivoHandle = await showSaveFilePicker({suggestedName:'datos_expediente.json', types:[{description:'Datos del expediente', accept:{'application/json':['.json']}}]});
-    archivoOK = true; await idbSet('archivo', archivoHandle); await guardar(); pintarAvisos(); pintarConfig(); toast('Guardado automático activado');
-  }catch(e){}
-}
-async function abrirArchivoDatos(){
-  if (!window.showOpenFilePicker) return document.getElementById('archRestaurar').click();
-  try{
-    const [h] = await showOpenFilePicker({types:[{description:'Datos del expediente', accept:{'application/json':['.json']}}]});
-    const d = JSON.parse(await (await h.getFile()).text());
-    if (!validarDatos(d)) return alert('Ese archivo no contiene datos del expediente.');
-    if (!confirm(`Se cargarán ${d.pacientes.length} pacientes y ${d.consultas.length} consultas desde el archivo, reemplazando los datos actuales de este navegador. ¿Continuar?`)) return;
-    DB = Object.assign({config:DB.config}, d);
-    archivoHandle = h; archivoOK = (await h.requestPermission({mode:'readwrite'})) === 'granted';
-    await idbSet('archivo', h); await guardar(); pintarAvisos(); irVista('pacientes'); toast('Datos cargados');
+    archivoOK = true; await idbSet('archivo', archivoHandle); await persistir(); pintarAvisos(); pintarConfig(); toast('Guardado automático activado');
   }catch(e){}
 }
 async function reactivarArchivo(){
-  try{ archivoOK = (await archivoHandle.requestPermission({mode:'readwrite'})) === 'granted'; if (archivoOK) await guardar(); }catch(e){ archivoOK = false; }
+  try{ archivoOK = (await archivoHandle.requestPermission({mode:'readwrite'})) === 'granted'; if (archivoOK) await persistir(); }catch(e){ archivoOK = false; }
   pintarAvisos(); pintarConfig();
 }
 async function desvincularArchivo(){ archivoHandle = null; archivoOK = false; await idbSet('archivo', null); pintarAvisos(); pintarConfig(); }
-
-function csv(filas){ return '﻿' + filas.map(f => f.map(v => '"' + String(v == null ? '' : v).replace(/"/g,'""') + '"').join(';')).join('\r\n'); }
-function exportarExcel(tipo){
-  if (tipo === 'pacientes'){
-    descargar('pacientes_' + hoy() + '.csv', csv([['Nombre','Edad','Sexo','Fecha nac.','Procedencia','Teléfono','Cédula','Ocupación','Alergias','APP','Otros antecedentes','Consultas'],
-      ...DB.pacientes.map(p => [p.nombre, edadDe(p), p.sexo, fechaCorta(p.fechaNac), p.procedencia, p.telefono, p.cedula, p.ocupacion, p.alergias, appTexto(p), p.appOtros, consultasDe(p.id).length])]), 'text/csv');
-  } else {
-    descargar('consultas_' + hoy() + '.csv', csv([['Fecha','Hora','Paciente','Edad','Tipo','S','TA','FC','FR','SO2','Temp','Glicemia','Peso','Talla','Examen físico','Laboratorio','Estudios','Diagnóstico','Tratamiento','Próxima cita','Notas'],
-      ...[...DB.consultas].sort((a,b) => a.fecha.localeCompare(b.fecha)).map(c => { const p = pacientePor(c.pacienteId) || {};
-        return [fechaCorta(c.fecha), c.hora, p.nombre, edadDe(p), c.tipo, c.s, c.ta, c.fc, c.fr, c.so2, c.temp, c.glic, c.peso, c.talla, c.o, c.lab, c.est, c.dx, c.tx, fechaCorta(c.prox), c.notas]; })]), 'text/csv');
-  }
-  toast('Archivo para Excel descargado');
-}
-
-/* ================== CONFIGURACIÓN ================== */
 function pintarConfig(){
   const c = DB.config;
   $('cfgClinica').value = c.clinica || ''; $('cfgMedico').value = c.medico || ''; $('cfgEspecialidad').value = c.especialidad || ''; $('cfgDireccion').value = c.direccion || '';
@@ -713,20 +568,18 @@ function pintarConfig(){
   $('estadoArchivo').textContent = archivoHandle ? (archivoOK ? '✔ Guardando en: ' + archivoHandle.name : '⏸ En pausa: ' + archivoHandle.name) : 'No está activado.';
 }
 function guardarConfig(){
-  DB.config = {clinica:$('cfgClinica').value.trim(), medico:$('cfgMedico').value.trim(), especialidad:$('cfgEspecialidad').value.trim(), direccion:$('cfgDireccion').value.trim()};
-  guardar(); pintarAvisos(); toast('Datos de la clínica guardados');
-}
-function borrarTodo(){
-  if (!confirm('¿Borrar TODOS los pacientes y consultas?')) return;
-  if (prompt('Escriba BORRAR para confirmar') !== 'BORRAR') return;
-  DB.pacientes = []; DB.consultas = []; guardar(); irVista('pacientes'); toast('Datos borrados');
+  DB.config = {clinica: $('cfgClinica').value.trim(), medico: $('cfgMedico').value.trim(), especialidad: $('cfgEspecialidad').value.trim(), direccion: $('cfgDireccion').value.trim()};
+  persistir(); pintarAvisos(); toast('Guardado');
 }
 
-/* ================== INICIO ================== */
+document.addEventListener('keydown', e => { if (e.ctrlKey && (e.key === 's' || e.key === 'S') && $('v-consulta').classList.contains('act')){ e.preventDefault(); guardar(); } });
+window.addEventListener('beforeunload', e => { if (CAMPOS_CONSULTA.some(id => $(id).value.trim())){ e.preventDefault(); e.returnValue = ''; } });
+
 (async () => {
   await cargar();
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
-  pintarAvisos(); irVista('pacientes');
+  tic(); pintarAvisos(); actualizarEstado();
+  $('buscar').focus();
 })();
 </script>
 </body>
