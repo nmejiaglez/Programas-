@@ -1,0 +1,36 @@
+ORGANIZADOR PC - Instrucciones
+==============================
+Funciona en Windows 7, 8, 10 y 11. No necesita instalar nada.
+
+1. Copie OrganizadorPC.bat y OrganizadorPC.ps1 en la MISMA carpeta.
+2. Doble clic sobre OrganizadorPC.bat (no necesita administrador).
+3. Empiece SIEMPRE con la opcion 1: le muestra que haria SIN mover nada.
+4. Si le gusta, use la opcion 2 y escriba SI.
+
+COMO QUEDA ORGANIZADO (en Documentos\ORGANIZADO):
+   Word\2025\01 - Enero\consultas.docx
+   PDF\2025\03 - Marzo\informe.pdf
+   Excel, PowerPoint, Textos, Imagenes y Fotos, Videos, Musica y Audios,
+   Comprimidos, Instaladores, Imagenes Medicas DICOM, Paginas Web,
+   Libros y Otros.
+- Cada tipo se divide por ANO y dentro por MES (01 - Enero ... 12 - Diciembre).
+- Las fotos se ordenan por la fecha en que se tomaron; los demas archivos
+  por su fecha de modificacion.
+- Se crea un acceso directo "ORGANIZADO" en el Escritorio.
+
+SEGURIDAD:
+- NUNCA borra nada: solo mueve archivos.
+- Si dos archivos se llaman igual, al segundo le agrega (2).
+- NO mueve: accesos directos, programas del Escritorio, archivos .bat,
+  descargas a medias, archivos ocultos o del sistema, ni ExpedienteClinico.
+- NO toca las carpetas: solo los archivos sueltos de Escritorio, Descargas
+  y Documentos (sus carpetas de trabajo quedan iguales).
+- Opcion 6 DESHACER: regresa todo a donde estaba.
+- Si un archivo esta abierto (Word, Excel) no se mueve; cierrelo y repita.
+
+OTRAS OPCIONES:
+- 5: ordena las carpetas Imagenes, Videos y Musica.
+- 7: ordena cualquier carpeta que usted elija (USB, disco externo).
+- 8: muestra cuantos archivos hay en cada lugar.
+
+CONSEJO: repita la opcion 2 una vez al mes y la computadora seguira ordenada.
