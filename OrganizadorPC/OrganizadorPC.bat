@@ -124,15 +124,42 @@ function Archivos-De($carpeta, $subcarpetas) {
     return @($todos)
 }
 
+# Carpetas que NO se mueven: de programas (Outlook, Zoom...), ocultas o del sistema,
+# o que contienen programas (.exe), correo de Outlook (.pst) o este organizador.
+$CarpetasProtegidas = @('ORGANIZADO','Outlook Files','Archivos de Outlook','Custom Office Templates',
+  'Plantillas personalizadas de Office','Zoom','My Games','Mis juegos','Visual Studio*','SQL Server*',
+  'IISExpress','My Web Sites','WindowsPowerShell','PowerShell','OneNote*','Blocs de notas de OneNote',
+  'Fax','Scanned Documents','Documentos escaneados','Adobe','Sound recordings','Grabaciones de sonido',
+  'My Shapes','Mis formas','Mis archivos recibidos','Bluetooth*','Rainmeter','Snagit','Camtasia*')
+function Carpeta-Protegida($d) {
+    if ($d.Attributes -band [IO.FileAttributes]::Hidden) { return $true }
+    if ($d.Attributes -band [IO.FileAttributes]::System) { return $true }
+    if ($d.Attributes -band [IO.FileAttributes]::ReparsePoint) { return $true }
+    if ($d.FullName -like "$Destino*") { return $true }
+    foreach ($e in @($Escritorio, $Documentos, $Descargas, $Imagenes, $Videos, $Musica)) { if ($d.FullName -eq $e) { return $true } }
+    foreach ($n in $CarpetasProtegidas) { if ($d.Name -like $n) { return $true } }
+    $peligro = Get-ChildItem -LiteralPath $d.FullName -Recurse -Force |
+        Where-Object { -not $_.PSIsContainer -and (@('.exe','.dll','.pst','.ost','.bat','.cmd') -contains $_.Extension.ToLower() -or $_.Name -like 'ExpedienteClinico*' -or $_.Name -like 'OrganizadorPC*') } |
+        Select-Object -First 1
+    if ($peligro) { return $true }
+    return $false
+}
+
+function Resumen($lista) {
+    $lista | Group-Object Categoria | Sort-Object Name | ForEach-Object {
+        $anios = ($_.Group | Group-Object Anio | Sort-Object Name | ForEach-Object { "$($_.Name): $($_.Count)" }) -join ', '
+        Write-Host ("   {0,-24} {1,5}   ({2})" -f $_.Name, $_.Count, $anios)
+    }
+}
+
 # Muestra lo que se va a ordenar en cada carpeta y PREGUNTA antes de mover.
 function Organizar($carpetas, $subcarpetas) {
-    $plan = @()
-    Titulo 'Revisando carpetas...'
+    $plan = @(); $planCarp = @()
+    Titulo 'Revisando (puede tardar un poco)...'
     foreach ($c in $carpetas) {
         if (-not (Test-Path -LiteralPath $c)) { continue }
-        $archivos = @(Archivos-De $c $subcarpetas)
         $antes = $plan.Count; $quedan = 0
-        foreach ($a in $archivos) {
+        foreach ($a in @(Archivos-De $c $subcarpetas)) {
             if (Esta-Protegido $a) { $quedan++; continue }
             $cat = Categoria-De $a $c
             if (-not $cat) { $quedan++; continue }
@@ -140,34 +167,45 @@ function Organizar($carpetas, $subcarpetas) {
             $carpetaDestino = Join-Path (Join-Path (Join-Path $Destino $cat) $f.Year) $Meses[$f.Month - 1]
             $plan += New-Object PSObject -Property @{ Archivo = $a; Categoria = $cat; Anio = $f.Year; Carpeta = $carpetaDestino }
         }
-        $subs = 0
-        if (-not $subcarpetas) { $subs = @(Get-ChildItem -LiteralPath $c -Force | Where-Object { $_.PSIsContainer -and $_.FullName -ne $Destino -and -not ($_.Attributes -band [IO.FileAttributes]::Hidden) }).Count }
+        $antesC = $planCarp.Count; $carpQuedan = 0
+        if (-not $subcarpetas) {
+            foreach ($d in @(Get-ChildItem -LiteralPath $c -Force | Where-Object { $_.PSIsContainer })) {
+                if (Carpeta-Protegida $d) { if (-not ($d.Attributes -band [IO.FileAttributes]::Hidden)) { $carpQuedan++ }; continue }
+                $f = $d.LastWriteTime
+                $carpetaDestino = Join-Path (Join-Path (Join-Path $Destino 'Carpetas') $f.Year) $Meses[$f.Month - 1]
+                $planCarp += New-Object PSObject -Property @{ Archivo = $d; Categoria = 'Carpetas'; Anio = $f.Year; Carpeta = $carpetaDestino }
+            }
+        }
         Write-Host ("   {0}" -f $c) -ForegroundColor White
-        Write-Host ("      {0} archivos para ordenar, {1} se quedan (accesos directos, programas), {2} carpetas que no se tocan" -f ($plan.Count - $antes), $quedan, $subs) -ForegroundColor Gray
+        Write-Host ("      {0} archivos y {1} carpetas para ordenar  |  se quedan: {2} archivos y {3} carpetas de programas" -f ($plan.Count - $antes), ($planCarp.Count - $antesC), $quedan, $carpQuedan) -ForegroundColor Gray
     }
 
-    if ($plan.Count -eq 0) {
-        Aviso 'No hay archivos sueltos para ordenar en esas carpetas.'
-        Write-Host '   (Las carpetas no se mueven. Para ordenar lo que hay DENTRO de una carpeta use la opcion 5.)' -ForegroundColor Gray
-        return
-    }
+    if ($plan.Count -eq 0 -and $planCarp.Count -eq 0) { Aviso 'No hay nada para ordenar en esas carpetas.'; return }
 
-    Titulo "Se ordenaran $($plan.Count) archivos asi:"
-    $plan | Group-Object Categoria | Sort-Object Name | ForEach-Object {
-        $anios = ($_.Group | Group-Object Anio | Sort-Object Name | ForEach-Object { "$($_.Name): $($_.Count)" }) -join ', '
-        Write-Host ("   {0,-24} {1,5} archivos   ({2})" -f $_.Name, $_.Count, $anios)
+    $todo = @()
+    if ($plan.Count) {
+        Titulo "ARCHIVOS: se ordenaran $($plan.Count) por tipo > ano > mes:"
+        Resumen $plan
+        $r = Read-Host "`n   Ordenar los ARCHIVOS? Escriba S y pulse Enter (N = no)"
+        if ($r -match '^\s*[sS]') { $todo += $plan }
     }
-    Write-Host "`n   Quedaran en: $Destino" -ForegroundColor Gray
-
-    $r = Read-Host "`n   Organizar AHORA? Escriba S y pulse Enter (N = no)"
-    if ($r -notmatch '^\s*[sS]') { Aviso 'Cancelado. No se movio nada.'; return }
+    if ($planCarp.Count) {
+        Titulo "CARPETAS: se ordenaran $($planCarp.Count) por ano > mes (su contenido queda igual):"
+        $planCarp | Select-Object -First 20 | ForEach-Object { Write-Host ("   {0,-40} -> Carpetas\{1}\{2}" -f $_.Archivo.Name, $_.Anio, (Split-Path $_.Carpeta -Leaf)) }
+        if ($planCarp.Count -gt 20) { Write-Host "   ... y $($planCarp.Count - 20) carpetas mas" }
+        $r = Read-Host "`n   Ordenar tambien las CARPETAS? Escriba S y pulse Enter (N = no)"
+        if ($r -match '^\s*[sS]') { $todo += $planCarp }
+    }
+    if ($todo.Count -eq 0) { Aviso 'Cancelado. No se movio nada.'; return }
+    $plan = $todo
+    Write-Host "`n   Quedara todo en: $Destino" -ForegroundColor Gray
 
     New-Item -ItemType Directory -Path $Registros -Force | Out-Null
     $log = Join-Path $Registros ('movimientos_' + (Get-Date -Format 'yyyy-MM-dd_HH-mm-ss') + '.csv')
     $movidos = @(); $fallos = 0; $n = 0
     foreach ($p in $plan) {
         $n++
-        Write-Progress -Activity 'Organizando archivos' -Status $p.Archivo.Name -PercentComplete ($n * 100 / $plan.Count)
+        Write-Progress -Activity 'Organizando' -Status $p.Archivo.Name -PercentComplete ($n * 100 / $plan.Count)
         New-Item -ItemType Directory -Path $p.Carpeta -Force | Out-Null
         $nuevo = Nombre-Libre $p.Carpeta $p.Archivo.Name
         try {
@@ -175,10 +213,10 @@ function Organizar($carpetas, $subcarpetas) {
             $movidos += New-Object PSObject -Property @{ Origen = $p.Archivo.FullName; Destino = $nuevo }
         } catch { $fallos++ }
     }
-    Write-Progress -Activity 'Organizando archivos' -Completed
+    Write-Progress -Activity 'Organizando' -Completed
     if ($movidos.Count) { $movidos | Select-Object Origen, Destino | Export-Csv -LiteralPath $log -NoTypeInformation -Encoding UTF8 }
-    Ok "$($movidos.Count) archivos organizados."
-    if ($fallos) { Aviso "$fallos archivos no se movieron (estaban abiertos o en uso). Cierrelos y repita." }
+    Ok "$($movidos.Count) archivos y carpetas organizados."
+    if ($fallos) { Aviso "$fallos no se movieron (estaban abiertos o en uso). Cierre los programas y repita." }
     Write-Host "   Si algo no le gusta, use la opcion 6 para DESHACER." -ForegroundColor Gray
     Crear-Acceso
     if ($movidos.Count) { Ok 'Abriendo la carpeta ORGANIZADO...'; Invoke-Item $Destino }
@@ -214,15 +252,21 @@ function Deshacer {
     }
     Rename-Item -LiteralPath $logs[$k - 1].FullName -NewName ('deshecho_' + $logs[$k - 1].Name)
     Borrar-Vacias
-    Ok "$vuelta archivos regresaron a su lugar original."
+    Ok "$vuelta archivos y carpetas regresaron a su lugar original."
     if ($fallos) { Aviso "$fallos no se pudieron regresar (ya se habian movido, borrado o estaban abiertos)." }
 }
 
-# Quita carpetas de ano/mes que quedaron vacias dentro de ORGANIZADO
+# Quita solo las carpetas Tipo\Ano\Mes que el organizador creo y quedaron vacias
 function Borrar-Vacias {
-    Get-ChildItem -LiteralPath $Destino -Recurse -Force | Where-Object { $_.PSIsContainer -and $_.FullName -ne $Registros } |
-        Sort-Object { $_.FullName.Length } -Descending |
-        ForEach-Object { if (@(Get-ChildItem -LiteralPath $_.FullName -Force).Count -eq 0) { Remove-Item -LiteralPath $_.FullName -Force } }
+    foreach ($cat in @(Get-ChildItem -LiteralPath $Destino -Force | Where-Object { $_.PSIsContainer -and $_.FullName -ne $Registros })) {
+        foreach ($an in @(Get-ChildItem -LiteralPath $cat.FullName -Force | Where-Object { $_.PSIsContainer -and $_.Name -match '^\d{4}$' })) {
+            foreach ($me in @(Get-ChildItem -LiteralPath $an.FullName -Force | Where-Object { $_.PSIsContainer -and $_.Name -match '^\d\d - ' })) {
+                if (@(Get-ChildItem -LiteralPath $me.FullName -Force).Count -eq 0) { Remove-Item -LiteralPath $me.FullName -Force }
+            }
+            if (@(Get-ChildItem -LiteralPath $an.FullName -Force).Count -eq 0) { Remove-Item -LiteralPath $an.FullName -Force }
+        }
+        if (@(Get-ChildItem -LiteralPath $cat.FullName -Force).Count -eq 0) { Remove-Item -LiteralPath $cat.FullName -Force }
+    }
 }
 
 function Elegir-Carpeta {
@@ -259,7 +303,8 @@ do {
     Clear-Host
     Write-Host '============================================================' -ForegroundColor Cyan
     Write-Host '                    ORGANIZADOR  PC' -ForegroundColor White
-    Write-Host '   Ordena por tipo (Word, PDF, Excel, Fotos...) > Ano > Mes' -ForegroundColor Gray
+    Write-Host '   Archivos por tipo (Word, PDF, Fotos...) > Ano > Mes' -ForegroundColor Gray
+    Write-Host '   Carpetas por Ano > Mes' -ForegroundColor Gray
     Write-Host '============================================================' -ForegroundColor Cyan
     Write-Host "  Todo queda en: $Destino`n" -ForegroundColor Gray
     Write-Host '  1. Organizar TODO (Escritorio, Descargas y Documentos)'

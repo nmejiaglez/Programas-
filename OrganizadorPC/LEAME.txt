@@ -19,6 +19,9 @@ COMO QUEDA ORGANIZADO (en Documentos\ORGANIZADO):
 - Cada tipo se divide por ANO y dentro por MES (01 - Enero ... 12 - Diciembre).
 - Las fotos se ordenan por la fecha en que se tomaron; los demas archivos
   por su fecha de modificacion.
+- Las CARPETAS tambien se ordenan, en ORGANIZADO\Carpetas\Ano\Mes,
+  con todo su contenido intacto. El programa pregunta por separado:
+  "Ordenar los ARCHIVOS?" y "Ordenar tambien las CARPETAS?".
 - Se crea un acceso directo "ORGANIZADO" en el Escritorio.
 
 SEGURIDAD:
@@ -26,8 +29,8 @@ SEGURIDAD:
 - Si dos archivos se llaman igual, al segundo le agrega (2).
 - NO mueve: accesos directos, programas del Escritorio, archivos .bat,
   descargas a medias, archivos ocultos o del sistema, ni ExpedienteClinico.
-- NO toca las carpetas: solo los archivos sueltos de Escritorio, Descargas
-  y Documentos (sus carpetas de trabajo quedan iguales).
+- NO mueve carpetas de programas (Outlook, Zoom, etc.), ni carpetas que
+  contengan programas (.exe) o el correo de Outlook (.pst).
 - Opcion 6 DESHACER: regresa todo a donde estaba.
 - Si un archivo esta abierto (Word, Excel) no se mueve; cierrelo y repita.
 
