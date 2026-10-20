@@ -1,0 +1,38 @@
+INFORMES DR. MEJIA - Instrucciones
+==================================
+Funciona en Windows 7, 8, 10 y 11. No necesita instalar nada.
+
+QUE HACE:
+Busca en la computadora los informes del Dr. Nestor Jose Mejia Gonzalez
+y los reune en UNA SOLA CARPETA: Documentos\INFORMES DR MEJIA
+(con acceso directo en el Escritorio), ordenados por ANO y MES:
+   INFORMES DR MEJIA\2026\10 - Octubre\Maria_Lopez_US_Abdominal.docx
+
+COMO RECONOCE QUE UN INFORME ES DEL DR. MEJIA:
+Revisa el NOMBRE del archivo y lo que esta ESCRITO adentro (texto,
+encabezado, pie de pagina y autor). Lo toma si aparece por ejemplo:
+"Nestor Jose Mejia", "Dr. Mejia", "Codigo MINSA 37294", "NM Radiologia",
+o "Mejia" junto a "Radiologia", "MINSA", "Nestor" o "Camilo Ortega".
+Las tildes y mayusculas no importan.
+Tipos de archivo: Word (.docx .doc .rtf .odt), PDF y .txt.
+(Un PDF que es una FOTO escaneada no tiene texto: solo se reconoce
+ si el nombre del archivo dice Mejia.)
+
+COMO SE USA:
+1. Copie InformesMejia.bat al Escritorio y dele doble clic.
+   Si Windows muestra "Windows protegio su PC": clic en "Mas informacion"
+   y luego en "Ejecutar de todas formas".
+2. Elija:
+   1 = buscar en Escritorio, Descargas (WhatsApp, correo) y Documentos
+   2 = buscar en TODA la computadora y USB conectadas (tarda mas)
+   3 = buscar en una carpeta o USB que usted elija
+3. Le muestra la lista de lo encontrado y pregunta:
+   C = COPIAR (recomendado: el original se queda donde estaba)
+   M = MOVER  (se quita de donde estaba; opcion 5 lo DESHACE)
+   N = no hacer nada
+
+SEGURIDAD:
+- NUNCA borra nada.
+- Si se repite la busqueda, no duplica los informes que ya reunio.
+- Si dos informes se llaman igual, al segundo le agrega (2).
+- Si un Word esta abierto no se puede mover; cierrelo y repita.
