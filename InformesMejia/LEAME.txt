@@ -4,35 +4,39 @@ Funciona en Windows 7, 8, 10 y 11. No necesita instalar nada.
 
 QUE HACE:
 Busca en la computadora los informes del Dr. Nestor Jose Mejia Gonzalez
-y los reune en UNA SOLA CARPETA: Documentos\INFORMES DR MEJIA
+y los MUEVE a UNA SOLA CARPETA: Documentos\DOCTOR MEJIA
 (con acceso directo en el Escritorio), ordenados por ANO y MES:
-   INFORMES DR MEJIA\2026\10 - Octubre\Maria_Lopez_US_Abdominal.docx
+   DOCTOR MEJIA\2026\10 - Octubre\Maria_Lopez_US_Abdominal.docx
+Los DUPLICADOS (archivos con exactamente el mismo contenido, aunque
+tengan otro nombre) se quedan una sola vez en Ano\Mes; las copias
+repetidas van aparte a DOCTOR MEJIA\_Duplicados para que usted las
+revise y las borre si quiere.
+
+PRIMERA VEZ (si ya uso la version anterior):
+1. Doble clic en InformesMejia.bat.
+2. Opcion 6: deshace lo de antes (quita las copias de la carpeta
+   INFORMES DR MEJIA; los originales no se tocan).
+3. Opcion 1 (o 2 para toda la computadora). Le muestra cuantos informes
+   encontro y cuantos estan repetidos. Escriba S y pulse Enter.
 
 COMO RECONOCE QUE UN INFORME ES DEL DR. MEJIA:
 Revisa el NOMBRE del archivo y lo que esta ESCRITO adentro (texto,
-encabezado, pie de pagina y autor). Lo toma si aparece por ejemplo:
-"Nestor Jose Mejia", "Dr. Mejia", "Codigo MINSA 37294", "NM Radiologia",
-o "Mejia" junto a "Radiologia", "MINSA", "Nestor" o "Camilo Ortega".
-Las tildes y mayusculas no importan.
-Tipos de archivo: Word (.docx .doc .rtf .odt), PDF y .txt.
-(Un PDF que es una FOTO escaneada no tiene texto: solo se reconoce
- si el nombre del archivo dice Mejia.)
+encabezado, pie de pagina y autor): "Nestor Jose Mejia", "Dr. Mejia",
+"Codigo MINSA 37294", "NM Radiologia", o "Mejia" junto a "Radiologia",
+"MINSA", "Nestor" o "Camilo Ortega". Tildes y mayusculas no importan.
+Tipos: Word (.docx .doc .rtf .odt), PDF y .txt.
+(Un PDF que es una FOTO escaneada solo se reconoce si su nombre dice Mejia.)
 
-COMO SE USA:
-1. Copie InformesMejia.bat al Escritorio y dele doble clic.
-   Si Windows muestra "Windows protegio su PC": clic en "Mas informacion"
-   y luego en "Ejecutar de todas formas".
-2. Elija:
-   1 = buscar en Escritorio, Descargas (WhatsApp, correo) y Documentos
-   2 = buscar en TODA la computadora y USB conectadas (tarda mas)
-   3 = buscar en una carpeta o USB que usted elija
-3. Le muestra la lista de lo encontrado y pregunta:
-   C = COPIAR (recomendado: el original se queda donde estaba)
-   M = MOVER  (se quita de donde estaba; opcion 5 lo DESHACE)
-   N = no hacer nada
+OPCIONES:
+1 = Escritorio, Descargas (WhatsApp, correo) y Documentos
+2 = TODA la computadora y USB conectadas (tarda mas)
+3 = una carpeta o USB que usted elija
+4 = abrir la carpeta DOCTOR MEJIA
+5 = DESHACER un movimiento (todo regresa a donde estaba)
+6 = DESHACER lo que hizo la version anterior
 
 SEGURIDAD:
-- NUNCA borra nada.
-- Si se repite la busqueda, no duplica los informes que ya reunio.
-- Si dos informes se llaman igual, al segundo le agrega (2).
+- NUNCA borra informes: solo los mueve. Los duplicados quedan en
+  _Duplicados; usted decide si los borra.
+- Si dos informes distintos se llaman igual, al segundo le agrega (2).
 - Si un Word esta abierto no se puede mover; cierrelo y repita.

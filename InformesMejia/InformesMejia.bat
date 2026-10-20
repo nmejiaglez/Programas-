@@ -18,15 +18,17 @@ exit /b
 #  INFORMES DR. MEJIA - Windows 7 / 8 / 10 / 11
 #  Busca en la computadora los informes del Dr. Nestor Jose
 #  Mejia Gonzalez (Word, PDF, texto) mirando el NOMBRE del
-#  archivo y lo que esta ESCRITO adentro, y los reune en una
-#  sola carpeta ordenada por ANO y MES.
-#  Puede COPIAR (deja el original) o MOVER (con DESHACER).
-#  Nunca borra nada.
+#  archivo y lo que esta ESCRITO adentro, y los MUEVE a
+#  Documentos\DOCTOR MEJIA ordenados por ANO y MES.
+#  Los duplicados (mismo contenido) van a DOCTOR MEJIA\_Duplicados.
+#  Todo se puede DESHACER. Nunca borra informes.
 # ============================================================
 $ErrorActionPreference = 'SilentlyContinue'
 $Host.UI.RawUI.WindowTitle = 'Informes Dr. Mejia'
 
-$Destino   = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'INFORMES DR MEJIA'
+$Destino    = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'DOCTOR MEJIA'
+$Duplicados = Join-Path $Destino '_Duplicados'
+$Anterior   = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'INFORMES DR MEJIA'
 $Registros = Join-Path $Destino '_Registros (no borrar)'
 $Escritorio = [Environment]::GetFolderPath('Desktop')
 $Documentos = [Environment]::GetFolderPath('MyDocuments')
@@ -152,20 +154,27 @@ function Nombre-Libre($carpeta, $nombre) {
     return (Join-Path $carpeta "$base ($i)$ext")
 }
 
-# Mismo archivo ya reunido antes (mismo nombre y mismo tamano) -> no se repite
-function Ya-Reunido($a) {
-    if (-not (Test-Path -LiteralPath $Destino)) { return $false }
-    if (-not $script:Indice) {
-        $script:Indice = @{}
-        Get-ChildItem -LiteralPath $Destino -Recurse -Force | Where-Object { -not $_.PSIsContainer } |
-            ForEach-Object { $script:Indice["$($_.Name.ToLower())|$($_.Length)"] = 1 }
+# Huella del contenido: dos archivos con la misma huella son el MISMO informe (duplicado)
+function Huella($ruta) {
+    try {
+        $sha = [Security.Cryptography.SHA256]::Create()
+        $fs = [IO.File]::OpenRead($ruta)
+        try { return [BitConverter]::ToString($sha.ComputeHash($fs)) } finally { $fs.Close() }
+    } catch { return $null }
+}
+
+# Huellas de lo que ya esta en la carpeta DOCTOR MEJIA (para no repetir)
+function Huellas-Destino {
+    $h = @{}
+    if (Test-Path -LiteralPath $Destino) {
+        Get-ChildItem -LiteralPath $Destino -Recurse -Force | Where-Object { -not $_.PSIsContainer -and $_.FullName -notlike "$Duplicados*" -and $_.FullName -notlike "$Registros*" } |
+            ForEach-Object { $x = Huella $_.FullName; if ($x) { $h[$x] = $_.FullName } }
     }
-    return $script:Indice.ContainsKey("$($a.Name.ToLower())|$($a.Length)")
+    return $h
 }
 
 function Buscar($carpetas) {
-    $script:Indice = $null
-    $plan = @(); $repetidos = 0
+    $plan = @()
     Titulo 'Buscando informes del Dr. Mejia (puede tardar unos minutos)...'
     foreach ($c in $carpetas) {
         if (-not (Test-Path -LiteralPath $c)) { continue }
@@ -180,72 +189,90 @@ function Buscar($carpetas) {
             Write-Progress -Activity 'Revisando archivos' -Status $a.Name -PercentComplete ($k * 100 / $lista.Count)
             # Primero el nombre del archivo y la carpeta; si no basta, lo escrito adentro
             $motivo = Es-Del-Doctor $a.FullName
-            if ($motivo) { $motivo = "nombre: $motivo" } else {
-                $m = Es-Del-Doctor (Texto-De $a)
-                if ($m) { $motivo = "contenido: $m" }
-            }
+            if (-not $motivo) { $motivo = Es-Del-Doctor (Texto-De $a) }
             if (-not $motivo) { continue }
-            if (Ya-Reunido $a) { $repetidos++; continue }
             $f = Fecha-De $a
-            $plan += New-Object PSObject -Property @{ Archivo = $a; Motivo = $motivo; Anio = $f.Year
+            $plan += New-Object PSObject -Property @{ Archivo = $a; Huella = (Huella $a.FullName); Fecha = $f
                 Carpeta = Join-Path (Join-Path $Destino $f.Year) $Meses[$f.Month - 1] }
         }
         Write-Progress -Activity 'Revisando archivos' -Completed
         Write-Host ("      {0} archivos revisados, {1} son del Dr. Mejia" -f $lista.Count, ($plan.Count - $antes)) -ForegroundColor Gray
     }
-    if ($repetidos) { Aviso "$repetidos ya estaban en la carpeta INFORMES DR MEJIA (no se repiten)." }
-    if ($plan.Count -eq 0) { Aviso 'No se encontraron informes nuevos del Dr. Mejia.'; return }
+    if ($plan.Count -eq 0) { Aviso 'No se encontraron informes del Dr. Mejia fuera de la carpeta DOCTOR MEJIA.'; return }
 
-    Titulo "Se encontraron $($plan.Count) informes:"
-    $plan | Select-Object -First 25 | ForEach-Object { Write-Host ("   {0,-45} ({1})" -f $_.Archivo.Name, $_.Motivo) }
-    if ($plan.Count -gt 25) { Write-Host "   ... y $($plan.Count - 25) mas" }
-    Write-Host ''
-    $plan | Group-Object Anio | Sort-Object Name | ForEach-Object { Write-Host ("   Ano {0}: {1} informes" -f $_.Name, $_.Count) -ForegroundColor Gray }
+    # Separa los duplicados: se queda el mas antiguo de cada informe repetido
+    $vistos = Huellas-Destino
+    $unicos = @(); $dobles = @()
+    foreach ($p in ($plan | Sort-Object Fecha)) {
+        if ($p.Huella -and $vistos.ContainsKey($p.Huella)) {
+            $p.Carpeta = $Duplicados; $dobles += $p
+        } else {
+            if ($p.Huella) { $vistos[$p.Huella] = $p.Archivo.FullName }
+            $unicos += $p
+        }
+    }
 
-    Write-Host "`n   C = COPIAR (el original se queda donde esta, recomendado)"
-    Write-Host   '   M = MOVER  (se quita de donde esta; se puede DESHACER)'
-    Write-Host   '   N = no hacer nada'
-    $r = Read-Host '   Escriba C, M o N y pulse Enter'
-    if ($r -match '^\s*[cC]') { $mover = $false }
-    elseif ($r -match '^\s*[mM]') { $mover = $true }
-    else { Aviso 'Cancelado. No se toco nada.'; return }
+    Titulo "Se encontraron $($plan.Count) informes del Dr. Mejia:"
+    Write-Host ("   {0} informes distintos  -> DOCTOR MEJIA\Ano\Mes" -f $unicos.Count) -ForegroundColor White
+    Write-Host ("   {0} copias repetidas     -> DOCTOR MEJIA\_Duplicados (para revisar o borrar usted)" -f $dobles.Count) -ForegroundColor White
+    $unicos | Group-Object { $_.Fecha.Year } | Sort-Object Name | ForEach-Object { Write-Host ("      Ano {0}: {1} informes" -f $_.Name, $_.Count) -ForegroundColor Gray }
+    $r = Read-Host "`n   MOVER todo a la carpeta DOCTOR MEJIA? Escriba S y pulse Enter (N = no)"
+    if ($r -notmatch '^\s*[sS]') { Aviso 'Cancelado. No se movio nada.'; return }
 
     New-Item -ItemType Directory -Path $Registros -Force | Out-Null
-    $log = Join-Path $Registros ((@('copiados_','movimientos_')[[int]$mover]) + (Get-Date -Format 'yyyy-MM-dd_HH-mm-ss') + '.csv')
-    $hechos = @(); $fallos = 0; $n = 0
-    foreach ($p in $plan) {
+    $log = Join-Path $Registros ('movimientos_' + (Get-Date -Format 'yyyy-MM-dd_HH-mm-ss') + '.csv')
+    $hechos = @(); $fallos = 0; $n = 0; $todo = $unicos + $dobles
+    foreach ($p in $todo) {
         $n++
-        Write-Progress -Activity 'Reuniendo informes' -Status $p.Archivo.Name -PercentComplete ($n * 100 / $plan.Count)
+        Write-Progress -Activity 'Moviendo informes' -Status $p.Archivo.Name -PercentComplete ($n * 100 / $todo.Count)
         New-Item -ItemType Directory -Path $p.Carpeta -Force | Out-Null
         $nuevo = Nombre-Libre $p.Carpeta $p.Archivo.Name
         try {
-            if ($mover) { Move-Item -LiteralPath $p.Archivo.FullName -Destination $nuevo -ErrorAction Stop }
-            else { Copy-Item -LiteralPath $p.Archivo.FullName -Destination $nuevo -ErrorAction Stop }
+            Move-Item -LiteralPath $p.Archivo.FullName -Destination $nuevo -ErrorAction Stop
             $hechos += New-Object PSObject -Property @{ Origen = $p.Archivo.FullName; Destino = $nuevo }
         } catch { $fallos++ }
     }
-    Write-Progress -Activity 'Reuniendo informes' -Completed
+    Write-Progress -Activity 'Moviendo informes' -Completed
     if ($hechos.Count) { $hechos | Select-Object Origen, Destino | Export-Csv -LiteralPath $log -NoTypeInformation -Encoding UTF8 }
-    Ok "$($hechos.Count) informes reunidos en: $Destino"
-    if ($fallos) { Aviso "$fallos no se pudieron copiar/mover (estaban abiertos). Cierre Word y repita." }
-    if ($mover) { Write-Host '   Si algo no le gusta, use la opcion 5 para DESHACER.' -ForegroundColor Gray }
+    Ok "$($hechos.Count) informes movidos a: $Destino"
+    if ($dobles.Count) { Ok "Las copias repetidas quedaron aparte en: $Duplicados" }
+    if ($fallos) { Aviso "$fallos no se pudieron mover (estaban abiertos). Cierre Word y repita." }
+    Write-Host '   Si algo no le gusta, use la opcion 5 para DESHACER.' -ForegroundColor Gray
     Crear-Acceso
     if ($hechos.Count) { Invoke-Item $Destino }
 }
 
 function Crear-Acceso {
-    $lnk = Join-Path $Escritorio 'INFORMES DR MEJIA.lnk'
+    $lnk = Join-Path $Escritorio 'DOCTOR MEJIA.lnk'
     if (Test-Path -LiteralPath $lnk) { return }
     try {
         $s = (New-Object -ComObject WScript.Shell).CreateShortcut($lnk)
         $s.TargetPath = $Destino; $s.Save()
-        Ok 'Acceso directo "INFORMES DR MEJIA" creado en el Escritorio.'
+        Ok 'Acceso directo "DOCTOR MEJIA" creado en el Escritorio.'
     } catch {}
+}
+
+function Regresar($csv) {
+    $vuelta = 0; $fallos = 0
+    foreach ($m in (Import-Csv -LiteralPath $csv)) {
+        if ((Test-Path -LiteralPath $m.Destino) -and -not (Test-Path -LiteralPath $m.Origen)) {
+            New-Item -ItemType Directory -Path (Split-Path $m.Origen) -Force | Out-Null
+            try { Move-Item -LiteralPath $m.Destino -Destination $m.Origen -ErrorAction Stop; $vuelta++ } catch { $fallos++ }
+        } else { $fallos++ }
+    }
+    return @($vuelta, $fallos)
+}
+
+function Borrar-Vacias($raiz) {
+    if (-not (Test-Path -LiteralPath $raiz)) { return }
+    foreach ($d in @(Get-ChildItem -LiteralPath $raiz -Recurse -Force | Where-Object { $_.PSIsContainer } | Sort-Object { $_.FullName.Length } -Descending)) {
+        if (@(Get-ChildItem -LiteralPath $d.FullName -Force).Count -eq 0) { Remove-Item -LiteralPath $d.FullName -Force }
+    }
 }
 
 function Deshacer {
     $logs = @(Get-ChildItem -LiteralPath $Registros -Filter 'movimientos_*.csv' | Sort-Object Name -Descending)
-    if ($logs.Count -eq 0) { Aviso 'No hay movimientos que deshacer (las copias no hace falta deshacerlas).'; return }
+    if ($logs.Count -eq 0) { Aviso 'No hay movimientos que deshacer.'; return }
     Titulo 'Movimientos realizados (el 1 es el mas reciente):'
     for ($i = 0; $i -lt $logs.Count -and $i -lt 10; $i++) {
         $cant = @(Import-Csv -LiteralPath $logs[$i].FullName).Count
@@ -254,23 +281,51 @@ function Deshacer {
     $op = Read-Host "`n   Numero a deshacer (Enter = cancelar)"
     $k = 0
     if (-not [int]::TryParse($op, [ref]$k) -or $k -lt 1 -or $k -gt $logs.Count) { Aviso 'Cancelado.'; return }
-    $vuelta = 0; $fallos = 0
-    foreach ($m in (Import-Csv -LiteralPath $logs[$k - 1].FullName)) {
-        if ((Test-Path -LiteralPath $m.Destino) -and -not (Test-Path -LiteralPath $m.Origen)) {
-            New-Item -ItemType Directory -Path (Split-Path $m.Origen) -Force | Out-Null
-            try { Move-Item -LiteralPath $m.Destino -Destination $m.Origen -ErrorAction Stop; $vuelta++ } catch { $fallos++ }
-        } else { $fallos++ }
-    }
+    $r = Regresar $logs[$k - 1].FullName
     Rename-Item -LiteralPath $logs[$k - 1].FullName -NewName ('deshecho_' + $logs[$k - 1].Name)
-    # Quita las carpetas Ano\Mes que quedaron vacias
-    foreach ($an in @(Get-ChildItem -LiteralPath $Destino -Force | Where-Object { $_.PSIsContainer -and $_.Name -match '^\d{4}$' })) {
-        foreach ($me in @(Get-ChildItem -LiteralPath $an.FullName -Force | Where-Object { $_.PSIsContainer })) {
-            if (@(Get-ChildItem -LiteralPath $me.FullName -Force).Count -eq 0) { Remove-Item -LiteralPath $me.FullName -Force }
+    Borrar-Vacias $Destino
+    Ok "$($r[0]) informes regresaron a su lugar original."
+    if ($r[1]) { Aviso "$($r[1]) no se pudieron regresar (ya se habian movido, borrado o estaban abiertos)." }
+}
+
+# Deshace lo que hizo la version anterior (carpeta Documentos\INFORMES DR MEJIA):
+# - las COPIAS se quitan solo si el original sigue en su lugar y es identico;
+# - lo que se MOVIO regresa a donde estaba.
+function Deshacer-Anterior {
+    $regAnt = Join-Path $Anterior '_Registros (no borrar)'
+    if (-not (Test-Path -LiteralPath $Anterior)) { Aviso 'No existe la carpeta INFORMES DR MEJIA: no hay nada que deshacer.'; return }
+    $copias = @(Get-ChildItem -LiteralPath $regAnt -Filter 'copiados_*.csv')
+    $movs   = @(Get-ChildItem -LiteralPath $regAnt -Filter 'movimientos_*.csv')
+    $lista = @(); foreach ($l in $copias) { $lista += @(Import-Csv -LiteralPath $l.FullName) }
+    $nMov = 0; foreach ($l in $movs) { $nMov += @(Import-Csv -LiteralPath $l.FullName).Count }
+    Titulo 'Lo que hizo el programa anterior:'
+    Write-Host "   $($lista.Count) informes COPIADOS  (se quitan las copias; los originales no se tocan)"
+    Write-Host "   $nMov informes MOVIDOS   (regresan a donde estaban)"
+    $r = Read-Host "`n   Deshacer todo eso? Escriba S y pulse Enter (N = no)"
+    if ($r -notmatch '^\s*[sS]') { Aviso 'Cancelado.'; return }
+    $quitadas = 0; $guardadas = 0
+    foreach ($m in $lista) {
+        if (-not (Test-Path -LiteralPath $m.Destino)) { continue }
+        $hO = $null; if (Test-Path -LiteralPath $m.Origen) { $hO = Huella $m.Origen }
+        if ($hO -and $hO -eq (Huella $m.Destino)) { Remove-Item -LiteralPath $m.Destino -Force; $quitadas++ }
+        else {
+            # El original ya no esta o cambio: la copia se regresa a su lugar en vez de quitarla
+            if (-not (Test-Path -LiteralPath $m.Origen)) {
+                New-Item -ItemType Directory -Path (Split-Path $m.Origen) -Force | Out-Null
+                Move-Item -LiteralPath $m.Destino -Destination $m.Origen
+            }
+            $guardadas++
         }
-        if (@(Get-ChildItem -LiteralPath $an.FullName -Force).Count -eq 0) { Remove-Item -LiteralPath $an.FullName -Force }
     }
-    Ok "$vuelta informes regresaron a su lugar original."
-    if ($fallos) { Aviso "$fallos no se pudieron regresar (ya se habian movido, borrado o estaban abiertos)." }
+    $vuelta = 0; foreach ($l in $movs) { $vuelta += (Regresar $l.FullName)[0]; Rename-Item -LiteralPath $l.FullName -NewName ('deshecho_' + $l.Name) }
+    foreach ($l in $copias) { Rename-Item -LiteralPath $l.FullName -NewName ('deshecho_' + $l.Name) }
+    Borrar-Vacias $Anterior
+    $resto = @(Get-ChildItem -LiteralPath $Anterior -Recurse -Force | Where-Object { -not $_.PSIsContainer -and $_.FullName -notlike "$regAnt*" })
+    if ($resto.Count -eq 0) { Remove-Item -LiteralPath $Anterior -Recurse -Force }
+    Remove-Item -LiteralPath (Join-Path $Escritorio 'INFORMES DR MEJIA.lnk') -Force
+    Ok "$quitadas copias quitadas y $vuelta informes regresados a su lugar."
+    if ($guardadas) { Aviso "$guardadas copias se conservaron porque su original ya no estaba igual." }
+    if ($resto.Count) { Aviso "Quedaron $($resto.Count) archivos en $Anterior (no los creo el programa)." }
 }
 
 function Elegir-Carpeta {
@@ -298,16 +353,17 @@ do {
     Write-Host '============================================================' -ForegroundColor Cyan
     Write-Host '                 INFORMES  DR.  MEJIA' -ForegroundColor White
     Write-Host '   Busca los informes del Dr. Nestor Jose Mejia Gonzalez' -ForegroundColor Gray
-    Write-Host '   (Word, PDF, texto) y los reune en una sola carpeta' -ForegroundColor Gray
+    Write-Host '   y los MUEVE a Documentos\DOCTOR MEJIA (duplicados aparte)' -ForegroundColor Gray
     Write-Host '============================================================' -ForegroundColor Cyan
     Write-Host "  Todo queda en: $Destino`n" -ForegroundColor Gray
     Write-Host '  1. Buscar en Escritorio, Descargas y Documentos'
     Write-Host '  2. Buscar en TODA la computadora (y USB conectadas)'
     Write-Host '  3. Buscar en una carpeta que yo elija (USB, disco, carpeta)'
-    Write-Host '  4. Abrir la carpeta INFORMES DR MEJIA'
+    Write-Host '  4. Abrir la carpeta DOCTOR MEJIA'
     Write-Host '  5. DESHACER un movimiento'
+    Write-Host '  6. DESHACER lo que hizo la version anterior (INFORMES DR MEJIA)'
     Write-Host '  0. Salir'
-    Write-Host "`n  (Antes de copiar o mover, siempre le muestra lo que encontro y le pregunta.)" -ForegroundColor Gray
+    Write-Host "`n  (Antes de mover, siempre le muestra lo que encontro y le pregunta.)" -ForegroundColor Gray
     $op = Read-Host "`n  Elija una opcion"
     switch ($op) {
         '1' { Buscar @($Escritorio, $Descargas, $Documentos) }
@@ -315,6 +371,7 @@ do {
         '3' { $c = Elegir-Carpeta; if ($c -and (Test-Path -LiteralPath $c)) { Buscar @($c) } }
         '4' { New-Item -ItemType Directory -Path $Destino -Force | Out-Null; Invoke-Item $Destino }
         '5' { Deshacer }
+        '6' { Deshacer-Anterior }
     }
     if ($op -ne '0') { Read-Host "`n  Pulse Enter para volver al menu" | Out-Null }
 } while ($op -ne '0')
