@@ -1,0 +1,11 @@
+DR. MEJIA
+=========
+Doble clic en DrMejia.bat. Busca en toda la computadora (y USB) los
+documentos del Dr. Mejia (Word, PDF, texto), le dice cuantos hallo y
+pregunta. Escriba S y Enter.
+
+- Todos quedan en Documentos\DR MEJIA, cada uno UNA sola vez.
+- Las copias repetidas tambien se quitan de donde estaban y van a
+  DR MEJIA\_Repetidos (usted decide si las borra). Nunca borra nada.
+- Si Windows dice "Windows protegio su PC": Mas informacion >
+  Ejecutar de todas formas.
