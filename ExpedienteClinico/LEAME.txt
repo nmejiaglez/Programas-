@@ -6,15 +6,21 @@ Funciona SIN INTERNET. No necesita instalar nada. Es un solo archivo.
 2. Doble clic para abrirlo. Se recomienda Google Chrome o Microsoft Edge.
 3. Abralo SIEMPRE desde la misma ubicacion y con el mismo navegador:
    los datos se guardan dentro de ese navegador.
-4. La primera vez vaya a "Respaldo y configuracion" y complete los datos
-   del medico (viene con Dr. Marvin Castellon, Especialista en Medicina
-   Interna): codigo MINSA, clinica, direccion, telefono, correo. Todo se
-   puede editar y sale en la receta y en las impresiones.
+4. Viene con el membrete del Dr. Marvin Manuel Castellon Chevez
+   (Especialista en Medicina Interna, Codigo MINSA 17400, telefonos,
+   correo, etc.). Todo se puede editar en "Respaldo y configuracion".
 
 RECETA:
-- Sale con los datos del medico, paciente, edad, fecha, diagnostico,
-  medicamentos numerados, indicaciones y recomendaciones, proxima cita,
-  firma y pie con direccion y telefono.
+- Sale igual que el recetario: membrete del medico, Px, Nombre, edad,
+  diagnostico, medicamentos numerados, indicaciones y recomendaciones,
+  proxima cita, Fecha y Firma y Sello.
+
+ORDEN DE EXAMENES:
+- En la consulta, apartado "Examenes y estudios a realizar": toque los
+  botones (BHC, glucosa, ultrasonido, radiografia, tomografia...) o
+  escriba lo que quiera, uno por renglon. Todo se puede editar.
+- Boton "Orden de examenes": imprime la solicitud con el membrete.
+- Los botones rapidos se cambian en "Respaldo y configuracion".
 - Se ajusta sola al tamano del recetario: media carta (por defecto),
   A5 o carta. Se elige en "Respaldo y configuracion".
 - Si el recetario ya tiene membrete impreso, marque esa opcion: solo se

@@ -131,6 +131,10 @@ tr.clic{cursor:pointer}tr.clic:hover td{background:#f2f7fc}
         <div><label>Tratamiento</label><textarea id="fTx" style="min-height:100px"></textarea>
           <div class="fila" style="margin-top:6px"><button class="btn sec peq" id="btnCopiarTx" style="display:none" onclick="copiarTxAnterior()">Copiar el tratamiento de la última consulta</button></div></div>
         <div><label>Indicaciones y recomendaciones (salen en la receta)</label><textarea id="fRecom" placeholder="Ej.: Dieta baja en sal, caminar 30 minutos diarios, elevar las piernas, control de presión arterial…"></textarea></div>
+        <div><label>Exámenes y estudios a realizar (laboratorio, ultrasonido, radiografías, tomografía… uno por línea)</label>
+          <div id="chipsEx" style="margin-bottom:6px"></div>
+          <textarea id="fEstudios" style="min-height:90px" placeholder="Toque los botones de arriba o escriba libremente. Ej.: BHC&#10;Glucosa en ayunas&#10;Ultrasonido abdominal total"></textarea>
+          <div class="fila" style="margin-top:6px"><button class="btn sec peq" onclick="ordenActual()">🧪 Imprimir orden de exámenes</button></div></div>
         <div style="max-width:260px"><label>Próxima cita</label><input type="date" id="fProx"></div>
       </div>
     </div>
@@ -139,6 +143,7 @@ tr.clic{cursor:pointer}tr.clic:hover td{background:#f2f7fc}
       <button class="btn grande" onclick="guardar()">💾 Guardar consulta</button>
       <button class="btn sec" onclick="imprimirActual()">Imprimir</button>
       <button class="btn sec" onclick="recetaActual()">Receta</button>
+      <button class="btn sec" onclick="ordenActual()">Orden de exámenes</button>
       <button class="btn sec" onclick="wordActual()">Word</button>
       <div class="esp"></div>
       <button class="btn sec" id="btnCancelarEd" style="display:none" onclick="cancelarEdicion()">Cancelar edición</button>
@@ -165,17 +170,16 @@ tr.clic{cursor:pointer}tr.clic:hover td{background:#f2f7fc}
   <!-- ================= CONFIG ================= -->
   <section class="vista" id="v-config">
     <div class="tarjeta">
-      <h2>Datos del médico (salen en la receta y en las impresiones)</h2>
+      <h2>Membrete del médico (sale en recetas, órdenes de exámenes e impresiones)</h2>
       <div class="grid g2">
-        <div><label>Nombre del médico</label><input id="cfgMedico"></div>
+        <div><label>Nombre del médico (sale en letra cursiva)</label><input id="cfgMedico"></div>
         <div><label>Especialidad</label><input id="cfgEspecialidad"></div>
-        <div><label>Código MINSA</label><input id="cfgCodigo"></div>
-        <div><label>Clínica / consultorio</label><input id="cfgClinica"></div>
-        <div><label>Dirección</label><input id="cfgDireccion"></div>
-        <div><label>Teléfono(s)</label><input id="cfgTelefono"></div>
-        <div><label>Correo</label><input id="cfgCorreo"></div>
-        <div><label>Otra línea (horario de atención, WhatsApp, etc.)</label><input id="cfgExtra"></div>
+        <div class="todo"><label>Líneas del membrete debajo de la especialidad (una por renglón)</label><textarea id="cfgLineas" style="min-height:200px"></textarea></div>
+        <div><label>Código MINSA (sale junto a la firma)</label><input id="cfgCodigo"></div>
       </div>
+      <h2 style="margin-top:18px">Botones rápidos de exámenes</h2>
+      <label>Un examen o estudio por renglón. Aparecen como botones en la consulta.</label>
+      <textarea id="cfgBotonesEx" style="min-height:160px"></textarea>
       <h2 style="margin-top:18px">Receta</h2>
       <div class="grid g2">
         <div><label>Tamaño del recetario</label>
@@ -187,12 +191,12 @@ tr.clic{cursor:pointer}tr.clic:hover td{background:#f2f7fc}
         <div>
           <div class="sexo" style="flex-direction:column;gap:6px">
             <label><input type="checkbox" id="cfgDxReceta"> Poner el diagnóstico en la receta</label>
-            <label><input type="checkbox" id="cfgMembrete"> Mi recetario ya tiene el membrete impreso (no imprimir encabezado ni pie)</label>
+            <label><input type="checkbox" id="cfgMembrete"> Mi recetario ya tiene el membrete impreso (no imprimir membrete ni líneas)</label>
           </div>
           <div class="fila" id="filaEspacio"><span class="muted">Espacio que ocupa el membrete arriba:</span><input id="cfgEspacio" type="number" min="0" max="120" style="width:80px"><span class="muted">mm</span></div>
         </div>
       </div>
-      <div class="fila" style="margin-top:12px"><button class="btn" onclick="guardarConfig()">Guardar</button><button class="btn sec" onclick="guardarConfig(); vistaPreviaReceta()">Vista previa de la receta</button></div>
+      <div class="fila" style="margin-top:12px"><button class="btn" onclick="guardarConfig()">Guardar</button><button class="btn sec" onclick="guardarConfig(); vistaPreviaReceta()">Vista previa de la receta</button><button class="btn sec" onclick="guardarConfig(); vistaPreviaOrden()">Vista previa de orden de exámenes</button></div>
       <p class="muted">Al imprimir, la receta se ajusta sola al tamaño elegido. En la ventana de impresión verifique que la impresora tenga el mismo tamaño de papel y que “Escala” esté en “Predeterminada”.</p>
     </div>
     <div class="tarjeta">
@@ -228,8 +232,14 @@ tr.clic{cursor:pointer}tr.clic:hover td{background:#f2f7fc}
 <script>
 'use strict';
 /* ================= ALMACENAMIENTO ================= */
-const CONFIG_INICIAL = {medico:'Dr. Marvin Castellón', especialidad:'Especialista en Medicina Interna', codigo:'', clinica:'', direccion:'', telefono:'', correo:'', extra:'',
-  tamReceta:'media', membrete:false, espacio:40, dxReceta:true};
+const LINEAS_CASTELLON = ['Postgrados: Diabetología, BUAP México.','Dermatología, UNAN - León.','Código Minsa N° 17400','Laboratorio LABEX',
+  'Claro 30 Mts. al Este.','Emergencia, Hospitalización.','Juigalpa, Chontales. Nic.','Cel.: Claro 8360-6896 / Tigo 8866-3903','E-mail: mmcch1974@gmail.com'].join('\n');
+const BOTONES_EX = ['BHC','Glucosa en ayunas','Hemoglobina glicosilada (HbA1c)','Creatinina','Nitrógeno de urea','Ácido úrico','Perfil lipídico',
+  'TGO','TGP','Examen general de orina (EGO)','Examen general de heces (EGH)','TSH','T4 libre','Electrolitos séricos','PCR','VSG','Factor reumatoide',
+  'Ultrasonido abdominal total','Ultrasonido renal','Ultrasonido de tiroides','Doppler venoso de miembros inferiores','Radiografía de tórax PA',
+  'Electrocardiograma','Tomografía'].join('\n');
+const CONFIG_INICIAL = {medico:'Dr. Marvin Manuel Castellón Chévez', especialidad:'Especialista en Medicina Interna', codigo:'17400', lineas:LINEAS_CASTELLON,
+  botonesEx:BOTONES_EX, tamReceta:'media', membrete:false, espacio:55, dxReceta:true, cfgVer:3};
 let DB = {version:2, config:Object.assign({}, CONFIG_INICIAL), pacientes:[], consultas:[], ultimoRespaldo:null};
 let archivoHandle = null, archivoOK = false;
 let pacId = null, editConId = null;
@@ -263,8 +273,12 @@ async function cargar(){
 }
 function completarConfig(){
   const c = DB.config || {};
-  // Configuración de la versión anterior (aún sin médico): toma los datos del Dr. Castellón
-  if (!c.medico){ c.medico = CONFIG_INICIAL.medico; c.especialidad = c.especialidad || CONFIG_INICIAL.especialidad; if (c.clinica === 'Aesthetic Clinic') c.clinica = ''; }
+  // Configuraciones de versiones anteriores: pone el membrete completo del Dr. Castellón
+  if (!c.cfgVer || c.cfgVer < 3){
+    if (!c.medico || c.medico === 'Dr. Marvin Castellón'){ c.medico = CONFIG_INICIAL.medico; c.especialidad = CONFIG_INICIAL.especialidad; c.codigo = c.codigo || CONFIG_INICIAL.codigo; c.lineas = CONFIG_INICIAL.lineas; }
+    else if (c.lineas === undefined){ c.lineas = [c.codigo ? 'Código MINSA: ' + c.codigo : '', c.clinica, c.direccion, c.telefono ? 'Tel. ' + c.telefono : '', c.correo, c.extra].filter(Boolean).join('\n'); }
+    c.cfgVer = 3;
+  }
   for (const k in CONFIG_INICIAL) if (c[k] === undefined) c[k] = CONFIG_INICIAL[k];
   DB.config = c;
 }
@@ -338,7 +352,7 @@ function pintarAvisos(){
   $('avisos').innerHTML = av.join('');
   const cf = DB.config;
   $('tituloClinica').textContent = cf.medico || cf.clinica || 'Expediente Clínico';
-  $('subTitulo').textContent = [cf.especialidad, cf.clinica].filter(Boolean).join(' · ');
+  $('subTitulo').textContent = cf.especialidad || '';
   document.title = (cf.medico || 'Expediente') + ' · Expediente Clínico';
 }
 
@@ -371,7 +385,7 @@ $('buscar').addEventListener('keydown', e => {
 });
 
 /* ================= FORMULARIO ================= */
-const CAMPOS_CONSULTA = ['fMotivo','fExamen','fLab','fConclusion','fTx','fRecom','fProx'];
+const CAMPOS_CONSULTA = ['fMotivo','fExamen','fLab','fConclusion','fTx','fRecom','fEstudios','fProx'];
 function hayTextoNuevo(){ return CAMPOS_CONSULTA.some(id => $(id).value.trim()) || (!pacId && $('fNombre').value.trim()); }
 function limpiarConsulta(){ CAMPOS_CONSULTA.forEach(id => $(id).value = ''); }
 function nuevoPaciente(){
@@ -421,7 +435,7 @@ function guardar(){
   let c = null;
   if (CAMPOS_CONSULTA.some(id => $(id).value.trim()) || editConId){
     c = editConId ? DB.consultas.find(x => x.id === editConId) : {id: nuevoId(), pacienteId: p.id, fecha: hoy(), hora: horaAhora()};
-    Object.assign(c, {motivo: $('fMotivo').value.trim(), examen: $('fExamen').value.trim(), lab: $('fLab').value.trim(), conclusion: $('fConclusion').value.trim(), tx: $('fTx').value.trim(), recom: $('fRecom').value.trim(), prox: $('fProx').value});
+    Object.assign(c, {motivo: $('fMotivo').value.trim(), examen: $('fExamen').value.trim(), lab: $('fLab').value.trim(), conclusion: $('fConclusion').value.trim(), tx: $('fTx').value.trim(), recom: $('fRecom').value.trim(), estudios: $('fEstudios').value.trim(), prox: $('fProx').value});
     if (!editConId) DB.consultas.push(c);
   }
   persistir();
@@ -434,7 +448,7 @@ function editarConsulta(cid){
   if (CAMPOS_CONSULTA.some(id => $(id).value.trim()) && !editConId && !confirm('Hay una consulta escrita sin guardar. ¿Descartarla para editar la anterior?')) return;
   editConId = cid;
   $('fMotivo').value = c.motivo || ''; $('fExamen').value = c.examen || ''; $('fLab').value = c.lab || '';
-  $('fConclusion').value = c.conclusion || ''; $('fTx').value = c.tx || ''; $('fRecom').value = c.recom || ''; $('fProx').value = c.prox || '';
+  $('fConclusion').value = c.conclusion || ''; $('fTx').value = c.tx || ''; $('fRecom').value = c.recom || ''; $('fEstudios').value = c.estudios || ''; $('fProx').value = c.prox || '';
   $('fFechaHora').value = `${fechaCorta(c.fecha)}  ${hora12(c.hora)}`;
   actualizarEstado(); window.scrollTo({top: 0, behavior:'smooth'}); $('fMotivo').focus();
 }
@@ -460,9 +474,9 @@ function copiarTxAnterior(){
 function bloqueConsulta(c, n, botones){
   const f = (et, v) => v ? `<p><span>${et}:</span> ${esc(v)}</p>` : '';
   return `<div class="consulta"><div class="cab"><b>Consulta Nº ${n}</b><span>${fechaLarga(c.fecha)} · ${hora12(c.hora)}</span><div class="esp"></div>
-    ${botones ? `<button class="btn sec peq" onclick="imprimirConsulta('${c.id}')">Imprimir</button><button class="btn sec peq" onclick="imprimirReceta('${c.id}')">Receta</button>
+    ${botones ? `<button class="btn sec peq" onclick="imprimirConsulta('${c.id}')">Imprimir</button><button class="btn sec peq" onclick="imprimirReceta('${c.id}')">Receta</button>${c.estudios ? `<button class="btn sec peq" onclick="imprimirOrden('${c.id}')">Orden exámenes</button>` : ''}
     <button class="btn sec peq" onclick="editarConsulta('${c.id}')">Editar</button><button class="btn rojo peq" onclick="eliminarConsulta('${c.id}')">Eliminar</button>` : ''}</div>
-    ${f('Motivo de consulta', c.motivo)}${f('Lo encontrado', c.examen)}${f('Laboratorio', c.lab)}${f('Conclusiones', c.conclusion)}${f('Tratamiento', c.tx)}${f('Recomendaciones', c.recom)}${c.prox ? f('Próxima cita', fechaLarga(c.prox)) : ''}</div>`;
+    ${f('Motivo de consulta', c.motivo)}${f('Lo encontrado', c.examen)}${f('Laboratorio', c.lab)}${f('Conclusiones', c.conclusion)}${f('Tratamiento', c.tx)}${f('Recomendaciones', c.recom)}${f('Exámenes indicados', c.estudios)}${c.prox ? f('Próxima cita', fechaLarga(c.prox)) : ''}</div>`;
 }
 function pintarHistorial(){
   if (!pacId){ $('historial').innerHTML = ''; return; }
@@ -499,15 +513,20 @@ function pintarCitas(){
 function sumarDias(f, n){ const d = new Date(f + 'T12:00:00'); d.setDate(d.getDate() + n); return d.toISOString().slice(0,10); }
 
 /* ================= IMPRESIÓN / WORD ================= */
-function lineaContacto(c){ return [c.direccion, c.telefono ? 'Tel. ' + c.telefono : '', c.correo, c.extra].filter(Boolean).map(esc).join(' · '); }
+const AZUL_M = '#1b2f86';
+// Membrete como el recetario: caduceo a la izquierda, nombre en cursiva, líneas centradas y doble línea
+function membreteHTML(letra){
+  const c = DB.config, lineas = (c.lineas || '').split('\n').map(s => s.trim()).filter(Boolean);
+  return `<div style="position:relative;text-align:center;color:${AZUL_M};padding-bottom:4pt;border-bottom:3.5pt double ${AZUL_M};margin-bottom:8pt">
+    <div style="position:absolute;left:0;top:0;font-size:${letra * 4.2}pt;line-height:1;font-family:'Segoe UI Symbol','DejaVu Sans',sans-serif">⚕</div>
+    <div style="padding-left:${letra * 3}pt">
+      <div style="font-family:'Monotype Corsiva','Brush Script MT','Lucida Handwriting','URW Chancery L',cursive;font-style:italic;font-weight:bold;font-size:${letra + 9}pt;line-height:1.15">${esc(c.medico || '')}</div>
+      <div style="font-weight:bold;font-size:${letra + .5}pt;text-transform:uppercase">${esc(c.especialidad || '')}</div>
+      ${lineas.map(l => `<div style="font-weight:bold;font-size:${letra - .5}pt;line-height:1.2">${esc(l)}</div>`).join('')}
+    </div></div>`;
+}
 function encabezado(titulo){
-  const c = DB.config;
-  return `<div style="border-bottom:2px solid #1f4e79;padding-bottom:6px;margin-bottom:10px;text-align:center">
-    <div style="font-size:16pt;font-weight:bold;color:#1f4e79">${esc(c.medico || '')}</div>
-    <div style="font-weight:bold">${esc(c.especialidad || '')}${c.codigo ? ' · Código MINSA: ' + esc(c.codigo) : ''}</div>
-    ${c.clinica ? `<div>${esc(c.clinica)}</div>` : ''}
-    ${lineaContacto(c) ? `<div style="font-size:9pt">${lineaContacto(c)}</div>` : ''}
-    ${titulo ? `<div style="margin-top:6px;font-weight:bold;font-size:12pt">${esc(titulo)}</div>` : ''}</div>`;
+  return membreteHTML(10.5) + (titulo ? `<div style="text-align:center;font-weight:bold;font-size:12pt;margin:0 0 8pt">${esc(titulo)}</div>` : '');
 }
 const P = (et, v) => v ? `<p style="margin:3pt 0"><b>${et}:</b> ${esc(v).replace(/\n/g,'<br>')}</p>` : '';
 function datosPacDoc(p){
@@ -517,7 +536,7 @@ function datosPacDoc(p){
 }
 function consultaDoc(c, n){
   return `<p style="margin:12pt 0 4pt;color:#1f4e79;font-weight:bold;border-bottom:1px solid #c9d6e3">Consulta Nº ${n} · ${fechaLarga(c.fecha)} · ${hora12(c.hora)}</p>
-    ${P('Motivo de consulta', c.motivo)}${P('Lo encontrado en la consulta', c.examen)}${P('Laboratorio', c.lab)}${P('Conclusiones', c.conclusion)}${P('Tratamiento', c.tx)}${P('Recomendaciones', c.recom)}${c.prox ? P('Próxima cita', fechaLarga(c.prox)) : ''}`;
+    ${P('Motivo de consulta', c.motivo)}${P('Lo encontrado en la consulta', c.examen)}${P('Laboratorio', c.lab)}${P('Conclusiones', c.conclusion)}${P('Tratamiento', c.tx)}${P('Recomendaciones', c.recom)}${P('Exámenes indicados', c.estudios)}${c.prox ? P('Próxima cita', fechaLarga(c.prox)) : ''}`;
 }
 const firma = () => `<div style="margin-top:50pt;text-align:center">_______________________________<br>${esc(DB.config.medico || 'Firma del médico')}<br>${esc(DB.config.especialidad || '')}${DB.config.codigo ? '<br>Código MINSA: ' + esc(DB.config.codigo) : ''}</div>`;
 const numDe = c => consultasDe(c.pacienteId).findIndex(x => x.id === c.id) + 1;
@@ -526,35 +545,47 @@ function consultaHTML(cid){ const c = DB.consultas.find(x => x.id === cid); retu
 // Tamaños de recetario: alto de la hoja en mm, márgenes y letra
 const RECETARIOS = {media:{size:'5.5in 8.5in', alto:215.9, letra:10.5}, a5:{size:'148mm 210mm', alto:210, letra:10.5}, carta:{size:'letter', alto:279.4, letra:12}};
 const MARGEN_RECETA = 10;
-function recetaHTML(p, c){
-  const cf = DB.config, r = RECETARIOS[cf.tamReceta] || RECETARIOS.media;
-  const items = (c.tx || '').split(/\n|\s\+\s/).map(s => s.trim()).filter(Boolean);
-  const membrete = cf.membrete;
-  const cab = membrete ? `<div style="height:${Math.max(0, +cf.espacio || 0)}mm"></div>` : `
-    <div style="text-align:center;border-bottom:3px double #1f4e79;padding-bottom:5pt;margin-bottom:8pt">
-      <div style="font-size:${r.letra + 7}pt;font-weight:bold;color:#1f4e79;letter-spacing:.3pt">${esc(cf.medico || '')}</div>
-      <div style="font-size:${r.letra + 1}pt;font-weight:bold">${esc(cf.especialidad || '')}</div>
-      ${cf.codigo ? `<div>Código MINSA: ${esc(cf.codigo)}</div>` : ''}${cf.clinica ? `<div>${esc(cf.clinica)}</div>` : ''}
-    </div>`;
-  const linea = (et, v, flex) => `<span style="flex:${flex};display:flex;gap:4pt;min-width:0"><b>${et}:</b><span style="flex:1;border-bottom:1px solid #777;padding:0 3pt">${v}</span></span>`;
+// Hoja tipo recetario (receta u orden de exámenes) con Px/Nombre arriba y Fecha / Firma y Sello abajo
+function hojaRecetario(p, c, cuerpo){
+  const cf = DB.config, r = RECETARIOS[cf.tamReceta] || RECETARIOS.media, membrete = cf.membrete;
+  const edad = edadDe(p);
+  const lineaAbajo = membrete ? 'transparent' : AZUL_M;
   return `<div style="display:flex;flex-direction:column;min-height:${(r.alto - 2*MARGEN_RECETA - 8).toFixed(1)}mm;font-size:${r.letra}pt;line-height:1.35">
-    ${cab}
-    <div style="display:flex;gap:10pt;margin-bottom:4pt">${linea('Paciente', esc(p.nombre), 3)}${linea('Edad', esc(edadDe(p)) + (edadDe(p) !== '' ? ' años' : ''), 1)}</div>
-    <div style="display:flex;gap:10pt;margin-bottom:4pt">${linea('Fecha', fechaLarga(c.fecha), 1)}${p.sexo ? linea('Sexo', esc(p.sexo), 1) : ''}</div>
+    ${membrete ? `<div style="height:${Math.max(0, +cf.espacio || 0)}mm"></div>` : membreteHTML(r.letra)}
+    ${membrete ? '' : `<div style="color:${AZUL_M};font-weight:bold;font-size:${r.letra + 3}pt;text-decoration:underline;margin-bottom:2pt">Px:</div>`}
+    <div style="display:flex;gap:6pt;margin-bottom:4pt"><b style="color:${AZUL_M}">Nombre:</b><span style="flex:1;border-bottom:1px solid ${lineaAbajo};padding:0 3pt">${esc(p.nombre)}${edad !== '' ? ` &nbsp;&nbsp;<b>Edad:</b> ${esc(edad)} años` : ''}</span></div>
     ${cf.dxReceta && c.conclusion ? `<div style="margin-bottom:4pt"><b>Dx:</b> ${esc(c.conclusion.replace(/[.;,]?\s*\n\s*/g,'; '))}</div>` : ''}
-    <div style="font-size:${r.letra + 16}pt;font-weight:bold;color:#1f4e79;line-height:1;margin:4pt 0">℞</div>
+    ${cuerpo}
+    <div style="flex:1;min-height:16mm"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;color:${AZUL_M}">
+      <div style="width:36%;text-align:center"><div style="color:#000">${fechaCorta(c.fecha)}</div><div style="border-top:1.5px solid ${lineaAbajo};font-weight:bold;text-align:left;padding-left:20%">${membrete ? '' : 'Fecha:'}</div></div>
+      <div style="width:44%;text-align:center"><div style="border-top:1.5px solid ${lineaAbajo};font-family:'Times New Roman',serif;font-style:italic;font-weight:bold;font-size:${r.letra + 3}pt">${membrete ? '' : 'Firma y Sello'}</div>${cf.codigo && !membrete ? `<div style="font-size:${r.letra - 2}pt">Cód. MINSA ${esc(cf.codigo)}</div>` : ''}</div>
+    </div>
+  </div>`;
+}
+function recetaHTML(p, c){
+  const items = (c.tx || '').split(/\n|\s\+\s/).map(s => s.trim()).filter(Boolean);
+  return hojaRecetario(p, c, `
+    <div style="font-size:24pt;font-weight:bold;color:${AZUL_M};line-height:1;margin:2pt 0 4pt">℞</div>
     <ol style="margin:0 0 6pt;padding-left:18pt;line-height:1.6">${items.map(i => `<li>${esc(i)}</li>`).join('') || '<li>&nbsp;</li>'}</ol>
     ${c.recom ? `<div style="margin-top:4pt"><b>Indicaciones y recomendaciones:</b><div style="white-space:pre-wrap">${esc(c.recom)}</div></div>` : ''}
-    ${c.prox ? `<div style="margin-top:6pt"><b>Próxima cita:</b> ${fechaLarga(c.prox)}</div>` : ''}
-    <div style="flex:1;min-height:14mm"></div>
-    <div style="text-align:center;margin-bottom:${membrete ? 0 : 6}pt">____________________________<br><b>${esc(cf.medico || '')}</b><br>${esc(cf.especialidad || '')}${cf.codigo ? '<br>Código MINSA: ' + esc(cf.codigo) : ''}</div>
-    ${!membrete && lineaContacto(cf) ? `<div style="border-top:1px solid #1f4e79;padding-top:3pt;text-align:center;font-size:${r.letra - 2}pt;color:#333">${lineaContacto(cf)}</div>` : ''}
-  </div>`;
+    ${c.prox ? `<div style="margin-top:6pt"><b>Próxima cita:</b> ${fechaLarga(c.prox)}</div>` : ''}`);
+}
+function ordenHTML(p, c){
+  const items = (c.estudios || '').split(/\n|\s\+\s/).map(s => s.trim()).filter(Boolean);
+  return hojaRecetario(p, c, `
+    <div style="text-align:center;font-weight:bold;font-size:12pt;color:${AZUL_M};margin:6pt 0 4pt;letter-spacing:.5pt">SOLICITUD DE EXÁMENES</div>
+    <div style="margin-bottom:3pt">Favor realizar:</div>
+    <ol style="margin:0 0 6pt;padding-left:18pt;line-height:1.6">${items.map(i => `<li>${esc(i)}</li>`).join('') || '<li>&nbsp;</li>'}</ol>`);
 }
 function imprimirHTML(html, receta){
   const r = RECETARIOS[DB.config.tamReceta] || RECETARIOS.media;
   $('estiloPagina').textContent = receta ? `@page{size:${r.size};margin:${MARGEN_RECETA}mm}` : '@page{size:letter;margin:18mm 16mm 22mm}';
   $('imprimir').innerHTML = `<div class="doc">${html}</div>`; window.print();
+}
+function vistaPreviaOrden(){
+  const p = {nombre:'Nombre del Paciente', edad:'50', edadFecha:hoy()};
+  imprimirHTML(ordenHTML(p, {fecha:hoy(), conclusion:'Diabetes mellitus tipo 2', estudios:'BHC\nGlucosa en ayunas\nHemoglobina glicosilada (HbA1c)\nCreatinina\nUltrasonido abdominal total'}), true);
 }
 function vistaPreviaReceta(){
   const p = {nombre:'Nombre del Paciente', edad:'50', edadFecha:hoy(), sexo:'Femenino'};
@@ -574,7 +605,7 @@ function exportarWord(nombre, html){
 // Lo que está escrito en pantalla (aunque no se haya guardado todavía)
 function formularioComoDatos(){
   const p = {nombre: $('fNombre').value.trim(), edad: $('fEdad').value.trim(), edadFecha: hoy(), sexo: sexoSel(), telefono: $('fTel').value.trim(), procedencia: $('fProc').value.trim(), ap: $('fAP').value.trim(), af: $('fAF').value.trim()};
-  const c = {fecha: hoy(), hora: horaAhora(), motivo: $('fMotivo').value.trim(), examen: $('fExamen').value.trim(), lab: $('fLab').value.trim(), conclusion: $('fConclusion').value.trim(), tx: $('fTx').value.trim(), recom: $('fRecom').value.trim(), prox: $('fProx').value};
+  const c = {fecha: hoy(), hora: horaAhora(), motivo: $('fMotivo').value.trim(), examen: $('fExamen').value.trim(), lab: $('fLab').value.trim(), conclusion: $('fConclusion').value.trim(), tx: $('fTx').value.trim(), recom: $('fRecom').value.trim(), estudios: $('fEstudios').value.trim(), prox: $('fProx').value};
   if (editConId){ const o = DB.consultas.find(x => x.id === editConId); c.fecha = o.fecha; c.hora = o.hora; }
   return {p, c, n: pacId ? consultasDe(pacId).filter(x => x.id !== editConId).length + 1 : 1};
 }
@@ -584,14 +615,29 @@ function imprimirActual(){ if (verificarNombre()) imprimirHTML(actualHTML()); }
 function wordActual(){ if (verificarNombre()) exportarWord(nombreArchivo($('fNombre').value) + '_consulta_' + hoy(), actualHTML()); }
 function recetaActual(){ if (!verificarNombre()) return; const {p,c} = formularioComoDatos(); imprimirHTML(recetaHTML(p, c), true); }
 function imprimirConsulta(cid){ imprimirHTML(consultaHTML(cid)); }
+function ordenActual(){
+  if (!verificarNombre()) return;
+  if (!$('fEstudios').value.trim()){ alert('Escriba o elija los exámenes a realizar.'); return $('fEstudios').focus(); }
+  const {p,c} = formularioComoDatos(); imprimirHTML(ordenHTML(p, c), true);
+}
+function imprimirOrden(cid){ const c = DB.consultas.find(x => x.id === cid); imprimirHTML(ordenHTML(pacientePor(c.pacienteId), c), true); }
+function pintarChips(){
+  const lista = (DB.config.botonesEx || '').split('\n').map(s => s.trim()).filter(Boolean);
+  $('chipsEx').innerHTML = lista.map((x,i) => `<button type="button" class="btn sec peq" style="margin:0 4px 4px 0" data-i="${i}">+ ${esc(x)}</button>`).join('');
+  $('chipsEx').querySelectorAll('button').forEach(b => b.onclick = () => {
+    const ex = lista[+b.dataset.i], t = $('fEstudios'), actuales = t.value.split('\n').map(s => norm(s));
+    if (actuales.includes(norm(ex))) return toast('Ya está en la lista');
+    t.value = (t.value.trim() ? t.value.replace(/\s+$/,'') + '\n' : '') + ex;
+  });
+}
 function imprimirReceta(cid){ const c = DB.consultas.find(x => x.id === cid); imprimirHTML(recetaHTML(pacientePor(c.pacienteId), c), true); }
 function imprimirHistoria(id){ imprimirHTML(historiaHTML(id)); }
 function wordHistoria(id){ exportarWord(nombreArchivo(pacientePor(id).nombre) + '_historia', historiaHTML(id)); }
 function wordTodo(){ exportarWord('todos_los_pacientes_' + hoy(), [...DB.pacientes].sort((a,b) => a.nombre.localeCompare(b.nombre,'es')).map(p => historiaHTML(p.id)).join('<br clear="all" style="page-break-before:always">')); }
 function exportarExcel(){
-  const filas = [['Fecha','Hora','Paciente','Edad','Sexo','Teléfono','Procedencia','Antecedentes personales','Antecedentes familiares','Motivo de consulta','Lo encontrado','Laboratorio','Conclusiones','Tratamiento','Recomendaciones','Próxima cita'],
+  const filas = [['Fecha','Hora','Paciente','Edad','Sexo','Teléfono','Procedencia','Antecedentes personales','Antecedentes familiares','Motivo de consulta','Lo encontrado','Laboratorio','Conclusiones','Tratamiento','Recomendaciones','Exámenes indicados','Próxima cita'],
     ...[...DB.consultas].sort((a,b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora)).map(c => { const p = pacientePor(c.pacienteId) || {};
-      return [fechaCorta(c.fecha), c.hora, p.nombre, edadDe(p), p.sexo, p.telefono, p.procedencia, p.ap, p.af, c.motivo, c.examen, c.lab, c.conclusion, c.tx, c.recom, fechaCorta(c.prox)]; })];
+      return [fechaCorta(c.fecha), c.hora, p.nombre, edadDe(p), p.sexo, p.telefono, p.procedencia, p.ap, p.af, c.motivo, c.examen, c.lab, c.conclusion, c.tx, c.recom, c.estudios, fechaCorta(c.prox)]; })];
   descargar('consultas_' + hoy() + '.csv', '﻿' + filas.map(f => f.map(v => '"' + String(v == null ? '' : v).replace(/"/g,'""') + '"').join(';')).join('\r\n'), 'text/csv');
   toast('Archivo para Excel descargado');
 }
@@ -624,7 +670,7 @@ async function reactivarArchivo(){
   pintarAvisos(); pintarConfig();
 }
 async function desvincularArchivo(){ archivoHandle = null; archivoOK = false; await idbSet('archivo', null); pintarAvisos(); pintarConfig(); }
-const CFG_TEXTOS = {medico:'cfgMedico', especialidad:'cfgEspecialidad', codigo:'cfgCodigo', clinica:'cfgClinica', direccion:'cfgDireccion', telefono:'cfgTelefono', correo:'cfgCorreo', extra:'cfgExtra'};
+const CFG_TEXTOS = {medico:'cfgMedico', especialidad:'cfgEspecialidad', codigo:'cfgCodigo', lineas:'cfgLineas', botonesEx:'cfgBotonesEx'};
 function pintarConfig(){
   const c = DB.config;
   for (const k in CFG_TEXTOS) $(CFG_TEXTOS[k]).value = c[k] || '';
@@ -641,7 +687,7 @@ function guardarConfig(){
   c.tamReceta = (document.querySelector('input[name=tamReceta]:checked') || {}).value || 'media';
   c.dxReceta = $('cfgDxReceta').checked; c.membrete = $('cfgMembrete').checked;
   c.espacio = Math.max(0, Math.min(120, parseInt($('cfgEspacio').value, 10) || 0));
-  persistir(); pintarAvisos(); toast('Guardado');
+  persistir(); pintarAvisos(); pintarChips(); toast('Guardado');
 }
 
 document.addEventListener('keydown', e => { if (e.ctrlKey && (e.key === 's' || e.key === 'S') && $('v-consulta').classList.contains('act')){ e.preventDefault(); guardar(); } });
@@ -650,7 +696,7 @@ window.addEventListener('beforeunload', e => { if (CAMPOS_CONSULTA.some(id => $(
 (async () => {
   await cargar();
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
-  tic(); pintarAvisos(); actualizarEstado();
+  tic(); pintarAvisos(); pintarChips(); actualizarEstado();
   $('buscar').focus();
 })();
 </script>
