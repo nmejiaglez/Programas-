@@ -14,6 +14,12 @@ RECETA:
 - Sale igual que el recetario: membrete del medico, Px, Nombre, edad,
   diagnostico, medicamentos numerados, indicaciones y recomendaciones,
   proxima cita, Fecha y Firma y Sello.
+- Se ajusta sola al tamano del recetario: media carta (por defecto),
+  A5 o carta. Se elige en "Respaldo y configuracion".
+- Si el recetario ya tiene membrete impreso, marque esa opcion: solo se
+  imprime el contenido, dejando el espacio del membrete arriba.
+- En la ventana de impresion revise que el papel de la impresora sea del
+  mismo tamano y que la escala este en "Predeterminada".
 
 ORDEN DE EXAMENES:
 - En la consulta, apartado "Examenes y estudios a realizar": toque los
@@ -21,12 +27,6 @@ ORDEN DE EXAMENES:
   escriba lo que quiera, uno por renglon. Todo se puede editar.
 - Boton "Orden de examenes": imprime la solicitud con el membrete.
 - Los botones rapidos se cambian en "Respaldo y configuracion".
-- Se ajusta sola al tamano del recetario: media carta (por defecto),
-  A5 o carta. Se elige en "Respaldo y configuracion".
-- Si el recetario ya tiene membrete impreso, marque esa opcion: solo se
-  imprime el contenido, dejando el espacio del membrete arriba.
-- En la ventana de impresion revise que el papel de la impresora sea del
-  mismo tamano y que la escala este en "Predeterminada".
 
 PACIENTE NUEVO:
 - Escriba: paciente, edad, sexo, telefono, procedencia, antecedentes

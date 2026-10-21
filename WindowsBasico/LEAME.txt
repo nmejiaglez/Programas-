@@ -1,0 +1,36 @@
+WINDOWS BASICO - Instrucciones
+==============================
+Funciona en Windows 7, 8, 10 y 11. Es UN SOLO archivo.
+
+1. Copie WindowsBasico.bat al Escritorio.
+2. Doble clic. Windows pedira permiso de administrador: responda SI.
+   (Si sale "Windows protegio su PC": Mas informacion > Ejecutar de
+   todas formas.)
+3. Elija la opcion 1 (MODO BASICO) y escriba S.
+4. Elija la opcion 2 y quite los programas que arrancan solos.
+5. En Windows 10/11 use la opcion 3 para quitar apps que no usa.
+6. REINICIE la computadora (opcion 6).
+
+QUE HACE EL MODO BASICO:
+- Quita animaciones, transparencias y sombras (el texto sigue nitido).
+- Apaga apps en segundo plano, widgets, noticias, Copilot y Cortana.
+- Apaga sugerencias, publicidad y telemetria de Microsoft.
+- Apaga servicios que no se necesitan: Xbox, fax, mapas, ubicacion,
+  Superfetch, indexado de busqueda, informe de errores.
+- Edge y Chrome ya no se quedan abiertos escondidos gastando RAM.
+
+NO SE TOCA: internet, wifi, impresoras, sonido, antivirus,
+Windows Update, Word/Excel ni sus archivos.
+
+SEGURIDAD:
+- Crea un PUNTO DE RESTAURACION antes de cambiar nada.
+- Guarda un respaldo de cada ajuste en C:\ProgramData\WindowsBasico.
+- Opcion 5 DESHACER: deja Windows exactamente como estaba.
+- Las apps quitadas se reinstalan gratis desde Microsoft Store.
+
+CUANTO SE AHORRA: depende de la PC. Normalmente entre 300 MB y 1 GB
+de RAM, sobre todo si se quitan los programas de inicio. La opcion 4
+muestra que programas gastan mas RAM (el navegador suele ser el mayor).
+
+NOTA: Windows 10/11 por si solo necesita alrededor de 2 GB de RAM.
+Si la PC tiene 4 GB o menos, agregar memoria RAM es la mejora real.
