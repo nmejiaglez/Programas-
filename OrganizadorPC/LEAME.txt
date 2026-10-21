@@ -15,15 +15,20 @@ COMO USARLO:
 3. Despues le muestra los REPETIDOS: escriba S y Enter para borrarlos.
 4. Al terminar se abre la carpeta DR MEJIA. El Escritorio queda limpio.
 
-COMO QUEDA (Escritorio\DR MEJIA):
-   ESTUDIOS\Tomografia | Resonancia Magnetica | Mamografia |
-            Ultrasonido y Doppler | Radiografia \ Ano \ Mes
-   DOCUMENTOS\Word | PDF | Excel | PowerPoint | Textos \ Ano \ Mes
-   FOTOS, VIDEOS Y MUSICA\...\ Ano \ Mes
+COMO QUEDA (Escritorio\DR MEJIA) - primero el ANO y el MES:
+   _ESTE MES - Octubre 2026   (acceso directo: abre el mes actual)
+   2026\10 - Octubre\ESTUDIOS\Tomografia | Ultrasonido y Doppler | ...
+                     \DOCUMENTOS\Word | PDF | Excel ...
+                     \FOTOS, VIDEOS Y MUSICA
+                     \CARPETAS (sus otras carpetas completas)
+                     \OTROS
+   2026\09 - Septiembre\...
+   2025\...
    PROGRAMAS\ carpetas de programas, Accesos directos, Instaladores,
               Scripts y Expediente Clinico
-   CARPETAS\ Ano \ Mes \ sus otras carpetas completas
-   OTROS
+- Lo que ya estaba en DR MEJIA con el orden anterior (por tipo) se
+  reacomoda solo: primero ano y mes.
+- Opcion 8 del menu: abre directo el mes actual.
 - Revisa Escritorio, Descargas, Documentos, Imagenes, Videos y Musica.
 - Los estudios se buscan tambien DENTRO de las carpetas.
 - Carpetas que solo agrupaban por tipo (Documentos, Imagenes, Videos,

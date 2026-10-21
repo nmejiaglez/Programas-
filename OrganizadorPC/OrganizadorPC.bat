@@ -17,12 +17,13 @@ exit /b
 # ============================================================
 #  ORGANIZADOR PC - Windows 7 / 8 / 10 / 11
 #  Deja TODO en UNA sola carpeta del Escritorio: DR MEJIA
-#    ESTUDIOS   : tomografia, resonancia, mamografia, US, Rx > ANO > MES
-#    DOCUMENTOS : Word, PDF, Excel... > ANO > MES
-#    FOTOS, VIDEOS Y MUSICA > ANO > MES
-#    PROGRAMAS  : carpetas de programas, accesos directos, instaladores
-#    CARPETAS   : sus otras carpetas completas > ANO > MES
-#    OTROS
+#    ANO \ MES \ ESTUDIOS (tomografia, resonancia, mamografia, US, Rx)
+#              \ DOCUMENTOS (Word, PDF, Excel...)
+#              \ FOTOS, VIDEOS Y MUSICA
+#              \ CARPETAS (sus otras carpetas completas)
+#              \ OTROS
+#    PROGRAMAS : carpetas de programas, accesos directos, instaladores
+#    Acceso directo "_ESTE MES" para abrir directo el mes actual.
 #  Solo MUEVE y guarda un registro para DESHACER. Los REPETIDOS (mismo
 #  contenido) se mandan a la Papelera de reciclaje, dejando una copia.
 # ============================================================
@@ -100,6 +101,12 @@ function Fecha-De($archivo) {
     return $archivo.CreationTime
 }
 function AnioMes($base, $fecha) { return Join-Path (Join-Path $base $fecha.Year) $Meses[$fecha.Month - 1] }
+# Primero el ANO y el MES; adentro, el grupo (ESTUDIOS, DOCUMENTOS...) y el tipo
+function Ruta-Mes($fecha, $grupo, $sub) {
+    $p = Join-Path (AnioMes $Raiz $fecha) $grupo
+    if ($sub) { $p = Join-Path $p $sub }
+    return $p
+}
 
 function Nombre-Libre($carpeta, $nombre) {
     $ruta = Join-Path $carpeta $nombre
@@ -204,7 +211,7 @@ function Item($obj, $cat, $carpeta, $grupo) {
 # Si un archivo es un estudio, devuelve el plan para moverlo a ESTUDIOS
 function Estudio-De($a) {
     $ext = $a.Extension.ToLower(); $mod = $null; $fecha = Fecha-De $a
-    if (Es-Nube $a) { $mod = Modalidad-Nombre $a.BaseName; if (-not $mod) { return $null }; return Item $a $mod (AnioMes (Join-Path $Estudios $mod) $fecha) 'ESTUDIOS' }
+    if (Es-Nube $a) { $mod = Modalidad-Nombre $a.BaseName; if (-not $mod) { return $null }; return Item $a $mod (Ruta-Mes $fecha 'ESTUDIOS' $mod) 'ESTUDIOS' }
     if ($ext -eq '.dcm' -or $ext -eq '.dicom') {
         $info = Info-Dicom $a.FullName; $mod = 'Otros DICOM'
         if ($info) { $mod = $info.Modalidad; if ($info.Fecha) { $fecha = $info.Fecha } }
@@ -215,14 +222,14 @@ function Estudio-De($a) {
         $mod = Modalidad-Nombre $a.BaseName
     }
     if (-not $mod) { return $null }
-    return Item $a $mod (AnioMes (Join-Path $Estudios $mod) $fecha) 'ESTUDIOS'
+    return Item $a $mod (Ruta-Mes $fecha 'ESTUDIOS' $mod) 'ESTUDIOS'
 }
 function Estudio-Cd($dir) {
     $muestra = Get-ChildItem -LiteralPath $dir.FullName -Recurse -Force | Where-Object { -not $_.PSIsContainer -and $_.Name -ne 'DICOMDIR' -and $_.Length -gt 2048 } | Select-Object -First 1
     $info = $null; if ($muestra) { $info = Info-Dicom $muestra.FullName }
     $mod = 'Otros DICOM'; $fecha = $dir.LastWriteTime
     if ($info) { $mod = $info.Modalidad; if ($info.Fecha) { $fecha = $info.Fecha } }
-    return Item $dir $mod (AnioMes (Join-Path $Estudios $mod) $fecha) 'ESTUDIOS'
+    return Item $dir $mod (Ruta-Mes $fecha 'ESTUDIOS' $mod) 'ESTUDIOS'
 }
 
 # ================= CLASIFICACION =================
@@ -246,9 +253,8 @@ function Destino-Archivo($a) {
     $cat = 'Otros'
     foreach ($k in $Categorias.Keys) { if ($Categorias[$k] -contains $ext) { $cat = $k } }
     $g = $Grupo[$cat]
-    $base = Join-Path $Raiz $g
-    if ($cat -ne 'Otros') { $base = Join-Path $base $cat }
-    return Item $a $cat (AnioMes $base (Fecha-De $a)) $g
+    $sub = $cat; if ($cat -eq 'Otros') { $sub = '' }
+    return Item $a $cat (Ruta-Mes (Fecha-De $a) $g $sub) $g
 }
 
 # Carpeta de primer nivel -> 'proteger', 'cd' (estudio DICOM), 'programa' o 'normal'
@@ -316,7 +322,7 @@ function Planear($fuentes, $soloEstudios) {
                 if (-not $soloEstudios -and (Es-CarpetaDeTipo $h)) { $plan += @(Repartir $h); continue }
                 if ($t -eq 'programa') { if (-not $soloEstudios) { $plan += Item $h 'Carpetas de programas' $Programas 'PROGRAMAS' }; continue }
                 $plan += @(Estudios-Dentro $h)
-                if (-not $soloEstudios) { $plan += Item $h 'Carpetas' (AnioMes (Join-Path $Raiz 'CARPETAS') $h.LastWriteTime) 'CARPETAS' }
+                if (-not $soloEstudios) { $plan += Item $h 'Carpetas' (Ruta-Mes $h.LastWriteTime 'CARPETAS' '') 'CARPETAS' }
             } else {
                 $e = $null; if (-not (Esta-Protegido $h)) { $e = Estudio-De $h }
                 if ($e) { $plan += $e; continue }
@@ -448,13 +454,49 @@ function Limpiar-Origen($rutas, $raices) {
     }
 }
 
+# Lo que ya estaba dentro con el orden anterior (GRUPO > TIPO > ANO > MES) pasa a ANO > MES > GRUPO > TIPO
+$GruposConFecha = @('ESTUDIOS','DOCUMENTOS','FOTOS, VIDEOS Y MUSICA','OTROS','CARPETAS')
+function Hay-OrdenViejo { foreach ($g in $GruposConFecha) { if (Test-Path -LiteralPath (Join-Path $Raiz $g)) { return $true } } return $false }
+function Mover-Anio($dirAnio, $g, $sub) {
+    $anio = Split-Path $dirAnio -Leaf
+    foreach ($m in @(Get-ChildItem -LiteralPath $dirAnio -Force | Where-Object { $_.PSIsContainer -and $_.Name -match '^\d\d - ' })) {
+        $dst = Join-Path (Join-Path (Join-Path $Raiz $anio) $m.Name) $g
+        if ($sub) { $dst = Join-Path $dst $sub }
+        Fusionar $m.FullName $dst
+    }
+}
+function Reacomodar-Dentro {
+    foreach ($g in $GruposConFecha) {
+        $base = Join-Path $Raiz $g
+        if (-not (Test-Path -LiteralPath $base)) { continue }
+        foreach ($c in @(Get-ChildItem -LiteralPath $base -Force | Where-Object { $_.PSIsContainer })) {
+            if ($c.Name -match '^\d{4}$') { Mover-Anio $c.FullName $g '' }
+            else { foreach ($y in @(Get-ChildItem -LiteralPath $c.FullName -Force | Where-Object { $_.PSIsContainer -and $_.Name -match '^\d{4}$' })) { Mover-Anio $y.FullName $g $c.Name } }
+        }
+        Limpiar-Vacias $base
+        if (@(Get-ChildItem -LiteralPath $base -Force).Count -eq 0) { Remove-Item -LiteralPath $base -Force }
+    }
+}
+
+# Acceso directo dentro de DR MEJIA que abre el mes actual
+function Acceso-EsteMes {
+    Get-ChildItem -LiteralPath $Raiz -Filter '_ESTE MES*.lnk' -Force | Remove-Item -Force
+    $hoy = Get-Date; $dest = AnioMes $Raiz $hoy
+    New-Item -ItemType Directory -Path $dest -Force | Out-Null
+    try {
+        $s = (New-Object -ComObject WScript.Shell).CreateShortcut((Join-Path $Raiz ('_ESTE MES - ' + $Meses[$hoy.Month - 1].Substring(5) + ' ' + $hoy.Year + '.lnk')))
+        $s.TargetPath = $dest; $s.Save()
+    } catch {}
+}
+
 # ================= ORDENAR =================
 function Ordenar($fuentes, $soloEstudios, $migrar) {
     Titulo 'Revisando su computadora (puede tardar unos minutos)...'
     $r = Planear $fuentes $soloEstudios
     $plan = @($r.Plan)
     $hayAntiguo = $migrar -and (($Antiguos | Where-Object { Test-Path -LiteralPath $_ }) -ne $null)
-    if ($plan.Count -eq 0 -and -not $hayAntiguo) { Aviso 'No hay nada para ordenar.'; return }
+    $hayViejoDentro = $migrar -and (Hay-OrdenViejo)
+    if ($plan.Count -eq 0 -and -not $hayAntiguo -and -not $hayViejoDentro) { Aviso 'No hay nada nuevo para ordenar.'; Acceso-EsteMes; return }
 
     Titulo "Esto se va a ordenar en: $Raiz"
     foreach ($g in @('ESTUDIOS','DOCUMENTOS','FOTOS, VIDEOS Y MUSICA','PROGRAMAS','CARPETAS','OTROS')) {
@@ -464,6 +506,7 @@ function Ordenar($fuentes, $soloEstudios, $migrar) {
         $grp | Group-Object Categoria | Sort-Object Name | ForEach-Object { Write-Host ("      {0,-26} {1,5}" -f $_.Name, $_.Count) -ForegroundColor Gray }
     }
     if ($hayAntiguo) { Write-Host '   + Lo que ya estaba ordenado antes (carpetas ESTUDIOS y ORGANIZADO)' -ForegroundColor White }
+    if ($hayViejoDentro) { Write-Host "   + Lo que ya esta en $NombreRaiz se reacomoda: primero ANO y MES" -ForegroundColor White }
     if ($r.Quedan) { Write-Host "   Se quedan en su lugar $($r.Quedan) elementos que Windows u Office necesitan." -ForegroundColor Gray }
     Write-Host '   Todo se SACA de donde estaba (no quedan copias). No se borra ningun archivo.' -ForegroundColor Gray
     if ((Read-Host "`n   Ordenar AHORA? Escriba S y pulse Enter (N = no)") -notmatch '^\s*[sS]') { Aviso 'Cancelado. No se movio nada.'; return }
@@ -471,6 +514,7 @@ function Ordenar($fuentes, $soloEstudios, $migrar) {
     $script:Movidos = @()
     New-Item -ItemType Directory -Path $Raiz -Force | Out-Null
     if ($hayAntiguo) { Titulo 'Pasando lo ordenado antes...'; Migrar-Antiguo }
+    if ($migrar -and (Hay-OrdenViejo)) { Titulo 'Reacomodando por ano y mes...'; Reacomodar-Dentro }
 
     Titulo 'Moviendo...'
     $fallos = 0; $i = 0
@@ -495,6 +539,7 @@ function Ordenar($fuentes, $soloEstudios, $migrar) {
     if ($acc) { Ok "$acc accesos directos corregidos para que sigan abriendo sus programas." }
     if ($fallos) { Aviso "$fallos no se movieron (estaban abiertos o en uso). Cierre los programas y repita." }
     Write-Host '   Si algo no le gusta, use la opcion 5 para DESHACER.' -ForegroundColor Gray
+    Acceso-EsteMes
     Invoke-Item $Raiz
 }
 
@@ -571,7 +616,7 @@ function Hash-Texto($t) {
 # Entre copias iguales se queda: la de ESTUDIOS, la que no termina en (1), (2)... y la de nombre mas corto
 function Puntaje-Copia($ruta) {
     $p = [IO.Path]::GetFileNameWithoutExtension($ruta).Length + $ruta.Length / 1000
-    if ($ruta -notlike "$Estudios*") { $p += 100000 }
+    if ($ruta -notmatch '[\\/]ESTUDIOS[\\/]') { $p += 100000 }
     if ([IO.Path]::GetFileNameWithoutExtension($ruta) -match '\(\d+\)$' -or [IO.Path]::GetFileNameWithoutExtension($ruta) -match ' - copia') { $p += 10000 }
     return $p
 }
@@ -656,8 +701,8 @@ do {
     Write-Host '============================================================' -ForegroundColor Cyan
     Write-Host '                    ORGANIZADOR  PC' -ForegroundColor White
     Write-Host "   Todo en UNA carpeta del Escritorio: $NombreRaiz" -ForegroundColor Gray
-    Write-Host '   ESTUDIOS | DOCUMENTOS | FOTOS, VIDEOS Y MUSICA | PROGRAMAS' -ForegroundColor Gray
-    Write-Host '   CARPETAS | OTROS   (por Ano > Mes)' -ForegroundColor Gray
+    Write-Host '   ANO > MES > ESTUDIOS | DOCUMENTOS | FOTOS | CARPETAS | OTROS' -ForegroundColor Gray
+    Write-Host '   PROGRAMAS aparte' -ForegroundColor Gray
     Write-Host '============================================================' -ForegroundColor Cyan
     Write-Host '  1. ORDENAR TODO, borrar repetidos y dejar el Escritorio limpio  << recomendado'
     Write-Host '  2. Solo BORRAR REPETIDOS (dentro de la carpeta DR MEJIA)'
@@ -666,17 +711,19 @@ do {
     Write-Host '  5. DESHACER una organizacion'
     Write-Host '  6. Ver que queda fuera de DR MEJIA'
     Write-Host '  7. Abrir la carpeta DR MEJIA'
+    Write-Host '  8. Abrir el MES ACTUAL'
     Write-Host '  0. Salir'
     Write-Host "`n  (Antes de mover, siempre le muestra que hara y le pregunta.)" -ForegroundColor Gray
     $op = Read-Host "`n  Elija una opcion"
     switch ($op) {
-        '1' { Ordenar $Fuentes $false $true; if (Test-Path -LiteralPath $Raiz) { Borrar-Repetidos } }
+        '1' { Ordenar $Fuentes $false $true; if (Test-Path -LiteralPath $Raiz) { Borrar-Repetidos; Acceso-EsteMes } }
         '2' { Borrar-Repetidos }
         '3' { $c = Elegir-Carpeta; if ($c -and (Test-Path -LiteralPath $c)) { Ordenar @($c) $true $false } }
         '4' { $c = Elegir-Carpeta; if ($c -and (Test-Path -LiteralPath $c)) { Ordenar @($c) $false $false } }
         '5' { Deshacer }
         '6' { Diagnostico }
         '7' { New-Item -ItemType Directory -Path $Raiz -Force | Out-Null; Invoke-Item $Raiz }
+        '8' { $m = AnioMes $Raiz (Get-Date); New-Item -ItemType Directory -Path $m -Force | Out-Null; Invoke-Item $m }
     }
     if ($op -ne '0') { Read-Host "`n  Pulse Enter para volver al menu" | Out-Null }
 } while ($op -ne '0')
