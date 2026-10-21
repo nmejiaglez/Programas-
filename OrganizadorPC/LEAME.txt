@@ -3,7 +3,7 @@ ORGANIZADOR PC - Instrucciones
 Funciona en Windows 7, 8, 10 y 11. Es UN SOLO archivo: OrganizadorPC.bat
 
 ANTES DE EMPEZAR (una sola vez):
-- Abra el Expediente Clinico y en "Respaldo y configuracion" pulse
+- Si usa el Expediente Clinico: "Respaldo y configuracion" >
   "Descargar respaldo" (por seguridad, porque el Expediente se mueve).
 - Cierre Word, Excel y los programas abiertos.
 
@@ -11,37 +11,42 @@ COMO USARLO:
 1. Doble clic en OrganizadorPC.bat.
    Si Windows muestra "Windows protegio su PC": "Mas informacion" y
    luego "Ejecutar de todas formas".
-2. Elija la opcion 1 (ORDENAR TODO). Le muestra lo que hara.
-3. Escriba S y pulse Enter.
-4. Al terminar se abre la carpeta ORGANIZADO. El Escritorio queda limpio.
+2. Elija la opcion 1. Le muestra lo que va a ordenar: escriba S y Enter.
+3. Despues le muestra los REPETIDOS: escriba S y Enter para borrarlos.
+4. Al terminar se abre la carpeta DR MEJIA. El Escritorio queda limpio.
 
-COMO QUEDA (Escritorio\ORGANIZADO):
+COMO QUEDA (Escritorio\DR MEJIA):
    ESTUDIOS\Tomografia | Resonancia Magnetica | Mamografia |
             Ultrasonido y Doppler | Radiografia \ Ano \ Mes
    DOCUMENTOS\Word | PDF | Excel | PowerPoint | Textos \ Ano \ Mes
    FOTOS, VIDEOS Y MUSICA\...\ Ano \ Mes
    PROGRAMAS\ carpetas de programas, Accesos directos, Instaladores,
-              Scripts (.bat) y Expediente Clinico
+              Scripts y Expediente Clinico
    CARPETAS\ Ano \ Mes \ sus otras carpetas completas
    OTROS
 - Revisa Escritorio, Descargas, Documentos, Imagenes, Videos y Musica.
-- Los estudios se buscan tambien DENTRO de las carpetas: por el nombre
-  del archivo (US, TAC, RM, mamografia...) y en Word por el titulo del
-  informe. DICOM y CD de estudios: por la modalidad y fecha internas.
-- Lo que ya estaba en Documentos\ESTUDIOS y Documentos\ORGANIZADO se
-  pasa tambien a la nueva carpeta.
-- Los accesos directos se corrigen para que sigan abriendo sus
-  programas aunque la carpeta del programa se haya movido.
+- Los estudios se buscan tambien DENTRO de las carpetas.
+- Carpetas que solo agrupaban por tipo (Documentos, Imagenes, Videos,
+  Comprimidos, Instaladores, Otros archivos...) se reparten por tipo.
+- Lo que ya estaba en carpetas ESTUDIOS u ORGANIZADO de versiones
+  anteriores se pasa tambien a DR MEJIA.
+- Los accesos directos se corrigen para que sigan abriendo sus programas.
 
-EXPEDIENTE CLINICO: queda en ORGANIZADO\PROGRAMAS\Expediente Clinico.
-Abralo desde ahi con el mismo navegador de siempre. Si no ve sus
-pacientes, use "Restaurar respaldo".
+REPETIDOS (opcion 1 al final, o la opcion 2 sola):
+- Compara el CONTENIDO de los archivos, no solo el nombre: encuentra
+  "informe.docx", "informe (1).docx", "informe - copia.docx"... iguales.
+- Tambien carpetas de programas repetidas (ej. Limpiador_PC (1)).
+- Deja UNA copia (la de ESTUDIOS y la de nombre sin (1), (2)...).
+- Las demas van a la PAPELERA DE RECICLAJE: si se borro algo por error,
+  se recupera desde ahi. Al vaciar la Papelera se libera el espacio.
+- Nunca borra accesos directos.
 
 SEGURIDAD:
-- Todo se SACA de donde estaba (no quedan copias), pero NUNCA se borra
-  ningun archivo: solo se mueve.
-- No se mueven: carpetas que Windows u Office necesitan (Plantillas de
-  Office, correo de Outlook, etc.), archivos ocultos o del sistema.
-- Opcion 4 DESHACER: regresa todo a donde estaba (la 1 es la mas reciente).
-- Los iconos "Este equipo" y "Papelera de reciclaje" son de Windows y no
-  se pueden mover.
+- Ordenar solo MUEVE: no se pierde ningun archivo.
+- No se mueven carpetas que Windows u Office necesitan (Plantillas de
+  Office, correo de Outlook, etc.) ni archivos ocultos o del sistema.
+- Opcion 5 DESHACER: regresa a su lugar lo que se ordeno.
+- "Este equipo" y "Papelera de reciclaje" son iconos de Windows y no se
+  pueden mover (se ocultan en Personalizar > Temas > Iconos de escritorio).
+- Archivos de OneDrive que estan solo en la nube no se descargan: se
+  ordenan por su nombre.

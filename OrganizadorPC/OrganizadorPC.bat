@@ -16,14 +16,15 @@ exit /b
 #>
 # ============================================================
 #  ORGANIZADOR PC - Windows 7 / 8 / 10 / 11
-#  Deja TODO en UNA sola carpeta del Escritorio: ORGANIZADO
+#  Deja TODO en UNA sola carpeta del Escritorio: DR MEJIA
 #    ESTUDIOS   : tomografia, resonancia, mamografia, US, Rx > ANO > MES
 #    DOCUMENTOS : Word, PDF, Excel... > ANO > MES
 #    FOTOS, VIDEOS Y MUSICA > ANO > MES
 #    PROGRAMAS  : carpetas de programas, accesos directos, instaladores
 #    CARPETAS   : sus otras carpetas completas > ANO > MES
 #    OTROS
-#  Solo MUEVE (nunca borra archivos) y guarda un registro para DESHACER.
+#  Solo MUEVE y guarda un registro para DESHACER. Los REPETIDOS (mismo
+#  contenido) se mandan a la Papelera de reciclaje, dejando una copia.
 # ============================================================
 $ErrorActionPreference = 'SilentlyContinue'
 $Host.UI.RawUI.WindowTitle = 'Organizador PC'
@@ -34,11 +35,12 @@ $Descargas  = Join-Path $env:USERPROFILE 'Downloads'
 $Imagenes   = [Environment]::GetFolderPath('MyPictures')
 $Videos     = Join-Path $env:USERPROFILE 'Videos'
 $Musica     = [Environment]::GetFolderPath('MyMusic')
-$Raiz       = Join-Path $Escritorio 'ORGANIZADO'
+$NombreRaiz = 'DR MEJIA'
+$Raiz       = Join-Path $Escritorio $NombreRaiz
 $Estudios   = Join-Path $Raiz 'ESTUDIOS'
 $Programas  = Join-Path $Raiz 'PROGRAMAS'
 $Registros  = Join-Path $Raiz '_Registros (no borrar)'
-$Antiguos   = @((Join-Path $Documentos 'ORGANIZADO'), (Join-Path $Documentos 'ESTUDIOS'))
+$Antiguos   = @((Join-Path $Documentos 'ORGANIZADO'), (Join-Path $Documentos 'ESTUDIOS'), (Join-Path $Escritorio 'ORGANIZADO'))
 $EsteArchivo = $env:ORG_BAT
 $Fuentes = @($Escritorio, $Descargas, $Documentos, $Imagenes, $Videos, $Musica) | Where-Object { $_ -and (Test-Path -LiteralPath $_) } | Sort-Object -Unique
 
@@ -68,7 +70,7 @@ $NoMover = @('.ini','.db','.tmp','.crdownload','.part','.partial','.download','.
 $ExtPrograma = @('.exe','.msi','.bat','.cmd','.ps1','.vbs','.dll')
 
 # Carpetas que Windows u otros programas necesitan en su lugar
-$CarpetasProtegidas = @('ORGANIZADO','ESTUDIOS','Outlook Files','Archivos de Outlook','Custom Office Templates',
+$CarpetasProtegidas = @('Outlook Files','Archivos de Outlook','Custom Office Templates',
   'Plantillas personalizadas de Office','My Games','Mis juegos','Visual Studio*','SQL Server*','IISExpress','My Web Sites',
   'WindowsPowerShell','PowerShell','OneNote*','Blocs de notas de OneNote','Fax','Scanned Documents','Documentos escaneados',
   'Sound recordings','Grabaciones de sonido','My Shapes','Mis formas','Saved Pictures','Camera Roll','Im*genes guardadas',
@@ -82,7 +84,7 @@ function Aviso($t)  { Write-Host "   [!] $t" -ForegroundColor Yellow }
 Add-Type -AssemblyName System.Drawing
 function Fecha-De($archivo) {
     $ext = $archivo.Extension.ToLower()
-    if ($ext -eq '.jpg' -or $ext -eq '.jpeg') {
+    if (($ext -eq '.jpg' -or $ext -eq '.jpeg') -and (([int64]$archivo.Attributes) -band 0x401000) -eq 0) {
         try {
             $img = [System.Drawing.Image]::FromFile($archivo.FullName)
             try {
@@ -202,6 +204,7 @@ function Item($obj, $cat, $carpeta, $grupo) {
 # Si un archivo es un estudio, devuelve el plan para moverlo a ESTUDIOS
 function Estudio-De($a) {
     $ext = $a.Extension.ToLower(); $mod = $null; $fecha = Fecha-De $a
+    if (Es-Nube $a) { $mod = Modalidad-Nombre $a.BaseName; if (-not $mod) { return $null }; return Item $a $mod (AnioMes (Join-Path $Estudios $mod) $fecha) 'ESTUDIOS' }
     if ($ext -eq '.dcm' -or $ext -eq '.dicom') {
         $info = Info-Dicom $a.FullName; $mod = 'Otros DICOM'
         if ($info) { $mod = $info.Modalidad; if ($info.Fecha) { $fecha = $info.Fecha } }
@@ -264,6 +267,24 @@ function Tipo-Carpeta($d) {
     return 'normal'
 }
 
+# Carpetas que solo agrupaban archivos por tipo: su contenido se reparte por tipo > ano > mes
+$CarpetasDeTipo = @('Documentos','Documents','Imagenes','Im?genes','Pictures','Fotos','Videos','V?deos','Musica','M?sica','Music','Comprimidos',
+                    'Otros','Otros archivos','Archivos','Instaladores','Descargas','Downloads','PDF','PDFs','Word','Excel')
+function Es-CarpetaDeTipo($d) { foreach ($n in $CarpetasDeTipo) { if ($d.Name -like $n) { return $true } } return $false }
+function Repartir($d) {
+    $res = @(Estudios-Dentro $d)
+    $ya = @{}; $cds = @()
+    foreach ($e in $res) { $ya[$e.Archivo.FullName] = 1; if ($e.Archivo.PSIsContainer) { $cds += $e.Archivo.FullName } }
+    foreach ($a in @(Get-ChildItem -LiteralPath $d.FullName -Recurse -Force | Where-Object { -not $_.PSIsContainer })) {
+        if ($ya.ContainsKey($a.FullName)) { continue }
+        $dentro = $false; foreach ($cd in $cds) { if ($a.FullName.StartsWith($cd + [IO.Path]::DirectorySeparatorChar)) { $dentro = $true } }
+        if ($dentro) { continue }
+        $x = Destino-Archivo $a
+        if ($x) { $res += $x }
+    }
+    return $res
+}
+
 # Estudios guardados dentro de una carpeta normal (y sus subcarpetas)
 function Estudios-Dentro($d) {
     $res = @()
@@ -292,6 +313,7 @@ function Planear($fuentes, $soloEstudios) {
                 $t = Tipo-Carpeta $h
                 if ($t -eq 'proteger') { if (-not ($h.Attributes -band [IO.FileAttributes]::Hidden) -and $h.FullName -ne $Raiz -and $Antiguos -notcontains $h.FullName) { $quedan++ }; continue }
                 if ($t -eq 'cd') { $plan += Estudio-Cd $h; continue }
+                if (-not $soloEstudios -and (Es-CarpetaDeTipo $h)) { $plan += @(Repartir $h); continue }
                 if ($t -eq 'programa') { if (-not $soloEstudios) { $plan += Item $h 'Carpetas de programas' $Programas 'PROGRAMAS' }; continue }
                 $plan += @(Estudios-Dentro $h)
                 if (-not $soloEstudios) { $plan += Item $h 'Carpetas' (AnioMes (Join-Path $Raiz 'CARPETAS') $h.LastWriteTime) 'CARPETAS' }
@@ -332,7 +354,7 @@ function Fusionar($src, $dst) {
     if (@(Get-ChildItem -LiteralPath $src -Force).Count -eq 0) { Remove-Item -LiteralPath $src -Force }
 }
 
-# Pasa lo ordenado por versiones anteriores (Documentos\ORGANIZADO y Documentos\ESTUDIOS)
+# Pasa lo ordenado por versiones anteriores (Documentos\ORGANIZADO, Documentos\ESTUDIOS y Escritorio\ORGANIZADO)
 function Migrar-Antiguo {
     $viejoEst = $Antiguos[1]; $viejoOrg = $Antiguos[0]
     if (Test-Path -LiteralPath $viejoEst) { Fusionar $viejoEst $Estudios }
@@ -349,6 +371,8 @@ function Migrar-Antiguo {
         }
         if (@(Get-ChildItem -LiteralPath $viejoOrg -Force).Count -eq 0) { Remove-Item -LiteralPath $viejoOrg -Force }
     }
+    # La carpeta ORGANIZADO del Escritorio ya tiene el mismo orden: se junta tal cual
+    if (Test-Path -LiteralPath $Antiguos[2]) { Fusionar $Antiguos[2] $Raiz }
     # Accesos directos viejos que apuntaban a Documentos
     foreach ($n in @('ESTUDIOS.lnk','ORGANIZADO.lnk')) { Remove-Item -LiteralPath (Join-Path $Escritorio $n) -Force }
 }
@@ -412,7 +436,7 @@ function Limpiar-Vacias($dir) {
 }
 # Quita carpetas de origen que quedaron vacias al sacar los estudios (nunca la carpeta raiz)
 function Limpiar-Origen($rutas, $raices) {
-    foreach ($r in ($rutas | Sort-Object { $_.Length } -Descending -Unique)) {
+    foreach ($r in (@($rutas | Sort-Object -Unique) | Sort-Object { $_.Length } -Descending)) {
         $d = $r
         while ($d) {
             $dentro = $false; foreach ($x in $raices) { if ($d -ne $x -and $d.StartsWith($x + [IO.Path]::DirectorySeparatorChar)) { $dentro = $true } }
@@ -439,7 +463,7 @@ function Ordenar($fuentes, $soloEstudios, $migrar) {
         Write-Host ("   {0}  ({1})" -f $g, $grp.Count) -ForegroundColor White
         $grp | Group-Object Categoria | Sort-Object Name | ForEach-Object { Write-Host ("      {0,-26} {1,5}" -f $_.Name, $_.Count) -ForegroundColor Gray }
     }
-    if ($hayAntiguo) { Write-Host '   + Lo que ya estaba ordenado en Documentos\ESTUDIOS y Documentos\ORGANIZADO' -ForegroundColor White }
+    if ($hayAntiguo) { Write-Host '   + Lo que ya estaba ordenado antes (carpetas ESTUDIOS y ORGANIZADO)' -ForegroundColor White }
     if ($r.Quedan) { Write-Host "   Se quedan en su lugar $($r.Quedan) elementos que Windows u Office necesitan." -ForegroundColor Gray }
     Write-Host '   Todo se SACA de donde estaba (no quedan copias). No se borra ningun archivo.' -ForegroundColor Gray
     if ((Read-Host "`n   Ordenar AHORA? Escriba S y pulse Enter (N = no)") -notmatch '^\s*[sS]') { Aviso 'Cancelado. No se movio nada.'; return }
@@ -458,6 +482,7 @@ function Ordenar($fuentes, $soloEstudios, $migrar) {
             Limpiar-Origen @($script:Movidos | ForEach-Object { Split-Path $_.Origen }) $fuentes
         }
         if (-not (Test-Path -LiteralPath $p.Archivo.FullName)) { continue }
+        if ($p.Categoria -eq 'Carpetas de programas' -and $NoSonProgramas -contains $p.Archivo.Name) { Fusionar $p.Archivo.FullName (Join-Path $Programas $p.Archivo.Name); continue }
         if (-not (Mover $p.Archivo.FullName $p.Carpeta)) { $fallos++ }
     }
     Write-Progress -Activity 'Ordenando' -Completed
@@ -466,10 +491,10 @@ function Ordenar($fuentes, $soloEstudios, $migrar) {
     Guardar-Registro
     Limpiar-Vacias $Raiz
 
-    Ok "$($script:Movidos.Count) archivos y carpetas ordenados en ORGANIZADO."
+    Ok "$($script:Movidos.Count) archivos y carpetas ordenados en $NombreRaiz."
     if ($acc) { Ok "$acc accesos directos corregidos para que sigan abriendo sus programas." }
     if ($fallos) { Aviso "$fallos no se movieron (estaban abiertos o en uso). Cierre los programas y repita." }
-    Write-Host '   Si algo no le gusta, use la opcion 4 para DESHACER.' -ForegroundColor Gray
+    Write-Host '   Si algo no le gusta, use la opcion 5 para DESHACER.' -ForegroundColor Gray
     Invoke-Item $Raiz
 }
 
@@ -514,13 +539,13 @@ function Elegir-Carpeta {
 }
 
 function Diagnostico {
-    Titulo 'Lo que hay fuera de ORGANIZADO:'
+    Titulo "Lo que hay fuera de ${NombreRaiz}:"
     foreach ($c in $Fuentes) {
         $n = @(Get-ChildItem -LiteralPath $c -Force | Where-Object { -not ($_.Attributes -band [IO.FileAttributes]::Hidden) -and $_.FullName -ne $Raiz }).Count
         Write-Host ("   {0,-50} {1,5} elementos" -f $c, $n)
     }
     if (Test-Path -LiteralPath $Raiz) {
-        Titulo 'Dentro de ORGANIZADO:'
+        Titulo "Dentro de ${NombreRaiz}:"
         Get-ChildItem -LiteralPath $Raiz | Where-Object { $_.PSIsContainer -and $_.FullName -ne $Registros } | ForEach-Object {
             $c = @(Get-ChildItem -LiteralPath $_.FullName -Recurse | Where-Object { -not $_.PSIsContainer }).Count
             Write-Host ("   {0,-26} {1,6} archivos" -f $_.Name, $c)
@@ -528,31 +553,130 @@ function Diagnostico {
     }
 }
 
+# ================= REPETIDOS =================
+# Archivos que estan solo en la nube (OneDrive) no se leen para no descargarlos
+function Es-Nube($a) { return (([int64]$a.Attributes) -band 0x401000) -ne 0 }
+
+function Hash-De($ruta) {
+    try {
+        $md5 = [Security.Cryptography.MD5]::Create(); $fs = [IO.File]::OpenRead($ruta)
+        try { return [BitConverter]::ToString($md5.ComputeHash($fs)) } finally { $fs.Close() }
+    } catch { return $null }
+}
+function Hash-Texto($t) {
+    $md5 = [Security.Cryptography.MD5]::Create()
+    return [BitConverter]::ToString($md5.ComputeHash([Text.Encoding]::UTF8.GetBytes($t)))
+}
+
+# Entre copias iguales se queda: la de ESTUDIOS, la que no termina en (1), (2)... y la de nombre mas corto
+function Puntaje-Copia($ruta) {
+    $p = [IO.Path]::GetFileNameWithoutExtension($ruta).Length + $ruta.Length / 1000
+    if ($ruta -notlike "$Estudios*") { $p += 100000 }
+    if ([IO.Path]::GetFileNameWithoutExtension($ruta) -match '\(\d+\)$' -or [IO.Path]::GetFileNameWithoutExtension($ruta) -match ' - copia') { $p += 10000 }
+    return $p
+}
+
+function A-Papelera($ruta, $esCarpeta) {
+    if ($env:ORG_PRUEBA) { Remove-Item -LiteralPath $ruta -Recurse -Force; return $? }
+    try {
+        Add-Type -AssemblyName Microsoft.VisualBasic
+        if ($esCarpeta) { [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteDirectory($ruta, 'OnlyErrorDialogs', 'SendToRecycleBin') }
+        else { [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile($ruta, 'OnlyErrorDialogs', 'SendToRecycleBin') }
+        return $true
+    } catch { return $false }
+}
+
+$NoSonProgramas = @('Accesos directos','Instaladores','Scripts','Expediente Clinico')
+function Borrar-Repetidos {
+    if (-not (Test-Path -LiteralPath $Raiz)) { Aviso "Primero use la opcion 1 para ordenar."; return }
+    Titulo 'Buscando repetidos (compara el CONTENIDO, no solo el nombre)...'
+    $borrar = @()
+
+    # 1) Carpetas de programas repetidas (ej: Limpiador_PC y Limpiador_PC (1))
+    $progs = @(Get-ChildItem -LiteralPath $Programas -Force | Where-Object { $_.PSIsContainer -and $NoSonProgramas -notcontains $_.Name })
+    $firmas = @()
+    foreach ($d in $progs) {
+        $fs = @(Get-ChildItem -LiteralPath $d.FullName -Recurse -Force | Where-Object { -not $_.PSIsContainer })
+        if ($fs.Count -eq 0 -or ($fs | Where-Object { Es-Nube $_ } | Select-Object -First 1)) { continue }
+        Write-Progress -Activity 'Comparando programas' -Status $d.Name
+        $txt = ($fs | ForEach-Object { $_.FullName.Substring($d.FullName.Length) + '|' + $_.Length + '|' + (Hash-De $_.FullName) } | Sort-Object) -join ';'
+        $firmas += New-Object PSObject -Property @{ Ruta = $d.FullName; Firma = (Hash-Texto $txt); Carpeta = $true }
+    }
+    foreach ($g in ($firmas | Group-Object Firma | Where-Object { $_.Count -gt 1 })) {
+        $orden = @($g.Group | Sort-Object { Puntaje-Copia $_.Ruta })
+        for ($i = 1; $i -lt $orden.Count; $i++) { $borrar += New-Object PSObject -Property @{ Ruta = $orden[$i].Ruta; IgualA = $orden[0].Ruta; Carpeta = $true; Tamano = 0 } }
+    }
+
+    # 2) Archivos repetidos en todo lo demas
+    $todos = @(Get-ChildItem -LiteralPath $Raiz -Recurse -Force | Where-Object {
+        -not $_.PSIsContainer -and $_.Length -gt 0 -and $_.FullName -notlike "$Registros*" -and @('.lnk','.url') -notcontains $_.Extension.ToLower() -and -not ($_.Attributes -band [IO.FileAttributes]::Hidden) -and -not (Es-Nube $_) })
+    $todos = @($todos | Where-Object { $f = $_.FullName; -not ($progs | Where-Object { $f.StartsWith($_.FullName + [IO.Path]::DirectorySeparatorChar) } | Select-Object -First 1) })
+    $n = 0
+    foreach ($gTam in ($todos | Group-Object Length | Where-Object { $_.Count -gt 1 })) {
+        $conHash = @($gTam.Group | ForEach-Object { $n++; Write-Progress -Activity 'Comparando archivos' -Status $_.Name; New-Object PSObject -Property @{ Ruta = $_.FullName; Hash = (Hash-De $_.FullName); Tamano = $_.Length } } | Where-Object { $_.Hash })
+        foreach ($g in ($conHash | Group-Object Hash | Where-Object { $_.Count -gt 1 })) {
+            $orden = @($g.Group | Sort-Object { Puntaje-Copia $_.Ruta })
+            for ($i = 1; $i -lt $orden.Count; $i++) { $borrar += New-Object PSObject -Property @{ Ruta = $orden[$i].Ruta; IgualA = $orden[0].Ruta; Carpeta = $false; Tamano = $orden[$i].Tamano } }
+        }
+    }
+    Write-Progress -Activity 'Comparando archivos' -Completed
+
+    if ($borrar.Count -eq 0) { Ok 'No hay archivos repetidos.'; return }
+    $mb = [math]::Round((($borrar | Measure-Object Tamano -Sum).Sum) / 1MB, 1)
+    $nc = @($borrar | Where-Object { $_.Carpeta }).Count
+    Titulo ("Se encontraron {0} repetidos ({1} carpetas de programas), {2} MB:" -f $borrar.Count, $nc, $mb)
+    $borrar | Select-Object -First 20 | ForEach-Object {
+        Write-Host ("   X {0}" -f $_.Ruta.Substring($Raiz.Length + 1)) -ForegroundColor Gray
+        Write-Host ("       se queda: {0}" -f $_.IgualA.Substring($Raiz.Length + 1)) -ForegroundColor DarkGray
+    }
+    if ($borrar.Count -gt 20) { Write-Host "   ... y $($borrar.Count - 20) mas" -ForegroundColor Gray }
+    Write-Host '   De cada grupo se queda UNA copia. Las demas van a la PAPELERA DE RECICLAJE.' -ForegroundColor Gray
+    if ((Read-Host "`n   Borrar los repetidos? Escriba S y pulse Enter (N = no)") -notmatch '^\s*[sS]') { Aviso 'Cancelado. No se borro nada.'; return }
+
+    $hechos = @(); $fallos = 0
+    foreach ($b in $borrar) {
+        if (-not (Test-Path -LiteralPath $b.Ruta)) { continue }
+        if (A-Papelera $b.Ruta $b.Carpeta) { $hechos += $b } else { $fallos++ }
+    }
+    if ($hechos.Count) {
+        New-Item -ItemType Directory -Path $Registros -Force | Out-Null
+        $hechos | Select-Object @{n='Borrado';e={$_.Ruta}}, @{n='IgualA';e={$_.IgualA}} | Export-Csv -LiteralPath (Join-Path $Registros ('repetidos_borrados_' + (Get-Date -Format 'yyyy-MM-dd_HH-mm-ss') + '.csv')) -NoTypeInformation -Encoding UTF8
+    }
+    # Carpetas que quedaron vacias por quitar repetidos
+    Limpiar-Origen @($hechos | ForEach-Object { Split-Path $_.Ruta }) @($Raiz)
+    Limpiar-Vacias $Raiz
+    Ok "$($hechos.Count) repetidos enviados a la Papelera de reciclaje ($mb MB liberados al vaciarla)."
+    if ($fallos) { Aviso "$fallos no se pudieron borrar (estaban abiertos)." }
+    Write-Host '   Si borro algo por error, recuperelo desde la Papelera de reciclaje.' -ForegroundColor Gray
+}
+
 # ---------------- MENU ----------------
 do {
     Clear-Host
     Write-Host '============================================================' -ForegroundColor Cyan
     Write-Host '                    ORGANIZADOR  PC' -ForegroundColor White
-    Write-Host '   Todo en UNA carpeta del Escritorio: ORGANIZADO' -ForegroundColor Gray
+    Write-Host "   Todo en UNA carpeta del Escritorio: $NombreRaiz" -ForegroundColor Gray
     Write-Host '   ESTUDIOS | DOCUMENTOS | FOTOS, VIDEOS Y MUSICA | PROGRAMAS' -ForegroundColor Gray
     Write-Host '   CARPETAS | OTROS   (por Ano > Mes)' -ForegroundColor Gray
     Write-Host '============================================================' -ForegroundColor Cyan
-    Write-Host '  1. ORDENAR TODO y dejar el Escritorio limpio  << recomendado'
-    Write-Host '  2. Buscar ESTUDIOS en otro disco o USB (D:, disco externo)'
-    Write-Host '  3. Ordenar otra carpeta o disco que yo elija'
-    Write-Host '  4. DESHACER una organizacion'
-    Write-Host '  5. Ver que queda fuera de ORGANIZADO'
-    Write-Host '  6. Abrir la carpeta ORGANIZADO'
+    Write-Host '  1. ORDENAR TODO, borrar repetidos y dejar el Escritorio limpio  << recomendado'
+    Write-Host '  2. Solo BORRAR REPETIDOS (dentro de la carpeta DR MEJIA)'
+    Write-Host '  3. Buscar ESTUDIOS en otro disco o USB (D:, disco externo)'
+    Write-Host '  4. Ordenar otra carpeta o disco que yo elija'
+    Write-Host '  5. DESHACER una organizacion'
+    Write-Host '  6. Ver que queda fuera de DR MEJIA'
+    Write-Host '  7. Abrir la carpeta DR MEJIA'
     Write-Host '  0. Salir'
     Write-Host "`n  (Antes de mover, siempre le muestra que hara y le pregunta.)" -ForegroundColor Gray
     $op = Read-Host "`n  Elija una opcion"
     switch ($op) {
-        '1' { Ordenar $Fuentes $false $true }
-        '2' { $c = Elegir-Carpeta; if ($c -and (Test-Path -LiteralPath $c)) { Ordenar @($c) $true $false } }
-        '3' { $c = Elegir-Carpeta; if ($c -and (Test-Path -LiteralPath $c)) { Ordenar @($c) $false $false } }
-        '4' { Deshacer }
-        '5' { Diagnostico }
-        '6' { New-Item -ItemType Directory -Path $Raiz -Force | Out-Null; Invoke-Item $Raiz }
+        '1' { Ordenar $Fuentes $false $true; if (Test-Path -LiteralPath $Raiz) { Borrar-Repetidos } }
+        '2' { Borrar-Repetidos }
+        '3' { $c = Elegir-Carpeta; if ($c -and (Test-Path -LiteralPath $c)) { Ordenar @($c) $true $false } }
+        '4' { $c = Elegir-Carpeta; if ($c -and (Test-Path -LiteralPath $c)) { Ordenar @($c) $false $false } }
+        '5' { Deshacer }
+        '6' { Diagnostico }
+        '7' { New-Item -ItemType Directory -Path $Raiz -Force | Out-Null; Invoke-Item $Raiz }
     }
     if ($op -ne '0') { Read-Host "`n  Pulse Enter para volver al menu" | Out-Null }
 } while ($op -ne '0')
