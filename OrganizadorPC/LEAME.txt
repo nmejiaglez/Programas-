@@ -2,45 +2,46 @@ ORGANIZADOR PC - Instrucciones
 ==============================
 Funciona en Windows 7, 8, 10 y 11. Es UN SOLO archivo: OrganizadorPC.bat
 
-1. Copie OrganizadorPC.bat al Escritorio y haga doble clic.
-   Si Windows muestra "Windows protegio su PC": clic en "Mas informacion"
-   y luego en "Ejecutar de todas formas".
-2. Elija la opcion 1 (Organizar TODO).
-3. Primero busca los ESTUDIOS y le pregunta "Juntar los ESTUDIOS ahora?":
-   escriba S y Enter.
-4. Luego ordena lo demas y pregunta por los ARCHIVOS y por las CARPETAS:
-   escriba S y Enter en cada una.
-5. Al terminar se abren solas las carpetas ESTUDIOS y ORGANIZADO.
+ANTES DE EMPEZAR (una sola vez):
+- Abra el Expediente Clinico y en "Respaldo y configuracion" pulse
+  "Descargar respaldo" (por seguridad, porque el Expediente se mueve).
+- Cierre Word, Excel y los programas abiertos.
 
-CARPETA ESTUDIOS (Documentos\ESTUDIOS):
-   Tomografia\2025\03 - Marzo\...
-   Resonancia Magnetica\2024\02 - Febrero\...
-   Mamografia\...   Ultrasonido y Doppler\...   Radiografia\...
-- Busca en Escritorio, Descargas y Documentos, INCLUSO dentro de subcarpetas.
-- Reconoce los estudios por el nombre del archivo (tomografia, TAC, TC,
-  resonancia, RM, mamografia, US, Doppler, Rx...) y, en Word, por el
-  TITULO del informe aunque el archivo tenga el nombre del paciente.
-- Los PDF y las fotos se reconocen solo por el nombre del archivo.
-- Archivos DICOM (.dcm) y CD de estudios (carpeta con DICOMDIR): lee la
-  modalidad (CT, MR, MG, US, CR/DX) y la fecha del estudio dentro del
-  archivo. El CD se mueve completo.
-- Los estudios se SACAN de donde estaban (no quedan repetidos). Si una
-  carpeta queda vacia por eso, se quita.
-- Opcion 3: buscar estudios en otro disco (D:, USB, disco externo).
+COMO USARLO:
+1. Doble clic en OrganizadorPC.bat.
+   Si Windows muestra "Windows protegio su PC": "Mas informacion" y
+   luego "Ejecutar de todas formas".
+2. Elija la opcion 1 (ORDENAR TODO). Le muestra lo que hara.
+3. Escriba S y pulse Enter.
+4. Al terminar se abre la carpeta ORGANIZADO. El Escritorio queda limpio.
 
-CARPETA ORGANIZADO (Documentos\ORGANIZADO), con lo demas:
-   Word, PDF, Excel, PowerPoint, Textos, Imagenes y Fotos, Videos,
-   Musica y Audios, Comprimidos, Instaladores, Paginas Web, Otros,
-   y Carpetas (sus carpetas completas) > ANO > MES.
+COMO QUEDA (Escritorio\ORGANIZADO):
+   ESTUDIOS\Tomografia | Resonancia Magnetica | Mamografia |
+            Ultrasonido y Doppler | Radiografia \ Ano \ Mes
+   DOCUMENTOS\Word | PDF | Excel | PowerPoint | Textos \ Ano \ Mes
+   FOTOS, VIDEOS Y MUSICA\...\ Ano \ Mes
+   PROGRAMAS\ carpetas de programas, Accesos directos, Instaladores,
+              Scripts (.bat) y Expediente Clinico
+   CARPETAS\ Ano \ Mes \ sus otras carpetas completas
+   OTROS
+- Revisa Escritorio, Descargas, Documentos, Imagenes, Videos y Musica.
+- Los estudios se buscan tambien DENTRO de las carpetas: por el nombre
+  del archivo (US, TAC, RM, mamografia...) y en Word por el titulo del
+  informe. DICOM y CD de estudios: por la modalidad y fecha internas.
+- Lo que ya estaba en Documentos\ESTUDIOS y Documentos\ORGANIZADO se
+  pasa tambien a la nueva carpeta.
+- Los accesos directos se corrigen para que sigan abriendo sus
+  programas aunque la carpeta del programa se haya movido.
+
+EXPEDIENTE CLINICO: queda en ORGANIZADO\PROGRAMAS\Expediente Clinico.
+Abralo desde ahi con el mismo navegador de siempre. Si no ve sus
+pacientes, use "Restaurar respaldo".
 
 SEGURIDAD:
-- NUNCA borra archivos: solo los mueve. Si dos se llaman igual, al
-  segundo le agrega (2).
-- NO mueve: accesos directos, programas instalados, carpetas de
-  programas (Outlook, Zoom...), archivos .bat, ocultos o del sistema,
-  ni el Expediente Clinico.
-- Opcion 8 DESHACER: regresa todo a donde estaba (cada organizacion se
-  deshace por separado; la 1 es la mas reciente).
-- Si un archivo esta abierto (Word, Excel) no se mueve; cierrelo y repita.
-
-CONSEJO: repita la opcion 1 una vez al mes.
+- Todo se SACA de donde estaba (no quedan copias), pero NUNCA se borra
+  ningun archivo: solo se mueve.
+- No se mueven: carpetas que Windows u Office necesitan (Plantillas de
+  Office, correo de Outlook, etc.), archivos ocultos o del sistema.
+- Opcion 4 DESHACER: regresa todo a donde estaba (la 1 es la mas reciente).
+- Los iconos "Este equipo" y "Papelera de reciclaje" son de Windows y no
+  se pueden mover.
