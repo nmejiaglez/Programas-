@@ -1,44 +1,46 @@
 ORGANIZADOR PC - Instrucciones
 ==============================
-Funciona en Windows 7, 8, 10 y 11. No necesita instalar nada.
+Funciona en Windows 7, 8, 10 y 11. Es UN SOLO archivo: OrganizadorPC.bat
 
-1. Es UN SOLO archivo: OrganizadorPC.bat. Copielo al Escritorio.
-2. Doble clic sobre OrganizadorPC.bat (no necesita administrador).
+1. Copie OrganizadorPC.bat al Escritorio y haga doble clic.
    Si Windows muestra "Windows protegio su PC": clic en "Mas informacion"
    y luego en "Ejecutar de todas formas".
-3. Elija la opcion 1 (Organizar TODO). Le muestra que va a ordenar y le
-   pregunta "Organizar AHORA?". Escriba S y pulse Enter.
-4. Al terminar se abre sola la carpeta ORGANIZADO con todo ordenado.
+2. Elija la opcion 1 (Organizar TODO).
+3. Primero busca los ESTUDIOS y le pregunta "Juntar los ESTUDIOS ahora?":
+   escriba S y Enter.
+4. Luego ordena lo demas y pregunta por los ARCHIVOS y por las CARPETAS:
+   escriba S y Enter en cada una.
+5. Al terminar se abren solas las carpetas ESTUDIOS y ORGANIZADO.
 
-COMO QUEDA ORGANIZADO (en Documentos\ORGANIZADO):
-   Word\2025\01 - Enero\consultas.docx
-   PDF\2025\03 - Marzo\informe.pdf
-   Excel, PowerPoint, Textos, Imagenes y Fotos, Videos, Musica y Audios,
-   Comprimidos, Instaladores, Imagenes Medicas DICOM, Paginas Web,
-   Libros y Otros.
-- Cada tipo se divide por ANO y dentro por MES (01 - Enero ... 12 - Diciembre).
-- Las fotos se ordenan por la fecha en que se tomaron; los demas archivos
-  por su fecha de modificacion.
-- Las CARPETAS tambien se ordenan, en ORGANIZADO\Carpetas\Ano\Mes,
-  con todo su contenido intacto. El programa pregunta por separado:
-  "Ordenar los ARCHIVOS?" y "Ordenar tambien las CARPETAS?".
-- Se crea un acceso directo "ORGANIZADO" en el Escritorio.
+CARPETA ESTUDIOS (Documentos\ESTUDIOS):
+   Tomografia\2025\03 - Marzo\...
+   Resonancia Magnetica\2024\02 - Febrero\...
+   Mamografia\...   Ultrasonido y Doppler\...   Radiografia\...
+- Busca en Escritorio, Descargas y Documentos, INCLUSO dentro de subcarpetas.
+- Reconoce los estudios por el nombre del archivo (tomografia, TAC, TC,
+  resonancia, RM, mamografia, US, Doppler, Rx...) y, en Word, por el
+  TITULO del informe aunque el archivo tenga el nombre del paciente.
+- Los PDF y las fotos se reconocen solo por el nombre del archivo.
+- Archivos DICOM (.dcm) y CD de estudios (carpeta con DICOMDIR): lee la
+  modalidad (CT, MR, MG, US, CR/DX) y la fecha del estudio dentro del
+  archivo. El CD se mueve completo.
+- Los estudios se SACAN de donde estaban (no quedan repetidos). Si una
+  carpeta queda vacia por eso, se quita.
+- Opcion 3: buscar estudios en otro disco (D:, USB, disco externo).
+
+CARPETA ORGANIZADO (Documentos\ORGANIZADO), con lo demas:
+   Word, PDF, Excel, PowerPoint, Textos, Imagenes y Fotos, Videos,
+   Musica y Audios, Comprimidos, Instaladores, Paginas Web, Otros,
+   y Carpetas (sus carpetas completas) > ANO > MES.
 
 SEGURIDAD:
-- NUNCA borra nada: solo mueve archivos.
-- Si dos archivos se llaman igual, al segundo le agrega (2).
-- NO mueve: accesos directos, programas del Escritorio, archivos .bat,
-  descargas a medias, archivos ocultos o del sistema, ni ExpedienteClinico.
-- NO mueve carpetas de programas (Outlook, Zoom, etc.), ni carpetas que
-  contengan programas (.exe) o el correo de Outlook (.pst).
-- Opcion 6 DESHACER: regresa todo a donde estaba.
+- NUNCA borra archivos: solo los mueve. Si dos se llaman igual, al
+  segundo le agrega (2).
+- NO mueve: accesos directos, programas instalados, carpetas de
+  programas (Outlook, Zoom...), archivos .bat, ocultos o del sistema,
+  ni el Expediente Clinico.
+- Opcion 8 DESHACER: regresa todo a donde estaba (cada organizacion se
+  deshace por separado; la 1 es la mas reciente).
 - Si un archivo esta abierto (Word, Excel) no se mueve; cierrelo y repita.
 
-OTRAS OPCIONES:
-- 2 y 3: solo Descargas o solo Escritorio.
-- 4: ordena las carpetas Imagenes, Videos y Musica.
-- 5: ordena cualquier carpeta que usted elija (USB, disco externo, o una
-     carpeta llena de archivos), incluso lo que esta dentro de subcarpetas.
-- 7: muestra cuantos archivos hay en cada lugar.
-
-CONSEJO: repita la opcion 1 una vez al mes y la computadora seguira ordenada.
+CONSEJO: repita la opcion 1 una vez al mes.
