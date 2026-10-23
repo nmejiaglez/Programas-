@@ -1,0 +1,36 @@
+BUSCADOR DE INFORMES - Instrucciones
+====================================
+Funciona en Windows 7, 8, 10 y 11. Es UN SOLO archivo: BuscadorInformes.bat
+
+QUE HACE:
+Busca en la computadora los informes de ULTRASONIDO del Dr. Bismark Campos
+y los junta en una carpeta del Escritorio:
+   US - DR BISMARK CAMPOS \ 2026 \ 10 - Octubre \ ...
+
+- Lee DENTRO de cada Word (.docx y .doc), PDF y RTF: el texto, el
+  encabezado, el pie de pagina (donde va la firma) y el autor del archivo.
+- Reconoce Bismark, Bismarck, con o sin tilde, en mayusculas o minusculas,
+  y con segundo nombre o inicial en medio (ej. "Bismarck A. Campos").
+- Tambien reconoce el nombre del archivo (ej. US_renal_Bismark_Campos.pdf).
+- Encuentra los informes donde aparece el doctor: los que firmo y tambien
+  aquellos donde aparece como medico que envia al paciente.
+
+COMO USARLO:
+1. Cierre Word.
+2. Doble clic en BuscadorInformes.bat.
+   Si Windows muestra "Windows protegio su PC": "Mas informacion" y luego
+   "Ejecutar de todas formas".
+3. Opcion 1 (buscar en esta computadora).
+4. Le muestra los informes encontrados y pregunta:
+   M = MOVERLOS a la carpeta (se sacan de donde estaban)
+   C = COPIARLOS (los originales se quedan donde estan)
+
+OTRAS OPCIONES:
+- 2: buscar en otro disco o USB (D:, disco externo).
+- 3: buscar OTRO medico u otro estudio (tomografia, resonancia,
+     mamografia, radiografia o todos).
+- 4: DESHACER la ultima busqueda.
+- 5: abrir la carpeta de resultados.
+
+NOTA: algunos PDF escaneados (fotos de papel) no tienen texto; esos solo
+se encuentran si el nombre del archivo dice Bismark Campos.

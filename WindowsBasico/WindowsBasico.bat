@@ -43,7 +43,7 @@ function Titulo($t) { Write-Host "`n>> $t" -ForegroundColor Cyan }
 function Ok($t)     { Write-Host "   [OK] $t" -ForegroundColor Green }
 function Aviso($t)  { Write-Host "   [!] $t" -ForegroundColor Yellow }
 function Leer-Csv($a) { if (Test-Path -LiteralPath $a) { return @(Import-Csv -LiteralPath $a) } return @() }
-function Si($pregunta) { return ((Read-Host $pregunta) -match '^\s*[sS]') }
+function Pregunta-Si($pregunta) { return ((Read-Host $pregunta) -match '^\s*[sS]') }
 
 function Ram {
     $os = Get-WmiObject Win32_OperatingSystem
@@ -174,7 +174,7 @@ function Modo-Basico {
     Write-Host '   - Sin servicios innecesarios (Xbox, fax, mapas, Superfetch, indexado...)'
     Write-Host '   - Edge y Chrome no se quedan abiertos escondidos'
     Write-Host '   NO se toca: internet, wifi, impresoras, sonido, antivirus ni Windows Update.' -ForegroundColor Gray
-    if (-not (Si "`n   Aplicar ahora? (S/N)")) { Aviso 'Cancelado.'; return }
+    if (-not (Pregunta-Si "`n   Aplicar ahora? (S/N)")) { Aviso 'Cancelado.'; return }
     Punto-Restauracion
     Ajustes-Basico
     Servicios-Basico
@@ -258,7 +258,7 @@ function Quitar-Apps {
     Titulo 'Apps de Windows que casi nadie usa y se pueden quitar:'
     $hay | ForEach-Object { Write-Host "   - $($_.Nombre)" }
     Write-Host '   (Si algun dia necesita una, se vuelve a instalar gratis desde Microsoft Store.)' -ForegroundColor Gray
-    if (-not (Si "`n   Quitarlas? (S/N)")) { Aviso 'Cancelado.'; return }
+    if (-not (Pregunta-Si "`n   Quitarlas? (S/N)")) { Aviso 'Cancelado.'; return }
     foreach ($a in $hay) { $a.Paquete | Remove-AppxPackage; if ($?) { Ok "Quitada: $($a.Nombre)" } else { Aviso "No se pudo quitar: $($a.Nombre)" } }
 }
 
@@ -277,7 +277,7 @@ function Ver-Ram {
 
 # ---------------- DESHACER ----------------
 function Deshacer {
-    if (-not (Si "`n   Volver TODO como estaba antes de Windows Basico? (S/N)")) { Aviso 'Cancelado.'; return }
+    if (-not (Pregunta-Si "`n   Volver TODO como estaba antes de Windows Basico? (S/N)")) { Aviso 'Cancelado.'; return }
     Titulo 'Restaurando ajustes...'
     foreach ($b in (Leer-Csv $ArchReg)) {
         if ($b.Existia -eq 'si') {
@@ -327,7 +327,7 @@ do {
         '3' { Quitar-Apps }
         '4' { Ver-Ram }
         '5' { Deshacer }
-        '6' { if (Si '   Guarde sus trabajos. Reiniciar ahora? (S/N)') { Restart-Computer -Force } }
+        '6' { if (Pregunta-Si '   Guarde sus trabajos. Reiniciar ahora? (S/N)') { Restart-Computer -Force } }
     }
     if ($op -ne '0') { Read-Host "`n  Pulse Enter para volver al menu" | Out-Null }
 } while ($op -ne '0')
