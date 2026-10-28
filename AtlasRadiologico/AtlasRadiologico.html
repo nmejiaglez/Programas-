@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Atlas Radiológico</title>
 <style>
-:root{--az:#123A78;--azc:#EAF1FA;--gr:#F4F7FB;--do:#C9A227;--ro:#C00028;--tx:#222B38;--bg:#ffffff;--pn:#ffffff;--bd:#d6dfeb;--mu:#5b6778;--us:#0e7c86;--tc:#7a4a00;--rm:#5b2a86}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--az:#7fb0ff;--azc:#16243a;--gr:#1a2230;--tx:#e6ebf2;--bg:#0f141c;--pn:#151c27;--bd:#2a3546;--mu:#9aa6b8;--ro:#ff6b81;--us:#4fd1d9;--tc:#f0b45a;--rm:#c39bff}}
-:root[data-theme="dark"]{--az:#7fb0ff;--azc:#16243a;--gr:#1a2230;--tx:#e6ebf2;--bg:#0f141c;--pn:#151c27;--bd:#2a3546;--mu:#9aa6b8;--ro:#ff6b81;--us:#4fd1d9;--tc:#f0b45a;--rm:#c39bff}
+:root{--az:#123A78;--azc:#EAF1FA;--gr:#F4F7FB;--do:#C9A227;--ro:#C00028;--tx:#222B38;--bg:#ffffff;--pn:#ffffff;--bd:#d6dfeb;--mu:#5b6778;--us:#0e7c86;--tc:#7a4a00;--rm:#5b2a86;--rx:#2f5d2f;--mg:#a3346b;--lienzo:#05070a;--rotulo:#e6ebf2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--az:#7fb0ff;--azc:#16243a;--gr:#1a2230;--tx:#e6ebf2;--bg:#0f141c;--pn:#151c27;--bd:#2a3546;--mu:#9aa6b8;--ro:#ff6b81;--us:#2aa7b0;--tc:#b9822a;--rm:#8a5cc7;--rx:#4f8f4f;--mg:#c95a92}}
+:root[data-theme="dark"]{--az:#7fb0ff;--azc:#16243a;--gr:#1a2230;--tx:#e6ebf2;--bg:#0f141c;--pn:#151c27;--bd:#2a3546;--mu:#9aa6b8;--ro:#ff6b81;--us:#2aa7b0;--tc:#b9822a;--rm:#8a5cc7;--rx:#4f8f4f;--mg:#c95a92}
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--tx)}
 header{background:#123A78;color:#fff;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:3px solid #C9A227;position:sticky;top:0;z-index:5}
@@ -18,30 +18,52 @@ header small{display:block;font-weight:normal;opacity:.8;font-size:11px}
 nav.mods{display:flex;gap:6px;padding:8px 16px;background:var(--azc);border-bottom:1px solid var(--bd);overflow-x:auto}
 nav.mods button{border:1px solid var(--bd);background:var(--pn);color:var(--tx);padding:7px 14px;border-radius:20px;cursor:pointer;font-weight:bold;white-space:nowrap}
 nav.mods button.on{background:var(--az);color:var(--bg);border-color:var(--az)}
-.wrap{display:grid;grid-template-columns:280px 1fr}
+.wrap{display:grid;grid-template-columns:270px 1fr}
 aside{border-right:1px solid var(--bd);background:var(--pn);overflow-y:auto;height:calc(100vh - 104px);position:sticky;top:104px}
 aside h3{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin:14px 14px 4px}
-aside a{display:block;padding:7px 14px;color:var(--tx);text-decoration:none;border-left:3px solid transparent;font-size:14px;cursor:pointer}
+aside a{display:block;padding:7px 14px;color:var(--tx);text-decoration:none;border-left:3px solid transparent;font-size:13.5px;cursor:pointer;line-height:1.3}
 aside a:hover{background:var(--gr)}
 aside a.on{border-left-color:var(--do);background:var(--azc);font-weight:bold}
-.tag{font-size:10px;font-weight:bold;padding:2px 6px;border-radius:4px;margin-left:6px;color:#fff;vertical-align:middle}
-.t-US{background:var(--us)}.t-TC{background:var(--tc)}.t-RM{background:var(--rm)}.t-MI{background:var(--do);color:#000}
-main{padding:18px 22px;min-width:0}
+aside .ord{font-size:11px;color:var(--mu);padding:8px 14px 0}
+.tag{font-size:10px;font-weight:bold;padding:2px 6px;border-radius:4px;margin-left:6px;color:#fff;vertical-align:middle;white-space:nowrap}
+.t-US{background:var(--us)}.t-TC{background:var(--tc)}.t-RM{background:var(--rm)}.t-RX{background:var(--rx)}.t-MG{background:var(--mg)}
+main{padding:16px 20px;min-width:0}
 .ttl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.ttl h2{margin:0;color:var(--az);font-size:22px}
-.sub{color:var(--mu);margin:4px 0 12px;font-size:14px}
-.tabs{display:flex;gap:4px;border-bottom:2px solid var(--az);margin:10px 0 14px;flex-wrap:wrap}
-.tabs button{border:0;background:var(--gr);color:var(--tx);padding:8px 14px;border-radius:6px 6px 0 0;cursor:pointer;font-weight:bold}
+.ttl h2{margin:0;color:var(--az);font-size:21px}
+.sub{color:var(--mu);margin:4px 0 10px;font-size:13.5px}
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--az);margin:10px 0 12px;flex-wrap:wrap}
+.tabs button{border:0;background:var(--gr);color:var(--tx);padding:8px 13px;border-radius:6px 6px 0 0;cursor:pointer;font-weight:bold;font-size:13px}
 .tabs button.on{background:var(--az);color:var(--bg)}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}
-.chips span{font-size:12px;background:var(--azc);border:1px solid var(--bd);padding:4px 9px;border-radius:12px}
+.bar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+.bar .grp{display:flex;border:1px solid var(--bd);border-radius:6px;overflow:hidden}
+.bar button{border:0;border-right:1px solid var(--bd);background:var(--pn);color:var(--tx);padding:6px 10px;cursor:pointer;font-size:12.5px}
+.bar .grp button:last-child{border-right:0}
+.bar button.on{background:var(--az);color:var(--bg);font-weight:bold}
+.bar .lb{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.05em}
+.atlas{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;align-items:start}
+.lz{background:var(--lienzo);border-radius:10px;border:1px solid var(--bd);overflow:hidden}
+.lz canvas{width:100%;height:auto;display:block;cursor:crosshair;touch-action:manipulation}
+.panel{position:sticky;top:116px}
+.info{background:var(--pn);border:1px solid var(--bd);border-left:4px solid var(--do);border-radius:8px;padding:10px 12px;margin-bottom:10px;min-height:96px}
+.info h4{margin:0 0 6px;color:var(--az);font-size:15px}
+.info p{margin:4px 0;font-size:13.5px;line-height:1.45}
+.info .sg{font-size:12.5px;color:var(--mu);background:var(--gr);padding:6px 8px;border-radius:6px}
+.lista{background:var(--pn);border:1px solid var(--bd);border-radius:8px;max-height:calc(100vh - 360px);overflow:auto}
+.lista input{width:100%;border:0;border-bottom:1px solid var(--bd);padding:8px 10px;background:var(--pn);color:var(--tx);font-size:13px;position:sticky;top:0}
+.lista div{padding:6px 10px;font-size:13px;border-bottom:1px solid var(--bd);cursor:pointer;display:flex;gap:6px}
+.lista div:hover{background:var(--gr)}
+.lista div.on{background:var(--azc);font-weight:bold}
+.lista b{color:var(--do);min-width:22px;text-align:right}
+.quizbox{background:var(--az);color:var(--bg);padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:14px}
+.quizbox b{font-size:16px}
+.quizbox .ok{color:#7CFC9A}.quizbox .no{color:#ffb3c0}
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .im{background:#000;border-radius:8px;overflow:hidden;cursor:pointer;border:1px solid var(--bd);position:relative}
 .im img{width:100%;height:190px;object-fit:contain;display:block;background:#000}
 .im .c{font-size:11px;color:#cfd8e6;padding:6px 8px;background:#0b0f14;height:44px;overflow:hidden;line-height:1.3}
 .im .mk{position:absolute;top:6px;right:6px;background:var(--do);color:#000;font-size:10px;font-weight:bold;padding:2px 6px;border-radius:4px}
-.more{margin:14px 0;padding:9px 16px;border:1px solid var(--bd);background:var(--pn);color:var(--tx);border-radius:6px;cursor:pointer;font-weight:bold}
-.note{background:var(--gr);border:1px solid var(--bd);border-left:4px solid var(--do);padding:10px 12px;border-radius:6px;font-size:13px;margin:10px 0}
+.more{margin:12px 0;padding:9px 16px;border:1px solid var(--bd);background:var(--pn);color:var(--tx);border-radius:6px;cursor:pointer;font-weight:bold}
+.note{background:var(--gr);border:1px solid var(--bd);border-left:4px solid var(--do);padding:10px 12px;border-radius:6px;font-size:13px;margin:10px 0;line-height:1.45}
 section.card{background:var(--pn);border:1px solid var(--bd);border-radius:10px;margin-bottom:14px;overflow:hidden}
 section.card h4{margin:0;background:var(--az);color:var(--bg);padding:8px 12px;font-size:13px;text-transform:uppercase;letter-spacing:.04em}
 section.card .bd{padding:10px 14px;font-size:14px;line-height:1.5}
@@ -51,15 +73,15 @@ th{background:var(--azc);text-align:left;padding:6px 8px;color:var(--az)}
 td{padding:6px 8px;border-top:1px solid var(--bd)}
 tr:nth-child(even) td{background:var(--gr)}
 .pat li b{color:var(--ro)}
-.home{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.home{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
 .tile{background:var(--pn);border:1px solid var(--bd);border-radius:10px;padding:12px;cursor:pointer}
 .tile:hover{border-color:var(--do)}
 .tile b{color:var(--az)}
 .tile p{margin:6px 0 0;font-size:12px;color:var(--mu)}
-.quiz button{margin:4px 4px 0 0;padding:6px 10px;border:1px solid var(--bd);background:var(--gr);color:var(--tx);border-radius:6px;cursor:pointer}
-.quiz .ok{background:#1f8a4c;color:#fff}.quiz .no{background:var(--ro);color:#fff}
+.res{margin:6px 0 14px}
+.res div{padding:7px 10px;border:1px solid var(--bd);border-radius:6px;margin-bottom:5px;cursor:pointer;font-size:13.5px;background:var(--pn)}
+.res div:hover{border-color:var(--do)}
 #menu{display:none}
-/* visor */
 #vw{position:fixed;inset:0;background:#000;z-index:50;display:none;flex-direction:column}
 #vw.open{display:flex}
 #vbar{display:flex;gap:6px;align-items:center;padding:8px;background:#0b0f14;color:#e6ebf2;flex-wrap:wrap;font-size:12px}
@@ -79,12 +101,13 @@ tr:nth-child(even) td{background:var(--gr)}
 #vlist.on{display:block}
 #vlist div{display:flex;justify-content:space-between;gap:4px;padding:3px 0;border-bottom:1px solid #2a3546}
 #vlist button{background:none;border:0;color:#ff6b81;cursor:pointer}
+@media (max-width:1100px){.atlas{grid-template-columns:1fr}.panel{position:static}.lista{max-height:320px}}
 @media (max-width:820px){
  .wrap{grid-template-columns:1fr}
- aside{position:fixed;left:0;top:0;bottom:0;width:80%;max-width:300px;height:auto;z-index:20;transform:translateX(-100%);transition:.2s;box-shadow:0 0 20px #0008}
+ aside{position:fixed;left:0;top:0;bottom:0;width:82%;max-width:310px;height:auto;z-index:20;transform:translateX(-100%);transition:.2s;box-shadow:0 0 20px #0008}
  aside.open{transform:none}
  #menu{display:block}
- main{padding:14px 16px}
+ main{padding:12px 16px}
  .gal{grid-template-columns:repeat(2,1fr)}
  .im img{height:140px}
 }
@@ -93,8 +116,8 @@ tr:nth-child(even) td{background:var(--gr)}
 <body>
 <header>
  <button id="menu" class="hb" aria-label="Menú">☰</button>
- <h1>Atlas Radiológico <small>Ecografía · Tomografía · Resonancia — Dr. Néstor José Mejía González · MINSA 37294</small></h1>
- <input id="q" type="search" placeholder="Buscar región, estructura o patología (ej. hígado, menisco, Bosniak, apendicitis)">
+ <h1>Atlas Radiológico <small>Anatomía seccional rotulada · US · TC · RM · RX · Mamografía — Dr. Néstor José Mejía González · MINSA 37294</small></h1>
+ <input id="q" type="search" placeholder="Buscar estructura o corte (ej. segmento VIII, cápsula interna, LCA, Wirsung)">
  <button id="tema" class="hb" title="Cambiar tema">◐</button>
 </header>
 <nav class="mods" id="mods"></nav>
@@ -102,7 +125,6 @@ tr:nth-child(even) td{background:var(--gr)}
  <aside id="side"></aside>
  <main id="main"></main>
 </div>
-
 <div id="vw">
  <div id="vbar">
   <button id="vx">✕ Cerrar</button>
@@ -119,87 +141,1312 @@ tr:nth-child(even) td{background:var(--gr)}
  <div id="vst"><div id="vin"><img id="vimg" alt=""></div><div id="vlist"></div></div>
  <div id="vfoot"></div>
 </div>
-<datalist id="dlest"></datalist>
-
 <script>
-/* ===================== CATÁLOGO DE REGIONES =====================
-   q = búsqueda en Wikimedia Commons (inglés, donde están las imágenes);
-   e = estructuras anatómicas a identificar; ref = ficha de referencia. */
-const R = [
-/* ---- ECOGRAFÍA ---- */
-['US','Abdomen','Hígado','ultrasound liver',['Lóbulo derecho','Lóbulo izquierdo','Lóbulo caudado','Venas hepáticas','Vena porta','Ligamento redondo','Diafragma'],'us-hig'],
-['US','Abdomen','Vesícula y vía biliar','ultrasound gallbladder',['Vesícula: fondo, cuerpo, cuello','Pared vesicular','Colédoco','Conducto hepático común','Vena porta','Arteria hepática'],'us-hig'],
-['US','Abdomen','Páncreas','ultrasound pancreas',['Cabeza','Cuello','Cuerpo','Cola','Conducto de Wirsung','Vena esplénica','Arteria mesentérica superior','Aorta','Vena cava inferior']],
-['US','Abdomen','Bazo','ultrasound spleen',['Bazo','Hilio esplénico','Vena esplénica','Riñón izquierdo','Diafragma']],
-['US','Abdomen','Riñones','ultrasound kidney',['Corteza','Pirámides medulares','Seno renal','Pelvis renal','Cálices','Hígado/Bazo (ventana)','Músculo psoas'],'us-ren'],
-['US','Abdomen','Vejiga urinaria','ultrasound urinary bladder',['Pared vesical','Trígono','Chorros ureterales','Meatos ureterales','Próstata / útero']],
-['US','Abdomen','Aorta y vena cava','ultrasound abdominal aorta',['Aorta abdominal','Tronco celíaco','Arteria mesentérica superior','Arterias renales','Vena cava inferior','Bifurcación ilíaca']],
-['US','Abdomen','Apéndice e intestino','ultrasound appendix',['Apéndice cecal','Ciego','Íleon terminal','Grasa mesentérica','Músculo psoas','Vasos ilíacos']],
-['US','Abdomen','Pared abdominal y hernias','ultrasound hernia abdominal wall',['Piel y TCS','Músculo recto abdominal','Línea alba','Defecto herniario','Saco herniario','Vasos epigástricos inferiores']],
-['US','Pelvis','Útero y endometrio','ultrasound uterus',['Cuerpo uterino','Fondo','Endometrio','Miometrio','Cérvix','Canal endocervical','Vejiga'],'us-pel'],
-['US','Pelvis','Ovarios y anexos','ultrasound ovary',['Ovario','Folículos','Cuerpo lúteo','Vasos ilíacos internos','Fondo de saco de Douglas'],'us-pel'],
-['US','Pelvis','Próstata','transrectal ultrasound prostate',['Zona periférica','Zona de transición','Uretra','Vesículas seminales','Cápsula prostática','Lóbulo medio']],
-['US','Pelvis','Testículos y escroto','ultrasound testis',['Testículo','Mediastino testicular','Cabeza del epidídimo','Cola del epidídimo','Túnica albugínea','Plexo pampiniforme','Hidrocele']],
-['US','Obstetricia','Primer trimestre','ultrasound gestational sac embryo',['Saco gestacional','Vesícula vitelina','Embrión','LCC','Reacción decidual','Cuerpo lúteo']],
-['US','Obstetricia','Translucencia nucal 11–14 s','nuchal translucency ultrasound',['Translucencia nucal','Hueso nasal','Perfil fetal','Diencéfalo','Amnios']],
-['US','Obstetricia','Biometría y anatomía fetal','fetal ultrasound',['DBP / CC','Cavum del septum pelúcido','Tálamos','CA: estómago y porta','Fémur','Columna','Cuatro cámaras'],'us-obs'],
-['US','Obstetricia','Corazón fetal','fetal echocardiography four chamber',['Ventrículo derecho','Ventrículo izquierdo','Aurículas','Septum interventricular','Foramen oval','Tracto de salida','Aorta descendente']],
-['US','Obstetricia','Placenta y cordón','ultrasound placenta',['Placenta','Placa corial','Cordón umbilical (3 vasos)','Inserción del cordón','Orificio cervical interno']],
-['US','Cuello','Tiroides','thyroid ultrasound',['Lóbulo derecho','Lóbulo izquierdo','Istmo','Tráquea','Carótida común','Yugular interna','Esófago','Músculos pretiroideos'],'us-tir'],
-['US','Cuello','Glándulas salivales y ganglios','ultrasound parotid gland',['Parótida','Submandibular','Conducto de Stenon','Ganglio con hilio graso','Músculo masetero']],
-['US','Cabeza','Transfontanelar','cranial ultrasound neonatal',['Ventrículos laterales','Plexos coroideos','Cavum del septum pelúcido','Cuerpo calloso','Tálamos','Matriz germinal','Cerebelo','Cisterna magna']],
-['US','Cabeza','Ocular','ocular ultrasound',['Cámara anterior','Cristalino','Cámara vítrea','Retina','Nervio óptico','Vaina del nervio óptico']],
-['US','Tórax','Pulmón y pleura','lung ultrasound',['Línea pleural','Deslizamiento pleural','Líneas A','Líneas B','Costillas','Derrame pleural','Diafragma']],
-['US','Tórax','Mama','breast ultrasound',['Piel','Tejido fibroglandular','Grasa subcutánea','Ligamentos de Cooper','Músculo pectoral','Complejo areola-pezón','Ganglio axilar']],
-['US','Tórax','Ecocardiografía','echocardiography',['Ventrículo izquierdo','Ventrículo derecho','Aurícula izquierda','Válvula mitral','Válvula aórtica','Pericardio']],
-['US','Doppler','Carótidas','carotid ultrasound doppler',['Carótida común','Bulbo','Carótida interna','Carótida externa','Complejo íntima-media','Vertebral','Yugular interna'],'us-dop'],
-['US','Doppler','Venoso de miembros inferiores','ultrasound deep vein thrombosis',['Vena femoral común','Unión safenofemoral','Vena femoral','Vena poplítea','Arteria acompañante','Trombo']],
-['US','Doppler','Arterial periférico','doppler ultrasound artery spectral',['Arteria femoral común','Femoral superficial','Poplítea','Onda trifásica','Placa']],
-['US','Doppler','Doppler renal y obstétrico','doppler umbilical artery',['Arteria umbilical','Arteria cerebral media','Arterias uterinas','Arterias renales','Índice de resistencia']],
-['US','Musculoesquelético','Hombro','shoulder ultrasound',['Supraespinoso','Infraespinoso','Subescapular','Porción larga del bíceps','Bursa subacromial-subdeltoidea','Acromion','Troquíter']],
-['US','Musculoesquelético','Codo, muñeca y mano','ultrasound carpal tunnel median nerve',['Nervio mediano','Retináculo flexor','Tendones flexores','Tendón extensor común','Primer compartimento extensor']],
-['US','Musculoesquelético','Cadera y cadera del lactante','hip ultrasound infant Graf',['Techo óseo acetabular','Labrum','Cabeza femoral','Línea basal','Ángulo alfa','Ángulo beta']],
-['US','Musculoesquelético','Rodilla','knee ultrasound',['Tendón cuadricipital','Tendón rotuliano','Receso suprarrotuliano','Quiste de Baker','Menisco','Ligamento colateral medial']],
-['US','Musculoesquelético','Tobillo y pie','achilles tendon ultrasound',['Tendón de Aquiles','Grasa de Kager','Bursa retrocalcánea','Fascia plantar','Ligamento peroneoastragalino anterior']],
-['US','Musculoesquelético','Partes blandas','ultrasound lipoma soft tissue',['Piel','Tejido celular subcutáneo','Fascia','Músculo','Lesión focal']],
-/* ---- TOMOGRAFÍA ---- */
-['TC','Neuro','Cráneo','CT scan head brain',['Sustancia gris','Sustancia blanca','Ventrículos laterales','Tercer ventrículo','Cisternas basales','Ganglios basales','Calota','Hoz del cerebro'],'tc-cra'],
-['TC','Neuro','Hemorragia y trauma craneal','CT subdural hematoma',['Hematoma epidural','Hematoma subdural','Hemorragia subaracnoidea','Desviación de la línea media','Fractura']],
-['TC','Neuro','Ictus isquémico','CT ischemic stroke',['Territorio de ACM','Núcleo lenticular','Cinta insular','Arteria hiperdensa','Regiones ASPECTS']],
-['TC','Cabeza y cuello','Senos paranasales','CT paranasal sinuses',['Seno maxilar','Complejo osteomeatal','Etmoides','Seno esfenoidal','Seno frontal','Cornetes','Tabique nasal']],
-['TC','Cabeza y cuello','Órbitas y oído','CT temporal bone',['Conducto auditivo externo','Cadena osicular','Cóclea','Conductos semicirculares','Mastoides','Órbita','Nervio óptico']],
-['TC','Cabeza y cuello','Cuello','CT neck',['Tiroides','Laringe','Glándula submandibular','Carótida','Yugular','Ganglios','Espacio parafaríngeo']],
-['TC','Tórax','Tórax — parénquima','CT scan lungs',['Lóbulo superior','Lóbulo medio / língula','Lóbulo inferior','Cisuras','Bronquios','Tráquea'],'tc-tor'],
-['TC','Tórax','Mediastino y vasos','CT mediastinum',['Aorta ascendente','Cayado aórtico','Tronco pulmonar','Vena cava superior','Ganglios mediastínicos','Esófago','Timo'],'tc-tor'],
-['TC','Tórax','Embolia pulmonar (angio-TC)','CT pulmonary angiogram embolism',['Tronco pulmonar','Arterias pulmonares derecha e izquierda','Defecto de llenado','Ventrículo derecho']],
-['TC','Tórax','Corazón y coronarias','CT coronary angiography',['Coronaria derecha','Descendente anterior','Circunfleja','Ventrículo izquierdo','Calcio coronario']],
-['TC','Abdomen','Abdomen superior','CT abdomen liver',['Hígado','Bazo','Páncreas','Estómago','Suprarrenales','Aorta','Vena cava inferior','Vena porta'],'tc-abd'],
-['TC','Abdomen','Riñones y urotomografía','CT urography kidney',['Riñón','Pelvis renal','Uréter','Vejiga','Litiasis','Fase excretora']],
-['TC','Abdomen','Intestino y apéndice','CT appendicitis',['Apéndice','Ciego','Íleon terminal','Colon','Mesenterio','Asas de delgado']],
-['TC','Abdomen','Páncreas y pancreatitis','CT pancreatitis',['Páncreas','Colecciones peripancreáticas','Necrosis','Vena esplénica','Duodeno']],
-['TC','Pelvis','Pelvis','CT pelvis',['Vejiga','Útero / próstata','Recto','Vasos ilíacos','Ganglios ilíacos','Músculos obturadores']],
-['TC','Vascular','Aorta (angio-TC)','CT angiography aorta',['Aorta torácica','Aorta abdominal','Tronco celíaco','AMS','Arterias renales','Ilíacas','Aneurisma','Disección']],
-['TC','Columna','Columna vertebral','CT spine',['Cuerpo vertebral','Pedículos','Láminas','Apófisis espinosa','Facetas articulares','Agujero de conjunción','Canal raquídeo']],
-['TC','Musculoesquelético','Fracturas y articulaciones','CT fracture 3D reconstruction',['Trazo de fractura','Fragmentos','Superficie articular','Reconstrucción 3D','Partes blandas']],
-/* ---- RESONANCIA ---- */
-['RM','Neuro','Cerebro','MRI brain',['Corteza','Sustancia blanca','Cuerpo calloso','Ventrículos','Tálamos','Núcleos caudados','Hipocampo','Tronco encefálico','Cerebelo'],'rm-cer'],
-['RM','Neuro','Cerebro — patología','MRI brain tumor',['Lesión','Edema perilesional','Realce','Efecto de masa','Difusión / ADC']],
-['RM','Neuro','Esclerosis múltiple y sustancia blanca','multiple sclerosis MRI FLAIR',['Lesiones periventriculares','Dedos de Dawson','Yuxtacorticales','Infratentoriales','Cuerpo calloso']],
-['RM','Neuro','Hipófisis y silla turca','MRI pituitary',['Adenohipófisis','Neurohipófisis','Tallo hipofisario','Quiasma óptico','Seno cavernoso','Seno esfenoidal']],
-['RM','Neuro','Angio-RM','MR angiography circle of Willis',['Carótidas internas','Arteria cerebral media','Arteria cerebral anterior','Basilar','Polígono de Willis']],
-['RM','Columna','Columna cervical','MRI cervical spine',['Médula cervical','Discos','Cuerpos vertebrales','Ligamento longitudinal posterior','Agujeros de conjunción']],
-['RM','Columna','Columna lumbar','MRI lumbar spine',['Cuerpos vertebrales','Discos (núcleo pulposo)','Cono medular','Cola de caballo','Ligamento amarillo','Raíces nerviosas','Hernia discal'],'rm-col'],
-['RM','Musculoesquelético','Rodilla','MRI knee',['Menisco medial','Menisco lateral','LCA','LCP','Ligamentos colaterales','Cartílago','Tendón rotuliano','Grasa de Hoffa'],'rm-rod'],
-['RM','Musculoesquelético','Hombro','MRI shoulder',['Supraespinoso','Infraespinoso','Subescapular','Labrum glenoideo','Cabeza humeral','Acromion','Bíceps']],
-['RM','Musculoesquelético','Cadera y pelvis ósea','MRI hip',['Cabeza femoral','Acetábulo','Labrum','Músculos glúteos','Iliopsoas','Edema óseo']],
-['RM','Musculoesquelético','Tobillo y pie','MRI ankle',['Tendón de Aquiles','Tibial posterior','Peroneos','Ligamentos laterales','Astrágalo','Calcáneo']],
-['RM','Musculoesquelético','Muñeca y codo','MRI wrist',['Escafoides','Semilunar','FCT','Nervio mediano','Tendones flexores']],
-['RM','Abdomen','Hígado','MRI liver',['Segmentos hepáticos','Vena porta','Venas hepáticas','Lesión focal','Fases dinámicas'],'rm-abd'],
-['RM','Abdomen','Colangio-RM','MRCP',['Colédoco','Conducto hepático común','Vesícula','Conducto de Wirsung','Duodeno'],'rm-abd'],
-['RM','Pelvis','Próstata','prostate MRI',['Zona periférica','Zona de transición','Estroma fibromuscular anterior','Vesículas seminales','Recto','Haces neurovasculares'],'rm-pro'],
-['RM','Pelvis','Útero y ovarios','MRI uterus',['Endometrio','Zona de unión','Miometrio','Cérvix','Ovarios','Miomas','Adenomiosis']],
-['RM','Tórax','Mama','breast MRI',['Tejido fibroglandular','Realce de fondo','Lesión','Cinética de realce','Ganglios axilares']],
-['RM','Tórax','Corazón','cardiac MRI',['Ventrículo izquierdo','Ventrículo derecho','Miocardio','Realce tardío','Pericardio']]
+/* ===================== TEJIDOS =====================
+   us: ecogenicidad 0–1 · at: atenuación acústica (sombra) · fl: líquido (refuerzo posterior)
+   hu: UH en TC simple · hc: UH con contraste IV · t1/t2/fr: señal relativa RM (0–1)
+   rx: densidad radiográfica · op: 'add' suma densidad en proyección (hueso, glándula) */
+const T = {
+ fondo_us:  {us:.32},
+ piel:      {us:.85,hu:40,t1:.5,t2:.4,fr:.4,rx:.4},
+ grasa_sc:  {us:.3,hu:-100,t1:.92,t2:.75,fr:.8,rx:.28},
+ grasa:     {us:.78,hu:-100,t1:.92,t2:.75,fr:.8,rx:.28},
+ musculo:   {us:.27,hu:50,hc:60,t1:.38,t2:.2,fr:.25,rx:.42},
+ tendon:    {us:.78,hu:85,t1:.05,t2:.05,fr:.05},
+ higado:    {us:.5,hu:60,hc:110,t1:.56,t2:.3,fr:.3},
+ bazo:      {us:.56,hu:48,hc:120,t1:.42,t2:.58,fr:.5},
+ pancreas:  {us:.62,hu:45,hc:110,t1:.62,t2:.4,fr:.4},
+ rinon:     {us:.4,hu:35,hc:180,t1:.46,t2:.56,fr:.5},
+ med_renal: {us:.16,hu:35,hc:115,t1:.34,t2:.72,fr:.55},
+ suprarrenal:{us:.5,hu:30,hc:70,t1:.45,t2:.4,fr:.4},
+ intestino: {us:.45,hu:40,hc:90,t1:.4,t2:.45,fr:.4},
+ liquido:   {us:0,fl:1,hu:5,hc:5,t1:.07,t2:.97,fr:.05,rx:.42},
+ sangre:    {us:.02,fl:.7,hu:42,hc:270,t1:.08,t2:.06,fr:.06,t1c:.95},
+ vena:      {us:.02,fl:.7,hu:40,hc:160,t1:.12,t2:.1,fr:.1,t1c:.85},
+ hueso:     {us:1,at:1,hu:1200,t1:.04,t2:.04,fr:.04,rx:.55,op:'add'},
+ esponjoso: {us:1,at:1,hu:260,t1:.8,t2:.55,fr:.5,rx:.35,op:'add'},
+ calcio:    {us:1,at:1,hu:450,t1:.05,t2:.05,fr:.05,rx:.6,op:'add'},
+ aire:      {us:.92,at:1,hu:-1000,t1:0,t2:0,fr:0,rx:0},
+ pulmon:    {us:.55,at:1,hu:-860,t1:.02,t2:.03,fr:.02,rx:.1},
+ cisura:    {us:.55,at:1,hu:-450,t1:.03,t2:.04,fr:.03},
+ gris:      {us:.36,hu:38,hc:42,t1:.42,t2:.62,fr:.62},
+ blanca:    {us:.42,hu:28,hc:30,t1:.66,t2:.38,fr:.42},
+ palido:    {us:.4,hu:33,hc:36,t1:.5,t2:.45,fr:.45},
+ dura:      {us:.85,hu:58,hc:90,t1:.2,t2:.1,fr:.1},
+ miometrio: {us:.45,hu:50,hc:120,t1:.4,t2:.5,fr:.45},
+ zona_union:{us:.22,hu:50,hc:110,t1:.4,t2:.12,fr:.12},
+ endometrio:{us:.8,hu:50,hc:90,t1:.4,t2:.9,fr:.7},
+ ovario:    {us:.38,hu:35,hc:80,t1:.35,t2:.7,fr:.5},
+ testiculo: {us:.5,hu:40,hc:80,t1:.4,t2:.8,fr:.6},
+ epididimo: {us:.54,hu:40,hc:80,t1:.4,t2:.55,fr:.5},
+ prostata_zp:{us:.42,hu:40,hc:80,t1:.38,t2:.85,fr:.6},
+ prostata_zt:{us:.34,hu:40,hc:80,t1:.38,t2:.38,fr:.35},
+ ves_seminal:{us:.3,hu:25,hc:40,t1:.3,t2:.9,fr:.6},
+ tiroides:  {us:.68,hu:100,hc:160,t1:.5,t2:.45,fr:.45},
+ cartilago: {us:.05,hu:90,t1:.4,t2:.55,fr:.5},
+ fibrocart: {us:.66,hu:80,t1:.04,t2:.04,fr:.04},
+ nucleo:    {us:.4,hu:80,t1:.35,t2:.93,fr:.6},
+ anillo:    {us:.6,hu:90,t1:.3,t2:.1,fr:.1},
+ medula:    {us:.3,hu:35,hc:38,t1:.52,t2:.45,fr:.45},
+ nervio:    {us:.55,hu:40,t1:.4,t2:.5,fr:.45},
+ interfase: {us:.96,hu:50,t1:.3,t2:.2,fr:.2},
+ plexo:     {us:.88,hu:60,hc:110,t1:.42,t2:.5,fr:.45},
+ glandula:  {us:.8,hu:40,hc:60,t1:.35,t2:.4,fr:.4},
+ neurohip:  {us:.4,hu:40,hc:90,t1:.95,t2:.5,fr:.5},
+ // radiografía / mamografía (proyección)
+ rx_blando: {rx:.42},
+ rx_med:    {rx:.55},
+ rx_pulmon: {rx:.1},
+ rx_aire:   {rx:.12},
+ rx_grasa:  {rx:.3},
+ rx_hueso:  {rx:.22,op:'add'},
+ rx_cortical:{rx:.4,op:'add'},
+ rx_vaso:   {rx:.08,op:'add'},
+ mg_grasa:  {rx:.2},
+ mg_glan:   {rx:.3,op:'add'},
+ mg_musc:   {rx:.5},
+ mg_piel:   {rx:.55},
+ mg_gang:   {rx:.25,op:'add'}
+};
+
+const NOMBRE_T = {piel:'piel',grasa_sc:'grasa subcutánea',grasa:'grasa',musculo:'músculo',tendon:'tendón',higado:'parénquima hepático',bazo:'parénquima esplénico',pancreas:'parénquima pancreático',rinon:'corteza renal',med_renal:'médula renal',suprarrenal:'glándula suprarrenal',intestino:'pared intestinal',liquido:'líquido',sangre:'sangre arterial / cavidad',vena:'sangre venosa',hueso:'hueso cortical',esponjoso:'hueso esponjoso / médula ósea',calcio:'calcificación',aire:'aire / gas',pulmon:'pulmón aireado',cisura:'cisura pleural',gris:'sustancia gris',blanca:'sustancia blanca',palido:'globo pálido',dura:'duramadre',miometrio:'miometrio',zona_union:'zona de unión',endometrio:'endometrio',ovario:'estroma ovárico',testiculo:'parénquima testicular',epididimo:'epidídimo',prostata_zp:'zona periférica prostática',prostata_zt:'zona de transición prostática',ves_seminal:'vesícula seminal',tiroides:'parénquima tiroideo',cartilago:'cartílago hialino',fibrocart:'fibrocartílago / ligamento',nucleo:'núcleo pulposo',anillo:'anillo fibroso',medula:'médula espinal',nervio:'nervio',interfase:'interfase ecogénica',plexo:'plexo coroideo',glandula:'tejido fibroglandular',neurohip:'neurohipófisis'};
+
+function nivel(v,pal){return v<.06?pal[0]:v<.3?pal[1]:v<.5?pal[2]:v<.75?pal[3]:pal[4];}
+/* Descripción de señal / ecogenicidad / densidad según modalidad */
+function senal(t,grupo){const x=T[t];if(!x)return '';
+ if(grupo=='US'){if(t=='interfase')return 'Interfase lineal marcadamente hiperecogénica (reflector especular).';
+  let s=nivel(x.us,['Anecoico','Hipoecoico','Ecogenicidad intermedia','Hiperecoico','Marcadamente hiperecogénico']);
+  if(x.at)s+=t=='pulmon'||t=='aire'?', con reverberación y sombra sucia posterior':', con sombra acústica posterior limpia';
+  if(x.fl==1)s+=', con refuerzo acústico posterior';return s+'.';}
+ if(grupo=='RX'||grupo=='MG'){const v=x.rx??.4;return (x.op?'Radiodensidad que se suma a la de estructuras superpuestas':v<.2?'Radiolúcido (aire)':v<.35?'Densidad grasa':v<.5?'Densidad de partes blandas':'Densidad aumentada')+'.';}
+ const p=['hipointenso marcado (vacío de señal)','hipointenso','intermedio / isointenso','hiperintenso','hiperintenso marcado'];
+ let s='';
+ if(grupo=='AX')s+=`TC: ≈ ${x.hu} UH en fase simple${x.hc&&x.hc!=x.hu?`; ≈ ${x.hc} UH con contraste IV`:''}. `;
+ if(x.t1!=null)s+=`RM: T1 ${nivel(x.t1,p)}; T2 ${nivel(x.t2,p)}${x.fr!=null&&grupo!='AX'||t=='liquido'?`; FLAIR ${nivel(x.fr,p)}`:''}.`;
+ return s;}
+
+/* ===================== MOTOR DE RENDER =====================
+   Geometría en unidades 0–100. Formatos:
+   'e cx cy rx ry [rot]'  elipse      'r cx cy rx ry w [rot]'  anillo
+   'p x,y x,y …' contorno suave cerrado   'q x,y …' polígono
+   'l w x,y …' tubo suave abierto (ancho w)   'k w x,y …' tubo recto
+   'pt x y' punto (rótulo sin dibujo) */
+const GEO = {};
+function geo(g){if(GEO[g])return GEO[g];
+ const t=g.trim().split(/\s+/),k=t[0],n=t.slice(1).map(v=>v.includes(',')?v.split(',').map(Number):Number(v));
+ const path=new Path2D();let o={path,w:0,k};
+ if(k=='e'||k=='r'){const [cx,cy,rx,ry]=n;const w=k=='r'?n[4]:0,rot=(k=='r'?n[5]:n[4])||0;
+  path.ellipse(cx,cy,rx,ry,rot*Math.PI/180,0,Math.PI*2);o.w=w;o.sp=[cx,cy,rx,ry];o.a=[cx,k=='r'?cy-ry:cy];o.c=[cx,cy];o.r=Math.max(rx,ry);}
+ else if(k=='pt'){o.a=[n[0],n[1]];path.arc(n[0],n[1],3.5,0,Math.PI*2);o.pt=1;}
+ else{let pts=n,w=0;if(k=='l'||k=='k'){w=n[0];pts=n.slice(1);}o.w=w;
+  const cl=k=='p'||k=='q';
+  if(k=='q'||k=='k'){pts.forEach((p,i)=>i?path.lineTo(p[0],p[1]):path.moveTo(p[0],p[1]));}
+  else spline(path,pts,cl);
+  if(cl)path.closePath();
+  o.a=cl?[pts.reduce((s,p)=>s+p[0],0)/pts.length,pts.reduce((s,p)=>s+p[1],0)/pts.length]:pts[Math.floor((pts.length-1)/2)].slice();
+  if(!cl&&pts.length%2==0){const p1=pts[pts.length/2-1],p2=pts[pts.length/2];o.a=[(p1[0]+p2[0])/2,(p1[1]+p2[1])/2];}
+  o.pts=pts;}
+ return GEO[g]=o;}
+function spline(path,p,closed){const n=p.length;if(n<3){path.moveTo(...p[0]);p.slice(1).forEach(q=>path.lineTo(...q));return;}
+ const P=i=>closed?p[(i+n)%n]:p[Math.max(0,Math.min(n-1,i))];
+ path.moveTo(...P(0));const m=closed?n:n-1;
+ for(let i=0;i<m;i++){const p0=P(i-1),p1=P(i),p2=P(i+1),p3=P(i+2);
+  path.bezierCurveTo(p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6,p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6,p2[0],p2[1]);}}
+
+/* generador pseudoaleatorio reproducible */
+function rng(seed){let s=seed>>>0||1;return()=>{s^=s<<13;s^=s>>>17;s^=s<<5;return((s>>>0)%100000)/100000;};}
+
+/* Secuencias / ventanas */
+const SEQ = {
+ 'US':{n:'Ecografía'},
+ 'TC-B':{n:'TC · ventana partes blandas',W:400,L:40},
+ 'TC-C':{n:'TC con contraste IV (portal)',W:400,L:50,c:1},
+ 'TC-P':{n:'TC · ventana pulmonar',W:1500,L:-600},
+ 'TC-H':{n:'TC · ventana ósea',W:2000,L:500},
+ 'TC-N':{n:'TC · ventana cerebral',W:80,L:38},
+ 'T1':{n:'RM T1'},'T2':{n:'RM T2'},'FLAIR':{n:'RM FLAIR'},'T1C':{n:'RM T1 + gadolinio'},
+ 'RX':{n:'Radiografía'},'MG':{n:'Mamografía'}
+};
+function gris(t,seq){const x=T[t];if(!x)return null;const s=SEQ[seq];
+ if(seq=='US')return x.us??.4;
+ if(s.W){let hu=s.c&&x.hc!=null?x.hc:x.hu;if(hu==null)hu=40;return Math.max(0,Math.min(1,(hu-(s.L-s.W/2))/s.W));}
+ if(seq=='T1')return x.t1??.4;if(seq=='T2')return x.t2??.4;if(seq=='FLAIR')return x.fr??x.t2??.4;
+ if(seq=='T1C'){if(x.t1c!=null)return x.t1c;const base=x.t1??.4;return x.hc&&x.hc>x.hu+30&&x.t1>.15?Math.min(1,base+.18):base;}
+ return x.rx??.4;}
+
+/* Render de la imagen (N×N) */
+function renderImagen(pl,seq,N){
+ const cv=document.createElement('canvas');cv.width=cv.height=N;const c=cv.getContext('2d');
+ c.fillStyle='#000';c.fillRect(0,0,N,N);c.setTransform(N/100,0,0,N/100,0,0);
+ const us=seq=='US',proj=seq=='RX'||seq=='MG';
+ c.filter=us?`blur(${N/420}px)`:proj?'none':`blur(${N/900}px)`;
+ const fondo=pl.fondo||(us?'fondo_us':null);
+ if(fondo){const v=gris(fondo,seq);if(us)c.fillStyle=`rgb(${Math.round(v*255)},0,0)`;else{const q=Math.round(v*255);c.fillStyle=`rgb(${q},${q},${q})`;}c.fillRect(0,0,100,100);}
+ for(const s of pl.s){const t=s[1];if(t=='-'||t=='dash')continue;const g=geo(s[2]);if(g.pt)continue;
+  let v=gris(t,seq);if(v==null)continue;const x=T[t];
+  if(proj&&x.op=='add'){c.globalCompositeOperation='lighter';}else c.globalCompositeOperation='source-over';
+  let col;
+  if(us){const echo=Math.round(v*255),at=Math.round((x.at||0)*255),fl=Math.round((x.fl||0)*255);col=`rgb(${echo},${at},${fl})`;}
+  else{const q=Math.round(v*255);col=`rgb(${q},${q},${q})`;}
+  if(g.w){c.strokeStyle=col;c.lineWidth=g.w;c.lineCap='round';c.lineJoin='round';
+   if(g.k=='r'){c.stroke(g.path);}else c.stroke(g.path);}
+  else{const o0=s[4]||{};if(o0.blur)c.filter=`blur(${o0.blur*N/100}px)`;c.fillStyle=col;c.fill(g.path);if(o0.blur)c.filter=us?`blur(${N/420}px)`:proj?'none':`blur(${N/900}px)`;}
+  const o=s[4]||{};
+  if(us&&o.b){c.globalCompositeOperation='source-over';c.strokeStyle=`rgb(${Math.round(o.b*255)},0,0)`;c.lineWidth=.35;c.stroke(g.path);}
+  if(proj&&o.tex)textura(c,g,o.tex,pl.id);
+  if(o.vas)vasosPulm(c,g,seq,us,pl.id+s[0]);
+  if(o.surcos)surcos(c,g,seq,us,o.surcos,pl.id+s[0]);
+ }
+ c.setTransform(1,0,0,1,0,0);c.filter='none';c.globalCompositeOperation='source-over';
+ const img=c.getImageData(0,0,N,N),d=img.data,R=rng(pl.id.length*7919+seq.length);
+ if(us){ultrasonido(pl,d,N,R);}
+ else{
+  const sd=proj?.035:seq.startsWith('TC')?.025:.03;
+  let tmp=null;
+  if(proj){tmp=new Float32Array(N*N);for(let i=0;i<N*N;i++)tmp[i]=d[i*4]/255;tmp=blurF(tmp,N,Math.round(N/320));}
+  for(let i=0;i<N*N;i++){let v=proj?tmp[i]:d[i*4]/255;
+   const n=(R()+R()+R()-1.5)*sd*1.4;
+   if(!proj&&v>.04&&v<.97){const px=i%N,py=(i/N)|0;v*=1+(lfv(px,py,N)-1)*.07;}
+   if(proj){v=1-Math.exp(-v*2.2);v=Math.pow(v,1.15);}
+   else if(!seq.startsWith('TC')){v=Math.sqrt((v+n)*(v+n)+n*n*.5);}
+   v+=proj||seq.startsWith('TC')?n:0;
+   const q=Math.max(0,Math.min(255,v*255));d[i*4]=d[i*4+1]=d[i*4+2]=q;d[i*4+3]=255;}
+ }
+ c.putImageData(img,0,0);
+ return cv;}
+
+let LFG=null;function lfv(px,py,N){if(!LFG){const R=rng(99);LFG=new Float32Array(33*33);for(let i=0;i<LFG.length;i++)LFG[i]=.6+.8*R();}
+ const gx=px/N*32,gy=py/N*32,ix=Math.min(31,gx|0),iy=Math.min(31,gy|0),fx=gx-ix,fy=gy-iy;
+ return LFG[iy*33+ix]*(1-fx)*(1-fy)+LFG[iy*33+ix+1]*fx*(1-fy)+LFG[(iy+1)*33+ix]*(1-fx)*fy+LFG[(iy+1)*33+ix+1]*fx*fy;}
+function blurF(a,N,r){if(r<1)return a;const b=new Float32Array(a.length),o=new Float32Array(a.length);
+ for(let y=0;y<N;y++){let s=0;for(let x=-r;x<=r;x++)s+=a[y*N+Math.max(0,Math.min(N-1,x))];
+  for(let x=0;x<N;x++){b[y*N+x]=s/(2*r+1);s+=a[y*N+Math.min(N-1,x+r+1)]-a[y*N+Math.max(0,x-r)];}}
+ for(let x=0;x<N;x++){let s=0;for(let y=-r;y<=r;y++)s+=b[Math.max(0,Math.min(N-1,y))*N+x];
+  for(let y=0;y<N;y++){o[y*N+x]=s/(2*r+1);s+=b[Math.min(N-1,y+r+1)*N+x]-b[Math.max(0,y-r)*N+x];}}
+ return o;}
+
+function colorDe(t,seq,us){const v=gris(t,seq),x=T[t];if(us)return `rgb(${Math.round(v*255)},${Math.round((x.at||0)*255)},${Math.round((x.fl||0)*255)})`;const q=Math.round(v*255);return `rgb(${q},${q},${q})`;}
+function hash(s){let h=7;for(const ch of s)h=(h*31+ch.charCodeAt(0))>>>0;return h;}
+/* vasos pulmonares: ramificación desde los hilios con calibre decreciente */
+function vasosPulm(c,g,seq,us,id){const R=rng(hash(id));c.save();c.clip(g.path);c.fillStyle=colorDe('sangre',seq,us);
+ const bb=g.pts.reduce((b,p)=>[Math.min(b[0],p[0]),Math.min(b[1],p[1]),Math.max(b[2],p[0]),Math.max(b[3],p[1])],[999,999,-999,-999]);
+ const hx=bb[0]<50&&bb[2]<55?bb[2]:bb[0],hy=(bb[1]+bb[3])/2;
+ for(let i=0;i<170;i++){const x=bb[0]+R()*(bb[2]-bb[0]),y=bb[1]+R()*(bb[3]-bb[1]);const dist=Math.hypot(x-hx,y-hy)/30;
+  const r=Math.max(.18,(1.1-dist)*.9*R()+.15);c.beginPath();c.ellipse(x,y,r,r*(.6+R()*.6),R()*3,0,7);c.fill();}
+ c.restore();}
+/* surcos corticales: hendiduras de LCR desde la superficie hacia el interior */
+function surcos(c,g,seq,us,n,id){const R=rng(hash(id));c.save();c.clip(g.path);c.strokeStyle=colorDe('liquido',seq,us);c.lineCap='round';
+ const [cx,cy]=g.c,rx=g.r;const t0=GEO.__tmp;
+ const m=g.k=='e'?g:null;const ry=m?parseFloat(arguments[1]?0:0):0;
+ const sp=g.sp||[cx,cy,rx,rx];
+ for(let i=0;i<n;i++){const a=i/n*Math.PI*2+R()*.12;const ex=cx+Math.cos(a)*sp[2],ey=cy+Math.sin(a)*sp[3];
+  const L=3+R()*4.5,ix=cx+Math.cos(a)*(sp[2]-L),iy=cy+Math.sin(a)*(sp[3]-L);
+  c.lineWidth=.45+R()*.35;c.beginPath();c.moveTo(ex,ey);
+  c.quadraticCurveTo((ex+ix)/2+(R()-.5)*2,(ey+iy)/2+(R()-.5)*2,ix,iy);c.stroke();
+  if(R()<.5){c.lineWidth=.35;c.beginPath();const bx=(ex+ix)/2,by=(ey+iy)/2;c.moveTo(bx,by);c.lineTo(bx+Math.cos(a+1.2)*-1.8,by+Math.sin(a+1.2)*-1.8);c.stroke();}}
+ c.restore();}
+/* textura fibroglandular / trabecular en proyección */
+function textura(c,g,tipo,id){const R=rng(id.length*131+g.pts?.length||7);c.save();c.clip(g.path);
+ c.globalCompositeOperation='lighter';
+ const bb=g.pts?g.pts.reduce((b,p)=>[Math.min(b[0],p[0]),Math.min(b[1],p[1]),Math.max(b[2],p[0]),Math.max(b[3],p[1])],[999,999,-999,-999]):[g.c[0]-g.r,g.c[1]-g.r,g.c[0]+g.r,g.c[1]+g.r];
+ const n=tipo=='glan'?260:140;
+ for(let i=0;i<n;i++){const x=bb[0]+R()*(bb[2]-bb[0]),y=bb[1]+R()*(bb[3]-bb[1]);const a=(tipo=='glan'?.05:.035)*R();
+  c.fillStyle=`rgba(255,255,255,${a})`;c.beginPath();c.ellipse(x,y,.6+R()*2.2,.4+R()*1.2,R()*3,0,7);c.fill();}
+ c.restore();}
+
+/* Simulación ecográfica: barrido en abanico o lineal, atenuación, sombra/refuerzo y speckle */
+function ultrasonido(pl,d,N,R){
+ const sonda=pl.sonda||'cx';
+ const geom=sonda=='li'?{lin:1}:sonda=='tv'?{ax:50,ay:-3,ang:58,r0:4,r1:103}:sonda=='ph'?{ax:50,ay:-2,ang:40,r0:2,r1:102}:{ax:50,ay:-14,ang:33,r0:14,r1:116};
+ const G=24,lf=new Float32Array((G+1)*(G+1));for(let i=0;i<lf.length;i++)lf[i]=.78+.44*R();
+ const LF=(x,y)=>{const gx=Math.max(0,Math.min(G-.001,x/100*G)),gy=Math.max(0,Math.min(G-.001,y/100*G)),ix=gx|0,iy=gy|0,fx=gx-ix,fy=gy-iy,a=lf[iy*(G+1)+ix],b=lf[iy*(G+1)+ix+1],c2=lf[(iy+1)*(G+1)+ix],d2=lf[(iy+1)*(G+1)+ix+1];return a*(1-fx)*(1-fy)+b*fx*(1-fy)+c2*(1-fx)*fy+d2*fx*fy;};
+ const A=420,J=520,pol=new Float32Array(A*J),nz=new Float32Array(A*J);
+ const src=(x,y)=>{const px=Math.round(x*N/100),py=Math.round(y*N/100);if(px<0||py<0||px>=N||py>=N)return null;return(py*N+px)*4;};
+ for(let a=0;a<A;a++){let m=1;
+  for(let j=0;j<J;j++){let x,y;
+   if(geom.lin){x=a/(A-1)*100;y=j/(J-1)*100;}
+   else{const th=(a/(A-1)*2-1)*geom.ang*Math.PI/180,r=geom.r0+j/(J-1)*(geom.r1-geom.r0);x=geom.ax+r*Math.sin(th);y=geom.ay+r*Math.cos(th);}
+   const k=src(x,y);let e=0,at=0,fl=0;if(k!=null){e=d[k]/255;at=d[k+1]/255;fl=d[k+2]/255;if(e>.05&&e<.9)e*=LF(x,y);}
+   const depth=j/J;
+   pol[a*J+j]=e*m*(1-.3*depth)*(depth<.06?.8+depth*3:1);
+   if(at>.3)m*=1-at*.11;else if(fl>.5)m=Math.min(1.7,m*1.0035);else m=m+(1-m)*.004;
+   nz[a*J+j]=-Math.log(R()+1e-4);}}
+ // speckle correlacionado (lateral > axial)
+ const sp=new Float32Array(A*J);
+ for(let a=0;a<A;a++)for(let j=0;j<J;j++){let s=0,c=0;for(let da=-3;da<=3;da++){const aa=a+da;if(aa<0||aa>=A)continue;for(let dj=-2;dj<=2;dj++){const jj=j+dj;if(jj<0||jj>=J)continue;s+=nz[aa*J+jj];c++;}}sp[a*J+j]=s/c;}
+ for(let i=0;i<N*N;i++){const px=i%N,py=(i/N)|0;const x=px*100/N,y=py*100/N;let a,j;
+  if(geom.lin){a=x/100*(A-1);j=y/100*(J-1);}
+  else{const dx=x-geom.ax,dy=y-geom.ay,r=Math.hypot(dx,dy),th=Math.atan2(dx,dy)*180/Math.PI;
+   a=(th/geom.ang+1)/2*(A-1);j=(r-geom.r0)/(geom.r1-geom.r0)*(J-1);}
+  let v=0;
+  if(a>=0&&a<=A-1&&j>=0&&j<=J-1){const ai=Math.round(a),ji=Math.round(j),p=ai*J+ji;
+   v=pol[p]*(.3+.7*sp[p])+.012*nz[p];v=Math.pow(Math.max(0,v),.9);}
+  else v=-1;
+  const q=v<0?0:Math.max(0,Math.min(255,v*215));
+  d[i*4]=q;d[i*4+1]=q;d[i*4+2]=Math.min(255,q*1.02);d[i*4+3]=255;}
+ pl._geom=geom;}
+
+/* ===== Lienzo con rótulos ===== */
+function dibujarCorte(cv,pl,seq,modo,sel,opts={}){
+ const N=640,M=modo=='nombres'?300:0,W=N+2*M,H=N;
+ cv.width=W;cv.height=H;const c=cv.getContext('2d');
+ c.fillStyle=getComputedStyle(document.body).getPropertyValue('--lienzo')||'#05070a';c.fillRect(0,0,W,H);
+ const key=pl.id+'|'+seq;if(!dibujarCorte.cache[key])dibujarCorte.cache[key]=renderImagen(pl,seq,N);
+ c.drawImage(dibujarCorte.cache[key],M,0);
+ // rótulos de la modalidad en la imagen
+ c.save();c.shadowColor='#000';c.shadowBlur=4;c.font='bold 13px Arial';c.fillStyle='#e9eef5';c.textAlign='left';
+ c.fillText(SEQ[seq].n,M+10,20);c.font='12px Arial';c.fillStyle='#b8c4d6';
+ if(pl.cab)c.fillText(pl.cab,M+10,37);
+ if(pl.ori){c.textAlign='right';c.fillText(pl.ori[0],M+N-10,20);if(pl.ori[1])c.fillText(pl.ori[1],M+N-10,37);c.textAlign='left';}
+ if(pl.prof&&seq=='US'){c.textAlign='right';c.fillText('Prof. '+pl.prof,M+N-10,N-10);c.textAlign='left';
+  c.strokeStyle='#b8c4d6';c.lineWidth=1;for(let i=0;i<=10;i++){const y=N*(i/10)*.97+4;c.beginPath();c.moveTo(M+N-6,y);c.lineTo(M+N-(i%5?10:16),y);c.stroke();}}
+ c.restore();
+ const S=N/100,X=u=>M+u[0]*S,Y=u=>u[1]*S;
+ // líneas de límites (segmentos, planos)
+ if(modo!='ocultos'||opts.dash)for(const s of pl.s){if(s[1]!='dash')continue;const g=geo(s[2]);
+  c.save();c.setTransform(S,0,0,S,M,0);c.setLineDash([1.6,1.2]);c.strokeStyle='rgba(255,214,90,.9)';c.lineWidth=.45;c.stroke(g.path);c.restore();}
+ // resaltado
+ if(sel!=null){const s=pl.s[sel],g=geo(s[2]);c.save();c.setTransform(S,0,0,S,M,0);
+  c.strokeStyle='#ffd65a';c.shadowColor='#ffd65a';c.shadowBlur=8;
+  if(g.pt){c.lineWidth=.7;c.beginPath();c.arc(g.a[0],g.a[1],3,0,7);c.stroke();}
+  else if(g.w&&g.k!='r'){c.globalAlpha=.55;c.lineWidth=g.w+1.2;c.lineCap='round';c.stroke(g.path);}
+  else{c.lineWidth=.8;c.stroke(g.path);if(!g.w){c.globalAlpha=.18;c.fillStyle='#ffd65a';c.fill(g.path);}}
+  c.restore();}
+ const L=rotulables(pl);
+ if(modo=='ocultos')return {M,N,S};
+ if(modo=='numeros'){c.font='bold 17px Arial';c.textAlign='center';c.textBaseline='middle';
+  L.forEach((i,k)=>{const g=geo(pl.s[i][2]),a=anc(pl.s[i],g);const x=X(a),y=Y(a);
+   c.fillStyle=i==sel?'#ffd65a':'rgba(201,162,39,.95)';c.beginPath();c.arc(x,y,13,0,7);c.fill();c.strokeStyle='#000';c.lineWidth=1;c.stroke();
+   c.fillStyle='#000';c.fillText(k+1,x,y+.5);});c.textBaseline='alphabetic';return {M,N,S};}
+ // nombres a los lados con líneas guía
+ const lados=[[],[]];L.forEach((i,k)=>{const g=geo(pl.s[i][2]),a=anc(pl.s[i],g);lados[a[0]<50?0:1].push({i,k,a});});
+ c.font='15px Arial';
+ lados.forEach((arr,ld)=>{arr.sort((p,q)=>p.a[1]-q.a[1]);const gap=Math.min(21,(H-20)/Math.max(1,arr.length));
+  arr.forEach(o=>o.y=Math.max(12,Math.min(H-8,Y(o.a))));
+  for(let j=1;j<arr.length;j++)if(arr[j].y<arr[j-1].y+gap)arr[j].y=arr[j-1].y+gap;
+  for(let j=arr.length-1;j>=0;j--){const lim=j==arr.length-1?H-8:arr[j+1].y-gap;if(arr[j].y>lim)arr[j].y=lim;}
+  arr.forEach(o=>{const s=pl.s[o.i],on=o.i==sel,txt=(o.k+1)+'. '+s[0];
+   const lx=ld?M+N+8:M-8,ax=X(o.a),ay=Y(o.a);
+   c.strokeStyle=on?'#ffd65a':'rgba(201,162,39,.85)';c.lineWidth=on?1.6:1;
+   c.beginPath();c.moveTo(lx,o.y);c.lineTo(ld?M+N:M,o.y);c.lineTo(ax,ay);c.stroke();
+   c.fillStyle=on?'#ffd65a':'#C9A227';c.beginPath();c.arc(ax,ay,2.6,0,7);c.fill();
+   c.fillStyle=on?'#ffd65a':getComputedStyle(document.body).getPropertyValue('--rotulo')||'#e6ebf2';
+   c.font=(on?'bold ':'')+'15px Arial';c.textAlign=ld?'left':'right';
+   let t=txt;while(c.measureText(t).width>M-14&&t.length>8)t=t.slice(0,-2);if(t!=txt)t=t.slice(0,-1)+'…';
+   c.fillText(t,lx,o.y+5);o.box=[ld?lx:lx-c.measureText(t).width,o.y-11,c.measureText(t).width,18];});});
+ dibujarCorte.boxes=lados.flat();
+ return {M,N,S};}
+dibujarCorte.cache={};
+function rotulables(pl){return pl.s.map((s,i)=>i).filter(i=>pl.s[i][1]!='dash'&&!(pl.s[i][4]||{}).nl);}
+function anc(s,g){return (s[4]||{}).a||g.a;}
+function hit(pl,u){ // u en unidades 0–100
+ const c=hit.c||(hit.c=document.createElement('canvas').getContext('2d'));
+ const L=rotulables(pl);
+ for(const i of L){const g=geo(pl.s[i][2]);if(g.pt&&Math.hypot(u[0]-g.a[0],u[1]-g.a[1])<4)return i;}
+ for(let j=L.length-1;j>=0;j--){const i=L[j],g=geo(pl.s[i][2]);if(g.pt)continue;
+  if(g.w){c.lineWidth=Math.max(g.w,1.5);if(c.isPointInStroke(g.path,u[0],u[1]))return i;if(g.k!='r')continue;}
+  else if(c.isPointInPath(g.path,u[0],u[1]))return i;}
+ return null;}
+
+/* ===================== ECOGRAFÍA (cefálico → caudal) =====================
+   s: [nombre, tejido, geometría, descripción anatómica, opciones]
+   tejido '-' = solo rótulo; 'dash' = línea de referencia (límite segmentario / plano) */
+const CORTES_US = [
+{id:'us-tf',g:'US',est:'Cabeza',n:'Transfontanelar — coronal (agujero de Monro)',sonda:'ph',prof:'9 cm',cab:'Fontanela anterior · coronal',ori:['D ← → I'],q:'cranial ultrasound coronal neonate',
+ s:[
+ ['Parénquima cerebral (corteza frontal)','gris','p 22,8 50,4 78,8 94,40 92,70 80,92 50,98 20,92 8,70 6,40','Manto cortical frontal y parietal; ecogenicidad homogénea, menor que la de los plexos coroideos.',{nl:1}],
+ ['Sustancia blanca periventricular','blanca','p 30,24 50,22 70,24 80,40 74,56 50,60 26,56 20,40','Debe ser menos ecogénica que el plexo coroideo; la hiperecogenicidad persistente sugiere leucomalacia periventricular.'],
+ ['Cisura interhemisférica','interfase','l .8 50,4 50,27','Línea media ecogénica (hoz del cerebro y LCR). Debe estar centrada: su desviación indica efecto de masa.'],
+ ['Cuerpo calloso','zona_union','l 2.3 34,32 42,29 50,28.5 58,29 66,32','Banda arqueada hipoecoica por encima del cavum y de los ventrículos; su ausencia (agenesia) da astas en “cuernos de alce”.'],
+ ['Cavum del septum pelúcido','liquido','e 50 35 2.6 3','Espacio anecoico en línea media entre las astas frontales; fisiológico en el prematuro y el recién nacido.'],
+ ['Asta frontal ventrículo lateral derecho','liquido','e 42 36 1.6 4 20','Hendidura anecoica; índice ventricular de Levene medido desde la línea media hasta el borde lateral del asta.'],
+ ['Asta frontal ventrículo lateral izquierdo','liquido','e 58 36 1.6 4 -20','Simétrica a la contralateral; asimetría leve es frecuente (izquierda algo mayor).'],
+ ['Núcleo caudado derecho / surco caudotalámico','gris','e 36 41 4.5 5','Cabeza del caudado lateral al asta frontal; la matriz germinal se ubica en el surco caudotalámico (sitio de hemorragia, Papile I).'],
+ ['Núcleo caudado izquierdo','gris','e 64 41 4.5 5','Cabeza del caudado izquierdo; valorar ecogenicidad simétrica.'],
+ ['Tálamo derecho','gris','e 44 53 6 5','Masa gris profunda bajo los ventrículos, a ambos lados del III ventrículo.'],
+ ['Tálamo izquierdo','gris','e 56 53 6 5','Simétrico al derecho.'],
+ ['Tercer ventrículo','liquido','l .9 50,46 50,59','Hendidura vertical en línea media entre los tálamos; normal < 2–3 mm.'],
+ ['Cisura de Silvio derecha','interfase','l 1.2 12,40 22,50 18,62','Forma de “Y” ecogénica con la arteria cerebral media pulsátil; su madurez depende de la edad gestacional.'],
+ ['Cisura de Silvio izquierda','interfase','l 1.2 88,40 78,50 82,62','Simétrica a la derecha.'],
+ ['Lóbulo temporal derecho','-','pt 18 76','Por debajo de la cisura de Silvio.'],
+ ['Lóbulo temporal izquierdo','-','pt 82 76','Por debajo de la cisura de Silvio.'],
+ ['Base de cráneo (esfenoides / porción petrosa)','hueso','l 3 12,82 30,88 50,90 70,88 88,82','Interfase ósea marcadamente ecogénica con sombra; límite inferior del campo.'],
+ ]},
+
+{id:'us-tir',g:'US',est:'Cuello',n:'Tiroides — corte transversal',sonda:'li',prof:'4 cm',cab:'Cuello anterior · transversal',ori:['D ← → I'],q:'thyroid ultrasound transverse',ref:'us-tir',
+ s:[
+ ['Piel','piel','q 0,0 100,0 100,3.5 0,3.5','Línea ecogénica superficial.'],
+ ['Tejido celular subcutáneo','grasa_sc','q 0,3.5 100,3.5 100,10 0,10','Grasa hipoecoica con septos finos ecogénicos.'],
+ ['Músculo esternocleidomastoideo derecho','musculo','p 1,10 20,9 25,16 22,24 10,27 1,22','Músculo hipoecoico con patrón fibrilar, anterolateral a la vaina carotídea.'],
+ ['Músculo esternocleidomastoideo izquierdo','musculo','p 99,10 80,9 75,16 78,24 90,27 99,22','Simétrico al derecho.'],
+ ['Músculos infrahioideos (esternohioideo / esternotiroideo) derechos','musculo','p 23,11 44,9.5 45,14 25,18','“Músculos en correa” anteriores al lóbulo; delgados e hipoecoicos.',{a:[34,12.5]}],
+ ['Músculos infrahioideos izquierdos','musculo','p 77,11 56,9.5 55,14 75,18','Anteriores al lóbulo izquierdo.',{a:[66,12.5]}],
+ ['Lóbulo tiroideo derecho','tiroides','p 24,19 43,15.5 46,23 45,38 37,48 27,45 21,32','Parénquima homogéneo, más ecogénico que los músculos. Medir longitudinal × AP × transverso; volumen = L × AP × T × 0.523.',{b:.7}],
+ ['Istmo tiroideo','tiroides','p 41,15 50,14.3 59,15 59,21 50,22.5 41,21','Puente anterior a la tráquea; espesor AP normal ≤ 3–5 mm.',{a:[50,17.5]}],
+ ['Lóbulo tiroideo izquierdo','tiroides','p 76,19 57,15.5 54,23 55,38 63,48 73,45 79,32','Simétrico; el esófago se sitúa posteromedial a este lóbulo.',{b:.7}],
+ ['Tráquea (anillo cartilaginoso)','cartilago','r 50 31 9.5 9 2.2','Anillo cartilaginoso hipoecoico en arco con interfase aérea ecogénica y artefacto de reverberación posterior.'],
+ ['Luz traqueal (aire)','aire','e 50 31.5 7.4 7','Interfase aire-mucosa con reverberación: impide valorar estructuras posteriores.'],
+ ['Esófago cervical','musculo','e 61 44 5 3.4','Aspecto en diana (muscular hipoecoica con mucosa ecogénica central); no confundir con nódulo del lóbulo izquierdo.'],
+ ['Mucosa esofágica','grasa','e 61 44 2.2 1.1','Centro ecogénico de la diana esofágica.',{nl:1}],
+ ['Arteria carótida común derecha','sangre','e 16 36 4.6 4.6','Circular, pulsátil, no compresible; posterolateral al lóbulo derecho.',{b:.65}],
+ ['Arteria carótida común izquierda','sangre','e 84 36 4.6 4.6','Posterolateral al lóbulo izquierdo.',{b:.65}],
+ ['Vena yugular interna derecha','vena','e 9 26.5 6 3.6','Lateral y anterior a la carótida, compresible, aumenta con Valsalva.'],
+ ['Vena yugular interna izquierda','vena','e 91 26.5 6 3.6','Simétrica a la derecha.'],
+ ['Nervio vago derecho','nervio','e 11.5 40 1.3 1.3','Punto ecogénico posterior entre carótida y yugular, dentro de la vaina carotídea.'],
+ ['Músculo largo del cuello derecho','musculo','p 27,51 41,49 43,57 30,59','Prevertebral; la paratiroides inferior y el nervio laríngeo recurrente discurren en el surco traqueoesofágico, anterior a él.'],
+ ['Músculo largo del cuello izquierdo','musculo','p 73,51 59,49 57,57 70,59','Simétrico.'],
+ ['Surco traqueoesofágico izquierdo (nervio laríngeo recurrente)','-','pt 56 40','Región de las paratiroides y del nervio laríngeo recurrente; sitio de adenopatías del nivel VI.'],
+ ['Cuerpo vertebral / apófisis transversas','hueso','l 2.2 26,64 38,61 50,60 62,61 74,64','Interfase ósea con sombra acústica posterior.'],
+ ]},
+
+{id:'us-car',g:'US',est:'Cuello',n:'Bifurcación carotídea — longitudinal',sonda:'li',prof:'4 cm',cab:'Carótida derecha · longitudinal',ori:['Craneal →'],q:'carotid bifurcation ultrasound',ref:'us-dop',
+ s:[
+ ['Piel y tejido celular subcutáneo','grasa_sc','q 0,0 100,0 100,9 0,9','Plano superficial.'],
+ ['Músculo esternocleidomastoideo','musculo','p 0,9 100,9 100,22 60,24 0,21','Músculo hipoecoico anterior a la vaina carotídea; ventana acústica.'],
+ ['Vena yugular interna','vena','k 8 0,30 100,27','Anterior/lateral a la carótida; compresible y con flujo fásico.'],
+ ['Arteria carótida común','sangre','k 10 0,58 40,58','Paredes paralelas; medir el complejo íntima-media en la pared posterior 1 cm proximal al bulbo.',{b:.7}],
+ ['Bulbo carotídeo','sangre','e 47 57 9.5 7','Dilatación fisiológica en la bifurcación; sitio más frecuente de placa ateromatosa y de flujo turbulento.',{b:.7}],
+ ['Arteria carótida interna','sangre','l 9 50,55.5 70,52 100,49','Posterolateral, sin ramas cervicales; flujo de baja resistencia con diástole alta.',{b:.7}],
+ ['Arteria carótida externa','sangre','l 6 51,62 70,68 100,72','Anteromedial, con ramas (tiroidea superior); flujo de alta resistencia, maniobra de tapping temporal.',{b:.7}],
+ ['Arteria tiroidea superior','sangre','l 2 70,68 74,78','Primera rama de la carótida externa; la identifica como externa.'],
+ ['Complejo íntima-media (pared posterior)','interfase','k .8 0,63.3 40,63.3','Doble línea ecogénica de la pared distal; normal < 0.9 mm (≥ 1.5 mm = placa).'],
+ ['Músculos prevertebrales / columna','musculo','q 0,72 100,80 100,100 0,100','Plano profundo.'],
+ ]},
+
+{id:'us-hig-vh',g:'US',est:'Abdomen superior',n:'Hígado — confluencia de venas hepáticas (segmentos VII, VIII, IVa, II, I)',sonda:'cx',prof:'16 cm',cab:'Subcostal oblicuo craneal',ori:['D ← → I'],q:'hepatic veins ultrasound',ref:'us-hig',
+ s:[
+ ['Parénquima hepático','higado','p 0,6 100,6 100,68 82,86 50,92 18,88 0,78','Ecotextura homogénea, isoecoica o levemente hiperecoica respecto a la corteza renal.',{nl:1}],
+ ['Diafragma','interfase','l 2.4 0,80 18,90 50,95 82,90 100,72','Interfase curvilínea muy ecogénica en el campo lejano; detrás se ve la imagen en espejo del hígado.'],
+ ['Base pulmonar (seno costofrénico)','pulmon','p 0,84 18,95 50,100 82,95 100,76 100,100 0,100','Aire con reverberación por detrás del diafragma.',{nl:1}],
+ ['Vena cava inferior intrahepática','vena','e 50 79 9 5.8','Recibe las tres venas hepáticas (signo del “conejo”). Colapsabilidad respiratoria > 50 %.'],
+ ['Vena hepática derecha','vena','l 4 46,76 34,62 22,48 10,36','Separa el segmento VIII (anterior) del VII (posterior) del lóbulo derecho. Paredes poco ecogénicas.'],
+ ['Vena hepática media','vena','l 3.5 49,73 47,56 45,38 43,20','Recorre la cisura portal principal (línea de Cantlie): separa lóbulo derecho (VIII/V) del izquierdo (IV).'],
+ ['Vena hepática izquierda','vena','l 3.5 54,74 64,60 74,46 84,32','Separa el segmento IVa (medial) del segmento II (lateral superior).'],
+ ['Límite VII / VIII (plano de la VHD)','dash','k 1 10,36 1,26','Prolongación del plano de la vena hepática derecha.'],
+ ['Línea de Cantlie (plano de la VHM)','dash','k 1 43,20 42,6','Cisura portal principal: lóbulo derecho / lóbulo izquierdo.'],
+ ['Límite IVa / II (plano de la VHI)','dash','k 1 84,32 92,20','Cisura hepática izquierda.'],
+ ['Segmento VII (posterosuperior derecho)','-','pt 17 64','Posterior a la vena hepática derecha y por encima del plano portal; contacta con el área desnuda y el diafragma.'],
+ ['Segmento VIII (anterosuperior derecho)','-','pt 28 30','Entre las venas hepáticas derecha y media, por encima del plano portal.'],
+ ['Segmento IVa (medial superior izquierdo)','-','pt 59 26','Entre la vena hepática media y la izquierda, por encima del plano portal.'],
+ ['Segmento II (lateral superior izquierdo)','-','pt 86 50','Lateral a la vena hepática izquierda, por encima del plano de la rama portal izquierda.'],
+ ['Segmento I (lóbulo caudado)','-','pt 62 81','Anterior y a la izquierda de la VCI; drena directamente a la VCI por venas propias (por ello se respeta en el Budd-Chiari).'],
+ ]},
+
+{id:'us-hig-po',g:'US',est:'Abdomen superior',n:'Hígado — plano portal (sectores, IV, III, I)',sonda:'cx',prof:'16 cm',cab:'Subcostal oblicuo · bifurcación portal',ori:['D ← → I'],q:'portal vein bifurcation ultrasound',ref:'us-hig',
+ s:[
+ ['Parénquima hepático','higado','p 0,6 100,6 100,70 82,88 50,93 18,90 0,80','Ecotextura homogénea.',{nl:1}],
+ ['Diafragma','interfase','l 2.2 0,84 20,93 50,97 82,92 100,76','Límite profundo.'],
+ ['Vena porta principal','vena','l 6 56,92 52,80 47,68','Entra por el hilio; calibre ≤ 13 mm, flujo hepatópeto. Paredes ecogénicas (tejido fibroadiposo de la tríada portal).',{b:.95}],
+ ['Rama portal derecha','vena','l 4.5 47,68 38,62 30,58','Corta; se divide en rama anterior (V/VIII) y posterior (VI/VII).',{b:.95}],
+ ['Rama portal derecha anterior','vena','l 3 31,58 30,46 32,32','Irriga el sector anterior derecho (V abajo, VIII arriba).',{b:.95}],
+ ['Rama portal derecha posterior','vena','l 3 30,58 20,64 10,72','Irriga el sector posterior derecho (VI abajo, VII arriba).',{b:.95}],
+ ['Rama portal izquierda — porción transversa','vena','l 3.5 47,68 58,60 68,52','Discurre hacia la izquierda por delante del caudado.',{b:.95}],
+ ['Rama portal izquierda — porción umbilical (receso de Rex)','vena','l 3.5 68,52 74,40 76,28','Se dirige anteriormente hacia el ligamento redondo; da ramas a II, III y IV.',{b:.95}],
+ ['Ligamento redondo / fisura umbilical','grasa','l 2.8 77,26 82,16 86,8','Estructura ecogénica (grasa) en la fisura umbilical: separa el segmento IV (medial) del III (lateral).'],
+ ['Fisura del ligamento venoso','grasa','l 1.4 58,66 70,74 84,78','Línea ecogénica que separa el caudado (I) del segmento II.'],
+ ['Vena cava inferior','vena','e 50 88 8 4.5','Posterior al caudado.'],
+ ['Línea de Cantlie (lecho vesicular → VCI)','dash','k 1 38,6 49,84','Plano de la vena hepática media: divide lóbulo derecho e izquierdo.'],
+ ['Sector anterior derecho (V–VIII)','-','pt 24 36','Por delante de la vena hepática derecha; V por debajo y VIII por encima del plano portal.'],
+ ['Sector posterior derecho (VI–VII)','-','pt 10 52','Detrás de la vena hepática derecha; VI inferior, VII superior.'],
+ ['Segmento IV (cuadrado; IVb bajo el plano portal)','-','pt 56 32','Entre la línea de Cantlie y la fisura umbilical.'],
+ ['Segmento III (lateral inferior izquierdo)','-','pt 90 40','A la izquierda del ligamento redondo, bajo la rama portal izquierda.'],
+ ['Segmento I (lóbulo caudado)','-','pt 64 80','Entre la fisura del ligamento venoso y la VCI.'],
+ ]},
+
+{id:'us-ves',g:'US',est:'Abdomen superior',n:'Vesícula biliar, colédoco y vena porta — longitudinal',sonda:'cx',prof:'14 cm',cab:'Subcostal derecho · eje largo',ori:['Craneal ←'],q:'gallbladder common bile duct ultrasound',ref:'us-hig',
+ s:[
+ ['Parénquima hepático (segmentos IVb / V)','higado','p 0,4 100,4 100,70 60,74 0,88','La vesícula se aloja en la fosa vesicular, límite entre los segmentos IVb y V.'],
+ ['Vesícula biliar','liquido','p 24,52 32,43 50,37 70,34 85,37 86,46 72,51 48,55 32,59','Contenido anecoico con refuerzo acústico posterior.',{b:.92}],
+ ['Fondo vesicular','-','pt 84 41','Porción caudal y anterior; sitio de adenomiomatosis.'],
+ ['Cuerpo vesicular','-','pt 58 44','Pared normal ≤ 3 mm en ayunas.'],
+ ['Cuello vesicular / bolsa de Hartmann','-','pt 28 53','Sitio de impactación litiásica (colecistitis, síndrome de Mirizzi).'],
+ ['Pliegue de unión cuerpo-cuello','interfase','l .7 34,46 38,56','Pliegue ecogénico normal (no confundir con tabique o cálculo).'],
+ ['Colédoco (conducto hepatocolédoco)','liquido','l 2 10,73 30,66 50,62 66,61','Anterior a la vena porta; diámetro interno ≤ 6 mm (+1 mm por década > 60 años).',{b:.9}],
+ ['Arteria hepática derecha','sangre','e 34 68.4 1.4 1.4','Corte transversal entre colédoco y porta (“orejas de Mickey Mouse” en el corte transverso).'],
+ ['Vena porta principal','vena','l 6 6,81 30,74 52,70 70,70','Posterior al colédoco; paredes ecogénicas.',{b:.95}],
+ ['Vena cava inferior','vena','l 7 0,95 50,90 100,88','Posterior a la porta, separada por el foramen epiploico (Winslow).'],
+ ['Duodeno (bulbo)','intestino','e 86 60 8 5','Adyacente al cuello/fondo; puede contener gas con sombra sucia.'],
+ ]},
+
+{id:'us-pan',g:'US',est:'Abdomen superior',n:'Páncreas y vasos epigástricos — transversal',sonda:'cx',prof:'16 cm',cab:'Epigastrio · transversal',ori:['D ← → I'],q:'pancreas ultrasound transverse',
+ s:[
+ ['Tejido celular subcutáneo','grasa_sc','q 0,0 100,0 100,5 0,5','Grasa de la pared.',{nl:1}],
+ ['Músculo recto abdominal derecho','musculo','e 32 8.5 15 3','Músculo de la pared anterior.'],
+ ['Músculo recto abdominal izquierdo','musculo','e 68 8.5 15 3','Separado del derecho por la línea alba.'],
+ ['Lóbulo hepático izquierdo (segmentos II–III)','higado','p 0,13 66,13 62,21 40,27 18,31 0,33','Ventana acústica para el páncreas.'],
+ ['Antro gástrico (pared)','intestino','p 60,16 100,14 100,32 80,32 62,25','Pared en capas (firma intestinal) con contenido.'],
+ ['Gas gástrico','aire','e 86 22 9 3.6','Gas intraluminal con sombra sucia (limita la cola).',{nl:1}],
+ ['Grasa perivascular de la AMS','grasa','e 53 53 4.2 4.2','Collar graso ecogénico que rodea la AMS.',{nl:1}],
+ ['Cabeza del páncreas','pancreas','p 18,45 26,39 38,36 44,40 44,48 38,54 30,58 20,56','A la derecha de la VMS, rodeada por el marco duodenal; AP normal ≤ 30 mm.',{a:[30,47]}],
+ ['Cuello del páncreas','pancreas','p 38,36 46,33 52,33 50,40 44,41','Anterior a la confluencia esplenomesentérica.',{a:[46,36.5]}],
+ ['Cuerpo del páncreas','pancreas','p 50,33 62,32 74,33 74,40 60,41 50,40','Anterior a la AMS y la vena esplénica; AP ≤ 25 mm.',{a:[62,36.5]}],
+ ['Cola del páncreas','pancreas','p 72,33 88,35 93,40 88,44 74,41','Hacia el hilio esplénico; AP ≤ 25 mm.',{a:[84,39]}],
+ ['Proceso uncinado','pancreas','p 30,55 44,56 47,60 37,63','Porción de la cabeza que se insinúa por detrás de la VMS.',{a:[38,59.5]}],
+ ['Conducto pancreático principal (Wirsung)','liquido','l .9 30,48 40,41 52,37 66,36 82,38','Línea anecoica central; calibre normal ≤ 3 mm.'],
+ ['Vena esplénica','vena','l 3.6 45,45 58,42 72,43 92,45','Marca el borde posterior del cuerpo y la cola.'],
+ ['Confluencia esplenomesentérica (origen de la porta)','vena','e 43.5 45.5 4.5 3.4','Unión de vena esplénica y vena mesentérica superior por detrás del cuello.'],
+ ['Vena mesentérica superior','vena','e 45 53 2.6 2.4','A la derecha de la AMS.'],
+ ['Arteria mesentérica superior','sangre','e 53 53 2.3 2.3','Rodeada de grasa ecogénica; sale de la aorta ~1 cm bajo el tronco celíaco.'],
+ ['Colédoco intrapancreático','liquido','e 23.5 50 1.6 1.6','Posterolateral en la cabeza.'],
+ ['Arteria gastroduodenal','sangre','e 30 40 1.1 1.1','Anterolateral en la cabeza; referencia del borde anterior.'],
+ ['Duodeno (2.ª porción)','intestino','e 11 51 6 5','Lateral a la cabeza pancreática.'],
+ ['Vena renal izquierda','vena','l 2.4 76,63 62,60 54,59.5 46,62 40,65','Cruza entre la AMS (anterior) y la aorta (posterior) para drenar en la VCI (pinza aortomesentérica).'],
+ ['Aorta abdominal','sangre','e 55 67 5 5','Calibre < 2.5–3 cm; a la izquierda de la VCI.',{b:.7}],
+ ['Vena cava inferior','vena','e 36 67 7 4.4','A la derecha de la aorta.'],
+ ['Pilar diafragmático derecho','musculo','l 1.6 47,70 49,80','Banda hipoecoica posterior a la VCI, rodea la aorta.'],
+ ['Cuerpo vertebral','hueso','l 3 36,83 55,79 74,83','Interfase ósea con sombra.'],
+ ['Riñón izquierdo (polo superior)','rinon','e 86 76 10 6.5','Profundo en el flanco izquierdo.'],
+ ]},
+
+{id:'us-baz',g:'US',est:'Abdomen superior',n:'Bazo — coronal intercostal izquierdo',sonda:'cx',prof:'14 cm',cab:'Flanco izquierdo · coronal',ori:['Craneal ←'],q:'spleen ultrasound',
+ s:[
+ ['Costilla','hueso','e 30 6 6 2','Sombra acústica costal: inclinar el transductor en el espacio intercostal.'],
+ ['Base pulmonar izquierda (seno costofrénico)','pulmon','p 0,10 18,8 10,40 0,48','Aire con reverberación; cubre el polo superior en inspiración.'],
+ ['Diafragma','interfase','l 2 6,44 24,16 60,10 94,24','Límite craneal del bazo.'],
+ ['Bazo','bazo','p 12,34 38,18 72,20 92,36 82,54 62,52 52,58 32,58 16,52','Ecotextura homogénea, levemente más ecogénica que el hígado. Longitud normal ≤ 12–13 cm.',{b:.7}],
+ ['Polo superior esplénico','-','pt 18 40','Craneal, bajo el diafragma.'],
+ ['Polo inferior esplénico','-','pt 86 40','Caudal; en esplenomegalia sobrepasa el riñón.'],
+ ['Cara diafragmática (convexa)','-','pt 52 22','Superficie lisa y convexa.'],
+ ['Hilio esplénico','-','pt 58 55','Entrada de los vasos esplénicos en la cara visceral cóncava.'],
+ ['Vena esplénica (hilio)','vena','l 2.4 58,56 54,64 48,72','Calibre ≤ 9–10 mm; aumenta en hipertensión portal.'],
+ ['Cola del páncreas','pancreas','e 40 72 9 3.5','Llega al hilio esplénico por el ligamento esplenorrenal.'],
+ ['Riñón izquierdo','rinon','e 72 80 21 10.5 -10','Posteroinferior al bazo.',{b:.7}],
+ ['Seno renal izquierdo','grasa','e 72 80 12 4 -10','Complejo ecogénico central.',{nl:1}],
+ ]},
+
+{id:'us-rin',g:'US',est:'Abdomen y retroperitoneo',n:'Riñón derecho — longitudinal',sonda:'cx',prof:'14 cm',cab:'Flanco derecho · eje largo',ori:['Craneal ←'],q:'kidney ultrasound longitudinal',ref:'us-ren',
+ s:[
+ ['Hígado (segmento VI)','higado','p 0,0 100,0 100,26 60,22 30,26 0,38','Referencia de ecogenicidad: la corteza renal es iso- o hipoecoica respecto al hígado.'],
+ ['Grasa perirrenal','grasa','e 50 52 43.5 22.5 -8','Halo ecogénico dentro de la fascia de Gerota.',{a:[50,73]}],
+ ['Corteza renal','rinon','e 50 52 40 19.5 -8','Espesor parenquimatoso 15–20 mm; cortical ≥ 7 mm. Longitud 10–12 cm.',{b:.92,a:[78,58]}],
+ ['Pirámide medular (polo superior)','med_renal','e 24 47 4.5 3.4 60','Triángulos hipoecoicos con base hacia la corteza; más evidentes en niños.'],
+ ['Pirámide medular','med_renal','e 36 39.5 4.5 3.4 20','Separadas por columnas de Bertin.',{nl:1}],
+ ['Pirámide medular','med_renal','e 52 37 4.5 3.4 -5','',{nl:1}],
+ ['Pirámide medular','med_renal','e 68 39 4.5 3.4 -30','',{nl:1}],
+ ['Pirámide medular','med_renal','e 29 61 4.5 3.4 -40','',{nl:1}],
+ ['Pirámide medular','med_renal','e 46 67 4.5 3.4 0','',{nl:1}],
+ ['Pirámide medular (polo inferior)','med_renal','e 64 64 4.5 3.4 30','Arterias arcuatas en su base (focos ecogénicos).'],
+ ['Columna de Bertin','-','pt 44 37.5','Corteza que se invagina entre pirámides; su hipertrofia simula masa (pseudotumor).'],
+ ['Seno renal (complejo ecogénico central)','grasa','e 50 52 22 6.5 -8','Grasa, vasos, linfáticos y sistema colector no dilatado.'],
+ ['Polo superior renal','-','pt 11 50','Craneal.'],
+ ['Polo inferior renal','-','pt 88 46','Caudal.'],
+ ['Espacio hepatorrenal (bolsa de Morison)','-','pt 34 29','Receso peritoneal más declive en decúbito supino: primer sitio de líquido libre.'],
+ ['Músculo psoas / cuadrado lumbar','musculo','p 0,82 100,74 100,100 0,100','Plano muscular posterior.'],
+ ]},
+
+{id:'us-vej',g:'US',est:'Pelvis',n:'Vejiga y próstata — transversal suprapúbica',sonda:'cx',prof:'14 cm',cab:'Hipogastrio · transversal',ori:['D ← → I'],q:'bladder prostate ultrasound transabdominal',
+ s:[
+ ['Pared abdominal (rectos)','musculo','q 0,0 100,0 100,10 0,10','Pared anterior.',{nl:1}],
+ ['Vejiga urinaria (orina)','liquido','p 20,14 80,14 89,38 76,60 24,60 11,38','Contenido anecoico con refuerzo posterior; volumen = L × AP × T × 0.52.',{b:.9}],
+ ['Pared vesical','-','pt 50 14','Grosor ≤ 3 mm en repleción (≤ 5 mm vacía); trabeculación indica obstrucción.'],
+ ['Meato ureteral derecho','-','pt 38 58','Sitio de jets ureterales en Doppler color.'],
+ ['Meato ureteral izquierdo','-','pt 62 58','Simétrico.'],
+ ['Trígono vesical','-','pt 50 56','Base vesical entre meatos y cuello.'],
+ ['Músculo obturador interno derecho','musculo','e 10 70 6 15','Pared lateral pélvica.'],
+ ['Músculo obturador interno izquierdo','musculo','e 90 70 6 15','Pared lateral pélvica.'],
+ ['Zona periférica prostática','prostata_zp','e 50 75 16 10','Porción posterolateral (70 % del volumen glandular joven); origen del 70 % de los carcinomas.'],
+ ['Zona de transición (adenoma)','prostata_zt','e 50 72 9.5 6','Rodea la uretra proximal; crece en la hiperplasia prostática benigna.'],
+ ['Uretra prostática','-','pt 50 70.5','Centro de la glándula.'],
+ ['Recto','intestino','e 50 92 11 4.5','Posterior a la próstata.'],
+ ]},
+
+{id:'us-ute',g:'US',est:'Pelvis',n:'Útero — sagital transvaginal',sonda:'tv',prof:'9 cm',cab:'Transvaginal · sagital medio',ori:['Anterior ↑'],q:'transvaginal ultrasound uterus sagittal',ref:'us-pel',
+ s:[
+ ['Vejiga','liquido','p 0,6 20,4 26,14 10,24 0,24','Anteroinferior al útero en anteversión.'],
+ ['Miometrio','miometrio','p 8,46 18,32 42,25 68,30 80,35 96,37 96,51 80,53 66,58 42,63 18,61','Ecogenicidad homogénea intermedia; tres capas (externa, media vascular, interna = zona de unión).',{b:.82}],
+ ['Vasos arcuatos','vena','e 30 31 1.1 .9','Entre capa media y externa del miometrio; calcificados en ancianas o diabéticas.'],
+ ['Vaso arcuato','vena','e 50 27.5 1.1 .9','',{nl:1}],
+ ['Vaso arcuato','vena','e 38 60 1.1 .9','',{nl:1}],
+ ['Zona de unión (miometrio interno)','zona_union','l 8 18,46 44,45 70,44','Halo hipoecoico subendometrial; su irregularidad o engrosamiento sugiere adenomiosis.'],
+ ['Endometrio','endometrio','l 4.6 18,46 44,45 70,44','Medir doble capa en el punto de mayor espesor del eje sagital, excluyendo zona de unión.'],
+ ['Línea endometrial central (cavidad)','interfase','l .5 20,46 44,45 68,44','Interfase de las dos hojas endometriales.'],
+ ['Canal endocervical','endometrio','l 1.5 72,44 95,44','Moco ecogénico; quistes de Naboth frecuentes.'],
+ ['Fondo uterino','-','pt 10 46','Porción craneal por encima de los ostiums tubáricos.'],
+ ['Cuerpo uterino','-','pt 42 33','Porción principal; tres medidas y volumen.'],
+ ['Istmo (segmento uterino inferior)','-','pt 70 36','Unión cuerpo-cuello; sitio del nicho de cesárea.'],
+ ['Orificio cervical interno','-','pt 72 49','Límite entre istmo y canal cervical.'],
+ ['Cérvix','-','pt 86 52','Labios anterior y posterior; longitud ≥ 25 mm en el embarazo.'],
+ ['Orificio cervical externo','-','pt 96 44','Desemboca en la vagina (fondo de saco vaginal).'],
+ ['Fondo de saco de Douglas (rectouterino)','liquido','p 56,66 74,62 82,67 66,71','Punto más declive de la pelvis; lámina fisiológica mínima periovulatoria.'],
+ ['Recto-sigma','intestino','e 72 85 15 6','Posterior al útero; firma intestinal.'],
+ ]},
+
+{id:'us-ova',g:'US',est:'Pelvis',n:'Ovario — transvaginal',sonda:'tv',prof:'7 cm',cab:'Transvaginal · anexo derecho',ori:['Anterior ↑'],q:'ovary transvaginal ultrasound follicles',ref:'us-pel',
+ s:[
+ ['Grasa y asas pélvicas','intestino','p 0,0 100,0 100,100 0,100','Entorno del anexo.',{nl:1}],
+ ['Estroma ovárico','ovario','e 50 46 24 15','Ecogenicidad intermedia; medir tres ejes y volumen (premenopausia ≤ 10 cm³).',{b:.7}],
+ ['Folículo dominante','liquido','e 56 44 8 7','Folículo > 10 mm; preovulatorio 18–25 mm.'],
+ ['Folículos antrales','liquido','e 36 40 2.6 2.4','Folículos de 2–9 mm de disposición periférica; recuento folicular antral (RFA).'],
+ ['Folículo antral','liquido','e 40 54 2.4 2.2','',{nl:1}],
+ ['Folículo antral','liquido','e 32 49 2 2','',{nl:1}],
+ ['Folículo antral','liquido','e 68 52 2.2 2','',{nl:1}],
+ ['Folículo antral','liquido','e 48 34 2 2','',{nl:1}],
+ ['Hilio ovárico (vasos)','-','pt 50 61','Entrada de los vasos ováricos por el mesovario.'],
+ ['Arteria ilíaca interna','sangre','l 4 6,86 50,82 96,80','Referencia lateral: el ovario se sitúa anteromedial a los vasos ilíacos internos (fosa ovárica).'],
+ ['Vena ilíaca interna','vena','l 5 4,94 50,90 98,88','Posterior a la arteria.'],
+ ['Pared lateral pélvica','-','pt 90 70','Peritoneo de la fosa ovárica (de Waldeyer).'],
+ ]},
+
+{id:'us-tes',g:'US',est:'Pelvis',n:'Testículo y epidídimo — longitudinal',sonda:'li',prof:'4 cm',cab:'Hemiescroto derecho · longitudinal',ori:['Craneal ←'],q:'testis ultrasound longitudinal epididymis',
+ s:[
+ ['Piel escrotal y dartos','piel','q 0,0 100,0 100,6 0,6','Capas de la pared escrotal.'],
+ ['Capas de la pared (fascias espermáticas)','grasa_sc','q 0,6 100,6 100,12 0,12','Fascias espermáticas y cremáster.'],
+ ['Túnica vaginal (lámina de líquido)','liquido','e 52 50 43 25','Mínima cantidad de líquido fisiológica entre las hojas parietal y visceral.'],
+ ['Parénquima testicular','testiculo','e 52 50 40 22','Ecotextura homogénea de grano fino; medidas ~4–5 × 2–3 × 2–3 cm; volumen ~12–25 mL.'],
+ ['Túnica albugínea','interfase','r 52 50 40 22 .9','Cápsula fibrosa ecogénica.'],
+ ['Mediastino testicular','interfase','l 2.6 32,60 52,57 74,52','Banda ecogénica lineal posterior (red testicular / rete testis).'],
+ ['Cabeza del epidídimo','epididimo','e 11 38 8.5 8','Craneal, isoecoica o levemente hiperecoica al testículo; ≤ 10–12 mm.'],
+ ['Cuerpo del epidídimo','epididimo','l 4 18,74 50,77 82,74','Posterolateral al testículo; ≤ 2–4 mm.'],
+ ['Cola del epidídimo','epididimo','e 88 68 6 5','Caudal; continúa con el conducto deferente.'],
+ ['Arteria capsular','sangre','e 30 29.5 .9 .7','Ramas centrípetas desde la periferia (Doppler).'],
+ ['Plexo pampiniforme / cordón','vena','l 2 2,26 6,40','Venas del cordón; valorar varicocele (> 2–3 mm, reflujo con Valsalva).'],
+ ]},
+
+{id:'us-obs1',g:'US',est:'Obstetricia',n:'Primer trimestre — saco gestacional y embrión',sonda:'tv',prof:'8 cm',cab:'Transvaginal · sagital uterino',ori:['Anterior ↑'],q:'early pregnancy ultrasound yolk sac embryo',ref:'us-obs',
+ s:[
+ ['Miometrio','miometrio','p 4,40 14,20 40,12 70,16 92,30 96,58 80,80 50,88 20,82 6,62','Útero grávido.',{nl:1}],
+ ['Decidua (reacción decidual)','endometrio','e 50 48 30 24','Endometrio decidualizado ecogénico alrededor del saco.'],
+ ['Signo del doble saco decidual','interfase','r 50 48 22.5 17.5 1','Dos anillos ecogénicos concéntricos (decidua capsular y parietal) que confirman saco intrauterino.'],
+ ['Saco gestacional (celoma extraembrionario)','liquido','e 50 48 21 16','Medir diámetro medio del saco (DMS); con DMS ≥ 25 mm debe verse embrión.'],
+ ['Membrana amniótica','interfase','r 54 50 9.5 8 .5','Membrana fina que delimita la cavidad amniótica.'],
+ ['Cavidad amniótica','liquido','e 54 50 9 7.6','Contiene al embrión.',{nl:1}],
+ ['Embrión (medir LCC)','gris','e 55 52 6 2.6 -10','Longitud cráneo-caudal: mejor parámetro de edad gestacional (± 5 días).'],
+ ['Vesícula vitelina','interfase','r 36 46 3.2 3.2 .8','Anillo ecogénico de 3–5 mm en el celoma; > 6 mm o ausente con embrión es de mal pronóstico.'],
+ ['Corion frondoso (placenta en formación)','-','pt 50 28','Engrosamiento ecogénico del corion en el sitio de implantación.'],
+ ['Cérvix','-','pt 92 60','Debe estar cerrado y sin saco en su interior.'],
+ ]},
+
+{id:'us-obs-dbp',g:'US',est:'Obstetricia',n:'Cráneo fetal — plano transtalámico (DBP / CC)',sonda:'cx',prof:'14 cm',cab:'Biometría · transtalámico',ori:['Occipital →'],q:'fetal head transthalamic plane biparietal',ref:'us-obs',
+ s:[
+ ['Líquido amniótico','liquido','e 50 54 46 38','Anecoico; ILA 5–25 cm.',{nl:1}],
+ ['Calota fetal (huesos parietales)','hueso','r 50 54 33 26 2.4','Contorno óseo ovalado y simétrico; DBP de borde externo a borde interno, CC sobre el borde externo.'],
+ ['Parénquima cerebral','gris','e 50 54 31.6 24.6','Hemisferios cerebrales.',{nl:1}],
+ ['Cisura interhemisférica (línea media)','interfase','l .8 18,54 82,54','Eco medio interrumpido en su tercio anterior por el cavum.'],
+ ['Cavum del septum pelúcido','liquido','e 33 54 5 2.4','Estructura rectangular anecoica en tercio anterior; su ausencia obliga a descartar agenesia del cuerpo calloso / displasia septoóptica.'],
+ ['Tálamo derecho','gris','e 52 49.5 6.5 4','Estructuras hipoecoicas simétricas en forma de corazón a ambos lados del III ventrículo.'],
+ ['Tálamo izquierdo','gris','e 52 58.5 6.5 4','',{nl:1}],
+ ['Tercer ventrículo','liquido','l .8 46,54 58,54','Hendidura entre los tálamos.'],
+ ['Asta frontal ventricular','liquido','e 28 49 4 1.3','Astas frontales a ambos lados del cavum.'],
+ ['Cisura de Silvio (ínsula)','interfase','l 1.1 58,32 63,40','Opercularización progresiva según la edad gestacional.'],
+ ['Plexo coroideo (atrio del hemisferio distal)','plexo','e 70 66 6 3','Hiperecoico en el atrio; atrio < 10 mm. Quiste de plexo: marcador menor.'],
+ ['Diámetro biparietal (DBP)','dash','k 1 50,28 50,78.4','Perpendicular a la línea media en el punto de mayor anchura, borde externo–borde interno.'],
+ ['Pared uterina materna','miometrio','p 0,0 100,0 100,10 50,14 0,10','Miometrio anterior.',{nl:1}],
+ ]},
+
+{id:'us-obs-ca',g:'US',est:'Obstetricia',n:'Abdomen fetal — plano de circunferencia abdominal',sonda:'cx',prof:'14 cm',cab:'Biometría · CA',ori:['Columna ↓'],q:'fetal abdominal circumference ultrasound stomach',ref:'us-obs',
+ s:[
+ ['Líquido amniótico','liquido','e 50 50 46 40','Anecoico.',{nl:1}],
+ ['Piel y pared abdominal fetal','piel','e 50 50 31 29','Contorno para medir la CA (sobre la piel).'],
+ ['Hígado fetal','higado','e 50 50 30 28','Ocupa la mayor parte del abdomen superior fetal.',{nl:1}],
+ ['Estómago (burbuja gástrica, lado izquierdo)','liquido','e 63 44 7 5','Debe estar en el lado izquierdo (situs solitus); su ausencia persistente sugiere atresia esofágica.'],
+ ['Porción umbilical de la vena porta (en “J”)','vena','l 2.6 30,46 40,52 50,49 56,43','Debe verse corta y en forma de “J”, a un tercio de la pared anterior: plano correcto de CA.'],
+ ['Columna (tres núcleos de osificación)','hueso','e 50 75 3 3','Cuerpo vertebral y dos láminas en triángulo; posterior.'],
+ ['Lámina vertebral derecha','hueso','e 43 71 2 2','',{nl:1}],
+ ['Lámina vertebral izquierda','hueso','e 57 71 2 2','',{nl:1}],
+ ['Aorta fetal','sangre','e 52 66 1.6 1.6','Anterior e izquierda a la columna.'],
+ ['Costilla','hueso','l 1.3 20,62 22,72','Solo deben verse costillas cortas a cada lado.'],
+ ['Glándula suprarrenal derecha','-','pt 38 66','Estructura hipoecoica con centro ecogénico, anterior al polo renal.'],
+ ['Circunferencia abdominal (CA)','dash','e 50 50 31 29','Elipse sobre la superficie cutánea.'],
+ ]},
+
+{id:'us-mam',g:'US',est:'Tórax',n:'Mama — corte radial',sonda:'li',prof:'4 cm',cab:'Mama derecha · radial 10 h',ori:['Pezón →'],q:'breast ultrasound normal anatomy',
+ s:[
+ ['Piel','piel','q 0,0 100,0 100,3 0,3','Grosor ≤ 2–3 mm.'],
+ ['Tejido celular subcutáneo (grasa premamaria)','grasa_sc','p 0,3 100,3 100,20 70,22 40,18 0,22','Lobulillos grasos hipoecoicos.'],
+ ['Ligamento de Cooper','interfase','l .7 18,4 22,12 26,21','Bandas ecogénicas que unen la fascia superficial con la piel.'],
+ ['Ligamento de Cooper','interfase','l .7 50,4 54,12 56,19','',{nl:1}],
+ ['Ligamento de Cooper','interfase','l .7 80,4 78,12 82,21','',{nl:1}],
+ ['Tejido fibroglandular (parénquima)','glandula','p 0,22 40,18 70,22 100,20 100,54 60,58 30,56 0,58','Ecogénico; densidad variable con edad y fase hormonal.'],
+ ['Conducto galactóforo','liquido','l 1.4 22,40 50,37 82,34 100,32','Estructura tubular anecoica que converge al pezón; normal ≤ 2–3 mm.'],
+ ['Grasa retromamaria','grasa_sc','p 0,58 30,56 60,58 100,54 100,66 0,68','Plano graso entre glándula y fascia pectoral.'],
+ ['Músculo pectoral mayor','musculo','q 0,68 100,66 100,82 0,84','Fibrilar hipoecoico; límite posterior de la mama.'],
+ ['Cartílago costal','cartilago','e 34 90 11 5','Oval hipoecoico homogéneo (no confundir con nódulo).'],
+ ['Línea pleural','interfase','k .8 0,96 100,96','Interfase pleuropulmonar con deslizamiento.'],
+ ]},
+
+{id:'us-hom',g:'US',est:'Musculoesquelético',n:'Hombro — tendón supraespinoso (longitudinal)',sonda:'li',prof:'3.5 cm',cab:'Hombro derecho · eje largo',ori:['Medial ←'],q:'supraspinatus tendon ultrasound',
+ s:[
+ ['Piel y tejido celular subcutáneo','grasa_sc','q 0,0 100,0 100,8 0,8','Plano superficial.'],
+ ['Músculo deltoides','musculo','p 0,8 100,8 100,28 60,30 30,34 0,40','Músculo superficial hipoecoico con septos fibroadiposos.'],
+ ['Acromion','hueso','l 3 0,34 14,32','Interfase ósea con sombra acústica; limita la visión medial del tendón.'],
+ ['Bursa subacromial-subdeltoidea','grasa','l 1.2 14,38 40,34 70,32 100,34','Línea hipoecoica (líquido) entre dos líneas ecogénicas (grasa peribursal); normal ≤ 2 mm.'],
+ ['Tendón supraespinoso','tendon','p 12,42 40,37 70,35 92,40 96,52 70,52 40,56 14,62','Patrón fibrilar ecogénico en “pico de loro”; grosor 4–6 mm. Anisotropía: hipoecoico si el haz no es perpendicular.'],
+ ['Huella de inserción (troquíter)','-','pt 88 50','Inserción en la faceta superior del troquíter; sitio de roturas de espesor parcial articulares.'],
+ ['Cartílago hialino de la cabeza humeral','cartilago','l 1.6 10,64 40,58 70,56 92,56','Banda anecoica delgada sobre la cortical (no confundir con rotura).'],
+ ['Cabeza humeral (cortical)','hueso','l 2 10,66 40,60 70,58 92,58 100,64','Contorno óseo liso con sombra posterior.'],
+ ['Troquíter','-','pt 96 62','Tuberosidad mayor.'],
+ ]},
+];
+
+/* ===================== CORTES AXIALES TC / RM (cefálico → caudal) =====================
+   El mismo modelo anatómico se muestra en TC (ventanas, contraste) y en RM (T1, T2, FLAIR, T1+Gd).
+   Convención radiológica: izquierda de la imagen = derecha del paciente. */
+const CORTES_AX = [
+{id:'ax-cr1',g:'AX',est:'Cráneo',n:'Cerebro — nivel de ganglios basales y III ventrículo',cab:'Axial · supratentorial',ori:['D ← → I'],
+ tc:['TC-N','TC-H'],rm:['T1','T2','FLAIR','T1C'],q:'axial brain basal ganglia',refTC:'tc-cra',refRM:'rm-cer',
+ s:[
+ ['Cuero cabelludo','musculo','e 50 50 41 47.5','Partes blandas epicraneales.',{a:[84.6,73.3]}],
+ ['Calota (hueso frontal, parietales y occipital)','hueso','e 50 50 39 45.5','Tabla externa, díploe y tabla interna; valorar fracturas en ventana ósea.',{a:[83,27.6]}],
+ ['Espacio subaracnoideo (LCR)','liquido','e 50 50 37 43.5','LCR de la convexidad; aumenta con la atrofia.',{nl:1}],
+ ['Corteza cerebral (sustancia gris)','gris','e 50 50 36 42.5','Más densa que la sustancia blanca en TC (≈ 38 vs 28 UH); la pérdida de diferenciación es signo precoz de isquemia.',{a:[80,30],surcos:46}],
+ ['Sustancia blanca (centro semioval / corona radiada)','blanca','e 50 50 31.5 38','Hipodensa respecto a la corteza en TC, hiperintensa en T1 por la mielina.',{a:[70,22]}],
+ ['Cisura interhemisférica anterior y hoz','liquido','k .9 50,7 50,27','Hoz del cerebro en línea media; desplazamiento > 5 mm indica efecto de masa.'],
+ ['Cisura interhemisférica posterior','liquido','k .9 50,73 50,93','',{nl:1}],
+ ['Hoz del cerebro','dura','k .35 50,7 50,27','Duramadre en línea media; puede calcificarse.',{nl:1}],
+ ['Cisura de Silvio derecha','liquido','l 1.4 14,38 20,44 21,50','Contiene la arteria cerebral media (segmentos M2–M3).'],
+ ['Cisura de Silvio izquierda','liquido','l 1.4 86,38 80,44 79,50','',{nl:1}],
+ ['Corteza insular derecha (cinta insular)','gris','l 2.6 23,39 21.5,48 23,58','Su borramiento es signo precoz de infarto de la ACM.'],
+ ['Corteza insular izquierda','gris','l 2.6 77,39 78.5,48 77,58','',{nl:1}],
+ ['Rodilla del cuerpo calloso','blanca','l 3 43,29 50,26.5 57,29','Une los lóbulos frontales por delante de las astas frontales.'],
+ ['Asta frontal del ventrículo lateral derecho','liquido','p 46,30 49,29.5 49,41 46,43 42.5,38','Limitada lateralmente por la cabeza del caudado.'],
+ ['Asta frontal del ventrículo lateral izquierdo','liquido','p 54,30 51,29.5 51,41 54,43 57.5,38','',{nl:1}],
+ ['Septum pelúcido','-','pt 50 35','Membrana entre las astas frontales.'],
+ ['Cabeza del núcleo caudado derecho','gris','e 40.5 37.5 3.6 5','Forma la pared lateral del asta frontal.'],
+ ['Cabeza del núcleo caudado izquierdo','gris','e 59.5 37.5 3.6 5','',{nl:1}],
+ ['Putamen derecho','gris','e 30.5 46 3.6 8 8','Porción lateral del núcleo lenticular; sitio típico de hemorragia hipertensiva.'],
+ ['Putamen izquierdo','gris','e 69.5 46 3.6 8 -8','',{nl:1}],
+ ['Globo pálido derecho','palido','e 34.6 47 2.2 5 8','Porción medial del lenticular; calcificación fisiológica frecuente; afectado en intoxicación por CO.'],
+ ['Globo pálido izquierdo','palido','e 65.4 47 2.2 5 -8','',{nl:1}],
+ ['Brazo anterior de la cápsula interna','-','pt 37 40','Entre caudado y lenticular (fibras frontopontinas y talamocorticales).'],
+ ['Rodilla de la cápsula interna','-','pt 41.5 46','Fibras corticobulbares.'],
+ ['Brazo posterior de la cápsula interna','-','pt 38.5 53','Entre tálamo y lenticular: vía corticoespinal; infarto lacunar = hemiparesia motora pura.'],
+ ['Cápsula externa / claustro / cápsula extrema','-','pt 26 46','Láminas entre putamen e ínsula.'],
+ ['Tálamo derecho','gris','e 44 54 5 6.5','Núcleo de relevo sensitivo; irrigado por arterias talamoperforantes (ACP).'],
+ ['Tálamo izquierdo','gris','e 56 54 5 6.5','',{nl:1}],
+ ['Tercer ventrículo','liquido','e 50 52 1.1 5','Hendidura en línea media entre los tálamos; anchura normal < 6 mm en adultos.'],
+ ['Esplenio del cuerpo calloso','blanca','l 3.2 43,63 50,65.5 57,63','Porción posterior del cuerpo calloso.'],
+ ['Glándula pineal (calcificada)','calcio','e 50 61 1 1','Calcificación fisiológica frecuente en adultos; referencia de línea media.'],
+ ['Atrio del ventrículo lateral derecho','liquido','p 39.5,63 44,62 45,68 41,75 37.5,70','Trígono ventricular; contiene el glomus del plexo coroideo.'],
+ ['Atrio del ventrículo lateral izquierdo','liquido','p 60.5,63 56,62 55,68 59,75 62.5,70','',{nl:1}],
+ ['Plexo coroideo (glomus) calcificado','calcio','e 41.5 67.5 1.4 1.4','Calcificación fisiológica en TC; realza con contraste.'],
+ ['Plexo coroideo izquierdo','calcio','e 58.5 67.5 1.4 1.4','',{nl:1}],
+ ['Lóbulo frontal derecho','-','pt 33 18','Por delante de la cisura de Rolando (no visible en este nivel).'],
+ ['Lóbulo frontal izquierdo','-','pt 67 15','',{}],
+ ['Lóbulo temporal derecho (giro temporal superior)','-','pt 12 52','Lateral a la cisura de Silvio.'],
+ ['Lóbulo parietal / temporooccipital derecho','-','pt 22 72','Región posterior lateral.'],
+ ['Lóbulo occipital derecho','-','pt 38 86','Corteza visual (territorio de la ACP).'],
+ ['Lóbulo occipital izquierdo','-','pt 62 86','',{}],
+ ]},
+
+{id:'ax-cr2',g:'AX',est:'Cráneo',n:'Fosa posterior — nivel de protuberancia y IV ventrículo',cab:'Axial · infratentorial',ori:['D ← → I'],
+ tc:['TC-N','TC-H'],rm:['T1','T2','FLAIR','T1C'],q:'axial CT posterior fossa pons',refTC:'tc-cra',refRM:'rm-cer',
+ s:[
+ ['Partes blandas','musculo','p 50,2 76,8 90,30 90,62 80,86 50,97 20,86 10,62 10,30 24,8','Músculo temporal y partes blandas.',{nl:1}],
+ ['Calota / base de cráneo','hueso','p 50,4 74,10 87,30 87,62 78,84 50,95 22,84 13,62 13,30 26,10','Fosa craneal media y posterior.',{a:[50,95]}],
+ ['Espacio subaracnoideo','liquido','p 50,6.5 72,12 85,30 85,62 76,82 50,92.5 24,82 15,62 15,30 28,12','',{nl:1}],
+ ['Lóbulo frontal (giro recto / orbitario)','gris','p 34,9 50,8 66,9 66,20 50,21 34,20','Superficie orbitaria de los lóbulos frontales (sitio de contusión).',{a:[42,14]}],
+ ['Seno esfenoidal','aire','p 42,24 58,24 59,32 41,32','Neumatizado, por debajo de la silla turca.'],
+ ['Pared ósea del seno esfenoidal','hueso','r 50 28 9 4.6 .7','',{nl:1}],
+ ['Lóbulo temporal derecho','gris','e 27 38 10 13','En la fosa craneal media; polo temporal anterior (sitio de contusión).'],
+ ['Lóbulo temporal izquierdo','gris','e 73 38 10 13','',{nl:1}],
+ ['Sustancia blanca temporal','blanca','e 28 39 5 8','',{nl:1}],
+ ['Sustancia blanca temporal','blanca','e 72 39 5 8','',{nl:1}],
+ ['Peñasco del temporal derecho (porción petrosa)','hueso','l 4 18,47 30,51 42,55','Contiene oído interno; borde superior insertado por la tienda del cerebelo.'],
+ ['Peñasco del temporal izquierdo','hueso','l 4 82,47 70,51 58,55','',{nl:1}],
+ ['Conducto auditivo interno derecho','liquido','l 1.3 31,50.5 37,52.5','Nervios facial (VII) y vestibulococlear (VIII); ángulo pontocerebeloso.'],
+ ['Celdas mastoideas derechas','aire','e 16 58 4.5 6','Neumatizadas; su ocupación sugiere mastoiditis o fractura.'],
+ ['Celdas mastoideas izquierdas','aire','e 84 58 4.5 6','',{nl:1}],
+ ['Septos mastoideos','hueso','r 16 58 4.5 6 .6','',{nl:1}],
+ ['Septos mastoideos','hueso','r 84 58 4.5 6 .6','',{nl:1}],
+ ['Cisterna prepontina','liquido','e 50 47.5 10 3','Contiene la arteria basilar; sitio de sangrado en HSA perimesencefálica.'],
+ ['Arteria basilar','sangre','e 50 47 1.3 1.3','Hiperdensa espontánea en trombosis basilar aguda.'],
+ ['Protuberancia (puente)','blanca','e 50 54.5 8.2 6.2','Tronco encefálico; núcleos de los pares V–VIII.'],
+ ['Pedúnculo cerebeloso medio derecho','blanca','e 41 59 3.5 3 30','Une protuberancia y cerebelo.'],
+ ['Pedúnculo cerebeloso medio izquierdo','blanca','e 59 59 3.5 3 -30','',{nl:1}],
+ ['Hemisferio cerebeloso derecho','gris','e 37 72 13 11.5','Densidad similar a la sustancia gris; folias separadas por surcos finos.',{surcos:22}],
+ ['Hemisferio cerebeloso izquierdo','gris','e 63 72 13 11.5','',{nl:1,surcos:22}],
+ ['Vermis cerebeloso','gris','e 50 73 4 9','Línea media del cerebelo.'],
+ ['Cuarto ventrículo','liquido','q 47.5,62 52.5,62 53.5,65.5 50,68 46.5,65.5','Forma de riñón o media luna; su borramiento o desplazamiento indica efecto de masa en la fosa posterior.'],
+ ['Núcleo dentado derecho','blanca','e 39 70 2.5 3.5 20','Puede calcificar.'],
+ ['Seno sigmoide derecho','vena','e 25.5 70 2 2.6','Surco óseo posterior al peñasco; trombosis venosa.'],
+ ['Seno sigmoide izquierdo','vena','e 74.5 70 2 2.6','',{nl:1}],
+ ['Cisterna magna','liquido','e 50 86 5 3','Posterior al vermis; megacisterna magna > 10 mm.'],
+ ['Hueso occipital (escama)','-','pt 50 93','Protuberancia occipital interna.'],
+ ]},
+
+{id:'ax-cue',g:'AX',est:'Cuello',n:'Cuello — nivel tiroideo (C7)',cab:'Axial · cuello inferior',ori:['D ← → I'],
+ tc:['TC-C','TC-B','TC-H'],rm:['T1','T2','T1C'],q:'axial CT neck thyroid level',
+ s:[
+ ['Tejido celular subcutáneo','grasa_sc','e 50 50 46 33','Grasa cervical.',{nl:1}],
+ ['Platisma y piel','piel','r 50 50 46 33 .6','',{nl:1}],
+ ['Músculos paravertebrales (semiespinoso, esplenio) y trapecio','musculo','p 14,58 30,60 50,64 70,60 86,58 82,74 66,81 50,82 34,81 18,74','Compartimento posterior del cuello.'],
+ ['Músculo esternocleidomastoideo derecho','musculo','e 21 33 7 4 35','Divide triángulos anterior y posterior; anterolateral a la vaina carotídea.'],
+ ['Músculo esternocleidomastoideo izquierdo','musculo','e 79 33 7 4 -35','',{nl:1}],
+ ['Músculos infrahioideos','musculo','l 2.2 36,23 44,20.5 50,20 56,20.5 64,23','Esternohioideo y esternotiroideo.'],
+ ['Lóbulo tiroideo derecho','tiroides','e 38 33 5.5 8 -15','Hiperdenso en TC simple por su contenido de yodo (≈ 100 UH); realza intensamente.'],
+ ['Lóbulo tiroideo izquierdo','tiroides','e 62 33 5.5 8 15','',{nl:1}],
+ ['Istmo tiroideo','tiroides','l 3 41,26 50,25 59,26','Anterior a la tráquea.'],
+ ['Cartílago traqueal','cartilago','r 50 34 6.6 6 1','Anillo en “C” abierto posteriormente (pared membranosa).'],
+ ['Tráquea','aire','e 50 34 5.8 5.3','Luz aérea; diámetro coronal ≤ 25 mm (varón).'],
+ ['Esófago cervical','musculo','e 53 43 3.2 2.3','Posterior e izquierdo a la tráquea; puede contener gas.'],
+ ['Luz esofágica','aire','e 53 43 .8 .6','',{nl:1}],
+ ['Arteria carótida común derecha','sangre','e 30 40 2.6 2.6','Dentro de la vaina carotídea, medial a la yugular.'],
+ ['Arteria carótida común izquierda','sangre','e 70 40 2.6 2.6','',{nl:1}],
+ ['Vena yugular interna derecha','vena','e 24.5 37.5 3.6 2.7','Lateral a la carótida; habitualmente la derecha es mayor.'],
+ ['Vena yugular interna izquierda','vena','e 75.5 37.5 3.2 2.5','',{nl:1}],
+ ['Músculos escalenos anterior y medio derechos','musculo','e 32 49 3.5 4.5','Entre ellos pasa el plexo braquial (desfiladero interescalénico).'],
+ ['Músculos escalenos izquierdos','musculo','e 68 49 3.5 4.5','',{nl:1}],
+ ['Músculo largo del cuello derecho','musculo','e 45 47.5 2.6 2','Prevertebral.'],
+ ['Músculo largo del cuello izquierdo','musculo','e 55 47.5 2.6 2','',{nl:1}],
+ ['Cuerpo vertebral C7','esponjoso','e 50 53 6.5 4.8','Hueso esponjoso con cortical.'],
+ ['Cortical vertebral','hueso','r 50 53 6.5 4.8 .7','',{nl:1}],
+ ['Apófisis transversa derecha','hueso','l 2.4 43,53.5 35,52.5','En C7 el agujero transverso no suele contener la arteria vertebral.'],
+ ['Apófisis transversa izquierda','hueso','l 2.4 57,53.5 65,52.5','',{nl:1}],
+ ['Arteria vertebral derecha','sangre','e 40 50 1.1 1.1','Ingresa al agujero transverso habitualmente en C6.'],
+ ['Arteria vertebral izquierda','sangre','e 60 50 1.1 1.1','',{nl:1}],
+ ['Conducto raquídeo (saco dural, LCR)','liquido','e 50 61 4 3','',{nl:1}],
+ ['Médula espinal cervical','medula','e 50 61 2.4 1.7','Engrosamiento cervical (C5–T1).'],
+ ['Lámina y apófisis espinosa C7','hueso','k 2.4 44,63 50,67 56,63','Apófisis espinosa prominente (vértebra prominente).'],
+ ['Apófisis espinosa','hueso','k 2 50,67 50,75','',{nl:1}],
+ ['Nivel ganglionar IV derecho (yugular inferior)','-','pt 22 44','Ganglios laterales a la yugular interna bajo el cricoides.'],
+ ['Nivel ganglionar VI (compartimento central)','-','pt 44 40','Pretraqueales y paratraqueales (surco traqueoesofágico).'],
+ ]},
+
+{id:'ax-tx1',g:'AX',est:'Tórax',n:'Tórax — nivel de la bifurcación traqueal y arteria pulmonar',cab:'Axial · carina',ori:['D ← → I'],
+ tc:['TC-C','TC-P','TC-B','TC-H'],rm:['T1','T2'],q:'axial CT chest pulmonary artery carina',refTC:'tc-tor',
+ s:[
+ ['Tejido celular subcutáneo','grasa_sc','e 50 50 47 35','',{nl:1}],
+ ['Pared torácica (músculos intercostales y dorsales)','musculo','e 50 50 45 33','Músculos pectorales, serrato, dorsal ancho e intercostales.',{a:[8,46]}],
+ ['Músculo pectoral mayor derecho','musculo','p 14,24 44,17 46,21 18,30','Plano anterior.'],
+ ['Pulmón derecho','pulmon','p 9,52 13,30 28,18 44,21 45,46 44,72 30,80 15,74','Parénquima aireado (≈ −850 UH); valorar en ventana pulmonar.',{vas:1,nl:1}],
+ ['Pulmón izquierdo','pulmon','p 91,52 87,30 72,18 56,21 55,46 56,72 70,80 85,74','',{vas:1,nl:1}],
+ ['Lóbulo superior derecho (segmento anterior S3)','-','pt 26 30','Anterior a la cisura mayor.'],
+ ['Lóbulo inferior derecho (segmento superior S6)','-','pt 26 68','Posterior a la cisura mayor.'],
+ ['Cisura mayor (oblicua) derecha','cisura','l .45 12,60 24,55 38,50','Línea fina en ventana pulmonar; separa lóbulo superior e inferior a este nivel.'],
+ ['Lóbulo superior izquierdo (segmento anterior)','-','pt 74 30','Anterior a la cisura mayor izquierda.'],
+ ['Lóbulo inferior izquierdo (segmento superior S6)','-','pt 74 68','',{}],
+ ['Cisura mayor izquierda','cisura','l .45 88,60 76,55 62,50','',{nl:1}],
+ ['Grasa mediastínica','grasa','p 41,22 59,22 61,40 60,64 50,68 40,64 39,40','Mediastino visceral.',{nl:1}],
+ ['Esternón (cuerpo)','esponjoso','e 50 19.5 5 2.2','',{}],
+ ['Aorta ascendente','sangre','e 45.5 37 5.5 5.5','Diámetro normal < 40 mm.'],
+ ['Tronco de la arteria pulmonar','sangre','e 55.5 33 5 4.6','Diámetro < 29 mm; mayor que la aorta sugiere hipertensión pulmonar.'],
+ ['Arteria pulmonar izquierda','sangre','l 4.4 57,36 61,43 63,51','Cabalga sobre el bronquio principal izquierdo.'],
+ ['Arteria pulmonar derecha','sangre','l 4 53,40 47,45 40,47','Pasa por detrás de la aorta ascendente y la VCS.'],
+ ['Vena cava superior','vena','e 39 35 3.5 3.5','A la derecha de la aorta ascendente.'],
+ ['Bronquio principal derecho','aire','l 2.4 49.5,52 43,52.5 37,51','Más corto, ancho y vertical que el izquierdo.'],
+ ['Bronquio principal izquierdo','aire','l 2.2 52.5,52 58,54 62,57','Más largo; por debajo del cayado aórtico.'],
+ ['Pared bronquial','cartilago','r 51 52 2.6 2 .5','',{nl:1}],
+ ['Espacio subcarinal (estación ganglionar 7)','-','pt 51 57','Ganglios subcarinales: normal < 12 mm en eje corto.'],
+ ['Esófago','musculo','e 54 59.5 2.4 2.2','Retrocardíaco, a la izquierda de la línea media.'],
+ ['Vena ácigos','vena','e 49 62 1.5 1.5','Prevertebral derecha; desemboca en la VCS.'],
+ ['Aorta descendente','sangre','e 58.5 64 4.4 4.4','Paravertebral izquierda; < 30 mm.'],
+ ['Cuerpo vertebral torácico','esponjoso','e 50 72 6 5.5','',{}],
+ ['Cortical vertebral','hueso','r 50 72 6 5.5 .7','',{nl:1}],
+ ['Conducto raquídeo y médula torácica','liquido','e 50 80 3 2.5','',{nl:1}],
+ ['Médula espinal torácica','medula','e 50 80 1.6 1.4','',{}],
+ ['Costilla (arco posterior)','hueso','l 1.8 44,75 30,81 16,73','Arcos costales en corte oblicuo.'],
+ ['Costilla izquierda','hueso','l 1.8 56,75 70,81 84,73','',{nl:1}],
+ ['Escápula derecha','hueso','l 2.4 13,74 24,80','Plano posterior a la pared torácica.'],
+ ['Escápula izquierda','hueso','l 2.4 87,74 76,80','',{nl:1}],
+ ['Músculos paravertebrales','musculo','e 40 81 5 4','Erectores de la columna.'],
+ ['Músculos paravertebrales','musculo','e 60 81 5 4','',{nl:1}],
+ ]},
+
+{id:'ax-tx2',g:'AX',est:'Tórax',n:'Tórax — nivel de cuatro cámaras cardíacas',cab:'Axial · corazón',ori:['D ← → I'],
+ tc:['TC-C','TC-P','TC-B'],rm:['T1','T2'],q:'axial CT heart four chamber',refTC:'tc-tor',
+ s:[
+ ['Tejido celular subcutáneo','grasa_sc','e 50 50 47 35','',{nl:1}],
+ ['Pared torácica','musculo','e 50 50 45 33','',{nl:1}],
+ ['Pulmón derecho','pulmon','p 9,52 13,30 28,20 42,26 34,50 42,72 30,80 15,74','',{vas:1,nl:1}],
+ ['Pulmón izquierdo','pulmon','p 91,52 87,30 72,20 66,28 74,46 62,72 70,80 85,74','',{vas:1,nl:1}],
+ ['Lóbulo medio','-','pt 22 34','Anterior a la cisura mayor, por debajo de la menor.'],
+ ['Lóbulo inferior derecho','-','pt 22 66','Segmentos basales.'],
+ ['Língula (lóbulo superior izquierdo)','-','pt 80 36','Segmentos lingulares superior e inferior.'],
+ ['Lóbulo inferior izquierdo','-','pt 79 66','Segmentos basales.'],
+ ['Cisura mayor derecha','cisura','l .45 12,56 24,50 34,44','',{nl:1}],
+ ['Cisura mayor izquierda','cisura','l .45 88,56 80,50 72,44','',{nl:1}],
+ ['Grasa epicárdica / pericárdica','grasa','e 51 45 21 17 30','',{nl:1}],
+ ['Pericardio','dura','r 51 45 19.5 15.8 .6 30','Línea fina ≤ 2–3 mm; derrame si se separa.'],
+ ['Miocardio','musculo','e 51 45 19 15.2 30','Densidad muscular; la cavidad se opacifica con contraste.',{nl:1}],
+ ['Ventrículo derecho','sangre','e 46 36 8 5 25','Anterior, detrás del esternón; trabeculado con banda moderadora.'],
+ ['Ventrículo izquierdo','sangre','e 59 46 6 7.5 30','Pared de 8–11 mm; ápex hacia anterior-izquierda.'],
+ ['Septo interventricular','-','pt 53 40','Separa ambos ventrículos; normal ≤ 11 mm.'],
+ ['Aurícula derecha','sangre','e 37 50 6 6','Recibe VCS, VCI y seno coronario; forma el borde cardíaco derecho.'],
+ ['Aurícula izquierda','sangre','e 51 58 7.5 4.2','Estructura más posterior del corazón, anterior al esófago.'],
+ ['Válvula mitral (plano)','-','pt 56 53','Entre aurícula y ventrículo izquierdos.'],
+ ['Válvula tricúspide (plano)','-','pt 41 44','Entre aurícula y ventrículo derechos.'],
+ ['Arteria coronaria derecha','sangre','e 37 40 .9 .9','En el surco auriculoventricular derecho.'],
+ ['Arteria descendente anterior','sangre','e 57 31 .8 .8','En el surco interventricular anterior.'],
+ ['Esófago','musculo','e 52 65 2.2 2','Posterior a la aurícula izquierda.'],
+ ['Aorta descendente','sangre','e 59 66 4.2 4.2','',{}],
+ ['Vena ácigos','vena','e 47.5 66 1.4 1.4','',{nl:1}],
+ ['Esternón','esponjoso','e 50 19 4.5 2','',{}],
+ ['Cuerpo vertebral','esponjoso','e 50 74 6 5.5','',{}],
+ ['Cortical vertebral','hueso','r 50 74 6 5.5 .7','',{nl:1}],
+ ['Médula espinal','medula','e 50 82 1.6 1.4','',{nl:1}],
+ ['Costillas','hueso','l 1.8 44,77 30,82 16,74','',{nl:1}],
+ ['Costillas','hueso','l 1.8 56,77 70,82 84,74','',{nl:1}],
+ ['Mama derecha','grasa_sc','e 26 15 12 4','Tejido mamario anterior.',{nl:1}],
+ ]},
+
+{id:'ax-ab1',g:'AX',est:'Abdomen',n:'Abdomen superior — venas hepáticas (segmentos VII, VIII, IVa, II, I)',cab:'Axial · cúpula hepática',ori:['D ← → I'],
+ tc:['TC-C','TC-B','TC-P'],rm:['T1','T2','T1C'],q:'axial CT liver hepatic veins',refTC:'tc-abd',refRM:'rm-abd',
+ s:[
+ ['Tejido celular subcutáneo','grasa_sc','e 50 50 47 37','',{nl:1}],
+ ['Pared abdominal / torácica inferior','musculo','e 50 50 45 35','',{nl:1}],
+ ['Grasa intraabdominal','grasa','e 50 50 42.5 32.5','',{nl:1}],
+ ['Receso pleural posterior derecho (base pulmonar)','pulmon','p 10,64 18,76 32,83 42,82 30,77 15,66','Seno costofrénico posterior.'],
+ ['Base pulmonar izquierda','pulmon','p 90,64 82,76 68,83 58,82 70,77 85,66','',{nl:1}],
+ ['Hígado','higado','p 9,50 12,30 24,17 44,15 62,18 70,27 66,36 60,44 58,54 56,66 48,74 38,76 24,74 13,66','Densidad 55–65 UH en simple (mayor que el bazo); realce homogéneo en fase portal.',{nl:1}],
+ ['Vena cava inferior intrahepática','vena','e 49 60 4.5 3.6','Recibe las venas hepáticas en la confluencia.'],
+ ['Vena hepática derecha','vena','l 2.2 46,58 36,50 25,42 15,36','Plano intersegmentario VII / VIII.'],
+ ['Vena hepática media','vena','l 2 49,56.5 46,44 42,30 38,18','Línea de Cantlie: lóbulo derecho / izquierdo (VIII / IVa).'],
+ ['Vena hepática izquierda','vena','l 2 52,57 57,48 62,38 68,28','Plano IVa / II.'],
+ ['Límite VII / VIII','dash','k .8 15,36 9,32','',{nl:1}],
+ ['Límite VIII / IVa','dash','k .8 38,18 37,14','',{nl:1}],
+ ['Límite IVa / II','dash','k .8 68,28 72,23','',{nl:1}],
+ ['Segmento VII (posterosuperior derecho)','-','pt 22 62','Posterior a la VHD, bajo la cúpula diafragmática.'],
+ ['Segmento VIII (anterosuperior derecho)','-','pt 28 30','Entre VHD y VHM.'],
+ ['Segmento IVa (medial superior izquierdo)','-','pt 51 30','Entre VHM y VHI.'],
+ ['Segmento II (lateral superior izquierdo)','-','pt 64 22','Lateral a la VHI.'],
+ ['Segmento I (caudado)','-','pt 54 64','Anterior e izquierdo a la VCI.'],
+ ['Estómago (fundus) — pared','intestino','p 62,30 74,27 83,37 80,50 70,54 62,44','Pared gástrica que realza en capas.'],
+ ['Gas y contenido del fundus gástrico','aire','e 73 39 7 7','Gas intraluminal.',{nl:1}],
+ ['Unión gastroesofágica','musculo','e 59 58 2.6 2.1','Esófago abdominal que atraviesa el hiato.'],
+ ['Bazo (polo superior)','bazo','p 80,58 87,50 89,62 85,72 77,76 75,68','Densidad algo menor que el hígado en simple; realce heterogéneo arciforme en fase arterial.'],
+ ['Aorta (hiato aórtico)','sangre','e 54 71 3.4 3.4','Retrocrural.'],
+ ['Pilar diafragmático derecho','musculo','l 1.5 50,66 51,75','Rodea el hiato aórtico; no confundir con adenopatía.'],
+ ['Pilar diafragmático izquierdo','musculo','l 1.5 58,66 57.5,75','',{nl:1}],
+ ['Cuerpo vertebral (T11)','esponjoso','e 52 80 6 5','',{}],
+ ['Cortical vertebral','hueso','r 52 80 6 5 .7','',{nl:1}],
+ ['Médula espinal','medula','e 52 87 1.6 1.4','',{nl:1}],
+ ['Costilla','hueso','e 9 40 1.4 2.4','Arcos costales inferiores.'],
+ ['Costilla','hueso','e 91 40 1.4 2.4','',{nl:1}],
+ ['Costilla','hueso','e 15 74 1.8 1.6','',{nl:1}],
+ ['Costilla','hueso','e 85 74 1.8 1.6','',{nl:1}],
+ ['Músculos paravertebrales','musculo','e 42 88 6 4','',{nl:1}],
+ ['Músculos paravertebrales','musculo','e 62 88 6 4','',{nl:1}],
+ ]},
+
+{id:'ax-ab2',g:'AX',est:'Abdomen',n:'Abdomen superior — hilio hepático, tronco celíaco y suprarrenales',cab:'Axial · plano portal',ori:['D ← → I'],
+ tc:['TC-C','TC-B'],rm:['T1','T2','T1C'],q:'axial CT abdomen portal vein celiac',refTC:'tc-abd',refRM:'rm-abd',
+ s:[
+ ['Tejido celular subcutáneo','grasa_sc','e 50 50 47 37','',{nl:1}],
+ ['Pared abdominal','musculo','e 50 50 45 35','',{nl:1}],
+ ['Grasa intraabdominal','grasa','e 50 50 42.5 32.5','',{nl:1}],
+ ['Hígado','higado','p 9,50 12,32 24,21 44,19 58,22 70,27 70,35 62,43 52,52 48,62 40,72 24,74 13,66','',{nl:1}],
+ ['Vena porta principal','vena','e 44 51 3.4 3','Hilio hepático; ≤ 13 mm.'],
+ ['Rama portal derecha','vena','l 2.4 42,50 33,47 25,45','Se divide en anterior (V/VIII) y posterior (VI/VII).'],
+ ['Rama portal derecha anterior','vena','l 1.6 31,46.5 32,36','',{nl:1}],
+ ['Rama portal derecha posterior','vena','l 1.6 26,45 18,54','',{nl:1}],
+ ['Rama portal izquierda (porción umbilical)','vena','l 2 46,49 53,41 58,33','Hacia el receso de Rex.'],
+ ['Fisura del ligamento redondo','grasa','l 1.4 58,32 62,25','Separa segmento IV (medial) y III (lateral).'],
+ ['Fisura del ligamento venoso','grasa','l 1 52,49 56,55','Separa caudado y segmento II/III.'],
+ ['Línea de Cantlie (lecho vesicular – VCI)','dash','k .8 38,21 45,62','',{nl:1}],
+ ['Sector anterior derecho (V/VIII)','-','pt 30 30','Por delante de la VHD.'],
+ ['Sector posterior derecho (VI/VII)','-','pt 15 56','Por detrás de la VHD.'],
+ ['Segmento IVb','-','pt 50 30','Entre Cantlie y el ligamento redondo, bajo el plano portal.'],
+ ['Segmento III','-','pt 64 34','Lateral al ligamento redondo.'],
+ ['Segmento I (caudado; proceso papilar)','-','pt 50 58','Entre la fisura del ligamento venoso y la VCI.'],
+ ['Vena cava inferior','vena','e 46 65 4 3','Retrohepática.'],
+ ['Estómago (cuerpo)','intestino','p 64,40 78,29 88,37 85,49 72,53','Pared gástrica.'],
+ ['Contenido gástrico','aire','e 77 41 6 5','',{nl:1}],
+ ['Cuerpo del páncreas','pancreas','p 52,59 64,57 76,59 84,63 82,67 70,65 58,65 52,63','Anterior a la vena esplénica.'],
+ ['Vena esplénica','vena','l 1.6 54,65.5 66,67 80,67','Posterior al páncreas.'],
+ ['Tronco celíaco','sangre','l 1.8 55,71 56,64','Sale de la cara anterior de la aorta a nivel T12–L1.'],
+ ['Arteria hepática común','sangre','l 1.2 56,63 50,58 45,55','Hacia la derecha por el borde superior del páncreas.'],
+ ['Arteria esplénica','sangre','l 1.2 56,63 66,61 77,62','Tortuosa, por el borde superior del páncreas.'],
+ ['Aorta abdominal','sangre','e 55 73 3.3 3.3','',{}],
+ ['Bazo','bazo','p 84,58 90,50 92,62 88,74 80,78 78,70','',{}],
+ ['Glándula suprarrenal derecha','suprarrenal','k 1 46,70 42,77','Lineal, posterior a la VCI; grosor de rama < 5 mm.'],
+ ['Glándula suprarrenal izquierda (forma de λ)','suprarrenal','k 1 62,70 63,77','Anteromedial al polo superior renal izquierdo.'],
+ ['Rama suprarrenal izquierda','suprarrenal','k 1 62.5,73 66,77','',{nl:1}],
+ ['Riñón derecho (polo superior)','rinon','e 34 79 6 5','',{}],
+ ['Riñón izquierdo (polo superior)','rinon','e 71 79 6 5','',{nl:1}],
+ ['Pilares diafragmáticos','musculo','l 1.4 51,69 51,78','',{nl:1}],
+ ['Cuerpo vertebral (T12)','esponjoso','e 54 84 6 5','',{}],
+ ['Cortical vertebral','hueso','r 54 84 6 5 .7','',{nl:1}],
+ ['Médula espinal / cono','medula','e 54 91 1.6 1.4','',{nl:1}],
+ ['Músculos paravertebrales','musculo','e 44 90 6 4','',{nl:1}],
+ ['Músculos paravertebrales','musculo','e 64 90 6 4','',{nl:1}],
+ ]},
+
+{id:'ax-ab3',g:'AX',est:'Abdomen',n:'Abdomen — hilios renales, cabeza pancreática y vena renal izquierda',cab:'Axial · L1–L2',ori:['D ← → I'],
+ tc:['TC-C','TC-B'],rm:['T1','T2','T1C'],q:'axial CT abdomen kidneys renal hilum',refTC:'tc-abd',
+ s:[
+ ['Tejido celular subcutáneo','grasa_sc','e 50 50 47 37','',{nl:1}],
+ ['Músculo recto abdominal derecho','musculo','e 42 15.5 6.5 2.2','Envuelto por la vaina de los rectos.'],
+ ['Músculo recto abdominal izquierdo','musculo','e 58 15.5 6.5 2.2','',{nl:1}],
+ ['Músculos oblicuos externo, interno y transverso derechos','musculo','l 3 13,32 7,50 11,68','Tres capas de la pared lateral.'],
+ ['Músculos oblicuos izquierdos','musculo','l 3 87,32 93,50 89,68','',{nl:1}],
+ ['Grasa intraabdominal y retroperitoneal','grasa','e 50 50 42 32','',{nl:1}],
+ ['Hígado (segmentos V y VI inferiores)','higado','p 8,48 12,28 24,21 31,30 29,46 24,58 14,62','Borde inferior del lóbulo derecho.',{a:[18,40]}],
+ ['Segmento V','-','pt 26 28','Anteroinferior derecho.'],
+ ['Segmento VI','-','pt 13 52','Posteroinferior derecho.'],
+ ['Vesícula biliar (fondo)','liquido','e 32 31 4 3.6','Bilis ≈ 0–20 UH.'],
+ ['Duodeno (2.ª porción, descendente)','intestino','e 34.5 45 3.6 4','Rodea la cabeza pancreática; papila mayor en su pared medial.'],
+ ['Cabeza del páncreas','pancreas','p 38,43 46,41 50,47 48,55 40,56 36,50','Dentro del marco duodenal.'],
+ ['Proceso uncinado','pancreas','p 42,56 50,55.5 52,60 44,60','Posterior a la VMS; no debe sobrepasar su borde izquierdo.'],
+ ['Grasa de la raíz mesentérica','grasa','e 54 51.5 3 3','',{nl:1}],
+ ['Vena mesentérica superior','vena','e 50 51.5 1.8 1.8','A la derecha de la AMS (inversión: malrotación).'],
+ ['Arteria mesentérica superior','sangre','e 54 51.5 1.5 1.5','Rodeada de grasa; ángulo aortomesentérico normal 25–60°.'],
+ ['Vena renal izquierda','vena','l 1.8 66,64 60,60 55,58.5 51,59.5 47,62','Cruza entre AMS y aorta (pinza aortomesentérica / síndrome del cascanueces).'],
+ ['Aorta abdominal','sangre','e 55 63.5 3.4 3.4','',{}],
+ ['Vena cava inferior','vena','e 45 63.5 4.5 3','',{}],
+ ['Arteria renal izquierda','sangre','l 1 57,64 64,66.5','Posterior a la vena renal.'],
+ ['Grasa perirrenal derecha','grasa','e 30 70 11 9 30','Espacio perirrenal (fascia de Gerota).',{nl:1}],
+ ['Corteza renal derecha','rinon','e 30 70 9 7 30','Fase corticomedular: corteza realza antes que la médula; fase nefrográfica: realce homogéneo.'],
+ ['Médula renal derecha (pirámides)','med_renal','e 30.5 69.5 6 4.5 30','',{nl:1}],
+ ['Seno renal derecho','grasa','e 34 68 4 2.5 30','Grasa del seno renal.'],
+ ['Pelvis renal derecha','liquido','e 36 66.5 2 1.4','Sistema colector; opacifica en fase excretora.'],
+ ['Vena renal derecha','vena','l 1.4 37,66 42,64.5','Corta; drena a la VCI.'],
+ ['Corteza renal izquierda','rinon','e 72 70 9 7 -30','',{}],
+ ['Médula renal izquierda','med_renal','e 71.5 69.5 6 4.5 -30','',{nl:1}],
+ ['Seno renal izquierdo','grasa','e 68 68 4 2.5 -30','',{nl:1}],
+ ['Pelvis renal izquierda','liquido','e 66 66.5 2 1.4','',{nl:1}],
+ ['Colon ascendente','intestino','e 17 66 4 4','Retroperitoneal (espacio pararrenal anterior).'],
+ ['Gas cólico','aire','e 17 65.5 2.2 2.2','',{nl:1}],
+ ['Colon descendente','intestino','e 85 62 3.6 3.6','',{}],
+ ['Gas cólico','aire','e 85 61.5 2 2','',{nl:1}],
+ ['Colon transverso','intestino','e 50 25 10 3','Intraperitoneal (mesocolon transverso).'],
+ ['Asas yeyunales','intestino','e 66 39 5 4','Patrón en “plumas” con contraste oral.'],
+ ['Asas yeyunales','intestino','e 74 48 4.5 4','',{nl:1}],
+ ['Músculo psoas derecho','musculo','e 44.5 72 3.8 4','Referencia de los ganglios lumboaórticos.'],
+ ['Músculo psoas izquierdo','musculo','e 64.5 72 3.8 4','',{nl:1}],
+ ['Músculo cuadrado lumbar derecho','musculo','e 36 82 4 3','',{}],
+ ['Músculo cuadrado lumbar izquierdo','musculo','e 73 82 4 3','',{nl:1}],
+ ['Músculos erectores de la columna','musculo','e 47 87 5 4','',{}],
+ ['Músculos erectores','musculo','e 62 87 5 4','',{nl:1}],
+ ['Cuerpo vertebral L2','esponjoso','e 54.5 74 6 5.5','',{}],
+ ['Cortical vertebral','hueso','r 54.5 74 6 5.5 .7','',{nl:1}],
+ ['Saco dural (cola de caballo)','liquido','e 54.5 82 3 2.3','Raíces de la cola de caballo bajo el cono (L1–L2).'],
+ ]},
+
+{id:'ax-pm',g:'AX',est:'Pelvis',n:'Pelvis masculina — cabezas femorales, vejiga y vesículas seminales',cab:'Axial · techo acetabular',ori:['D ← → I'],
+ tc:['TC-C','TC-B','TC-H'],rm:['T1','T2','T1C'],q:'axial CT male pelvis bladder seminal vesicles',refTC:'tc-abd',refRM:'rm-pro',
+ s:[
+ ['Tejido celular subcutáneo','grasa_sc','e 50 50 47 35','',{nl:1}],
+ ['Músculos rectos abdominales (inserción)','musculo','e 50 20 10 2.6','Hacia la sínfisis.'],
+ ['Grasa pélvica','grasa','e 50 50 44 32','',{nl:1}],
+ ['Músculo glúteo mayor derecho','musculo','e 24 73 17 9 -20','Plano glúteo posterior.'],
+ ['Músculo glúteo mayor izquierdo','musculo','e 76 73 17 9 20','',{nl:1}],
+ ['Músculo glúteo medio / menor','musculo','e 10 55 5 11','Abductores laterales.'],
+ ['Músculo iliopsoas derecho','musculo','e 24 34 5.5 4.2','Anterior a la cabeza femoral.'],
+ ['Músculo iliopsoas izquierdo','musculo','e 76 34 5.5 4.2','',{nl:1}],
+ ['Arteria femoral común derecha','sangre','e 30.5 27.5 1.8 1.8','Lateral a la vena.'],
+ ['Vena femoral común derecha','vena','e 34.5 28 2.2 2','Medial a la arteria (orden lateral → medial: nervio, arteria, vena).'],
+ ['Arteria femoral común izquierda','sangre','e 69.5 27.5 1.8 1.8','',{nl:1}],
+ ['Vena femoral común izquierda','vena','e 65.5 28 2.2 2','',{nl:1}],
+ ['Cabeza femoral derecha','esponjoso','e 22 52 6.5 6.5','Hueso esponjoso; en RM T1 señal grasa (necrosis avascular: línea de doble señal).'],
+ ['Cortical cabeza femoral','hueso','r 22 52 6.5 6.5 .7','',{nl:1}],
+ ['Cabeza femoral izquierda','esponjoso','e 78 52 6.5 6.5','',{nl:1}],
+ ['Cortical','hueso','r 78 52 6.5 6.5 .7','',{nl:1}],
+ ['Acetábulo derecho (columnas anterior y posterior)','hueso','l 3 29,40 32,52 29,64','Techo y columnas acetabulares; fracturas según Judet-Letournel.'],
+ ['Acetábulo izquierdo','hueso','l 3 71,40 68,52 71,64','',{nl:1}],
+ ['Músculo obturador interno derecho','musculo','e 35 55 2.8 7','Pared lateral de la pelvis menor.'],
+ ['Músculo obturador interno izquierdo','musculo','e 65 55 2.8 7','',{nl:1}],
+ ['Vejiga urinaria','liquido','e 50 42 10.5 8','Orina ≈ 0–15 UH; pared ≤ 3 mm distendida.'],
+ ['Pared vesical','musculo','r 50 42 10.5 8 .6','',{nl:1}],
+ ['Vesícula seminal derecha','ves_seminal','e 44 57.5 5 1.8 15','Estructuras en “corbatín” posteriores a la vejiga; hiperintensas en T2.'],
+ ['Vesícula seminal izquierda','ves_seminal','e 56 57.5 5 1.8 -15','',{nl:1}],
+ ['Ángulo vesicoseminal','-','pt 50 54','Plano graso entre vejiga y vesículas; su borramiento sugiere infiltración.'],
+ ['Recto','intestino','e 50 66 5 4','Rodeado por la fascia mesorrectal.'],
+ ['Gas rectal','aire','e 50 65.5 2.4 2','',{nl:1}],
+ ['Fascia mesorrectal','dash','e 50 66 9 7','Límite del mesorrecto (margen circunferencial en cáncer rectal).'],
+ ['Cóccix','hueso','e 50 79 2.6 1.8','',{}],
+ ['Cordón espermático derecho','grasa','e 40 22 1.8 1.6','En el conducto inguinal.'],
+ ]},
+
+{id:'ax-pf',g:'AX',est:'Pelvis',n:'Pelvis femenina — útero y ovarios',cab:'Axial · pelvis menor',ori:['D ← → I'],
+ tc:['TC-C','TC-B'],rm:['T2','T1','T1C'],q:'axial MRI female pelvis uterus ovaries',refTC:'tc-abd',
+ s:[
+ ['Tejido celular subcutáneo','grasa_sc','e 50 50 47 35','',{nl:1}],
+ ['Grasa pélvica','grasa','e 50 50 44 32','',{nl:1}],
+ ['Músculos rectos abdominales','musculo','e 50 19 11 2.6','',{}],
+ ['Ala ilíaca derecha','hueso','l 3.4 10,34 14,54 24,66','Hueso ilíaco a nivel del techo acetabular / escotadura ciática.'],
+ ['Ala ilíaca izquierda','hueso','l 3.4 90,34 86,54 76,66','',{nl:1}],
+ ['Músculo glúteo medio','musculo','e 8 50 4 12','',{nl:1}],
+ ['Músculo glúteo mayor derecho','musculo','e 22 77 15 7 -20','',{}],
+ ['Músculo glúteo mayor izquierdo','musculo','e 78 77 15 7 20','',{nl:1}],
+ ['Músculo piriforme derecho','musculo','e 36 70 6 3 -25','Sale por la escotadura ciática mayor; relación con el nervio ciático.'],
+ ['Músculo piriforme izquierdo','musculo','e 64 70 6 3 25','',{nl:1}],
+ ['Sacro','esponjoso','e 50 76 8 4','',{}],
+ ['Músculo iliopsoas derecho','musculo','e 20 34 5 4','',{}],
+ ['Músculo iliopsoas izquierdo','musculo','e 80 34 5 4','',{nl:1}],
+ ['Arteria ilíaca externa derecha','sangre','e 27 38 1.7 1.7','Referencia lateral de la pared pélvica.'],
+ ['Vena ilíaca externa derecha','vena','e 29.5 41 2 2','',{nl:1}],
+ ['Arteria ilíaca externa izquierda','sangre','e 73 38 1.7 1.7','',{nl:1}],
+ ['Vena ilíaca externa izquierda','vena','e 70.5 41 2 2','',{nl:1}],
+ ['Vejiga (poco distendida)','liquido','e 50 30 8 4.5','Anterior al útero.'],
+ ['Miometrio externo','miometrio','e 50 51 10 8','Señal intermedia en T2; realce intenso.'],
+ ['Zona de unión (miometrio interno)','zona_union','e 50 51 6 4.2','Banda hipointensa en T2; > 12 mm sugiere adenomiosis.'],
+ ['Endometrio','endometrio','e 50 51 3.4 1.6','Hiperintenso en T2; espesor según fase.'],
+ ['Ligamento redondo derecho','musculo','l .9 40,47 32,40 28,34','Del cuerno uterino al orificio inguinal profundo.'],
+ ['Ovario derecho','ovario','e 33 54 4.4 3.4','En la fosa ovárica; folículos hiperintensos en T2.'],
+ ['Folículo','liquido','e 32 54 1.2 1.2','',{nl:1}],
+ ['Folículo','liquido','e 35 53 1 1','',{nl:1}],
+ ['Ovario izquierdo','ovario','e 67 54 4.4 3.4','',{nl:1}],
+ ['Folículo','liquido','e 68 54 1.2 1.2','',{nl:1}],
+ ['Folículo','liquido','e 65.5 55 1 1','',{nl:1}],
+ ['Vasos ilíacos internos / uterinos','vena','e 38 61 1.4 1.4','Pedículo vascular uterino en el parametrio.'],
+ ['Parametrio','-','pt 40 52','Tejido conectivo lateral al útero (estadificación del cáncer cervical).'],
+ ['Fondo de saco de Douglas','-','pt 50 60.5','Entre útero y recto.'],
+ ['Recto-sigma','intestino','e 50 66 4.6 3.8','',{}],
+ ['Gas rectal','aire','e 50 65.5 2 1.6','',{nl:1}],
+ ]},
+];
+
+/* ===================== RESONANCIA — CORTES SAGITALES ===================== */
+function columnaLumbar(){ // L1–S1 generado
+ const s=[
+ ['Grasa prevertebral / retroperitoneo','grasa','q 0,0 30,0 30,100 0,100','',{nl:1}],
+ ['Aorta abdominal','sangre','k 5 10,0 10,74','Anterior a la columna; vacío de señal por flujo.'],
+ ['Saco dural (LCR)','liquido','q 46,0 55,0 56,100 47,100','Hiperintenso en T2 (efecto mielográfico); diámetro AP lumbar > 12 mm.'],
+ ['Grasa epidural posterior','grasa','q 55,0 58,0 59,100 56,100','Hiperintensa en T1 y T2.'],
+ ['Cono medular','medula','l 3.2 50.5,0 50.8,10 51,18','Termina normalmente en L1–L2; por debajo de L2–L3 sugiere médula anclada.',{a:[51,12]}],
+ ['Raíces de la cola de caballo','nervio','l .5 51,18 51.5,60 52,100','Raíces en disposición posterior del saco en decúbito.'],
+ ['Raíces de la cola de caballo','nervio','l .5 50,20 50,100','',{nl:1}],
+ ['Raíces de la cola de caballo','nervio','l .5 52.5,20 53.5,100','',{nl:1}],
+ ['Músculos paravertebrales (multífido y erectores)','musculo','q 70,0 100,0 100,100 70,100','Atrofia grasa en dolor lumbar crónico.'],
+ ['Grasa subcutánea','grasa','q 92,0 100,0 100,100 92,100','',{nl:1}],
+ ];
+ const niv=['L1','L2','L3','L4','L5'];
+ niv.forEach((n,i)=>{const y=2+i*18;
+  s.push([`Cuerpo vertebral ${n}`,'esponjoso',`q 22,${y} 44,${y} 45,${y+13} 22.5,${y+13}`,`Médula ósea grasa hiperintensa en T1. Medir altura anterior, media y posterior.`]);
+  s.push([`Platillo superior ${n}`,'hueso',`k .6 22,${y+.3} 44,${y+.3}`,'',{nl:1}]);s.push([`Platillo inferior ${n}`,'hueso',`k .6 22.5,${y+12.7} 45,${y+12.7}`,i==2?'Láminas corticales hipointensas; cambios Modic en la médula subcondral adyacente.':'',i==2?{}:{nl:1}]);
+  s.push([`Anillo fibroso ${n}-${i<4?niv[i+1]:'S1'}`,'anillo',`q 22.5,${y+13.4} 45,${y+13.4} 45.5,${y+17.6} 22.8,${y+17.6}`,i==3?'Fibras de colágeno hipointensas en T2; las fisuras anulares aparecen como foco hiperintenso (HIZ).':'',i==3?{}:{nl:1}]);
+  s.push([`Disco ${n}-${i<4?niv[i+1]:'S1'} (núcleo pulposo)`,'nucleo',`e 34 ${y+15.5} 7 1.6`,i<3?'Núcleo hidratado hiperintenso en T2 (Pfirrmann I–II).':'Nivel más frecuente de degeneración y hernia discal.',i==0||i>=3?{}:{nl:1}]);
+  s.push([`Apófisis espinosa ${n}`,'esponjoso',`q 66,${y+2} 82,${y} 84,${y+8} 66,${y+10}`,i==2?'Unida a la lámina; ligamentos interespinoso y supraespinoso entre ellas.':'',i==2?{}:{nl:1}]);
+  s.push([`Ligamento amarillo ${n}`,'fibrocart',`k 1.2 58.5,${y+11} 60,${y+17}`,i==3?'Hipointenso; > 4 mm de grosor contribuye a estenosis de canal.':'',i==3?{}:{nl:1}]);
+  s.push([`Lámina ${n}`,'hueso',`q 59,${y+1} 66,${y+2} 66,${y+10} 60,${y+10}`,'',{nl:1}]);
+ });
+ s.push(['Sacro (S1)','esponjoso','q 22,92 46,92 48,100 23,100','Promontorio sacro.']);
+ s.push(['Ligamento longitudinal anterior','fibrocart','k .8 21.6,0 22,100','Banda hipointensa anterior a cuerpos y discos.']);
+ s.push(['Ligamento longitudinal posterior','fibrocart','k .8 45.6,0 46.2,100','Hipointenso; limita hernias centrales.']);
+ s.push(['Plexo venoso basivertebral','vena','k 1 38,47 44.5,47','Hendidura central posterior del cuerpo vertebral (L3).']);
+ return s;}
+
+const CORTES_RM = [
+{id:'rm-sag-cer',g:'RMS',est:'Cráneo',n:'Cerebro — sagital medio',cab:'Sagital · línea media',ori:['Anterior ←'],rm:['T1','T2','FLAIR'],q:'sagittal brain MRI midline',ref:'rm-cer',
+ s:[
+ ['Cuero cabelludo y tejido celular subcutáneo','grasa_sc','e 54 44 44 41','Grasa hiperintensa en T1.',{nl:1}],
+ ['Calota (díploe)','esponjoso','e 54 44 42.5 39.5','Díploe con médula ósea grasa.',{a:[54,4.8]}],
+ ['Tabla interna','hueso','r 54 44 40.8 37.8 .8','',{nl:1}],
+ ['Espacio subaracnoideo','liquido','e 54 44 40 37','',{nl:1}],
+ ['Corteza cerebral','gris','e 54 44 39 36','Giros de la cara medial de los hemisferios.',{surcos:40,a:[86,22]}],
+ ['Seno sagital superior','vena','l 1.3 22,18 40,8.5 60,7.3 80,12 92,30 94,46','Seno venoso dural en el borde superior de la hoz; trombosis = signo del delta vacío.'],
+ ['Giro del cíngulo','gris','l 3 30,38 40,28.5 56,26 70,29 76,36','Sistema límbico, por encima del surco calloso.'],
+ ['Surco calloso','liquido','l .8 33,36 44,31 58,30.5 69,34','Separa el cuerpo calloso del giro del cíngulo.',{nl:1}],
+ ['Ventrículo lateral (cuerpo)','liquido','p 35,42 44,37 58,36 66,40 62,44 48,43 38,45','Sobre el tálamo y el fórnix.'],
+ ['Rodilla del cuerpo calloso','blanca','l 3 35,46 31.5,41.5 35,36.5','Porción anterior curva.'],
+ ['Cuerpo del cuerpo calloso','blanca','l 3 35,36 46,33 58,32.5 67,35','Comisura mayor; adelgazamiento en atrofia; lesiones en dedos de Dawson (EM).'],
+ ['Esplenio del cuerpo calloso','blanca','e 69 39 3.4 2.8','Porción posterior engrosada.'],
+ ['Rostro del cuerpo calloso','blanca','l 1.8 35,46 38,49','Continúa con la lámina terminal.'],
+ ['Septum pelúcido / fórnix','blanca','l 1.4 62,44.5 54,46.5 46,48','Fórnix: vía eferente del hipocampo.'],
+ ['Tercer ventrículo','liquido','p 43,50 58,49 60,56 51,60 44,56','En la línea media entre los tálamos.'],
+ ['Adhesión intertalámica (masa intermedia)','gris','e 52 53 2.4 1.8','Puente gris que cruza el III ventrículo.'],
+ ['Comisura anterior','blanca','e 42 50.5 .9 .9','Referencia de la línea CA-CP.'],
+ ['Quiasma óptico','blanca','e 40 59.5 3 1.1','Sobre la silla turca; compresión por macroadenoma (hemianopsia bitemporal).'],
+ ['Tallo hipofisario (infundíbulo)','gris','l 1 41,60.5 40.5,65','Grosor < 3 mm, de inserción central.'],
+ ['Adenohipófisis','gris','e 38.6 68 3.4 2.3','Altura normal ≤ 9 mm (hasta 12 mm en embarazo).'],
+ ['Neurohipófisis (punto brillante)','neurohip','e 42.2 68 1.4 1.8','Hiperintensa en T1; su ausencia se asocia a diabetes insípida central.'],
+ ['Silla turca','hueso','l 1.4 34.5,66 36.5,71.5 43,71.8 45,66.5','Fosa hipofisaria del esfenoides.'],
+ ['Seno esfenoidal','aire','p 25,63 34,62 35,74 27,74','Debajo de la silla; abordaje transesfenoidal.'],
+ ['Clivus','esponjoso','l 4 40,74 45,82 50,90','Médula ósea grasa hiperintensa en T1 (la pérdida sugiere infiltración).'],
+ ['Mesencéfalo','blanca','p 50,58 58,56 62,62 56,66 50,64','Pedúnculos cerebrales y techo.'],
+ ['Lámina cuadrigémina (tectum)','gris','e 63.5 60 2.4 2.2','Colículos superiores e inferiores.'],
+ ['Acueducto de Sylvio','liquido','l .8 58,59.5 61,64','Comunica III y IV ventrículos; su estenosis produce hidrocefalia.'],
+ ['Cisterna prepontina','liquido','e 46.5 72 2.4 6','Contiene la arteria basilar.'],
+ ['Arteria basilar','sangre','l 1.2 46.8,66 47.5,78','Vacío de señal por flujo.'],
+ ['Protuberancia (puente)','blanca','e 53 71 6 5.6','Abombamiento anterior del tronco.'],
+ ['Bulbo raquídeo','blanca','l 5 52,76 53,88','Unión bulbomedular a nivel del foramen magno.'],
+ ['Médula cervical','medula','l 4 53,88 54,100','',{}],
+ ['Cuarto ventrículo','liquido','q 57.5,67.5 64,70 60.5,76 56,72','Techo formado por el velo medular; fastigio en su vértice posterior.'],
+ ['Vermis cerebeloso','gris','e 70 74 12 10','Folias con patrón arborescente (árbol de la vida).',{surcos:26}],
+ ['Sustancia blanca cerebelosa (árbol de la vida)','blanca','l 1.4 62,72 68,72 74,70','',{nl:1}],
+ ['Amígdala cerebelosa','gris','e 61 84 2.6 2','Su descenso > 5 mm bajo el foramen magno define Chiari I.'],
+ ['Cisterna magna','liquido','e 74 87 5 3','Posterior e inferior al vermis.'],
+ ['Seno recto','vena','l 1.4 70,40 78,48 85,56','Unión de la vena de Galeno y el seno sagital inferior.'],
+ ['Surco parietooccipital','liquido','l .8 82,26 76,44','Separa lóbulos parietal y occipital en la cara medial.'],
+ ['Cisura calcarina','liquido','l .8 76,46 90,54','Corteza visual primaria (área 17).'],
+ ['Surco central (cara medial / lobulillo paracentral)','liquido','l .7 58,9 59,20','',{}],
+ ['Lóbulo frontal','-','pt 22 32','',{}],
+ ['Lóbulo parietal','-','pt 70 17','',{}],
+ ['Lóbulo occipital','-','pt 87 42','',{}],
+ ['Nasofaringe','aire','p 18,74 28,76 31,86 18,86','Vía aérea; adenoides en su techo.'],
+ ['Apófisis odontoides (C2)','esponjoso','e 50 97 3 4','Relación con el foramen magno (línea de Chamberlain).'],
+ ]},
+
+{id:'rm-sag-lum',g:'RMS',est:'Columna',n:'Columna lumbar — sagital medio',cab:'Sagital · línea media',ori:['Anterior ←'],rm:['T2','T1'],q:'sagittal lumbar spine MRI T2',ref:'rm-col',s:columnaLumbar()},
+
+{id:'rm-sag-rod',g:'RMS',est:'Musculoesquelético',n:'Rodilla — sagital por la escotadura (LCA y LCP)',cab:'Sagital · intercondíleo',ori:['Anterior ←'],rm:['T1','T2'],q:'sagittal knee MRI cruciate ligament',ref:'rm-rod',
+ s:[
+ ['Tejido celular subcutáneo','grasa_sc','q 0,0 100,0 100,100 0,100','',{nl:1}],
+ ['Músculo cuádriceps','musculo','q 18,0 34,0 32,22 20,24','Vasto intermedio y recto femoral.'],
+ ['Tendón cuadricipital','tendon','k 2.2 28,0 24,26','Hipointenso homogéneo; estructura trilaminar.'],
+ ['Receso suprarrotuliano (bursa)','liquido','l 2 34,10 32,26','Comunica con la articulación; derrame articular.'],
+ ['Grasa prefemoral','grasa','e 36 18 2.4 8','',{nl:1}],
+ ['Diáfisis-metáfisis femoral (médula ósea)','esponjoso','p 36,0 64,0 66,30 70,46 52,52 34,48 34,30','Médula ósea grasa hiperintensa en T1.',{a:[50,20]}],
+ ['Cortical femoral anterior','hueso','l .8 36,0 34,30 34,46','',{nl:1}],
+ ['Cortical femoral posterior','hueso','l .8 64,0 66,30 70,46','',{nl:1}],
+ ['Línea de Blumensaat (techo de la escotadura)','hueso','k 1 40,42 64,32','El LCA normal es paralelo a esta línea.'],
+ ['Rótula','esponjoso','p 22,26 28,25 30,40 24,46 20,38','Médula grasa; cartílago rotuliano posterior (el más grueso del cuerpo).'],
+ ['Cartílago rotuliano','cartilago','l 1.2 28.5,27 30.5,40 26,46','Valorar condromalacia (Outerbridge).'],
+ ['Cartílago troclear','cartilago','l 1.1 34,32 34,46 40,51','',{}],
+ ['Tendón rotuliano','tendon','l 2 23,46 22,62 25,78','Hipointenso; índice de Insall-Salvati 0.8–1.2.'],
+ ['Grasa de Hoffa (infrarrotuliana)','grasa','p 26,48 38,52 38,62 30,72 24,62','Edema en el síndrome de pinzamiento de Hoffa.'],
+ ['Cartílago femoral','cartilago','l 1 40,52 52,54 66,49','',{nl:1}],
+ ['Ligamento cruzado anterior','fibrocart','l 2.2 58,44 50,54 41,63','De la cara medial del cóndilo lateral a la espina tibial anterior; fibras tensas, paralelas a Blumensaat.'],
+ ['Ligamento cruzado posterior','fibrocart','l 3 54,44 63,48 66,56 64,66','Banda gruesa hipointensa en arco; más fuerte que el LCA.'],
+ ['Espinas tibiales (eminencia intercondílea)','-','pt 46 60','Inserción tibial del LCA.'],
+ ['Epífisis tibial proximal','esponjoso','p 32,60 50,58 70,60 72,70 66,100 38,100 34,72','Médula ósea grasa; edema óseo en contusión.',{a:[52,80]}],
+ ['Cortical tibial','hueso','k .8 32,60 50,58 72,60','',{nl:1}],
+ ['Cartílago tibial','cartilago','k 1 34,58.5 50,57 70,58.5','',{nl:1}],
+ ['Cápsula articular posterior','fibrocart','l .8 70,46 74,60','',{nl:1}],
+ ['Músculo gastrocnemio (cabezas)','musculo','q 74,30 94,30 96,100 76,100','Origen en los cóndilos femorales; el quiste de Baker sale entre el gastrocnemio medial y el semimembranoso.'],
+ ['Arteria poplítea','sangre','k 2 80,0 82,100','En la fosa poplítea, profunda a la vena.'],
+ ['Vena poplítea','vena','k 2.4 86,0 88,100','',{}],
+ ['Músculo poplíteo','musculo','p 70,66 76,70 76,80 68,78','Posterior a la tibia proximal.'],
+ ]},
+];
+
+/* ===================== RADIOGRAFÍA Y MAMOGRAFÍA (proyección) ===================== */
+function costillas(){const s=[];
+ for(let i=0;i<10;i++){const y=14+i*6.6;
+  s.push([i==0?'Arcos costales posteriores':'Arco costal posterior','rx_hueso',`l 1.4 49,${y} 38,${y-2} 24,${y+1} 14,${y+8}`,i==0?'Más horizontales y densos; se cuentan para valorar la inspiración (≥ 9–10 arcos sobre el diafragma derecho).':'',i==0?{a:[30,y-1]}:{nl:1}]);
+  s.push(['Arco costal posterior','rx_hueso',`l 1.4 51,${y} 62,${y-2} 76,${y+1} 86,${y+8}`,'',{nl:1}]);
+  if(i<7){s.push([i==0?'Arcos costales anteriores':'Arco costal anterior','rx_hueso',`l 1.1 14,${y+4} 24,${y+11} 36,${y+15}`,i==0?'Oblicuos hacia abajo y medial; su porción cartilaginosa no es visible salvo calcificación.':'',i==0?{a:[24,y+11]}:{nl:1}]);
+   s.push(['Arco costal anterior','rx_hueso',`l 1.1 86,${y+4} 76,${y+11} 64,${y+15}`,'',{nl:1}]);}}
+ return s;}
+function vertebras(x,y0,n,h,w,nombre){const s=[];for(let i=0;i<n;i++){const y=y0+i*h;
+ s.push([nombre?`${nombre}${i+1}`:'Cuerpo vertebral','rx_hueso',`q ${x-w},${y} ${x+w},${y} ${x+w},${y+h*.78} ${x-w},${y+h*.78}`,i==0?'Cuerpos vertebrales alineados; espacios discales conservados.':'',i==0||nombre?{}:{nl:1}]);
+ s.push(['Pedículos','rx_cortical',`e ${x-w*.62} ${y+h*.3} ${w*.22} ${h*.2}`,i==0?'Óvalos corticales (“ojos”); su ausencia sugiere lesión lítica (signo del guiño).':'',i==0?{}:{nl:1}]);
+ s.push(['Pedículo','rx_cortical',`e ${x+w*.62} ${y+h*.3} ${w*.22} ${h*.2}`,'',{nl:1}]);
+ s.push(['Apófisis espinosa','rx_cortical',`e ${x} ${y+h*.5} ${w*.16} ${h*.22}`,i==0?'Alineadas en línea media; su desviación indica rotación.':'',i==0?{}:{nl:1}]);}
+ return s;}
+
+const CORTES_RX = [
+{id:'rx-tx',g:'RX',est:'Tórax',n:'Tórax PA',cab:'Posteroanterior · bipedestación',ori:['D ← → I'],q:'chest x-ray PA normal anatomy',
+ s:[
+ ['Partes blandas (hombros y pared)','rx_blando','p 2,10 22,4 50,6 78,4 98,10 99,100 1,100','',{nl:1}],
+ ['Pulmón derecho','rx_pulmon','p 13,24 22,10 34,8 44,14 44,50 38,70 34,82 22,86 12,84 9,60','Campos pulmonares superior, medio e inferior; transparencia simétrica.',{a:[24,40]}],
+ ['Pulmón izquierdo','rx_pulmon','p 87,24 78,10 66,8 56,14 56,46 66,62 74,80 80,88 88,86 91,60','',{a:[78,40]}],
+ ['Vasos pulmonares (trama vascular)','rx_vaso','l 1.4 40,46 32,52 22,60','Calibre decreciente hacia la periferia; mayor en bases (redistribución en hipertensión venosa).'],
+ ['Vaso','rx_vaso','l 1.2 40,44 30,38 22,30','',{nl:1}],
+ ['Vaso','rx_vaso','l 1.2 60,44 70,38 78,30','',{nl:1}],
+ ['Vaso','rx_vaso','l 1.4 60,48 70,56 80,64','',{nl:1}],
+ ['Mediastino superior','rx_med','p 42,10 58,10 59,34 41,34','Anchura < 8 cm en PA.',{a:[45,24]}],
+ ['Tráquea','rx_aire','l 3.4 50,4 50,32','Columna aérea central; desviada por masas o atelectasias.',{a:[50,20]}],
+ ['Carina','-','pt 50 33','Ángulo subcarinal 60–75°; su apertura sugiere crecimiento auricular izquierdo.'],
+ ['Bronquio principal derecho','rx_aire','l 2.4 49.5,33 46,38 43,42','Más vertical: aspiraciones más frecuentes a la derecha.'],
+ ['Bronquio principal izquierdo','rx_aire','l 2.2 50.5,33 55,37 59,40','',{}],
+ ['Botón aórtico (cayado)','rx_med','e 58 30 5 3.5','Primer arco del borde izquierdo.'],
+ ['Silueta cardíaca','rx_med','p 38,48 44,40 56,40 64,46 72,58 72,72 62,80 44,80 36,72','Índice cardiotorácico < 0.5 en PA.',{nl:1}],
+ ['Vena cava superior (borde mediastínico derecho)','-','pt 41 32','Borde superior derecho del mediastino.'],
+ ['Aurícula derecha (borde cardíaco derecho)','-','pt 37 64','Segundo arco derecho.'],
+ ['Tronco de la arteria pulmonar (2.º arco izquierdo)','-','pt 61 40','Convexo en hipertensión pulmonar.'],
+ ['Orejuela izquierda (3.er arco izquierdo)','-','pt 64 47','Normalmente plano o cóncavo; abombado en estenosis mitral.'],
+ ['Ventrículo izquierdo (4.º arco izquierdo)','-','pt 70 64','Forma el borde inferior izquierdo y el ápex.'],
+ ['Hilio pulmonar derecho','rx_vaso','e 40 44 3 5','Arteria pulmonar derecha y bronquios; el izquierdo es 1–2 cm más alto.'],
+ ['Hilio pulmonar izquierdo','rx_vaso','e 60 41 3 5','',{}],
+ ['Cisura menor (horizontal)','rx_vaso','k .4 22,50 40,50','Línea fina del lóbulo medio; a nivel del 4.º arco anterior.'],
+ ['Hígado / hemiabdomen superior derecho','rx_med','p 0,74 12,84 22,86 34,80 44,80 50,84 50,100 0,100','Densidad de partes blandas bajo el hemidiafragma.',{nl:1}],
+ ['Hemiabdomen superior izquierdo','rx_med','p 100,78 88,86 80,88 72,78 62,80 50,84 50,100 100,100','',{nl:1}],
+ ['Cámara gástrica','rx_aire','e 74 91 6 3','Gas gástrico bajo el hemidiafragma izquierdo; aumenta la distancia en masas subfrénicas.'],
+ ['Hemidiafragma derecho','-','pt 22 85','Normalmente 1–2 cm más alto que el izquierdo.'],
+ ['Hemidiafragma izquierdo','-','pt 82 87','',{}],
+ ['Seno costofrénico lateral derecho','-','pt 10 82','Ángulo agudo; se borra con derrame ≥ 200–300 mL en PA.'],
+ ['Seno costofrénico lateral izquierdo','-','pt 90 84','',{}],
+ ['Seno cardiofrénico derecho','-','pt 36 80','',{}],
+ ['Columna dorsal','rx_hueso','q 47.5,4 52.5,4 52.5,96 47.5,96','Visible a través de la silueta cardíaca en una placa bien penetrada.',{a:[50,60]}],
+ ...costillas(),
+ ['Clavícula derecha','rx_cortical','l 2.4 46,13 34,10 18,8 10,10','Extremos mediales equidistantes de las apófisis espinosas: placa sin rotación.'],
+ ['Clavícula izquierda','rx_cortical','l 2.4 54,13 66,10 82,8 90,10','',{nl:1}],
+ ['Escápula derecha (borde medial)','rx_hueso','p 6,14 14,12 16,30 10,40 5,32','Debe proyectarse fuera de los campos pulmonares (hombros en rotación interna).'],
+ ['Escápula izquierda','rx_hueso','p 94,14 86,12 84,30 90,40 95,32','',{nl:1}],
+ ['Cabeza humeral derecha','rx_hueso','e 4 12 5 6','',{}],
+ ['Cabeza humeral izquierda','rx_hueso','e 96 12 5 6','',{nl:1}],
+ ['Índice cardiotorácico (diámetro torácico)','dash','k 1 9,80 91,80','ICT = diámetro cardíaco máximo / diámetro torácico interno máximo.'],
+ ['Diámetro cardíaco máximo','dash','k 1 36,74 72,74','',{nl:1}],
+ ]},
+
+{id:'rx-abd',g:'RX',est:'Abdomen',n:'Abdomen simple AP',cab:'Anteroposterior · decúbito',ori:['D ← → I'],q:'abdominal x-ray normal anatomy',
+ s:[
+ ['Partes blandas abdominales','rx_blando','q 4,0 96,0 98,100 2,100','',{nl:1}],
+ ['Línea grasa preperitoneal derecha (flanco)','rx_grasa','l 1.6 8,30 6,55 9,74','Su borramiento sugiere líquido o inflamación.'],
+ ['Línea grasa preperitoneal izquierda','rx_grasa','l 1.6 92,30 94,55 91,74','',{nl:1}],
+ ['Hígado (sombra hepática)','rx_med','p 4,4 46,4 40,16 28,30 12,36 5,30','Borde inferior visible por contraste con la grasa; ángulo hepático.'],
+ ['Bazo (sombra esplénica)','rx_med','p 96,6 82,8 78,18 86,26 96,24','Polo inferior en el hipocondrio izquierdo.'],
+ ['Riñón derecho (silueta)','rx_med','e 33 34 5.5 10 -12','Silueta delimitada por grasa perirrenal; más bajo que el izquierdo.'],
+ ['Riñón izquierdo (silueta)','rx_med','e 67 31 5.5 10 12','',{nl:1}],
+ ['Sombra del psoas derecho','rx_grasa','l .8 46,26 36,58 30,78','Borde lateral del psoas; su borramiento sugiere proceso retroperitoneal.'],
+ ['Sombra del psoas izquierdo','rx_grasa','l .8 54,26 64,58 70,78','',{nl:1}],
+ ['Cámara gástrica','rx_aire','e 70 12 9 5','Gas gástrico en hipocondrio izquierdo.'],
+ ['Ciego','rx_aire','e 22 70 6 5','Calibre máximo 9 cm (regla 3-6-9).'],
+ ['Colon ascendente','rx_aire','l 4.5 22,66 20,46 22,28','Haustras que no cruzan toda la luz.'],
+ ['Ángulo hepático','-','pt 24 26','',{}],
+ ['Colon transverso','rx_aire','l 4.5 24,26 40,32 56,30 74,22','Calibre máximo 6 cm.'],
+ ['Ángulo esplénico','-','pt 77 20','Más alto que el hepático.'],
+ ['Colon descendente','rx_aire','l 4 78,22 80,44 78,64','',{}],
+ ['Sigma','rx_aire','l 3.8 78,64 66,76 54,74 48,80','',{}],
+ ['Recto (ampolla)','rx_aire','e 50 88 4 4','Gas rectal: descarta obstrucción completa.'],
+ ['Asas de intestino delgado','rx_aire','l 2.2 42,50 48,46 54,50 58,56','Válvulas conniventes que cruzan toda la luz; calibre < 3 cm.'],
+ ['Vejiga (sombra)','rx_med','e 50 90 9 6','Densidad de partes blandas en la pelvis.',{nl:1}],
+ ...vertebras(50,4,5,14,5,'L'),
+ ['Costilla 12 derecha','rx_hueso','l 1.4 44,4 36,8 30,14','',{}],
+ ['Costilla 12 izquierda','rx_hueso','l 1.4 56,4 64,8 70,14','',{nl:1}],
+ ['Sacro','rx_hueso','p 42,76 58,76 56,92 50,96 44,92','Agujeros sacros simétricos.'],
+ ['Articulación sacroilíaca derecha','-','pt 41 80','',{}],
+ ['Ala ilíaca derecha','rx_hueso','p 40,74 30,62 14,62 8,72 16,86 34,90','Cresta ilíaca a nivel L4.'],
+ ['Ala ilíaca izquierda','rx_hueso','p 60,74 70,62 86,62 92,72 84,86 66,90','',{nl:1}],
+ ['Cabeza femoral derecha','rx_hueso','e 24 97 5 5','',{}],
+ ['Cabeza femoral izquierda','rx_hueso','e 76 97 5 5','',{nl:1}],
+ ]},
+
+{id:'rx-rod',g:'RX',est:'Musculoesquelético',n:'Rodilla AP',cab:'Anteroposterior · carga',ori:['Lateral ← → Medial'],q:'knee x-ray AP normal',
+ s:[
+ ['Partes blandas','rx_blando','p 18,0 82,0 80,50 78,100 22,100 20,50','',{nl:1}],
+ ['Diáfisis-metáfisis femoral distal','rx_hueso','p 36,0 64,0 66,24 74,34 74,44 26,44 26,34 34,24','Cortical lisa y trabeculado conservado.',{tex:'oso',a:[50,20]}],
+ ['Cortical femoral','rx_cortical','l 1.4 36,0 34,24 26,34','',{nl:1}],
+ ['Cortical femoral','rx_cortical','l 1.4 64,0 66,24 74,34','',{nl:1}],
+ ['Cóndilo femoral lateral','-','pt 34 42','Lateral en la imagen (rótula proyectada sobre el fémur).'],
+ ['Cóndilo femoral medial','-','pt 66 42','Más prominente y distal.'],
+ ['Escotadura intercondílea','rx_blando','e 50 42 5 4','Fosa intercondílea; sitio de cuerpos libres.'],
+ ['Rótula (superpuesta)','rx_hueso','e 50 32 9 10','Superpuesta al fémur distal en AP; polo inferior 1 cm sobre la interlínea.'],
+ ['Interlínea articular femorotibial lateral','-','pt 32 47','Espacio articular (cartílago + menisco); pinzamiento = artrosis.'],
+ ['Interlínea articular femorotibial medial','-','pt 68 47','Suele pinzarse primero en la gonartrosis (genu varo).'],
+ ['Meseta tibial lateral','rx_hueso','p 24,49 50,48 50,60 30,62 24,56','Ligeramente convexa.'],
+ ['Meseta tibial medial','rx_hueso','p 76,49 50,48 50,60 70,62 76,56','Cóncava.'],
+ ['Espinas tibiales (eminencia intercondílea)','rx_cortical','q 46,49 48,45 50,48 52,45 54,49','Inserción de los ligamentos cruzados.'],
+ ['Metáfisis-diáfisis tibial proximal','rx_hueso','p 30,60 70,60 64,72 62,100 40,100 36,72','',{tex:'oso',a:[50,80]}],
+ ['Cabeza del peroné','rx_hueso','e 26 66 4.5 4','Lateral; articulación tibioperonea proximal.'],
+ ['Diáfisis del peroné','rx_hueso','k 3.4 26,70 28,100','',{}],
+ ['Tubérculo de Gerdy','-','pt 33 64','Inserción de la cintilla iliotibial.'],
+ ]},
+
+{id:'mg-mlo',g:'MG',est:'Mama',n:'Mamografía — oblicua mediolateral (MLO) derecha',cab:'RMLO',ori:['Pezón ←'],q:'mammography MLO normal',
+ s:[
+ ['Grasa mamaria','mg_grasa','p 100,0 72,4 46,18 26,42 18,62 24,80 44,92 74,98 100,100','Patrón de composición ACR (A–D) según proporción de tejido fibroglandular.',{a:[70,86]}],
+ ['Piel','mg_piel','l .7 100,0 72,4 46,18 26,42 18,62 24,80 44,92 74,98 100,100','Grosor ≤ 2 mm; engrosamiento por edema o infiltración.'],
+ ['Músculo pectoral mayor','mg_musc','q 100,0 72,4 100,56','Banda triangular convexa que debe llegar al nivel del pezón (criterio de calidad).',{a:[92,18]}],
+ ['Tejido fibroglandular','mg_glan','p 78,26 60,26 42,38 32,56 36,72 52,80 70,76 82,60','Densidad parcheada; cuadrante superoexterno con mayor cantidad de tejido.',{tex:'glan',a:[56,52],blur:2.5}],
+ ['Ligamentos de Cooper','rx_vaso','l .5 40,30 34,38 30,46','Líneas curvas finas en la grasa premamaria; su retracción es signo de malignidad.'],
+ ['Ligamento de Cooper','rx_vaso','l .5 26,68 32,76 40,84','',{nl:1}],
+ ['Pezón (de perfil)','mg_piel','e 18 62 2.2 3','Debe verse de perfil en al menos una proyección.'],
+ ['Complejo areola-pezón','-','pt 21 60','',{}],
+ ['Grasa retroglandular','-','pt 86 70','Espacio claro entre glándula y pectoral; sitio de cánceres que se pierden.'],
+ ['Ganglio linfático axilar','mg_gang','e 92 6 3 2.2','Ovalado con hilio graso radiolúcido; normal < 2 cm.'],
+ ['Hilio graso ganglionar','mg_grasa','e 92.6 6 1.2 .8','',{nl:1}],
+ ['Vaso mamario','rx_vaso','l .5 96,40 80,46 60,54 44,58','Calcificaciones vasculares lineales en “riel” (benignas).'],
+ ['Pliegue inframamario','-','pt 74 98','Debe incluirse en la MLO (criterio de calidad).'],
+ ['Línea pezón-pectoral (LPP)','dash','k 1 18,62 88,40','Perpendicular al pectoral; en la CC debe medir ± 1 cm de la de la MLO.'],
+ ['Región superior','-','pt 44 26','',{}],
+ ['Región inferior','-','pt 44 88','',{}],
+ ]},
+
+{id:'mg-cc',g:'MG',est:'Mama',n:'Mamografía — craneocaudal (CC) derecha',cab:'RCC',ori:['Pezón ←','Externo ↑'],q:'mammography craniocaudal normal',
+ s:[
+ ['Grasa mamaria','mg_grasa','p 100,4 70,8 40,22 22,40 18,52 22,64 40,80 70,94 100,98','',{a:[70,90]}],
+ ['Piel','mg_piel','l .7 100,4 70,8 40,22 22,40 18,52 22,64 40,80 70,94 100,98','Contorno cutáneo regular.'],
+ ['Tejido fibroglandular','mg_glan','p 82,22 60,22 40,34 32,52 40,70 60,80 82,74 88,50','Distribución con predominio externo (superior en la imagen).',{tex:'glan',a:[58,50],blur:2.5}],
+ ['Músculo pectoral (borde posterior)','mg_musc','p 100,40 96,50 100,60','Visible en ~30 % de las CC.'],
+ ['Pezón (de perfil)','mg_piel','e 18 52 2.2 3','',{}],
+ ['Cuadrantes externos','-','pt 56 16','Hacia arriba de la imagen (marcador lateral).'],
+ ['Cuadrantes internos','-','pt 56 88','Hacia abajo de la imagen.'],
+ ['Grasa retroglandular','-','pt 92 30','',{}],
+ ['Ligamentos de Cooper','rx_vaso','l .5 34,30 28,38 24,46','',{}],
+ ['Línea pezón-pectoral (LPP) en CC','dash','k 1 18,52 98,52','',{nl:1}],
+ ]},
 ];
 
 /* ===================== FICHAS DE REFERENCIA ===================== */
@@ -293,15 +1540,6 @@ const A = [
  cls:'LI-RADS v2018 (LR-1 a LR-5, LR-M, LR-TIV). Clasificación de Todani (quistes de colédoco). Fukuoka (NMPI).'}
 ];
 
-/* ===================== APP ===================== */
-const MODS={TODO:'Todos',US:'Ecografía',TC:'Tomografía',RM:'Resonancia'};
-const MODQ={US:'',TC:'',RM:''};
-const E=R.map((x,i)=>({id:'r'+i,m:x[0],r:x[1],n:x[2],q:x[3],e:x[4],ref:x[5]}));
-let mod='TODO',cur=null,tab='img';
-const $=s=>document.querySelector(s);
-const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const strip=h=>{const d=document.createElement('div');d.innerHTML=h||'';return d.textContent.trim();};
-const LS={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 
 /* ---------- Imágenes: Wikimedia Commons (licencias libres) ---------- */
 const cache={};
@@ -325,89 +1563,163 @@ async function dbAll(){const d=await idb();return new Promise(ok=>{const r=d.tra
 async function dbPut(o){const d=await idb();return new Promise(ok=>{const t=d.transaction('img','readwrite');t.objectStore('img').put(o);t.oncomplete=ok;});}
 async function dbDel(id){const d=await idb();return new Promise(ok=>{const t=d.transaction('img','readwrite');t.objectStore('img').delete(id);t.oncomplete=ok;});}
 
-/* ---------- Navegación ---------- */
-function navMods(){$('#mods').innerHTML=Object.entries(MODS).map(([k,v])=>`<button class="${k==mod?'on':''}" data-m="${k}">${v}</button>`).join('')+`<button data-mi="1">⭐ Mi atlas</button><button data-quiz="1">🎯 Autoevaluación</button>`;}
-function filtrar(){const q=$('#q').value.trim().toLowerCase();
- return E.filter(a=>(mod=='TODO'||a.m==mod)&&(!q||(a.n+' '+a.r+' '+a.e.join(' ')+' '+JSON.stringify(A.find(f=>f.id==a.ref)||'')).toLowerCase().includes(q)));}
-function lista(){const it=filtrar(),g={};it.forEach(a=>(g[a.m+'·'+a.r]=g[a.m+'·'+a.r]||[]).push(a));
- $('#side').innerHTML=`<a data-home="1">🏠 Inicio</a>`+(it.length?Object.entries(g).map(([r,xs])=>`<h3>${MODS[xs[0].m]} · ${xs[0].r}</h3>`+xs.map(a=>`<a data-id="${a.id}" class="${cur==a.id?'on':''}">${a.n}<span class="tag t-${a.m}">${a.m}</span></a>`).join('')).join(''):'<p style="padding:14px;color:var(--mu)">Sin resultados.</p>');
+
+/* ===================== APLICACIÓN ===================== */
+const CORTES=[...CORTES_US,...CORTES_AX,...CORTES_RM,...CORTES_RX];
+const MODS={US:'Ecografía',TC:'Tomografía',RM:'Resonancia',RX:'Radiografía',MG:'Mamografía'};
+const enMod=(p,m)=>m=='US'?p.g=='US':m=='TC'?p.g=='AX':m=='RM'?(p.g=='AX'||p.g=='RMS'):m=='RX'?p.g=='RX':p.g=='MG';
+const seqsDe=(p,m)=>m=='US'?['US']:m=='TC'?p.tc:m=='RM'?p.rm:m=='RX'?['RX']:['MG'];
+const grupoSenal=(p,m)=>m=='US'?'US':p.g=='AX'?'AX':p.g=='RMS'?'RMS':m;
+const refDe=(p,m)=>m=='TC'?p.refTC:m=='RM'?(p.refRM||p.ref):p.ref;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const strip=h=>{const d=document.createElement('div');d.innerHTML=h||'';return d.textContent.trim();};
+const LS={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const movil=()=>innerWidth<760;
+
+let mod=LS.get('atlas-mod','US'),cur=null,tab='atlas',seq=null,modo=null,sel=null,quiz=null,GAL=[];
+
+function navMods(){$('#mods').innerHTML=Object.entries(MODS).map(([k,v])=>`<button class="${k==mod?'on':''}" data-m="${k}">${v} <span style="opacity:.6;font-weight:normal">${CORTES.filter(p=>enMod(p,k)).length}</span></button>`).join('')+`<button data-mi="1">⭐ Mi atlas</button>`;}
+function lista(){const q=$('#q').value.trim().toLowerCase();
+ const it=CORTES.filter(p=>enMod(p,mod)&&(!q||(p.n+' '+p.est+' '+p.s.map(s=>s[0]).join(' ')).toLowerCase().includes(q)));
+ const g={};it.forEach(p=>(g[p.est]=g[p.est]||[]).push(p));
+ $('#side').innerHTML=`<a data-home="1">🏠 Inicio · ${MODS[mod]}</a><div class="ord">Orden: cefálico → caudal</div>`+(it.length?Object.entries(g).map(([r,xs])=>`<h3>${r}</h3>`+xs.map(p=>`<a data-id="${p.id}" class="${cur==p.id?'on':''}">${esc(p.n)}</a>`).join('')).join(''):'<p style="padding:14px;color:var(--mu)">Sin resultados.</p>');
  return it;}
-function home(){cur=null;const it=lista();
- $('#main').innerHTML=`<div class="ttl"><h2>${MODS[mod]}</h2></div><p class="sub">${it.length} regiones con imágenes reales de ${mod=='TODO'?'ecografía, tomografía y resonancia':MODS[mod].toLowerCase()} de todo el cuerpo.</p>
- <div class="note">Las imágenes se cargan en vivo desde <b>Wikimedia Commons</b> (casos reales con licencia libre; muchas con rótulos anatómicos, marcadas como <b>ROTULADA</b>). Requiere internet. Abra cualquier imagen para hacer zoom, ajustar brillo/contraste y <b>colocar sus propios rótulos anatómicos</b>, que se guardan en este equipo. En <b>⭐ Mi atlas</b> puede agregar sus capturas del ecógrafo o del PACS.</div>
- <div class="home">${it.map(a=>`<div class="tile" data-id="${a.id}"><span class="tag t-${a.m}" style="margin:0">${a.m}</span> <b>${a.n}</b><p>${a.r} · ${a.e.length} estructuras${a.ref?' · ficha de referencia':''}</p></div>`).join('')}</div>`;}
 
-async function region(id,t){const a=E.find(x=>x.id==id);if(!a)return home();cur=id;tab=t||'img';lista();
- const f=A.find(x=>x.id==a.ref);
- $('#main').innerHTML=`<div class="ttl"><span class="tag t-${a.m}" style="margin:0">${MODS[a.m]}</span><h2>${a.n}</h2></div><p class="sub">${a.r}</p>
- <div class="tabs"><button data-tab="img" class="${tab=='img'?'on':''}">🖼 Imágenes reales</button>${f?`<button data-tab="ref" class="${tab=='ref'?'on':''}">📋 Ficha: técnica, valores y patología</button>`:''}<button data-tab="mis" class="${tab=='mis'?'on':''}">⭐ Mis imágenes de esta región</button></div>
+function home(){cur=null;quiz=null;const it=lista();const q=$('#q').value.trim().toLowerCase();
+ let res='';
+ if(q.length>=3){const hits=[];CORTES.forEach(p=>{if(!enMod(p,mod))return;p.s.forEach((s,i)=>{if(s[1]!='dash'&&!(s[4]||{}).nl&&s[0].toLowerCase().includes(q))hits.push({p,i,s});});});
+  if(hits.length)res=`<h3 style="color:var(--az);margin:8px 0">Estructuras encontradas (${hits.length})</h3><div class="res">${hits.slice(0,40).map(h=>`<div data-id="${h.p.id}" data-sel="${h.i}"><b>${esc(h.s[0])}</b> — <span style="color:var(--mu)">${esc(h.p.n)}</span></div>`).join('')}</div>`;}
+ const nE=it.reduce((a,p)=>a+rotulables(p).length,0);
+ $('#main').innerHTML=`<div class="ttl"><span class="tag t-${mod}" style="margin:0">${mod}</span><h2>${MODS[mod]}</h2></div>
+ <p class="sub">${it.length} cortes · ${nE} estructuras rotuladas en español, ordenadas de cefálico a caudal.</p>
+ <div class="note">Cada corte es una <b>imagen anatómica reconstruida con la apariencia de la modalidad</b> (speckle y sombra acústica en ecografía; ventanas en UH en TC; contraste T1/T2/FLAIR en RM; proyección en radiografía y mamografía). Las estructuras están <b>señaladas en la imagen</b>; al tocarlas se muestra su descripción anatómica y su <b>ecogenicidad, densidad o señal</b>. En TC y RM puede cambiar la ventana o la secuencia. La pestaña <b>Casos reales</b> busca imágenes de pacientes reales (Wikimedia Commons) y <b>Mis imágenes</b> guarda sus propias capturas rotulables.</div>
+ ${res}<div class="home">${it.map(p=>`<div class="tile" data-id="${p.id}"><b>${esc(p.n)}</b><p>${esc(p.est)} · ${rotulables(p).length} estructuras${p.g=='AX'?' · TC y RM':''}</p></div>`).join('')}</div>`;}
+
+function abrirCorte(id,t,s){const p=CORTES.find(x=>x.id==id);if(!p)return home();
+ if(!enMod(p,mod)){mod=p.g=='US'?'US':p.g=='RMS'?'RM':p.g=='AX'?mod=='RM'?'RM':'TC':p.g;navMods();}
+ if(cur!=id){seq=null;sel=null;quiz=null;}cur=id;tab=t||'atlas';if(s!=null)sel=+s;
+ const seqs=seqsDe(p,mod);if(!seq||!seqs.includes(seq))seq=seqs[0];
+ if(!modo)modo=movil()?'numeros':'nombres';
+ lista();const ref=refDe(p,mod),f=ref&&A.find(x=>x.id==ref);
+ $('#main').innerHTML=`<div class="ttl"><span class="tag t-${mod}" style="margin:0">${MODS[mod]}</span><h2>${esc(p.n)}</h2></div><p class="sub">${esc(p.est)} · ${esc(p.cab||'')}</p>
+ <div class="tabs"><button data-tab="atlas" class="${tab=='atlas'?'on':''}">🩻 Anatomía rotulada</button>${f?`<button data-tab="ref" class="${tab=='ref'?'on':''}">📋 Técnica, valores y patología</button>`:''}<button data-tab="img" class="${tab=='img'?'on':''}">🖼 Casos reales</button><button data-tab="mis" class="${tab=='mis'?'on':''}">⭐ Mis imágenes</button></div>
  <div id="cont"></div>`;
- if(tab=='ref'&&f)return fichaRef(f,a);
- if(tab=='mis')return misRegion(a);
- const c=$('#cont');
- c.innerHTML=`<b style="font-size:13px">Estructuras a identificar:</b><div class="chips">${a.e.map(x=>`<span>${esc(x)}</span>`).join('')}</div>
- <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"><input id="q2" value="${esc(a.q)}" style="flex:1;min-width:200px;padding:7px;border:1px solid var(--bd);border-radius:6px;background:var(--pn);color:var(--tx)"><button class="more" style="margin:0" id="bq2">Buscar otras imágenes</button></div>
- <div class="gal" id="gal"><p>Cargando imágenes…</p></div><div id="pg"></div>`;
- $('#bq2').onclick=()=>cargar(a,$('#q2').value,0,true);
- $('#q2').onkeydown=e=>{if(e.key=='Enter')$('#bq2').click();};
- cargar(a,a.q,0,true);}
-let GAL=[];
-async function cargar(a,q,off,reset){const g=$('#gal');if(reset){GAL=[];g.innerHTML='<p>Cargando imágenes…</p>';}
- try{
-  let items=[],next;
-  if(off==0){const [x,y]=await Promise.all([commons(q+' labeled'),commons(q)]);const seen=new Set();
-   items=[...x.items,...y.items].filter(i=>!seen.has(i.src)&&seen.add(i.src));next=y.next;}
-  else{const y=await commons(q,off);items=y.items;next=y.next;}
-  items.sort((p,r)=>LAB.test(r.t+r.desc)-LAB.test(p.t+p.desc));
-  if(cur!=a.id)return;
-  const ini=GAL.length;GAL.push(...items.map(i=>({...i,reg:a.id,est:a.e})));
-  if(reset)g.innerHTML='';
-  if(!GAL.length)g.innerHTML='<p>No se encontraron imágenes con esa búsqueda. Pruebe otros términos en inglés (ej. "sonography", "axial", "T2").</p>';
-  g.insertAdjacentHTML('beforeend',items.map((i,k)=>{const n=LS.get('pins:'+i.src,[]).length;return `<div class="im" data-g="${ini+k}"><img loading="lazy" src="${esc(i.th)}" alt="${esc(i.t)}" onerror="this.closest('.im').remove()">${LAB.test(i.t+i.desc)?'<span class="mk">ROTULADA</span>':''}${n?`<span class="mk" style="top:auto;bottom:52px">📍 ${n}</span>`:''}<div class="c">${esc(i.t)}</div></div>`}).join(''));
-  $('#pg').innerHTML=next?`<button class="more" id="bmas">Cargar más imágenes</button>`:'';
-  if(next)$('#bmas').onclick=()=>cargar(a,q,next,false);
- }catch(e){g.innerHTML=`<div class="note">No se pudo conectar con Wikimedia Commons. Verifique la conexión a internet. Mientras tanto puede usar la pestaña de ficha y ⭐ Mi atlas.</div>`;}
-}
+ if(tab=='ref'&&f)return fichaRef(f);
+ if(tab=='img')return reales(p);
+ if(tab=='mis')return misCorte(p);
+ vistaAtlas(p);}
 
-function fichaRef(a,r){$('#cont').innerHTML=`
+function vistaAtlas(p){const seqs=seqsDe(p,mod);
+ $('#cont').innerHTML=`<div class="bar">
+  ${seqs.length>1?`<span class="lb">${mod=='TC'?'Ventana':'Secuencia'}</span><div class="grp">${seqs.map(s=>`<button data-seq="${s}" class="${s==seq?'on':''}">${SEQ[s].n.replace(/^(TC|RM) ?·? ?/,'')}</button>`).join('')}</div>`:''}
+  <span class="lb">Rótulos</span><div class="grp">${['nombres','numeros','ocultos'].map(m=>`<button data-modo="${m}" class="${m==modo&&!quiz?'on':''}">${{nombres:'Nombres',numeros:'Números',ocultos:'Ocultos'}[m]}</button>`).join('')}</div>
+  <div class="grp"><button data-quiz="1" class="${quiz?'on':''}">🎯 Modo estudio</button></div>
+ </div>
+ <div class="atlas"><div><div id="qz"></div><div class="lz"><canvas id="cv"></canvas></div><p class="sub" style="margin-top:6px">${esc((p.ori||[]).join(' · '))} · Toque cualquier estructura de la imagen o de la lista.</p></div>
+ <div class="panel"><div class="info" id="info"></div><div class="lista" id="lst"><input id="flt" placeholder="Filtrar estructuras…"></div></div></div>`;
+ pintarLista(p);dibujar(p);mostrarInfo(p);
+ const cv=$('#cv');cv.onclick=e=>clicLienzo(p,e);
+ $('#flt').oninput=()=>pintarLista(p);}
+function dibujar(p){const cv=$('#cv');if(!cv)return;const m=quiz?(quiz.ver?'numeros':'ocultos'):modo;
+ const t0=performance.now();vistaAtlas.geo=dibujarCorte(cv,p,seq,m,quiz?quiz.marca:sel,{dash:!!quiz});}
+function pintarLista(p){const L=rotulables(p),f=($('#flt')?.value||'').toLowerCase();
+ const box=$('#lst');box.querySelectorAll('div').forEach(d=>d.remove());
+ box.insertAdjacentHTML('beforeend',L.map((i,k)=>({i,k})).filter(o=>!f||p.s[o.i][0].toLowerCase().includes(f)).map(o=>`<div data-s="${o.i}" class="${o.i==sel?'on':''}"><b>${o.k+1}</b><span>${quiz&&!quiz.ver?'• • •':esc(p.s[o.i][0])}</span></div>`).join(''));}
+function mostrarInfo(p){const box=$('#info');if(!box)return;
+ if(quiz){const ob=p.s[quiz.obj];box.innerHTML=`<div class="quizbox">Toque en la imagen:<br><b>${esc(ob[0])}</b><br>${quiz.msg||''}<br><span style="font-size:12px">Aciertos ${quiz.ok} / ${quiz.n}</span></div><button class="more" style="margin:0" id="qsig">Siguiente ›</button> <button class="more" style="margin:0" id="qver">Ver respuesta</button>`;
+  $('#qsig').onclick=()=>{nuevaPregunta(p);};$('#qver').onclick=()=>{quiz.marca=quiz.obj;quiz.msg='Respuesta resaltada en dorado.';dibujar(p);mostrarInfo(p);};return;}
+ if(sel==null){box.innerHTML=`<h4>${rotulables(p).length} estructuras</h4><p>Seleccione una estructura para ver su ubicación, relaciones y su ${mod=='US'?'ecogenicidad':mod=='TC'?'densidad (UH)':mod=='RM'?'señal en T1/T2':'densidad radiográfica'}.</p>`;return;}
+ const s=p.s[sel],L=rotulables(p),n=L.indexOf(sel)+1;
+ const sig=s[1]!='-'?senal(s[1],grupoSenal(p,mod)):'';
+ box.innerHTML=`<h4>${n}. ${esc(s[0])}</h4>${s[3]?`<p>${esc(s[3])}</p>`:''}${sig?`<p class="sg"><b>${s[1]=='-'?'':'Tejido: '+esc(NOMBRE_T[s[1]]||s[1])+'. '}</b>${esc(sig)}</p>`:'<p class="sg">Región o reparo anatómico (señalado con punto).</p>'}`;}
+function seleccionar(p,i){sel=i;dibujar(p);mostrarInfo(p);pintarLista(p);
+ const el=$(`#lst div[data-s="${i}"]`);if(el)el.scrollIntoView({block:'nearest'});}
+function clicLienzo(p,e){const cv=$('#cv'),r=cv.getBoundingClientRect(),k=cv.width/r.width;
+ const px=(e.clientX-r.left)*k,py=(e.clientY-r.top)*k,G=vistaAtlas.geo;
+ if(!quiz&&modo=='nombres'&&dibujarCorte.boxes){const b=dibujarCorte.boxes.find(o=>o.box&&px>=o.box[0]-4&&px<=o.box[0]+o.box[2]+4&&py>=o.box[1]&&py<=o.box[1]+o.box[3]);if(b)return seleccionar(p,b.i);}
+ const u=[(px-G.M)/G.S,py/G.S];if(u[0]<0||u[0]>100)return;
+ let i=null;
+ if(modo=='numeros'||(quiz&&quiz.ver)){const L=rotulables(p);let best=null,bd=14;L.forEach(j=>{const g=geo(p.s[j][2]),a=anc(p.s[j],g);const d=Math.hypot(px-(G.M+a[0]*G.S),py-a[1]*G.S);if(d<bd){bd=d;best=j;}});i=best;}
+ if(i==null)i=hit(p,u);
+ if(quiz){quiz.n++;const ok=i==quiz.obj;if(ok)quiz.ok++;quiz.msg=ok?'<span class="ok">✔ Correcto</span>':`<span class="no">✘ Tocó: ${esc(i!=null?p.s[i][0]:'zona sin rótulo')}</span>`;quiz.marca=quiz.obj;dibujar(p);mostrarInfo(p);setTimeout(()=>{if(quiz&&cur==p.id)nuevaPregunta(p);},ok?900:2200);return;}
+ if(i!=null)seleccionar(p,i);}
+function nuevaPregunta(p){const L=rotulables(p).filter(i=>p.s[i][1]!='-'||true);quiz.obj=L[Math.floor(Math.random()*L.length)];quiz.marca=null;quiz.msg='';dibujar(p);mostrarInfo(p);pintarLista(p);}
+
+function fichaRef(a){$('#cont').innerHTML=`
  <section class="card"><h4>Técnica</h4><div class="bd">${a.tec}</div></section>
  <section class="card"><h4>Anatomía / semiología normal</h4><div class="bd"><ul>${a.anat.map(x=>`<li>${x}</li>`).join('')}</ul></div></section>
  <section class="card"><h4>Valores de referencia</h4><div class="bd" style="padding:0"><table><tr><th>Parámetro</th><th>Valor</th></tr>${a.val.map(v=>`<tr><td>${v[0]}</td><td><b>${v[1]}</b></td></tr>`).join('')}</table></div></section>
  <section class="card"><h4>Patología frecuente — signos clave</h4><div class="bd"><ul class="pat">${a.pat.map(p=>`<li><b>${p[0]}.</b> ${p[1]}</li>`).join('')}</ul></div></section>
  <section class="card"><h4>Clasificaciones</h4><div class="bd">${a.cls}</div></section>`;}
 
-async function misRegion(a){const c=$('#cont');const all=(await dbAll()).filter(x=>x.reg==a.id);
- c.innerHTML=`<div class="note">Agregue capturas propias (JPG/PNG del ecógrafo, PACS o celular) de <b>${esc(a.n)}</b>. Se guardan solo en este equipo y puede rotularlas.</div>
- <label class="more" style="display:inline-block">➕ Agregar imágenes<input type="file" id="fup" accept="image/*" multiple hidden></label>
- <div class="gal" id="gal"></div>`;
- GAL=all.map(x=>({...x,src:x.data,th:x.data,est:a.e,mine:1}));
- $('#gal').innerHTML=GAL.length?GAL.map((i,k)=>`<div class="im" data-g="${k}"><img src="${i.data}" alt=""><span class="mk">${i.web?'GUARDADA':'PROPIA'}</span><div class="c">${esc(i.t)}</div></div>`).join(''):'<p style="color:var(--mu)">Aún no hay imágenes propias en esta región.</p>';
+/* ---- Casos reales (Wikimedia Commons) ---- */
+function reales(p){const c=$('#cont');const q=(mod=='TC'?'CT ':mod=='RM'?'MRI ':mod=='US'?'ultrasound ':'')+(p.q||p.n);
+ c.innerHTML=`<div class="note">Imágenes de pacientes reales con licencia libre (Wikimedia Commons), cargadas en vivo; requiere internet. Las que tienen rótulos aparecen primero. Ábralas para ampliar, ajustar brillo/contraste y colocar sus propios rótulos.</div>
+ <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"><input id="q2" value="${esc(q.trim())}" style="flex:1;min-width:200px;padding:7px;border:1px solid var(--bd);border-radius:6px;background:var(--pn);color:var(--tx)"><button class="more" style="margin:0" id="bq2">Buscar</button></div>
+ <div class="gal" id="gal"><p>Cargando imágenes…</p></div><div id="pg"></div>`;
+ $('#bq2').onclick=()=>cargar(p,$('#q2').value,0,true);$('#q2').onkeydown=e=>{if(e.key=='Enter')$('#bq2').click();};
+ cargar(p,q,0,true);}
+async function cargar(p,q,off,reset){const g=$('#gal');if(reset){GAL=[];g.innerHTML='<p>Cargando imágenes…</p>';}
+ try{let items=[],next;
+  if(off==0){const [x,y]=await Promise.all([commons(q+' labeled'),commons(q)]);const seen=new Set();items=[...x.items,...y.items].filter(i=>!seen.has(i.src)&&seen.add(i.src));next=y.next;}
+  else{const y=await commons(q,off);items=y.items;next=y.next;}
+  items.sort((a,b)=>LAB.test(b.t+b.desc)-LAB.test(a.t+a.desc));
+  if(cur!=p.id||tab!='img')return;
+  const ini=GAL.length,est=rotulables(p).map(i=>p.s[i][0]);GAL.push(...items.map(i=>({...i,reg:p.id,est})));
+  if(reset)g.innerHTML='';
+  if(!GAL.length)g.innerHTML='<p>Sin resultados. Pruebe otros términos en inglés (ej. "sonography", "axial", "T2").</p>';
+  g.insertAdjacentHTML('beforeend',items.map((i,k)=>`<div class="im" data-g="${ini+k}"><img loading="lazy" src="${esc(i.th)}" alt="${esc(i.t)}" onerror="this.closest('.im').remove()">${LAB.test(i.t+i.desc)?'<span class="mk">ROTULADA</span>':''}<div class="c">${esc(i.t)}</div></div>`).join(''));
+  $('#pg').innerHTML=next?`<button class="more" id="bmas">Cargar más</button>`:'';if(next)$('#bmas').onclick=()=>cargar(p,q,next,false);
+ }catch(e){g.innerHTML=`<div class="note">No se pudo conectar con Wikimedia Commons. Verifique la conexión a internet. La anatomía rotulada funciona sin conexión.</div>`;}}
+
+/* ---- Mis imágenes ---- */
+async function misCorte(p){const c=$('#cont');let all=[];try{all=(await dbAll()).filter(x=>x.reg==p.id);}catch(e){}
+ c.innerHTML=`<div class="note">Agregue capturas propias (ecógrafo, PACS, celular) de <b>${esc(p.n)}</b>. Se guardan solo en este equipo; puede rotularlas con los nombres de este corte.</div>
+ <label class="more" style="display:inline-block">➕ Agregar imágenes<input type="file" id="fup" accept="image/*" multiple hidden></label><div class="gal" id="gal"></div>`;
+ const est=rotulables(p).map(i=>p.s[i][0]);
+ GAL=all.map(x=>({...x,src:x.data,th:x.data,est,mine:1}));
+ $('#gal').innerHTML=GAL.length?GAL.map((i,k)=>`<div class="im" data-g="${k}"><img src="${i.data}" alt=""><span class="mk">${i.web?'GUARDADA':'PROPIA'}</span><div class="c">${esc(i.t)}</div></div>`).join(''):'<p style="color:var(--mu)">Aún no hay imágenes en este corte.</p>';
  $('#fup').onchange=async e=>{for(const f of e.target.files){const d=await new Promise(ok=>{const r=new FileReader();r.onload=()=>ok(r.result);r.readAsDataURL(f);});
-  await dbPut({id:'p'+Date.now()+Math.random(),reg:a.id,t:f.name.replace(/\.[^.]+$/,''),data:d,fecha:new Date().toISOString()});}region(a.id,'mis');};}
+  await dbPut({id:'p'+Date.now()+Math.random(),reg:p.id,t:f.name.replace(/\.[^.]+$/,''),data:d});}abrirCorte(p.id,'mis');};}
+async function miAtlas(){cur=null;lista();let all=[];try{all=await dbAll();}catch(e){}
+ $('#main').innerHTML=`<div class="ttl"><h2>⭐ Mi atlas</h2></div><p class="sub">${all.length} imágenes propias o guardadas. Para agregar, abra un corte y use “Mis imágenes”.</p>
+ ${CORTES.filter(p=>all.some(x=>x.reg==p.id)).map(p=>`<h3 style="color:var(--az)">${esc(p.n)}</h3><div class="gal">${all.filter(x=>x.reg==p.id).map(x=>`<div class="im" data-goreg="${p.id}"><img src="${x.data}" alt=""><div class="c">${esc(x.t)}</div></div>`).join('')}</div>`).join('')||'<p>Todavía vacío.</p>'}`;}
 
-async function miAtlas(){cur=null;lista();const all=await dbAll();
- $('#main').innerHTML=`<div class="ttl"><h2>⭐ Mi atlas</h2></div><p class="sub">${all.length} imágenes propias o guardadas. Para agregar imágenes, entre a una región y use la pestaña “Mis imágenes”.</p>
- ${E.filter(a=>all.some(x=>x.reg==a.id)).map(a=>`<h3 style="color:var(--az)">${a.n} <span class="tag t-${a.m}">${a.m}</span></h3><div class="gal">${all.filter(x=>x.reg==a.id).map(x=>`<div class="im" data-goreg="${a.id}"><img src="${x.data}" alt=""><div class="c">${esc(x.t)}</div></div>`).join('')}</div>`).join('')||'<p>Todavía vacío.</p>'}`;}
-
-function quiz(){cur=null;lista();
- const pool=A.flatMap(a=>a.val.map(v=>({q:v[0]+' ('+a.n+')',r:v[1]})));
- const p=pool[Math.floor(Math.random()*pool.length)];
- const ops=[p.r,...pool.filter(x=>x.r!=p.r).sort(()=>Math.random()-.5).slice(0,3).map(x=>x.r)].sort(()=>Math.random()-.5);
- $('#main').innerHTML=`<div class="ttl"><h2>🎯 Autoevaluación</h2></div><p class="sub">Elija el valor de referencia correcto.</p>
- <section class="card"><h4>${esc(p.q)}</h4><div class="bd quiz">${ops.map(o=>`<button data-o="${esc(o)}">${esc(o)}</button>`).join('')}<p><button id="sig">Siguiente ›</button></p></div></section>`;
- document.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-o]').forEach(x=>{if(x.textContent==p.r)x.classList.add('ok')});if(b.textContent!=p.r)b.classList.add('no');});
- $('#sig').onclick=quiz;}
+/* ---- eventos ---- */
+document.addEventListener('click',e=>{
+ const t=e.target.closest('[data-m],[data-id],[data-home],[data-mi],[data-tab],[data-g],[data-goreg],[data-seq],[data-modo],[data-quiz],[data-s]');if(!t)return;
+ const p=CORTES.find(x=>x.id==cur);
+ if(t.dataset.s!==undefined&&p){if(quiz)return;seleccionar(p,+t.dataset.s);}
+ else if(t.dataset.seq){seq=t.dataset.seq;vistaAtlas(p);}
+ else if(t.dataset.modo){modo=t.dataset.modo;quiz=null;LS.set('atlas-modo',modo);vistaAtlas(p);}
+ else if(t.dataset.quiz){if(quiz){quiz=null;vistaAtlas(p);}else{const L=rotulables(p);quiz={ok:0,n:0,obj:L[Math.floor(Math.random()*L.length)]};sel=null;vistaAtlas(p);}}
+ else if(t.dataset.g!==undefined)abrir(+t.dataset.g);
+ else if(t.dataset.goreg)abrirCorte(t.dataset.goreg,'mis');
+ else if(t.dataset.tab)abrirCorte(cur,t.dataset.tab);
+ else if(t.dataset.mi)miAtlas();
+ else if(t.dataset.m){mod=t.dataset.m;LS.set('atlas-mod',mod);navMods();home();}
+ else if(t.dataset.id){abrirCorte(t.dataset.id,'atlas',t.dataset.sel);$('#side').classList.remove('open');}
+ else if(t.dataset.home){home();$('#side').classList.remove('open');}
+});
+$('#q').oninput=()=>{lista();if(!cur)home();};
+$('#q').onkeydown=e=>{if(e.key=='Enter'){cur=null;home();}};
+$('#menu').onclick=()=>$('#side').classList.toggle('open');
+$('#tema').onclick=()=>{const r=document.documentElement,d=r.dataset.theme=='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);r.dataset.theme=d?'light':'dark';LS.set('atlas-tema',r.dataset.theme);const p=CORTES.find(x=>x.id==cur);if(p&&tab=='atlas')dibujar(p);};
+{const t=LS.get('atlas-tema',null);if(t)document.documentElement.dataset.theme=t;modo=LS.get('atlas-modo',null);}
+window.addEventListener('resize',()=>{if($('#vw').classList.contains('open'))fit();});
+if(!MODS[mod])mod='US';
+navMods();home();
 
 /* ---------- Visor con zoom, ventana y rótulos ---------- */
 let vi=0,S=1,X=0,Y=0,inv=false,rot=false,hide=false;
 function key(i){return 'pins:'+(i.mine?i.id:i.src);}
 function abrir(i){vi=i;const it=GAL[i];if(!it)return;$('#vw').classList.add('open');rot=false;$('#vlab').classList.remove('on');
  const img=$('#vimg');img.onload=fit;img.src=it.src;
- $('#dlest').innerHTML=(it.est||[]).map(e=>`<option value="${esc(e)}">`).join('');
  $('#vsave').style.display=it.mine?'none':'';
  $('#vfoot').innerHTML=it.mine?`<b>${esc(it.t)}</b> · imagen propia · <a href="#" id="vdel">Eliminar de Mi atlas</a>`:
   `<b>${esc(it.t)}</b>${it.desc?' — '+esc(it.desc):''}<br>Autor: ${esc(it.aut||'ver página')} · Licencia: ${esc(it.lic)} · <a href="${esc(it.page)}" target="_blank" rel="noopener">Ver en Wikimedia Commons</a>`;
- if(it.mine)$('#vdel').onclick=async e=>{e.preventDefault();if(confirm('¿Eliminar esta imagen de Mi atlas?')){await dbDel(it.id);cerrar();region(cur,'mis');}};
+ if(it.mine)$('#vdel').onclick=async e=>{e.preventDefault();if(confirm('¿Eliminar esta imagen de Mi atlas?')){await dbDel(it.id);cerrar();abrirCorte(cur,'mis');}};
  pins();}
 function cerrar(){$('#vw').classList.remove('open');$('#vlist').classList.remove('on');}
 function fit(){const st=$('#vst'),im=$('#vimg');S=Math.min(st.clientWidth/im.naturalWidth,st.clientHeight/im.naturalHeight);X=(st.clientWidth-im.naturalWidth*S)/2;Y=(st.clientHeight-im.naturalHeight*S)/2;tr();pins();}
@@ -424,7 +1736,7 @@ $('#vst').addEventListener('pointerdown',e=>{if(e.target.closest('#vlist'))retur
 $('#vst').addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>4)moved=true;if(moved){X=drag.X+dx;Y=drag.Y+dy;tr();}});
 $('#vst').addEventListener('pointerup',e=>{const was=drag;drag=null;if(!was||moved||!rot||e.target.closest('#vlist'))return;
  const r=$('#vst').getBoundingClientRect(),im=$('#vimg');const x=(e.clientX-r.left-X)/S/im.naturalWidth,y=(e.clientY-r.top-Y)/S/im.naturalHeight;if(x<0||y<0||x>1||y>1)return;
- const n=prompt('Nombre de la estructura anatómica:\n('+(GAL[vi].est||[]).join(', ')+')');if(!n)return;
+ const n=prompt('Nombre de la estructura anatómica:\n('+(GAL[vi].est||[]).slice(0,14).join(', ')+')');if(!n)return;
  const it=GAL[vi],ps=LS.get(key(it),[]);ps.push({x,y,n});LS.set(key(it),ps);pins();});
 $('#vst').addEventListener('wheel',e=>{e.preventDefault();const r=$('#vst').getBoundingClientRect();zoom(e.deltaY<0?1.15:1/1.15,e.clientX-r.left,e.clientY-r.top);},{passive:false});
 $('#vlist').addEventListener('click',e=>{const b=e.target.closest('[data-dp]');if(!b)return;const it=GAL[vi],ps=LS.get(key(it),[]);ps.splice(+b.dataset.dp,1);LS.set(key(it),ps);pins();});
@@ -438,23 +1750,7 @@ $('#vsave').onclick=async()=>{const it=GAL[vi];try{const b=await (await fetch(it
  const id='w'+Date.now();await dbPut({id,reg:it.reg,t:it.t,data:d,web:1,page:it.page,lic:it.lic,aut:it.aut});LS.set('pins:'+id,LS.get(key(it),[]));alert('Guardada en Mi atlas (disponible sin internet).');}catch(e){alert('No se pudo guardar: '+e.message);}};
 document.addEventListener('keydown',e=>{if(!$('#vw').classList.contains('open'))return;if(e.key=='Escape')cerrar();if(e.key=='ArrowRight')$('#vnext').click();if(e.key=='ArrowLeft')$('#vprev').click();});
 
-document.addEventListener('click',e=>{
- const t=e.target.closest('[data-m],[data-id],[data-home],[data-quiz],[data-mi],[data-tab],[data-g],[data-goreg]');if(!t)return;
- if(t.dataset.g!==undefined)abrir(+t.dataset.g);
- else if(t.dataset.goreg)region(t.dataset.goreg,'mis');
- else if(t.dataset.tab)region(cur,t.dataset.tab);
- else if(t.dataset.quiz)quiz();
- else if(t.dataset.mi)miAtlas();
- else if(t.dataset.m){mod=t.dataset.m;navMods();home();}
- else if(t.dataset.id){region(t.dataset.id);$('#side').classList.remove('open');}
- else if(t.dataset.home){home();$('#side').classList.remove('open');}
-});
-$('#q').oninput=()=>{lista();if(!cur)home();};
-$('#menu').onclick=()=>$('#side').classList.toggle('open');
-$('#tema').onclick=()=>{const r=document.documentElement,d=r.dataset.theme=='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);r.dataset.theme=d?'light':'dark';LS.set('atlas-tema',r.dataset.theme);};
-{const t=LS.get('atlas-tema',null);if(t)document.documentElement.dataset.theme=t;}
-window.addEventListener('resize',()=>{if($('#vw').classList.contains('open'))fit();});
-navMods();home();
+
 </script>
 </body>
 </html>
