@@ -1,20 +1,20 @@
-ATLAS RADIOLÓGICO — Anatomía seccional rotulada en español
+ATLAS RADIOLÓGICO — Anatomía seccional REAL rotulada en español
 Dr. Néstor José Mejía González · Radiología e Imagen · MINSA 37294
 
 USO
-Abrir AtlasRadiologico.html con doble clic (Chrome o Edge). Funciona sin internet, en PC y celular.
+Abrir AtlasRadiologico.html con doble clic (Chrome o Edge). IMPORTANTE: la carpeta "datos"
+debe estar junto al HTML (contiene los cortes). Funciona sin internet, en PC y celular.
 
-CONTENIDO (ordenado de cefálico a caudal)
-- Ecografía, Tomografía, Resonancia, Radiografía y Mamografía: 54 cortes, 807 estructuras rotuladas.
-- Cada corte es una imagen reconstruida con la apariencia de su modalidad
-  (speckle y sombra acústica en US; ventanas en UH en TC; T1/T2/FLAIR/gadolinio en RM;
-  proyección en RX y mamografía). Las estructuras están señaladas en la imagen.
-- Al tocar una estructura: ubicación, relaciones, valor clínico y su
-  ecogenicidad / densidad (UH) / señal (T1, T2, FLAIR).
-- Rótulos con nombres, con números o ocultos; Modo estudio (identificar estructuras).
-- Pestañas: Técnica y valores de referencia; Casos reales (imágenes de pacientes de
-  Wikimedia Commons, requiere internet); Mis imágenes (sus capturas, rotulables).
+CONTENIDO (imágenes reales de pacientes, bases públicas con licencia libre)
+- RM de cerebro T1/T2/DP en axial, coronal y sagital: 290 cortes, 188 estructuras
+  (giros, núcleos, cápsula interna, hipocampo por subcampos, tronco, núcleos del tronco).
+- TC de tórax y abdomen de adulto: 381 cortes, 89 estructuras (lóbulos, cavidades cardíacas,
+  vértebras C6–L5 y cada costilla numerada).
+- TC con contraste de tórax-abdomen-pelvis, masculino y femenino: ~800 cortes, 24–26 órganos.
+- Ecografía real (abdomen, tiroides, Doppler venoso), radiografía de tórax PA/lateral y
+  mamografía MLO/CC, rotuladas punto a punto.
+- En RM/TC: tocar cualquier punto identifica la estructura exacta (segmentación vóxel a vóxel).
+  Rueda o arrastre para recorrer cortes; plano, secuencia/ventana, mapa de colores, modo estudio.
 
-PARA MODIFICAR
-Los cortes están en src/ (cortes_us.js, cortes_ax.js, cortes_rm.js, cortes_rx.js, cortes_2.js).
-Después de editar, ejecutar:  python3 build.py
+PARA REGENERAR
+Scripts en procesar/ (descargan de Imaging Data Commons y TemplateFlow). Luego: python3 build.py <salida>

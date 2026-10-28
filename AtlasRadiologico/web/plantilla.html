@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atlas Radiológico</title>
+<style>
+:root{--az:#123A78;--azc:#EAF1FA;--gr:#F4F7FB;--do:#C9A227;--ro:#C00028;--tx:#222B38;--bg:#ffffff;--pn:#ffffff;--bd:#d6dfeb;--mu:#5b6778;--US:#0e7c86;--TC:#7a4a00;--RM:#5b2a86;--RX:#2f5d2f;--MG:#a3346b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--az:#7fb0ff;--azc:#16243a;--gr:#1a2230;--tx:#e6ebf2;--bg:#0f141c;--pn:#151c27;--bd:#2a3546;--mu:#9aa6b8;--ro:#ff6b81;--US:#2aa7b0;--TC:#b9822a;--RM:#8a5cc7;--RX:#4f8f4f;--MG:#c95a92}}
+:root[data-theme="dark"]{--az:#7fb0ff;--azc:#16243a;--gr:#1a2230;--tx:#e6ebf2;--bg:#0f141c;--pn:#151c27;--bd:#2a3546;--mu:#9aa6b8;--ro:#ff6b81;--US:#2aa7b0;--TC:#b9822a;--RM:#8a5cc7;--RX:#4f8f4f;--MG:#c95a92}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--tx)}
+header{background:#123A78;color:#fff;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:3px solid #C9A227;position:sticky;top:0;z-index:5}
+header h1{font-size:18px;margin:0;flex:1;min-width:200px;cursor:pointer}
+header small{display:block;font-weight:normal;opacity:.8;font-size:11px}
+#q{flex:2;min-width:180px;padding:8px 10px;border-radius:6px;border:0;font-size:14px}
+.hb{background:transparent;color:#fff;border:1px solid #fff6;border-radius:6px;padding:7px 10px;cursor:pointer}
+.wrap{display:grid;grid-template-columns:250px 1fr}
+aside{border-right:1px solid var(--bd);background:var(--pn);overflow-y:auto;height:calc(100vh - 58px);position:sticky;top:58px}
+aside h3{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin:14px 14px 4px}
+aside a{display:block;padding:8px 14px;color:var(--tx);text-decoration:none;border-left:3px solid transparent;font-size:13.5px;cursor:pointer;line-height:1.3}
+aside a:hover{background:var(--gr)}
+aside a.on{border-left-color:var(--do);background:var(--azc);font-weight:bold}
+aside a small{display:block;color:var(--mu);font-weight:normal;font-size:11.5px}
+.tag{font-size:10px;font-weight:bold;padding:2px 6px;border-radius:4px;color:#fff;white-space:nowrap;vertical-align:middle}
+.t-US{background:var(--US)}.t-TC{background:var(--TC)}.t-RM{background:var(--RM)}.t-RX{background:var(--RX)}.t-MG{background:var(--MG)}
+main{padding:14px 18px;min-width:0}
+h2{margin:0;color:var(--az);font-size:20px}
+.sub{color:var(--mu);margin:4px 0 10px;font-size:13.5px;line-height:1.45}
+.note{background:var(--gr);border:1px solid var(--bd);border-left:4px solid var(--do);padding:10px 12px;border-radius:6px;font-size:13.5px;margin:10px 0;line-height:1.5}
+.home{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.card{background:var(--pn);border:1px solid var(--bd);border-radius:10px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column}
+.card:hover{border-color:var(--do)}
+.card .mini{background:#000;height:170px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card .mini img{max-width:100%;max-height:170px}
+.card .bd{padding:10px 12px}
+.card b{color:var(--az);display:block;margin:4px 0}
+.card p{margin:0;font-size:12.5px;color:var(--mu);line-height:1.4}
+.bar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.grp{display:flex;border:1px solid var(--bd);border-radius:6px;overflow:hidden}
+.grp button{border:0;border-right:1px solid var(--bd);background:var(--pn);color:var(--tx);padding:6px 10px;cursor:pointer;font-size:12.5px}
+.grp button:last-child{border-right:0}
+.grp button.on{background:var(--az);color:var(--bg);font-weight:bold}
+.lb{font-size:10.5px;color:var(--mu);text-transform:uppercase;letter-spacing:.05em}
+.visor{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:12px;align-items:start}
+.lz{background:#000;border-radius:10px;border:1px solid var(--bd);overflow:hidden;position:relative}
+#cv{display:block;width:100%;touch-action:none;cursor:crosshair}
+.ctl{display:flex;gap:8px;align-items:center;padding:8px 10px;background:#0b0f14;color:#cfd8e6;font-size:12.5px;flex-wrap:wrap}
+.ctl input[type=range]{flex:1;min-width:120px;accent-color:#C9A227}
+.ctl button{background:#1a2230;color:#e6ebf2;border:1px solid #2a3546;border-radius:6px;padding:5px 10px;cursor:pointer}
+.ctl label{display:flex;gap:4px;align-items:center}
+.ctl .sl{width:80px;flex:none;min-width:0}
+@media (max-width:820px){.ctl .sl{width:64px}.ctl label{flex:1}}
+.panel{position:sticky;top:70px}
+.info{background:var(--pn);border:1px solid var(--bd);border-left:4px solid var(--do);border-radius:8px;padding:10px 12px;margin-bottom:10px;min-height:90px}
+.info h4{margin:0 0 6px;color:var(--az);font-size:15px}
+.info p{margin:4px 0;font-size:13.5px;line-height:1.45}
+.info button{margin-top:6px;border:1px solid var(--bd);background:var(--gr);color:var(--tx);border-radius:6px;padding:5px 10px;cursor:pointer;font-size:12.5px}
+.lista{background:var(--pn);border:1px solid var(--bd);border-radius:8px;max-height:calc(100vh - 330px);overflow:auto}
+.lista input{width:100%;border:0;border-bottom:1px solid var(--bd);padding:8px 10px;background:var(--pn);color:var(--tx);font-size:13px;position:sticky;top:0}
+.lista .h{padding:6px 10px;font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;background:var(--gr)}
+.lista div.it{padding:6px 10px;font-size:13px;border-bottom:1px solid var(--bd);cursor:pointer;display:flex;gap:6px;align-items:center}
+.lista div.it:hover{background:var(--gr)}
+.lista div.it.on{background:var(--azc);font-weight:bold}
+.lista i{width:10px;height:10px;border-radius:2px;flex:none}
+.lista .fuera{color:var(--mu)}
+.quiz{background:var(--az);color:var(--bg);padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:14px;line-height:1.45}
+.quiz b{font-size:16px}
+.ok{color:#7CFC9A}.no{color:#ffb3c0}
+section.ficha{background:var(--pn);border:1px solid var(--bd);border-radius:10px;margin-bottom:12px;overflow:hidden}
+section.ficha h4{margin:0;background:var(--az);color:var(--bg);padding:8px 12px;font-size:13px;text-transform:uppercase}
+section.ficha .b{padding:10px 14px;font-size:14px;line-height:1.5}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--azc);text-align:left;padding:6px 8px;color:var(--az)}
+td{padding:6px 8px;border-top:1px solid var(--bd);vertical-align:top}
+.res div{padding:8px 10px;border:1px solid var(--bd);border-radius:6px;margin-bottom:5px;cursor:pointer;font-size:13.5px;background:var(--pn)}
+.res div:hover{border-color:var(--do)}
+#menu{display:none}
+.carga{color:#cfd8e6;padding:40px;text-align:center;font-size:14px}
+@media (max-width:1150px){.visor{grid-template-columns:1fr}.panel{position:static}.lista{max-height:340px}}
+@media (max-width:820px){
+ .wrap{grid-template-columns:1fr}
+ aside{position:fixed;left:0;top:0;bottom:0;width:82%;max-width:310px;height:auto;z-index:20;transform:translateX(-100%);transition:.2s;box-shadow:0 0 20px #0008}
+ aside.open{transform:none}
+ #menu{display:block}
+ main{padding:10px 12px}
+}
+</style>
+</head>
+<body>
+<header>
+ <button id="menu" class="hb" aria-label="Menú">☰</button>
+ <h1 id="ir-inicio">Atlas Radiológico <small>Anatomía seccional real rotulada · RM · TC · US · RX · Mamografía — Dr. Néstor José Mejía González · MINSA 37294</small></h1>
+ <input id="q" type="search" placeholder="Buscar estructura (ej. hipocampo, lóbulo medio, vértebra L1, cápsula interna)">
+ <button id="tema" class="hb" title="Cambiar tema">◐</button>
+</header>
+<div class="wrap">
+ <aside id="side"></aside>
+ <main id="main"></main>
+</div>
+<script>
+/*JS*/
+</script>
+</body>
+</html>
