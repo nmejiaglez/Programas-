@@ -113,7 +113,7 @@ function surcos(c,g,seq,us,n,id){const R=rng(hash(id));c.save();c.clip(g.path);c
  const m=g.k=='e'?g:null;const ry=m?parseFloat(arguments[1]?0:0):0;
  const sp=g.sp||[cx,cy,rx,rx];
  for(let i=0;i<n;i++){const a=i/n*Math.PI*2+R()*.12;const ex=cx+Math.cos(a)*sp[2],ey=cy+Math.sin(a)*sp[3];
-  const L=3+R()*4.5,ix=cx+Math.cos(a)*(sp[2]-L),iy=cy+Math.sin(a)*(sp[3]-L);
+  const L=(3+R()*4.5)*Math.min(1,Math.max(.35,Math.min(sp[2],sp[3])/30)),ix=cx+Math.cos(a)*(sp[2]-L),iy=cy+Math.sin(a)*(sp[3]-L);
   c.lineWidth=.45+R()*.35;c.beginPath();c.moveTo(ex,ey);
   c.quadraticCurveTo((ex+ix)/2+(R()-.5)*2,(ey+iy)/2+(R()-.5)*2,ix,iy);c.stroke();
   if(R()<.5){c.lineWidth=.35;c.beginPath();const bx=(ex+ix)/2,by=(ey+iy)/2;c.moveTo(bx,by);c.lineTo(bx+Math.cos(a+1.2)*-1.8,by+Math.sin(a+1.2)*-1.8);c.stroke();}}

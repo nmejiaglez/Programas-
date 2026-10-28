@@ -1,10 +1,20 @@
-ATLAS RADIOLÓGICO — Ecografía, Tomografía y Resonancia
-Abrir AtlasRadiologico.html con doble clic (Chrome o Edge). Funciona en PC y celular.
+ATLAS RADIOLÓGICO — Anatomía seccional rotulada en español
+Dr. Néstor José Mejía González · Radiología e Imagen · MINSA 37294
 
-- 70 regiones de todo el cuerpo (US, TC, RM) con IMÁGENES REALES cargadas en vivo desde
-  Wikimedia Commons (licencia libre; las rotuladas aparecen primero). Requiere internet.
-- Visor: zoom, arrastre, brillo/contraste, invertir, y RÓTULOS anatómicos propios
-  (botón "Rotular" y tocar la imagen); se guardan en este equipo.
-- "Guardar en Mi atlas" deja la imagen disponible sin internet.
-- Pestaña "Mis imágenes": agregue sus capturas del ecógrafo/PACS por región.
-- Fichas de técnica, valores de referencia, patología y clasificaciones; buscador; autoevaluación.
+USO
+Abrir AtlasRadiologico.html con doble clic (Chrome o Edge). Funciona sin internet, en PC y celular.
+
+CONTENIDO (ordenado de cefálico a caudal)
+- Ecografía, Tomografía, Resonancia, Radiografía y Mamografía: 54 cortes, 807 estructuras rotuladas.
+- Cada corte es una imagen reconstruida con la apariencia de su modalidad
+  (speckle y sombra acústica en US; ventanas en UH en TC; T1/T2/FLAIR/gadolinio en RM;
+  proyección en RX y mamografía). Las estructuras están señaladas en la imagen.
+- Al tocar una estructura: ubicación, relaciones, valor clínico y su
+  ecogenicidad / densidad (UH) / señal (T1, T2, FLAIR).
+- Rótulos con nombres, con números o ocultos; Modo estudio (identificar estructuras).
+- Pestañas: Técnica y valores de referencia; Casos reales (imágenes de pacientes de
+  Wikimedia Commons, requiere internet); Mis imágenes (sus capturas, rotulables).
+
+PARA MODIFICAR
+Los cortes están en src/ (cortes_us.js, cortes_ax.js, cortes_rm.js, cortes_rx.js, cortes_2.js).
+Después de editar, ejecutar:  python3 build.py
