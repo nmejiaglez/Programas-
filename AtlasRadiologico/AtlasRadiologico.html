@@ -211,9 +211,11 @@ function pila(id, plano) {
  return new Promise((ok, ko) => {
   const nuevo = !ESPERA[k]; (ESPERA[k] = ESPERA[k] || []).push(ok);
   if (!nuevo) return;
-  const s = document.createElement('script'); s.src = `datos/${k}.js`;
-  s.onerror = () => ko(new Error('No se encontró datos/' + k + '.js. Mantenga la carpeta "datos" junto al archivo HTML.'));
-  document.head.appendChild(s);
+  const porScript = () => {const s = document.createElement('script'); s.src = `datos/${k}.js`;
+   s.onerror = () => ko(new Error('No se encontró datos/' + k + '.js. Descomprima el ZIP completo y mantenga la carpeta "datos" junto al archivo HTML.'));
+   document.head.appendChild(s);};
+  if (location.protocol == 'file:') return porScript();
+  fetch(`datos/${k}.js`).then(r => {if (!r.ok) throw 0; return r.text();}).then(t => ATLAS_CARGA(JSON.parse(t.slice(t.indexOf('(') + 1, t.lastIndexOf(')'))))).catch(porScript);
  });
 }
 /* imágenes y mapas de etiquetas decodificados con caché */
