@@ -1,0 +1,3 @@
+ATLAS RADIOLÓGICO
+Abrir AtlasRadiologico.html con doble clic (Chrome/Edge). Funciona sin internet, en PC y celular.
+Ecografía, Tomografía y Resonancia: esquemas interactivos, técnica, valores de referencia, patología, clasificaciones, buscador y autoevaluación.
