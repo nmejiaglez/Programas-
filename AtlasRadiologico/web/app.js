@@ -78,10 +78,11 @@ function inicio() {
 
 async function abrir(id, buscar) {
  const e = ESTUDIOS.find(x => x.id == id); if (!e) return inicio();
- if (!V.e || V.e.id != id) {V.e = e; V.plano = e.planos[0]; V.serie = e.series[0]; V.sel = null; V.k = null; V.quiz = null; V.mapa = false; V.zoom = 1; V.px = V.py = 0;}
+ if (!V.e || V.e.id != id) {V.e = e; V.plano = e.planos[0]; V.serie = e.series[0]; V.sel = null; V.k = null; V.kInicial = true; V.quiz = null; V.mapa = false; V.zoom = 1; V.px = V.py = 0;}
  navLateral(); $('#side').classList.remove('open');
  $('#main').innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="tag t-${e.mod}">${MODS[e.mod]}</span><h2>${esc(e.titulo)}</h2></div><p class="sub">${esc(e.desc)}</p>
  <div class="bar" id="barra"></div>
+ <div id="tira" class="tira"></div>
  <div class="visor"><div><div id="qz"></div><div class="lz"><canvas id="cv"></canvas><div class="ctl"><button id="kprev" title="Corte anterior">▲</button><input type="range" id="kr" min="0" max="0" value="0"><button id="knext" title="Corte siguiente">▼</button><span id="kt"></span>
   <label>☼<input type="range" class="sl" id="br" min="40" max="200" value="${V.br}"></label><label>◐<input type="range" class="sl" id="ctr" min="40" max="250" value="${V.ct}"></label><button id="zi">＋</button><button id="zo">－</button><button id="zf">Ajustar</button></div></div>
   <p class="sub" style="margin-top:6px">${matchMedia('(pointer:coarse)').matches ? 'Deslice el dedo arriba/abajo sobre la imagen para recorrer cortes · toque para identificar.' : 'Rueda o arrastre vertical: recorrer cortes · Ctrl + rueda: zoom · Clic: identificar estructura · Teclas ↑ ↓.'}</p></div>
@@ -105,15 +106,18 @@ async function cambiarPlano(p, buscar) {
  if (buscar != null) {V.sel = +buscar; const b = mejorCorte(V.sel); V.k = b != null ? b : Math.floor(n / 2);}
  else if (V.sel != null) {const b = mejorCorte(V.sel); V.k = b != null ? b : Math.min(V.k ?? 0, n - 1);}
  else V.k = V.k == null || V.k >= n ? Math.floor(n / 2) : V.k;
- if (V.d.puntos) V.k = buscar != null ? (mejorCorte(V.sel) ?? 0) : (V.k ?? 0);
- precargar(); irA(V.k); mostrarInfo();
+ if (V.d.puntos) V.k = buscar != null ? (mejorCorte(V.sel) ?? 0) : (V.kInicial ? 0 : (V.k ?? 0));
+ V.kInicial = false;
+ precargar(); tira(); irA(V.k); mostrarInfo();
 }
+function tira() {const d = V.d, t = $('#tira'); if (!t) return; if (!d.puntos) {t.innerHTML = ''; return;}
+ t.innerHTML = d.series[V.serie].map((b, k) => `<button data-img="${k}" class="${k == V.k ? 'on' : ''}" title="${esc(d.tit[k])}"><img alt="" src="data:image/jpeg;base64,${b}"><span>${k + 1}. ${esc(d.tit[k])}</span></button>`).join('');}
 function mejorCorte(id) {let best = null, ba = -1; V.d.anc.forEach((L, k) => L.forEach(r => {if (r[0] == id && r[3] > ba) {ba = r[3]; best = k;}})); return best;}
 function precargar() {const d = V.d; for (let k = 0; k < d.series[V.serie].length; k++) imagen(d, V.serie, k);}
 function irA(k) {const d = V.d; if (!d) return; const n = d.series[V.serie].length; V.k = Math.max(0, Math.min(n - 1, k)); $('#kr').value = V.k;
  $('#kt').textContent = d.puntos ? `${V.k + 1}/${n} · ${d.tit[V.k]}` : `Corte ${V.k + 1}/${n} · ${d.mm} mm`;
  const im = imagen(d, V.serie, V.k); if (!im.complete) im.onload = () => {if (V.k == k) dibujar();};
- mapa(d, V.k); dibujar(); lista();}
+ mapa(d, V.k); dibujar(); lista(); document.querySelectorAll('#tira button').forEach(b => b.classList.toggle('on', +b.dataset.img == V.k));}
 
 /* ---------- dibujo ---------- */
 function rotulosVisibles() {const d = V.d, L = (d.anc[V.k] || []).slice().sort((a, b) => b[3] - a[3]);
@@ -226,6 +230,7 @@ function zoom(f, x, y) {const g = V.geo; if (!g) return; x = x ?? g.cssW / 2; y 
  const nz = Math.max(1, Math.min(8, V.zoom * f)), r = nz / V.zoom; V.px = (V.px + cx - x) * r - (cx - x); V.py = (V.py + cy - y) * r - (cy - y); V.zoom = nz; if (nz == 1) V.px = V.py = 0; dibujar();}
 document.addEventListener('keydown', e => {if (!V.e || e.target.tagName == 'INPUT') return; if (e.key == 'ArrowDown' || e.key == 'ArrowRight') {irA(V.k + 1); e.preventDefault();} if (e.key == 'ArrowUp' || e.key == 'ArrowLeft') {irA(V.k - 1); e.preventDefault();}});
 document.addEventListener('click', e => {
+ const ti = e.target.closest('[data-img]'); if (ti) {irA(+ti.dataset.img); return;}
  const t = e.target.closest('[data-est],[data-home],[data-plano],[data-serie],[data-rot],[data-mapa],[data-quiz],[data-s],[data-fichas],[data-fuentes]'); if (!t) return;
  if (t.dataset.s !== undefined) {const id = +t.dataset.s; if (V.quiz) return; const aqui = (V.d.anc[V.k] || []).some(r => r[0] == id); V.sel = id; if (!aqui) {const b = mejorCorte(id); if (b != null) {irA(b); mostrarInfo(); return;}} seleccionar(id);}
  else if (t.dataset.plano) cambiarPlano(t.dataset.plano);
