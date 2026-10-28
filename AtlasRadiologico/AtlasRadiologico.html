@@ -10,33 +10,38 @@
 :root[data-theme="dark"]{--az:#7fb0ff;--azc:#16243a;--gr:#1a2230;--tx:#e6ebf2;--bg:#0f141c;--pn:#151c27;--bd:#2a3546;--mu:#9aa6b8;--ro:#ff6b81;--us:#4fd1d9;--tc:#f0b45a;--rm:#c39bff}
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--tx)}
-header{background:#123A78;color:#fff;padding:12px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;border-bottom:3px solid #C9A227;position:sticky;top:0;z-index:5}
+header{background:#123A78;color:#fff;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:3px solid #C9A227;position:sticky;top:0;z-index:5}
 header h1{font-size:18px;margin:0;flex:1;min-width:180px}
 header small{display:block;font-weight:normal;opacity:.8;font-size:11px}
 #q{flex:2;min-width:180px;padding:8px 10px;border-radius:6px;border:0;font-size:14px}
-#tema{background:transparent;color:#fff;border:1px solid #fff6;border-radius:6px;padding:7px 10px;cursor:pointer}
-nav.mods{display:flex;gap:6px;padding:10px 16px;background:var(--azc);border-bottom:1px solid var(--bd);overflow-x:auto}
-nav.mods button{border:1px solid var(--bd);background:var(--pn);color:var(--tx);padding:8px 14px;border-radius:20px;cursor:pointer;font-weight:bold;white-space:nowrap}
+.hb{background:transparent;color:#fff;border:1px solid #fff6;border-radius:6px;padding:7px 10px;cursor:pointer}
+nav.mods{display:flex;gap:6px;padding:8px 16px;background:var(--azc);border-bottom:1px solid var(--bd);overflow-x:auto}
+nav.mods button{border:1px solid var(--bd);background:var(--pn);color:var(--tx);padding:7px 14px;border-radius:20px;cursor:pointer;font-weight:bold;white-space:nowrap}
 nav.mods button.on{background:var(--az);color:var(--bg);border-color:var(--az)}
-.wrap{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 110px)}
-aside{border-right:1px solid var(--bd);background:var(--pn);overflow-y:auto;max-height:calc(100vh - 110px);position:sticky;top:110px}
+.wrap{display:grid;grid-template-columns:280px 1fr}
+aside{border-right:1px solid var(--bd);background:var(--pn);overflow-y:auto;height:calc(100vh - 104px);position:sticky;top:104px}
 aside h3{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin:14px 14px 4px}
-aside a{display:block;padding:8px 14px;color:var(--tx);text-decoration:none;border-left:3px solid transparent;font-size:14px;cursor:pointer}
+aside a{display:block;padding:7px 14px;color:var(--tx);text-decoration:none;border-left:3px solid transparent;font-size:14px;cursor:pointer}
 aside a:hover{background:var(--gr)}
 aside a.on{border-left-color:var(--do);background:var(--azc);font-weight:bold}
 .tag{font-size:10px;font-weight:bold;padding:2px 6px;border-radius:4px;margin-left:6px;color:#fff;vertical-align:middle}
-.t-US{background:var(--us)}.t-TC{background:var(--tc)}.t-RM{background:var(--rm)}
-main{padding:20px 24px;max-width:1100px}
+.t-US{background:var(--us)}.t-TC{background:var(--tc)}.t-RM{background:var(--rm)}.t-MI{background:var(--do);color:#000}
+main{padding:18px 22px;min-width:0}
 .ttl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .ttl h2{margin:0;color:var(--az);font-size:22px}
-.sub{color:var(--mu);margin:4px 0 16px}
-.grid{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:20px;align-items:start}
-.fig{background:#0b0f14;border-radius:10px;padding:10px;border:1px solid var(--bd)}
-.fig svg{width:100%;height:auto;display:block}
-.fig .cap{color:#b8c4d6;font-size:12px;margin-top:6px;text-align:center}
-.leg{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.leg span{font-size:12px;background:var(--gr);border:1px solid var(--bd);padding:3px 8px;border-radius:12px;cursor:pointer}
-.leg span.hl{background:var(--do);color:#000}
+.sub{color:var(--mu);margin:4px 0 12px;font-size:14px}
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--az);margin:10px 0 14px;flex-wrap:wrap}
+.tabs button{border:0;background:var(--gr);color:var(--tx);padding:8px 14px;border-radius:6px 6px 0 0;cursor:pointer;font-weight:bold}
+.tabs button.on{background:var(--az);color:var(--bg)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}
+.chips span{font-size:12px;background:var(--azc);border:1px solid var(--bd);padding:4px 9px;border-radius:12px}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.im{background:#000;border-radius:8px;overflow:hidden;cursor:pointer;border:1px solid var(--bd);position:relative}
+.im img{width:100%;height:190px;object-fit:contain;display:block;background:#000}
+.im .c{font-size:11px;color:#cfd8e6;padding:6px 8px;background:#0b0f14;height:44px;overflow:hidden;line-height:1.3}
+.im .mk{position:absolute;top:6px;right:6px;background:var(--do);color:#000;font-size:10px;font-weight:bold;padding:2px 6px;border-radius:4px}
+.more{margin:14px 0;padding:9px 16px;border:1px solid var(--bd);background:var(--pn);color:var(--tx);border-radius:6px;cursor:pointer;font-weight:bold}
+.note{background:var(--gr);border:1px solid var(--bd);border-left:4px solid var(--do);padding:10px 12px;border-radius:6px;font-size:13px;margin:10px 0}
 section.card{background:var(--pn);border:1px solid var(--bd);border-radius:10px;margin-bottom:14px;overflow:hidden}
 section.card h4{margin:0;background:var(--az);color:var(--bg);padding:8px 12px;font-size:13px;text-transform:uppercase;letter-spacing:.04em}
 section.card .bd{padding:10px 14px;font-size:14px;line-height:1.5}
@@ -46,36 +51,51 @@ th{background:var(--azc);text-align:left;padding:6px 8px;color:var(--az)}
 td{padding:6px 8px;border-top:1px solid var(--bd)}
 tr:nth-child(even) td{background:var(--gr)}
 .pat li b{color:var(--ro)}
-.home{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-.tile{background:var(--pn);border:1px solid var(--bd);border-radius:10px;padding:14px;cursor:pointer}
+.home{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.tile{background:var(--pn);border:1px solid var(--bd);border-radius:10px;padding:12px;cursor:pointer}
 .tile:hover{border-color:var(--do)}
 .tile b{color:var(--az)}
-.tile p{margin:6px 0 0;font-size:13px;color:var(--mu)}
-.quiz{margin-top:6px}
+.tile p{margin:6px 0 0;font-size:12px;color:var(--mu)}
 .quiz button{margin:4px 4px 0 0;padding:6px 10px;border:1px solid var(--bd);background:var(--gr);color:var(--tx);border-radius:6px;cursor:pointer}
 .quiz .ok{background:#1f8a4c;color:#fff}.quiz .no{background:var(--ro);color:#fff}
-#menu{display:none;background:transparent;color:#fff;border:1px solid #fff6;border-radius:6px;padding:7px 10px}
-svg text{font-family:Arial;font-size:11px;fill:#e8eef7}
-svg .lbl{pointer-events:none}
-svg .s{transition:all .2s}
-svg .s.hl{stroke:#C9A227!important;stroke-width:3!important;filter:drop-shadow(0 0 4px #C9A227)}
+#menu{display:none}
+/* visor */
+#vw{position:fixed;inset:0;background:#000;z-index:50;display:none;flex-direction:column}
+#vw.open{display:flex}
+#vbar{display:flex;gap:6px;align-items:center;padding:8px;background:#0b0f14;color:#e6ebf2;flex-wrap:wrap;font-size:12px}
+#vbar button{background:#1a2230;color:#e6ebf2;border:1px solid #2a3546;border-radius:6px;padding:6px 10px;cursor:pointer}
+#vbar button.on{background:#C9A227;color:#000}
+#vbar label{display:flex;align-items:center;gap:4px}
+#vbar input[type=range]{width:90px}
+#vst{flex:1;position:relative;overflow:hidden;touch-action:none;cursor:grab}
+#vin{position:absolute;left:0;top:0;transform-origin:0 0}
+#vin img{display:block;max-width:none;user-select:none;-webkit-user-drag:none}
+.pin{position:absolute;transform:translate(-50%,-50%);pointer-events:auto}
+.pin i{display:block;width:22px;height:22px;border-radius:50%;background:#C9A227;color:#000;font:bold 12px/22px Arial;text-align:center;font-style:normal;border:2px solid #fff;box-shadow:0 0 6px #000}
+.pin span{position:absolute;left:26px;top:2px;white-space:nowrap;background:#000c;color:#fff;font-size:13px;padding:2px 6px;border-radius:4px;border:1px solid #C9A227}
+#vfoot{background:#0b0f14;color:#9aa6b8;font-size:11px;padding:6px 10px;max-height:90px;overflow:auto}
+#vfoot a{color:#7fb0ff}
+#vlist{position:absolute;right:8px;top:8px;width:230px;max-height:60%;overflow:auto;background:#0b0f14ee;border:1px solid #2a3546;border-radius:8px;color:#e6ebf2;font-size:12px;padding:6px;display:none}
+#vlist.on{display:block}
+#vlist div{display:flex;justify-content:space-between;gap:4px;padding:3px 0;border-bottom:1px solid #2a3546}
+#vlist button{background:none;border:0;color:#ff6b81;cursor:pointer}
 @media (max-width:820px){
  .wrap{grid-template-columns:1fr}
- aside{position:fixed;left:0;top:0;bottom:0;width:80%;max-width:300px;max-height:none;z-index:10;transform:translateX(-100%);transition:.2s;box-shadow:0 0 20px #0008}
+ aside{position:fixed;left:0;top:0;bottom:0;width:80%;max-width:300px;height:auto;z-index:20;transform:translateX(-100%);transition:.2s;box-shadow:0 0 20px #0008}
  aside.open{transform:none}
  #menu{display:block}
- .grid{grid-template-columns:1fr}
- main{padding:16px}
+ main{padding:14px 16px}
+ .gal{grid-template-columns:repeat(2,1fr)}
+ .im img{height:140px}
 }
-@media print{header,nav,aside{display:none}.wrap{display:block}}
 </style>
 </head>
 <body>
 <header>
- <button id="menu" aria-label="Menú">☰</button>
+ <button id="menu" class="hb" aria-label="Menú">☰</button>
  <h1>Atlas Radiológico <small>Ecografía · Tomografía · Resonancia — Dr. Néstor José Mejía González · MINSA 37294</small></h1>
- <input id="q" type="search" placeholder="Buscar estructura, signo, clasificación… (ej. Bosniak, colédoco, Modic)">
- <button id="tema" title="Cambiar tema">◐</button>
+ <input id="q" type="search" placeholder="Buscar región, estructura o patología (ej. hígado, menisco, Bosniak, apendicitis)">
+ <button id="tema" class="hb" title="Cambiar tema">◐</button>
 </header>
 <nav class="mods" id="mods"></nav>
 <div class="wrap">
@@ -83,116 +103,106 @@ svg .s.hl{stroke:#C9A227!important;stroke-width:3!important;filter:drop-shadow(0
  <main id="main"></main>
 </div>
 
-<script>
-/* ===================== FIGURAS ESQUEMÁTICAS (SVG) =====================
-   Cada estructura tiene data-k para resaltarla desde la leyenda. */
-const F = {
-higado:`<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#0b0f14"/>
-<path class="s" data-k="Hígado" d="M30 90 Q120 40 260 70 Q330 90 300 150 Q250 220 120 210 Q40 200 30 90Z" fill="#6d6458" stroke="#9c9080"/>
-<path class="s" data-k="Venas hepáticas" d="M200 72 L150 150 M200 72 L200 160 M200 72 L250 145" stroke="#111" stroke-width="7" fill="none"/>
-<path class="s" data-k="Vena porta" d="M110 190 Q150 160 190 175" stroke="#111" stroke-width="12" fill="none"/>
-<ellipse class="s" data-k="Vesícula" cx="120" cy="225" rx="38" ry="16" fill="#050505" stroke="#ccc"/>
-<path class="s" data-k="Colédoco" d="M160 200 Q175 230 190 270" stroke="#000" stroke-width="5" fill="none"/>
-<ellipse class="s" data-k="Riñón derecho" cx="300" cy="215" rx="55" ry="26" fill="#5a5248" stroke="#bbb"/>
-<text x="90" y="110" class="lbl">Hígado</text><text x="80" y="255" class="lbl">Vesícula</text><text x="205" y="185" class="lbl">Porta</text><text x="275" y="255" class="lbl">Riñón D</text><text x="215" y="95" class="lbl">VH</text></svg>`,
-rinon:`<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#0b0f14"/>
-<ellipse class="s" data-k="Corteza" cx="200" cy="150" rx="150" ry="80" fill="#4f4a44" stroke="#aaa"/>
-<g class="s" data-k="Pirámides medulares" fill="#222">${[[110,110],[160,92],[240,92],[290,110],[110,190],[160,208],[240,208],[290,190]].map(p=>`<ellipse cx="${p[0]}" cy="${p[1]}" rx="18" ry="14"/>`).join('')}</g>
-<ellipse class="s" data-k="Seno renal" cx="200" cy="150" rx="80" ry="34" fill="#cfc8bc"/>
-<text x="185" y="154" class="lbl" style="fill:#222">Seno</text><text x="60" y="80" class="lbl">Corteza</text><text x="140" y="255" class="lbl">Pirámides (hipoecoicas)</text></svg>`,
-tiroides:`<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#0b0f14"/>
-<rect x="0" y="0" width="400" height="40" fill="#3a3a3a"/><text x="10" y="25" class="lbl">Piel / TCS</text>
-<path class="s" data-k="Músculos pretiroideos" d="M80 50 Q200 30 320 50 L320 70 Q200 55 80 70Z" fill="#333"/>
-<path class="s" data-k="Lóbulo derecho" d="M60 90 Q120 70 165 110 L165 200 Q110 230 60 190Z" fill="#8a8170"/>
-<path class="s" data-k="Lóbulo izquierdo" d="M340 90 Q280 70 235 110 L235 200 Q290 230 340 190Z" fill="#8a8170"/>
-<rect class="s" data-k="Istmo" x="160" y="95" width="80" height="22" fill="#8a8170"/>
-<path class="s" data-k="Tráquea" d="M165 125 A35 35 0 0 1 235 125" stroke="#fff" stroke-width="3" fill="none"/>
-<circle class="s" data-k="Carótida común" cx="40" cy="160" r="18" fill="#000" stroke="#888"/><circle class="s" data-k="Carótida común" cx="360" cy="160" r="18" fill="#000" stroke="#888"/>
-<ellipse class="s" data-k="Yugular interna" cx="25" cy="120" rx="18" ry="12" fill="#000"/><ellipse class="s" data-k="Yugular interna" cx="375" cy="120" rx="18" ry="12" fill="#000"/>
-<ellipse class="s" data-k="Esófago" cx="255" cy="215" rx="16" ry="12" fill="#444" stroke="#999"/>
-<text x="75" y="150" class="lbl">LD</text><text x="300" y="150" class="lbl">LI</text><text x="182" y="88" class="lbl">Istmo</text><text x="20" y="200" class="lbl">ACC</text><text x="262" y="240" class="lbl">Esóf.</text></svg>`,
-utero:`<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#0b0f14"/>
-<path class="s" data-k="Vejiga" d="M20 40 Q120 20 170 60 Q150 120 20 120Z" fill="#000" stroke="#777"/>
-<path class="s" data-k="Miometrio" d="M150 150 Q230 70 350 110 Q380 160 340 200 Q230 230 150 180Z" fill="#6e665b" stroke="#aaa"/>
-<path class="s" data-k="Endometrio" d="M190 165 Q260 125 330 150" stroke="#e6dccb" stroke-width="9" fill="none"/>
-<path class="s" data-k="Cérvix" d="M90 175 L155 165 L155 190 L90 200Z" fill="#5c554b"/>
-<ellipse class="s" data-k="Fondo de saco" cx="200" cy="255" rx="50" ry="10" fill="#000"/>
-<text x="50" y="80" class="lbl">Vejiga</text><text x="260" y="105" class="lbl">Miometrio</text><text x="240" y="170" class="lbl" style="fill:#222">Endometrio</text><text x="85" y="220" class="lbl">Cérvix</text><text x="160" y="285" class="lbl">Douglas</text></svg>`,
-feto:`<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#0b0f14"/>
-<ellipse cx="200" cy="150" rx="185" ry="135" fill="#020202" stroke="#666"/>
-<ellipse class="s" data-k="Cráneo (DBP/CC)" cx="120" cy="140" rx="62" ry="52" fill="#222" stroke="#eee" stroke-width="4"/>
-<line class="s" data-k="Línea media" x1="62" y1="140" x2="178" y2="140" stroke="#ddd"/>
-<circle class="s" data-k="Tálamos" cx="120" cy="140" r="12" fill="#444"/>
-<ellipse class="s" data-k="Abdomen (CA)" cx="270" cy="160" rx="55" ry="48" fill="#3d3a35" stroke="#bbb"/>
-<circle class="s" data-k="Estómago" cx="255" cy="150" r="13" fill="#000"/>
-<line class="s" data-k="Fémur (LF)" x1="300" y1="230" x2="370" y2="200" stroke="#fff" stroke-width="6"/>
-<rect class="s" data-k="Placenta" x="80" y="20" width="240" height="22" rx="10" fill="#6b6052"/>
-<text x="95" y="200" class="lbl">Cráneo</text><text x="240" y="225" class="lbl">CA</text><text x="320" y="250" class="lbl">LF</text><text x="170" y="36" class="lbl">Placenta</text></svg>`,
-cerebro:`<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#000"/>
-<ellipse class="s" data-k="Calota" cx="200" cy="150" rx="150" ry="130" fill="#eee"/>
-<ellipse class="s" data-k="Sustancia gris" cx="200" cy="150" rx="140" ry="120" fill="#7a7a7a"/>
-<ellipse class="s" data-k="Sustancia blanca" cx="200" cy="150" rx="118" ry="98" fill="#5e5e5e"/>
-<path class="s" data-k="Ventrículos laterales" d="M180 80 Q160 130 175 200 L188 200 Q178 130 192 80Z M220 80 Q240 130 225 200 L212 200 Q222 130 208 80Z" fill="#1c1c1c"/>
-<line class="s" data-k="Línea media" x1="200" y1="25" x2="200" y2="275" stroke="#999"/>
-<ellipse class="s" data-k="Ganglios basales" cx="150" cy="150" rx="18" ry="28" fill="#6c6c6c"/><ellipse class="s" data-k="Ganglios basales" cx="250" cy="150" rx="18" ry="28" fill="#6c6c6c"/>
-<ellipse class="s" data-k="Tálamos" cx="185" cy="185" rx="12" ry="14" fill="#707070"/><ellipse class="s" data-k="Tálamos" cx="215" cy="185" rx="12" ry="14" fill="#707070"/>
-<text x="120" y="115" class="lbl">S. blanca</text><text x="30" y="40" class="lbl">Calota</text><text x="120" y="190" class="lbl">GB</text><text x="230" y="215" class="lbl">Tálamo</text></svg>`,
-torax:`<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#000"/>
-<ellipse cx="200" cy="150" rx="185" ry="125" fill="#555"/>
-<path class="s" data-k="Pulmón derecho" d="M40 150 Q50 50 160 60 L170 240 Q60 250 40 150Z" fill="#111"/>
-<path class="s" data-k="Pulmón izquierdo" d="M360 150 Q350 50 240 60 L235 240 Q340 250 360 150Z" fill="#111"/>
-<circle class="s" data-k="Aorta" cx="215" cy="110" r="22" fill="#9a9a9a"/>
-<circle class="s" data-k="Tronco pulmonar" cx="185" cy="105" r="20" fill="#8f8f8f"/>
-<ellipse class="s" data-k="Tráquea / bronquios" cx="200" cy="70" rx="12" ry="10" fill="#000" stroke="#999"/>
-<circle class="s" data-k="Columna" cx="200" cy="245" r="22" fill="#eee"/>
-<circle class="s" data-k="Aorta" cx="225" cy="215" r="14" fill="#9a9a9a"/>
-<text x="70" y="150" class="lbl">Pulmón D</text><text x="270" y="150" class="lbl">Pulmón I</text><text x="230" y="110" class="lbl">Ao</text><text x="150" y="135" class="lbl">TP</text></svg>`,
-abdtc:`<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#000"/>
-<ellipse cx="200" cy="150" rx="185" ry="125" fill="#3c3c3c"/>
-<path class="s" data-k="Hígado" d="M30 130 Q40 40 170 50 Q150 120 120 200 Q50 210 30 130Z" fill="#8a8a8a"/>
-<path class="s" data-k="Bazo" d="M330 80 Q370 120 350 180 Q320 150 320 100Z" fill="#828282"/>
-<path class="s" data-k="Estómago" d="M200 60 Q300 50 310 110 Q260 130 200 110Z" fill="#222"/>
-<path class="s" data-k="Páncreas" d="M170 150 Q240 130 310 150 L305 165 Q240 148 172 168Z" fill="#7d7d7d"/>
-<circle class="s" data-k="Aorta" cx="210" cy="200" r="13" fill="#bfbfbf"/>
-<ellipse class="s" data-k="Vena cava inferior" cx="180" cy="198" rx="14" ry="10" fill="#9a9a9a"/>
-<ellipse class="s" data-k="Riñones" cx="125" cy="220" rx="22" ry="30" fill="#a8a8a8"/><ellipse class="s" data-k="Riñones" cx="290" cy="220" rx="22" ry="30" fill="#a8a8a8"/>
-<circle class="s" data-k="Columna" cx="210" cy="250" r="20" fill="#eee"/>
-<text x="50" y="110" class="lbl">Hígado</text><text x="335" y="200" class="lbl">Bazo</text><text x="230" y="90" class="lbl">Estóm.</text><text x="225" y="182" class="lbl">Ao</text></svg>`,
-columna:`<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#000"/>
-${[0,1,2,3,4].map(i=>`<rect class="s" data-k="Cuerpos vertebrales" x="110" y="${20+i*55}" width="90" height="42" rx="6" fill="#9a8f80"/><rect class="s" data-k="Discos" x="112" y="${62+i*55}" width="86" height="13" fill="${i==3?'#333':'#cfd8e6'}"/>`).join('')}
-<rect class="s" data-k="Canal / LCR" x="210" y="10" width="34" height="280" fill="#e6eef8"/>
-<rect class="s" data-k="Médula / cono" x="220" y="10" width="14" height="150" rx="7" fill="#777"/>
-<path class="s" data-k="Hernia discal" d="M198 230 Q218 238 198 246" fill="#333" stroke="#C00028" stroke-width="2"/>
-<text x="20" y="45" class="lbl">Cuerpo</text><text x="20" y="72" class="lbl">Disco T2↑</text><text x="20" y="242" class="lbl">Disco deshidratado</text><text x="255" y="100" class="lbl">LCR (T2)</text><text x="255" y="240" class="lbl" style="fill:#ff8095">Hernia</text></svg>`,
-rodilla:`<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#000"/>
-<path class="s" data-k="Fémur" d="M140 0 L260 0 L270 130 Q200 160 130 130Z" fill="#8c8170"/>
-<path class="s" data-k="Tibia" d="M130 175 Q200 160 270 175 L260 300 L140 300Z" fill="#8c8170"/>
-<path class="s" data-k="Cartílago" d="M130 130 Q200 160 270 130 M130 175 Q200 160 270 175" stroke="#cfd8e6" stroke-width="5" fill="none"/>
-<path class="s" data-k="Meniscos" d="M115 150 L150 145 L150 160Z M285 150 L250 145 L250 160Z" fill="#111" stroke="#666"/>
-<path class="s" data-k="LCA" d="M215 135 L180 170" stroke="#222" stroke-width="8"/>
-<path class="s" data-k="LCP" d="M190 120 Q230 140 225 185" stroke="#111" stroke-width="9" fill="none"/>
-<rect class="s" data-k="Tendón rotuliano" x="60" y="60" width="14" height="160" fill="#111"/>
-<text x="180" y="60" class="lbl">Fémur</text><text x="180" y="250" class="lbl">Tibia</text><text x="70" y="150" class="lbl">Menisco</text><text x="240" y="200" class="lbl">LCP</text></svg>`,
-pelvisrm:`<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#000"/>
-<ellipse cx="200" cy="150" rx="185" ry="125" fill="#444"/>
-<ellipse class="s" data-k="Vejiga" cx="200" cy="80" rx="70" ry="40" fill="#f2f2f2"/>
-<ellipse class="s" data-k="Zona periférica" cx="200" cy="170" rx="60" ry="42" fill="#e0e0e0"/>
-<ellipse class="s" data-k="Zona de transición" cx="200" cy="160" rx="36" ry="24" fill="#7a7a7a"/>
-<circle class="s" data-k="Uretra" cx="200" cy="160" r="5" fill="#222"/>
-<ellipse class="s" data-k="Recto" cx="200" cy="240" rx="30" ry="18" fill="#222" stroke="#888"/>
-<ellipse class="s" data-k="Cabezas femorales" cx="60" cy="150" rx="28" ry="30" fill="#888"/><ellipse class="s" data-k="Cabezas femorales" cx="340" cy="150" rx="28" ry="30" fill="#888"/>
-<text x="180" y="84" class="lbl" style="fill:#222">Vejiga</text><text x="265" y="190" class="lbl">ZP (T2↑)</text><text x="168" y="135" class="lbl">ZT</text><text x="235" y="250" class="lbl">Recto</text></svg>`,
-doppler:`<svg viewBox="0 0 400 300"><rect width="400" height="300" fill="#0b0f14"/>
-<path class="s" data-k="ACC" d="M0 200 L170 200 L170 230 L0 230Z" fill="#b01020"/>
-<path class="s" data-k="ACI" d="M170 200 Q240 170 400 120 L400 150 Q250 195 170 230Z" fill="#c8202d"/>
-<path class="s" data-k="ACE" d="M170 230 Q260 240 400 250 L400 270 Q250 262 170 230Z" fill="#d0303a"/>
-<path class="s" data-k="Placa" d="M175 200 Q200 192 215 190 L215 197 Q195 200 175 205Z" fill="#eee"/>
-<path class="s" data-k="Yugular" d="M0 150 L400 80 L400 105 L0 175Z" fill="#1040b0"/>
-<polyline class="s" data-k="Espectro" points="20,90 40,40 55,70 70,78 90,85 110,40 125,70 140,78 160,85" stroke="#7CFC00" fill="none" stroke-width="2"/>
-<text x="20" y="250" class="lbl">ACC</text><text x="330" y="120" class="lbl">ACI</text><text x="330" y="290" class="lbl">ACE</text><text x="180" y="185" class="lbl">Placa</text><text x="20" y="30" class="lbl">Onda ACI: baja resistencia</text></svg>`
-};
+<div id="vw">
+ <div id="vbar">
+  <button id="vx">✕ Cerrar</button>
+  <button id="vprev">‹</button><button id="vnext">›</button>
+  <button id="vzi">＋</button><button id="vzo">－</button><button id="vfit">Ajustar</button>
+  <label>Brillo <input id="vb" type="range" min="40" max="200" value="100"></label>
+  <label>Contraste <input id="vc" type="range" min="40" max="250" value="100"></label>
+  <button id="vinv">Invertir</button>
+  <button id="vlab">📍 Rotular</button>
+  <button id="vls">Rótulos</button>
+  <button id="vhide">Ocultar rótulos</button>
+  <button id="vsave">☆ Guardar en Mi atlas</button>
+ </div>
+ <div id="vst"><div id="vin"><img id="vimg" alt=""></div><div id="vlist"></div></div>
+ <div id="vfoot"></div>
+</div>
+<datalist id="dlest"></datalist>
 
-/* ===================== CONTENIDO DEL ATLAS ===================== */
+<script>
+/* ===================== CATÁLOGO DE REGIONES =====================
+   q = búsqueda en Wikimedia Commons (inglés, donde están las imágenes);
+   e = estructuras anatómicas a identificar; ref = ficha de referencia. */
+const R = [
+/* ---- ECOGRAFÍA ---- */
+['US','Abdomen','Hígado','ultrasound liver',['Lóbulo derecho','Lóbulo izquierdo','Lóbulo caudado','Venas hepáticas','Vena porta','Ligamento redondo','Diafragma'],'us-hig'],
+['US','Abdomen','Vesícula y vía biliar','ultrasound gallbladder',['Vesícula: fondo, cuerpo, cuello','Pared vesicular','Colédoco','Conducto hepático común','Vena porta','Arteria hepática'],'us-hig'],
+['US','Abdomen','Páncreas','ultrasound pancreas',['Cabeza','Cuello','Cuerpo','Cola','Conducto de Wirsung','Vena esplénica','Arteria mesentérica superior','Aorta','Vena cava inferior']],
+['US','Abdomen','Bazo','ultrasound spleen',['Bazo','Hilio esplénico','Vena esplénica','Riñón izquierdo','Diafragma']],
+['US','Abdomen','Riñones','ultrasound kidney',['Corteza','Pirámides medulares','Seno renal','Pelvis renal','Cálices','Hígado/Bazo (ventana)','Músculo psoas'],'us-ren'],
+['US','Abdomen','Vejiga urinaria','ultrasound urinary bladder',['Pared vesical','Trígono','Chorros ureterales','Meatos ureterales','Próstata / útero']],
+['US','Abdomen','Aorta y vena cava','ultrasound abdominal aorta',['Aorta abdominal','Tronco celíaco','Arteria mesentérica superior','Arterias renales','Vena cava inferior','Bifurcación ilíaca']],
+['US','Abdomen','Apéndice e intestino','ultrasound appendix',['Apéndice cecal','Ciego','Íleon terminal','Grasa mesentérica','Músculo psoas','Vasos ilíacos']],
+['US','Abdomen','Pared abdominal y hernias','ultrasound hernia abdominal wall',['Piel y TCS','Músculo recto abdominal','Línea alba','Defecto herniario','Saco herniario','Vasos epigástricos inferiores']],
+['US','Pelvis','Útero y endometrio','ultrasound uterus',['Cuerpo uterino','Fondo','Endometrio','Miometrio','Cérvix','Canal endocervical','Vejiga'],'us-pel'],
+['US','Pelvis','Ovarios y anexos','ultrasound ovary',['Ovario','Folículos','Cuerpo lúteo','Vasos ilíacos internos','Fondo de saco de Douglas'],'us-pel'],
+['US','Pelvis','Próstata','transrectal ultrasound prostate',['Zona periférica','Zona de transición','Uretra','Vesículas seminales','Cápsula prostática','Lóbulo medio']],
+['US','Pelvis','Testículos y escroto','ultrasound testis',['Testículo','Mediastino testicular','Cabeza del epidídimo','Cola del epidídimo','Túnica albugínea','Plexo pampiniforme','Hidrocele']],
+['US','Obstetricia','Primer trimestre','ultrasound gestational sac embryo',['Saco gestacional','Vesícula vitelina','Embrión','LCC','Reacción decidual','Cuerpo lúteo']],
+['US','Obstetricia','Translucencia nucal 11–14 s','nuchal translucency ultrasound',['Translucencia nucal','Hueso nasal','Perfil fetal','Diencéfalo','Amnios']],
+['US','Obstetricia','Biometría y anatomía fetal','fetal ultrasound',['DBP / CC','Cavum del septum pelúcido','Tálamos','CA: estómago y porta','Fémur','Columna','Cuatro cámaras'],'us-obs'],
+['US','Obstetricia','Corazón fetal','fetal echocardiography four chamber',['Ventrículo derecho','Ventrículo izquierdo','Aurículas','Septum interventricular','Foramen oval','Tracto de salida','Aorta descendente']],
+['US','Obstetricia','Placenta y cordón','ultrasound placenta',['Placenta','Placa corial','Cordón umbilical (3 vasos)','Inserción del cordón','Orificio cervical interno']],
+['US','Cuello','Tiroides','thyroid ultrasound',['Lóbulo derecho','Lóbulo izquierdo','Istmo','Tráquea','Carótida común','Yugular interna','Esófago','Músculos pretiroideos'],'us-tir'],
+['US','Cuello','Glándulas salivales y ganglios','ultrasound parotid gland',['Parótida','Submandibular','Conducto de Stenon','Ganglio con hilio graso','Músculo masetero']],
+['US','Cabeza','Transfontanelar','cranial ultrasound neonatal',['Ventrículos laterales','Plexos coroideos','Cavum del septum pelúcido','Cuerpo calloso','Tálamos','Matriz germinal','Cerebelo','Cisterna magna']],
+['US','Cabeza','Ocular','ocular ultrasound',['Cámara anterior','Cristalino','Cámara vítrea','Retina','Nervio óptico','Vaina del nervio óptico']],
+['US','Tórax','Pulmón y pleura','lung ultrasound',['Línea pleural','Deslizamiento pleural','Líneas A','Líneas B','Costillas','Derrame pleural','Diafragma']],
+['US','Tórax','Mama','breast ultrasound',['Piel','Tejido fibroglandular','Grasa subcutánea','Ligamentos de Cooper','Músculo pectoral','Complejo areola-pezón','Ganglio axilar']],
+['US','Tórax','Ecocardiografía','echocardiography',['Ventrículo izquierdo','Ventrículo derecho','Aurícula izquierda','Válvula mitral','Válvula aórtica','Pericardio']],
+['US','Doppler','Carótidas','carotid ultrasound doppler',['Carótida común','Bulbo','Carótida interna','Carótida externa','Complejo íntima-media','Vertebral','Yugular interna'],'us-dop'],
+['US','Doppler','Venoso de miembros inferiores','ultrasound deep vein thrombosis',['Vena femoral común','Unión safenofemoral','Vena femoral','Vena poplítea','Arteria acompañante','Trombo']],
+['US','Doppler','Arterial periférico','doppler ultrasound artery spectral',['Arteria femoral común','Femoral superficial','Poplítea','Onda trifásica','Placa']],
+['US','Doppler','Doppler renal y obstétrico','doppler umbilical artery',['Arteria umbilical','Arteria cerebral media','Arterias uterinas','Arterias renales','Índice de resistencia']],
+['US','Musculoesquelético','Hombro','shoulder ultrasound',['Supraespinoso','Infraespinoso','Subescapular','Porción larga del bíceps','Bursa subacromial-subdeltoidea','Acromion','Troquíter']],
+['US','Musculoesquelético','Codo, muñeca y mano','ultrasound carpal tunnel median nerve',['Nervio mediano','Retináculo flexor','Tendones flexores','Tendón extensor común','Primer compartimento extensor']],
+['US','Musculoesquelético','Cadera y cadera del lactante','hip ultrasound infant Graf',['Techo óseo acetabular','Labrum','Cabeza femoral','Línea basal','Ángulo alfa','Ángulo beta']],
+['US','Musculoesquelético','Rodilla','knee ultrasound',['Tendón cuadricipital','Tendón rotuliano','Receso suprarrotuliano','Quiste de Baker','Menisco','Ligamento colateral medial']],
+['US','Musculoesquelético','Tobillo y pie','achilles tendon ultrasound',['Tendón de Aquiles','Grasa de Kager','Bursa retrocalcánea','Fascia plantar','Ligamento peroneoastragalino anterior']],
+['US','Musculoesquelético','Partes blandas','ultrasound lipoma soft tissue',['Piel','Tejido celular subcutáneo','Fascia','Músculo','Lesión focal']],
+/* ---- TOMOGRAFÍA ---- */
+['TC','Neuro','Cráneo','CT scan head brain',['Sustancia gris','Sustancia blanca','Ventrículos laterales','Tercer ventrículo','Cisternas basales','Ganglios basales','Calota','Hoz del cerebro'],'tc-cra'],
+['TC','Neuro','Hemorragia y trauma craneal','CT subdural hematoma',['Hematoma epidural','Hematoma subdural','Hemorragia subaracnoidea','Desviación de la línea media','Fractura']],
+['TC','Neuro','Ictus isquémico','CT ischemic stroke',['Territorio de ACM','Núcleo lenticular','Cinta insular','Arteria hiperdensa','Regiones ASPECTS']],
+['TC','Cabeza y cuello','Senos paranasales','CT paranasal sinuses',['Seno maxilar','Complejo osteomeatal','Etmoides','Seno esfenoidal','Seno frontal','Cornetes','Tabique nasal']],
+['TC','Cabeza y cuello','Órbitas y oído','CT temporal bone',['Conducto auditivo externo','Cadena osicular','Cóclea','Conductos semicirculares','Mastoides','Órbita','Nervio óptico']],
+['TC','Cabeza y cuello','Cuello','CT neck',['Tiroides','Laringe','Glándula submandibular','Carótida','Yugular','Ganglios','Espacio parafaríngeo']],
+['TC','Tórax','Tórax — parénquima','CT scan lungs',['Lóbulo superior','Lóbulo medio / língula','Lóbulo inferior','Cisuras','Bronquios','Tráquea'],'tc-tor'],
+['TC','Tórax','Mediastino y vasos','CT mediastinum',['Aorta ascendente','Cayado aórtico','Tronco pulmonar','Vena cava superior','Ganglios mediastínicos','Esófago','Timo'],'tc-tor'],
+['TC','Tórax','Embolia pulmonar (angio-TC)','CT pulmonary angiogram embolism',['Tronco pulmonar','Arterias pulmonares derecha e izquierda','Defecto de llenado','Ventrículo derecho']],
+['TC','Tórax','Corazón y coronarias','CT coronary angiography',['Coronaria derecha','Descendente anterior','Circunfleja','Ventrículo izquierdo','Calcio coronario']],
+['TC','Abdomen','Abdomen superior','CT abdomen liver',['Hígado','Bazo','Páncreas','Estómago','Suprarrenales','Aorta','Vena cava inferior','Vena porta'],'tc-abd'],
+['TC','Abdomen','Riñones y urotomografía','CT urography kidney',['Riñón','Pelvis renal','Uréter','Vejiga','Litiasis','Fase excretora']],
+['TC','Abdomen','Intestino y apéndice','CT appendicitis',['Apéndice','Ciego','Íleon terminal','Colon','Mesenterio','Asas de delgado']],
+['TC','Abdomen','Páncreas y pancreatitis','CT pancreatitis',['Páncreas','Colecciones peripancreáticas','Necrosis','Vena esplénica','Duodeno']],
+['TC','Pelvis','Pelvis','CT pelvis',['Vejiga','Útero / próstata','Recto','Vasos ilíacos','Ganglios ilíacos','Músculos obturadores']],
+['TC','Vascular','Aorta (angio-TC)','CT angiography aorta',['Aorta torácica','Aorta abdominal','Tronco celíaco','AMS','Arterias renales','Ilíacas','Aneurisma','Disección']],
+['TC','Columna','Columna vertebral','CT spine',['Cuerpo vertebral','Pedículos','Láminas','Apófisis espinosa','Facetas articulares','Agujero de conjunción','Canal raquídeo']],
+['TC','Musculoesquelético','Fracturas y articulaciones','CT fracture 3D reconstruction',['Trazo de fractura','Fragmentos','Superficie articular','Reconstrucción 3D','Partes blandas']],
+/* ---- RESONANCIA ---- */
+['RM','Neuro','Cerebro','MRI brain',['Corteza','Sustancia blanca','Cuerpo calloso','Ventrículos','Tálamos','Núcleos caudados','Hipocampo','Tronco encefálico','Cerebelo'],'rm-cer'],
+['RM','Neuro','Cerebro — patología','MRI brain tumor',['Lesión','Edema perilesional','Realce','Efecto de masa','Difusión / ADC']],
+['RM','Neuro','Esclerosis múltiple y sustancia blanca','multiple sclerosis MRI FLAIR',['Lesiones periventriculares','Dedos de Dawson','Yuxtacorticales','Infratentoriales','Cuerpo calloso']],
+['RM','Neuro','Hipófisis y silla turca','MRI pituitary',['Adenohipófisis','Neurohipófisis','Tallo hipofisario','Quiasma óptico','Seno cavernoso','Seno esfenoidal']],
+['RM','Neuro','Angio-RM','MR angiography circle of Willis',['Carótidas internas','Arteria cerebral media','Arteria cerebral anterior','Basilar','Polígono de Willis']],
+['RM','Columna','Columna cervical','MRI cervical spine',['Médula cervical','Discos','Cuerpos vertebrales','Ligamento longitudinal posterior','Agujeros de conjunción']],
+['RM','Columna','Columna lumbar','MRI lumbar spine',['Cuerpos vertebrales','Discos (núcleo pulposo)','Cono medular','Cola de caballo','Ligamento amarillo','Raíces nerviosas','Hernia discal'],'rm-col'],
+['RM','Musculoesquelético','Rodilla','MRI knee',['Menisco medial','Menisco lateral','LCA','LCP','Ligamentos colaterales','Cartílago','Tendón rotuliano','Grasa de Hoffa'],'rm-rod'],
+['RM','Musculoesquelético','Hombro','MRI shoulder',['Supraespinoso','Infraespinoso','Subescapular','Labrum glenoideo','Cabeza humeral','Acromion','Bíceps']],
+['RM','Musculoesquelético','Cadera y pelvis ósea','MRI hip',['Cabeza femoral','Acetábulo','Labrum','Músculos glúteos','Iliopsoas','Edema óseo']],
+['RM','Musculoesquelético','Tobillo y pie','MRI ankle',['Tendón de Aquiles','Tibial posterior','Peroneos','Ligamentos laterales','Astrágalo','Calcáneo']],
+['RM','Musculoesquelético','Muñeca y codo','MRI wrist',['Escafoides','Semilunar','FCT','Nervio mediano','Tendones flexores']],
+['RM','Abdomen','Hígado','MRI liver',['Segmentos hepáticos','Vena porta','Venas hepáticas','Lesión focal','Fases dinámicas'],'rm-abd'],
+['RM','Abdomen','Colangio-RM','MRCP',['Colédoco','Conducto hepático común','Vesícula','Conducto de Wirsung','Duodeno'],'rm-abd'],
+['RM','Pelvis','Próstata','prostate MRI',['Zona periférica','Zona de transición','Estroma fibromuscular anterior','Vesículas seminales','Recto','Haces neurovasculares'],'rm-pro'],
+['RM','Pelvis','Útero y ovarios','MRI uterus',['Endometrio','Zona de unión','Miometrio','Cérvix','Ovarios','Miomas','Adenomiosis']],
+['RM','Tórax','Mama','breast MRI',['Tejido fibroglandular','Realce de fondo','Lesión','Cinética de realce','Ganglios axilares']],
+['RM','Tórax','Corazón','cardiac MRI',['Ventrículo izquierdo','Ventrículo derecho','Miocardio','Realce tardío','Pericardio']]
+];
+
+/* ===================== FICHAS DE REFERENCIA ===================== */
 const A = [
 /* ---------- ECOGRAFÍA ---------- */
 {id:'us-hig',m:'US',r:'Abdomen',n:'Hígado, vesícula y vía biliar',f:'higado',
@@ -285,61 +295,165 @@ const A = [
 
 /* ===================== APP ===================== */
 const MODS={TODO:'Todos',US:'Ecografía',TC:'Tomografía',RM:'Resonancia'};
-let mod='TODO', cur=null;
+const MODQ={US:'',TC:'',RM:''};
+const E=R.map((x,i)=>({id:'r'+i,m:x[0],r:x[1],n:x[2],q:x[3],e:x[4],ref:x[5]}));
+let mod='TODO',cur=null,tab='img';
 const $=s=>document.querySelector(s);
-const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const strip=h=>{const d=document.createElement('div');d.innerHTML=h||'';return d.textContent.trim();};
+const LS={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 
-function navMods(){$('#mods').innerHTML=Object.entries(MODS).map(([k,v])=>`<button class="${k==mod?'on':''}" data-m="${k}">${v}</button>`).join('')+`<button data-quiz="1">🎯 Autoevaluación</button>`;}
-function lista(){
- const q=$('#q').value.trim().toLowerCase();
- const it=A.filter(a=>(mod=='TODO'||a.m==mod)&&(!q||JSON.stringify(a).toLowerCase().includes(q)));
- const grp={};it.forEach(a=>(grp[a.r]=grp[a.r]||[]).push(a));
- $('#side').innerHTML=`<a data-home="1">🏠 Inicio</a>`+(Object.keys(grp).length?Object.entries(grp).map(([r,xs])=>`<h3>${r}</h3>`+xs.map(a=>`<a data-id="${a.id}" class="${cur==a.id?'on':''}">${a.n}<span class="tag t-${a.m}">${a.m}</span></a>`).join('')).join(''):'<p style="padding:14px;color:var(--mu)">Sin resultados.</p>');
- return it;
+/* ---------- Imágenes: Wikimedia Commons (licencias libres) ---------- */
+const cache={};
+async function commons(q,offset=0){
+ const k=q+'|'+offset;if(cache[k])return cache[k];
+ const u='https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=30&gsroffset='+offset+
+  '&gsrsearch='+encodeURIComponent(q+' filetype:bitmap')+'&prop=imageinfo&iiprop=url|extmetadata|mime&iiurlwidth=1600';
+ const r=await fetch(u);const j=await r.json();
+ const pages=Object.values(j.query?.pages||{}).sort((a,b)=>a.index-b.index);
+ const out=pages.filter(p=>p.imageinfo&&/jpeg|png|gif|webp/.test(p.imageinfo[0].mime)).map(p=>{const ii=p.imageinfo[0],m=ii.extmetadata||{};
+  return{t:p.title.replace(/^File:/,'').replace(/\.[a-z]+$/i,'').replace(/_/g,' '),src:ii.thumburl||ii.url,th:(ii.thumburl||ii.url).replace(/\/\d+px-/,'/400px-'),page:ii.descriptionurl,
+   desc:strip(m.ImageDescription?.value).slice(0,400),aut:strip(m.Artist?.value).slice(0,120),lic:m.LicenseShortName?.value||''};});
+ return cache[k]={items:out,next:j.continue?.gsroffset};
 }
-function home(){
- cur=null;const it=lista();
- $('#main').innerHTML=`<div class="ttl"><h2>${MODS[mod]}</h2></div><p class="sub">${it.length} fichas · anatomía esquemática interactiva, técnica, valores de referencia, patología y clasificaciones.</p>
- <div class="home">${it.map(a=>`<div class="tile" data-id="${a.id}"><span class="tag t-${a.m}" style="margin:0">${a.m}</span> <b>${a.n}</b><p>${a.r} · ${a.val.length} valores · ${a.pat.length} patologías</p></div>`).join('')}</div>`;
-}
-function ficha(id){
- const a=A.find(x=>x.id==id);if(!a)return home();cur=id;lista();
- const ks=[...new Set((F[a.f].match(/data-k="([^"]+)"/g)||[]).map(s=>s.slice(8,-1)))];
+const LAB=/label|annotat|anatomy|diagram|arrow/i;
+
+/* ---------- Mi atlas (imágenes propias / guardadas) ---------- */
+let db;
+function idb(){return new Promise((ok,ko)=>{if(db)return ok(db);const r=indexedDB.open('atlas-rad',1);r.onupgradeneeded=()=>r.result.createObjectStore('img',{keyPath:'id'});r.onsuccess=()=>ok(db=r.result);r.onerror=()=>ko(r.error);});}
+async function dbAll(){const d=await idb();return new Promise(ok=>{const r=d.transaction('img').objectStore('img').getAll();r.onsuccess=()=>ok(r.result);r.onerror=()=>ok([]);});}
+async function dbPut(o){const d=await idb();return new Promise(ok=>{const t=d.transaction('img','readwrite');t.objectStore('img').put(o);t.oncomplete=ok;});}
+async function dbDel(id){const d=await idb();return new Promise(ok=>{const t=d.transaction('img','readwrite');t.objectStore('img').delete(id);t.oncomplete=ok;});}
+
+/* ---------- Navegación ---------- */
+function navMods(){$('#mods').innerHTML=Object.entries(MODS).map(([k,v])=>`<button class="${k==mod?'on':''}" data-m="${k}">${v}</button>`).join('')+`<button data-mi="1">⭐ Mi atlas</button><button data-quiz="1">🎯 Autoevaluación</button>`;}
+function filtrar(){const q=$('#q').value.trim().toLowerCase();
+ return E.filter(a=>(mod=='TODO'||a.m==mod)&&(!q||(a.n+' '+a.r+' '+a.e.join(' ')+' '+JSON.stringify(A.find(f=>f.id==a.ref)||'')).toLowerCase().includes(q)));}
+function lista(){const it=filtrar(),g={};it.forEach(a=>(g[a.m+'·'+a.r]=g[a.m+'·'+a.r]||[]).push(a));
+ $('#side').innerHTML=`<a data-home="1">🏠 Inicio</a>`+(it.length?Object.entries(g).map(([r,xs])=>`<h3>${MODS[xs[0].m]} · ${xs[0].r}</h3>`+xs.map(a=>`<a data-id="${a.id}" class="${cur==a.id?'on':''}">${a.n}<span class="tag t-${a.m}">${a.m}</span></a>`).join('')).join(''):'<p style="padding:14px;color:var(--mu)">Sin resultados.</p>');
+ return it;}
+function home(){cur=null;const it=lista();
+ $('#main').innerHTML=`<div class="ttl"><h2>${MODS[mod]}</h2></div><p class="sub">${it.length} regiones con imágenes reales de ${mod=='TODO'?'ecografía, tomografía y resonancia':MODS[mod].toLowerCase()} de todo el cuerpo.</p>
+ <div class="note">Las imágenes se cargan en vivo desde <b>Wikimedia Commons</b> (casos reales con licencia libre; muchas con rótulos anatómicos, marcadas como <b>ROTULADA</b>). Requiere internet. Abra cualquier imagen para hacer zoom, ajustar brillo/contraste y <b>colocar sus propios rótulos anatómicos</b>, que se guardan en este equipo. En <b>⭐ Mi atlas</b> puede agregar sus capturas del ecógrafo o del PACS.</div>
+ <div class="home">${it.map(a=>`<div class="tile" data-id="${a.id}"><span class="tag t-${a.m}" style="margin:0">${a.m}</span> <b>${a.n}</b><p>${a.r} · ${a.e.length} estructuras${a.ref?' · ficha de referencia':''}</p></div>`).join('')}</div>`;}
+
+async function region(id,t){const a=E.find(x=>x.id==id);if(!a)return home();cur=id;tab=t||'img';lista();
+ const f=A.find(x=>x.id==a.ref);
  $('#main').innerHTML=`<div class="ttl"><span class="tag t-${a.m}" style="margin:0">${MODS[a.m]}</span><h2>${a.n}</h2></div><p class="sub">${a.r}</p>
- <div class="grid"><div><div class="fig" id="fig">${F[a.f]}<div class="cap">Esquema didáctico (no a escala). Toque una estructura.</div></div>
- <div class="leg">${ks.map(k=>`<span data-k="${esc(k)}">${esc(k)}</span>`).join('')}</div></div>
- <div>
+ <div class="tabs"><button data-tab="img" class="${tab=='img'?'on':''}">🖼 Imágenes reales</button>${f?`<button data-tab="ref" class="${tab=='ref'?'on':''}">📋 Ficha: técnica, valores y patología</button>`:''}<button data-tab="mis" class="${tab=='mis'?'on':''}">⭐ Mis imágenes de esta región</button></div>
+ <div id="cont"></div>`;
+ if(tab=='ref'&&f)return fichaRef(f,a);
+ if(tab=='mis')return misRegion(a);
+ const c=$('#cont');
+ c.innerHTML=`<b style="font-size:13px">Estructuras a identificar:</b><div class="chips">${a.e.map(x=>`<span>${esc(x)}</span>`).join('')}</div>
+ <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"><input id="q2" value="${esc(a.q)}" style="flex:1;min-width:200px;padding:7px;border:1px solid var(--bd);border-radius:6px;background:var(--pn);color:var(--tx)"><button class="more" style="margin:0" id="bq2">Buscar otras imágenes</button></div>
+ <div class="gal" id="gal"><p>Cargando imágenes…</p></div><div id="pg"></div>`;
+ $('#bq2').onclick=()=>cargar(a,$('#q2').value,0,true);
+ $('#q2').onkeydown=e=>{if(e.key=='Enter')$('#bq2').click();};
+ cargar(a,a.q,0,true);}
+let GAL=[];
+async function cargar(a,q,off,reset){const g=$('#gal');if(reset){GAL=[];g.innerHTML='<p>Cargando imágenes…</p>';}
+ try{
+  let items=[],next;
+  if(off==0){const [x,y]=await Promise.all([commons(q+' labeled'),commons(q)]);const seen=new Set();
+   items=[...x.items,...y.items].filter(i=>!seen.has(i.src)&&seen.add(i.src));next=y.next;}
+  else{const y=await commons(q,off);items=y.items;next=y.next;}
+  items.sort((p,r)=>LAB.test(r.t+r.desc)-LAB.test(p.t+p.desc));
+  if(cur!=a.id)return;
+  const ini=GAL.length;GAL.push(...items.map(i=>({...i,reg:a.id,est:a.e})));
+  if(reset)g.innerHTML='';
+  if(!GAL.length)g.innerHTML='<p>No se encontraron imágenes con esa búsqueda. Pruebe otros términos en inglés (ej. "sonography", "axial", "T2").</p>';
+  g.insertAdjacentHTML('beforeend',items.map((i,k)=>{const n=LS.get('pins:'+i.src,[]).length;return `<div class="im" data-g="${ini+k}"><img loading="lazy" src="${esc(i.th)}" alt="${esc(i.t)}" onerror="this.closest('.im').remove()">${LAB.test(i.t+i.desc)?'<span class="mk">ROTULADA</span>':''}${n?`<span class="mk" style="top:auto;bottom:52px">📍 ${n}</span>`:''}<div class="c">${esc(i.t)}</div></div>`}).join(''));
+  $('#pg').innerHTML=next?`<button class="more" id="bmas">Cargar más imágenes</button>`:'';
+  if(next)$('#bmas').onclick=()=>cargar(a,q,next,false);
+ }catch(e){g.innerHTML=`<div class="note">No se pudo conectar con Wikimedia Commons. Verifique la conexión a internet. Mientras tanto puede usar la pestaña de ficha y ⭐ Mi atlas.</div>`;}
+}
+
+function fichaRef(a,r){$('#cont').innerHTML=`
  <section class="card"><h4>Técnica</h4><div class="bd">${a.tec}</div></section>
  <section class="card"><h4>Anatomía / semiología normal</h4><div class="bd"><ul>${a.anat.map(x=>`<li>${x}</li>`).join('')}</ul></div></section>
- </div></div>
  <section class="card"><h4>Valores de referencia</h4><div class="bd" style="padding:0"><table><tr><th>Parámetro</th><th>Valor</th></tr>${a.val.map(v=>`<tr><td>${v[0]}</td><td><b>${v[1]}</b></td></tr>`).join('')}</table></div></section>
  <section class="card"><h4>Patología frecuente — signos clave</h4><div class="bd"><ul class="pat">${a.pat.map(p=>`<li><b>${p[0]}.</b> ${p[1]}</li>`).join('')}</ul></div></section>
- <section class="card"><h4>Clasificaciones</h4><div class="bd">${a.cls}</div></section>`;
- window.scrollTo(0,0);
-}
-function hl(k){document.querySelectorAll('#fig .s').forEach(e=>e.classList.toggle('hl',e.dataset.k==k));document.querySelectorAll('.leg span').forEach(e=>e.classList.toggle('hl',e.dataset.k==k));}
-function quiz(){
- cur=null;lista();
+ <section class="card"><h4>Clasificaciones</h4><div class="bd">${a.cls}</div></section>`;}
+
+async function misRegion(a){const c=$('#cont');const all=(await dbAll()).filter(x=>x.reg==a.id);
+ c.innerHTML=`<div class="note">Agregue capturas propias (JPG/PNG del ecógrafo, PACS o celular) de <b>${esc(a.n)}</b>. Se guardan solo en este equipo y puede rotularlas.</div>
+ <label class="more" style="display:inline-block">➕ Agregar imágenes<input type="file" id="fup" accept="image/*" multiple hidden></label>
+ <div class="gal" id="gal"></div>`;
+ GAL=all.map(x=>({...x,src:x.data,th:x.data,est:a.e,mine:1}));
+ $('#gal').innerHTML=GAL.length?GAL.map((i,k)=>`<div class="im" data-g="${k}"><img src="${i.data}" alt=""><span class="mk">${i.web?'GUARDADA':'PROPIA'}</span><div class="c">${esc(i.t)}</div></div>`).join(''):'<p style="color:var(--mu)">Aún no hay imágenes propias en esta región.</p>';
+ $('#fup').onchange=async e=>{for(const f of e.target.files){const d=await new Promise(ok=>{const r=new FileReader();r.onload=()=>ok(r.result);r.readAsDataURL(f);});
+  await dbPut({id:'p'+Date.now()+Math.random(),reg:a.id,t:f.name.replace(/\.[^.]+$/,''),data:d,fecha:new Date().toISOString()});}region(a.id,'mis');};}
+
+async function miAtlas(){cur=null;lista();const all=await dbAll();
+ $('#main').innerHTML=`<div class="ttl"><h2>⭐ Mi atlas</h2></div><p class="sub">${all.length} imágenes propias o guardadas. Para agregar imágenes, entre a una región y use la pestaña “Mis imágenes”.</p>
+ ${E.filter(a=>all.some(x=>x.reg==a.id)).map(a=>`<h3 style="color:var(--az)">${a.n} <span class="tag t-${a.m}">${a.m}</span></h3><div class="gal">${all.filter(x=>x.reg==a.id).map(x=>`<div class="im" data-goreg="${a.id}"><img src="${x.data}" alt=""><div class="c">${esc(x.t)}</div></div>`).join('')}</div>`).join('')||'<p>Todavía vacío.</p>'}`;}
+
+function quiz(){cur=null;lista();
  const pool=A.flatMap(a=>a.val.map(v=>({q:v[0]+' ('+a.n+')',r:v[1]})));
  const p=pool[Math.floor(Math.random()*pool.length)];
  const ops=[p.r,...pool.filter(x=>x.r!=p.r).sort(()=>Math.random()-.5).slice(0,3).map(x=>x.r)].sort(()=>Math.random()-.5);
  $('#main').innerHTML=`<div class="ttl"><h2>🎯 Autoevaluación</h2></div><p class="sub">Elija el valor de referencia correcto.</p>
  <section class="card"><h4>${esc(p.q)}</h4><div class="bd quiz">${ops.map(o=>`<button data-o="${esc(o)}">${esc(o)}</button>`).join('')}<p><button id="sig">Siguiente ›</button></p></div></section>`;
  document.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-o]').forEach(x=>{if(x.textContent==p.r)x.classList.add('ok')});if(b.textContent!=p.r)b.classList.add('no');});
- $('#sig').onclick=quiz;
-}
+ $('#sig').onclick=quiz;}
+
+/* ---------- Visor con zoom, ventana y rótulos ---------- */
+let vi=0,S=1,X=0,Y=0,inv=false,rot=false,hide=false;
+function key(i){return 'pins:'+(i.mine?i.id:i.src);}
+function abrir(i){vi=i;const it=GAL[i];if(!it)return;$('#vw').classList.add('open');rot=false;$('#vlab').classList.remove('on');
+ const img=$('#vimg');img.onload=fit;img.src=it.src;
+ $('#dlest').innerHTML=(it.est||[]).map(e=>`<option value="${esc(e)}">`).join('');
+ $('#vsave').style.display=it.mine?'none':'';
+ $('#vfoot').innerHTML=it.mine?`<b>${esc(it.t)}</b> · imagen propia · <a href="#" id="vdel">Eliminar de Mi atlas</a>`:
+  `<b>${esc(it.t)}</b>${it.desc?' — '+esc(it.desc):''}<br>Autor: ${esc(it.aut||'ver página')} · Licencia: ${esc(it.lic)} · <a href="${esc(it.page)}" target="_blank" rel="noopener">Ver en Wikimedia Commons</a>`;
+ if(it.mine)$('#vdel').onclick=async e=>{e.preventDefault();if(confirm('¿Eliminar esta imagen de Mi atlas?')){await dbDel(it.id);cerrar();region(cur,'mis');}};
+ pins();}
+function cerrar(){$('#vw').classList.remove('open');$('#vlist').classList.remove('on');}
+function fit(){const st=$('#vst'),im=$('#vimg');S=Math.min(st.clientWidth/im.naturalWidth,st.clientHeight/im.naturalHeight);X=(st.clientWidth-im.naturalWidth*S)/2;Y=(st.clientHeight-im.naturalHeight*S)/2;tr();pins();}
+function tr(){$('#vin').style.transform=`translate(${X}px,${Y}px) scale(${S})`;$('#vimg').style.filter=`brightness(${$('#vb').value}%) contrast(${$('#vc').value}%)${inv?' invert(1)':''}`;
+ document.querySelectorAll('.pin').forEach(p=>p.style.transform=`translate(-50%,-50%) scale(${1/S})`);}
+function zoom(f,cx,cy){const st=$('#vst').getBoundingClientRect();cx=cx??st.width/2;cy=cy??st.height/2;X=cx-(cx-X)*f;Y=cy-(cy-Y)*f;S*=f;tr();}
+function pins(){const it=GAL[vi];const ps=LS.get(key(it),[]);const im=$('#vimg');
+ document.querySelectorAll('.pin').forEach(p=>p.remove());
+ if(!hide)ps.forEach((p,k)=>{const d=document.createElement('div');d.className='pin';d.style.left=p.x*im.naturalWidth+'px';d.style.top=p.y*im.naturalHeight+'px';d.innerHTML=`<i>${k+1}</i><span>${esc(p.n)}</span>`;$('#vin').appendChild(d);});
+ $('#vlist').innerHTML='<b>Rótulos</b>'+(ps.length?ps.map((p,k)=>`<div><span>${k+1}. ${esc(p.n)}</span><button data-dp="${k}">✕</button></div>`).join(''):'<p>Sin rótulos. Use 📍 Rotular y toque la imagen.</p>');
+ tr();}
+let drag=null,moved=false;
+$('#vst').addEventListener('pointerdown',e=>{if(e.target.closest('#vlist'))return;drag={x:e.clientX,y:e.clientY,X,Y};moved=false;$('#vst').setPointerCapture(e.pointerId);});
+$('#vst').addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>4)moved=true;if(moved){X=drag.X+dx;Y=drag.Y+dy;tr();}});
+$('#vst').addEventListener('pointerup',e=>{const was=drag;drag=null;if(!was||moved||!rot||e.target.closest('#vlist'))return;
+ const r=$('#vst').getBoundingClientRect(),im=$('#vimg');const x=(e.clientX-r.left-X)/S/im.naturalWidth,y=(e.clientY-r.top-Y)/S/im.naturalHeight;if(x<0||y<0||x>1||y>1)return;
+ const n=prompt('Nombre de la estructura anatómica:\n('+(GAL[vi].est||[]).join(', ')+')');if(!n)return;
+ const it=GAL[vi],ps=LS.get(key(it),[]);ps.push({x,y,n});LS.set(key(it),ps);pins();});
+$('#vst').addEventListener('wheel',e=>{e.preventDefault();const r=$('#vst').getBoundingClientRect();zoom(e.deltaY<0?1.15:1/1.15,e.clientX-r.left,e.clientY-r.top);},{passive:false});
+$('#vlist').addEventListener('click',e=>{const b=e.target.closest('[data-dp]');if(!b)return;const it=GAL[vi],ps=LS.get(key(it),[]);ps.splice(+b.dataset.dp,1);LS.set(key(it),ps);pins();});
+$('#vx').onclick=cerrar;$('#vzi').onclick=()=>zoom(1.25);$('#vzo').onclick=()=>zoom(.8);$('#vfit').onclick=fit;
+$('#vprev').onclick=()=>abrir((vi-1+GAL.length)%GAL.length);$('#vnext').onclick=()=>abrir((vi+1)%GAL.length);
+$('#vb').oninput=tr;$('#vc').oninput=tr;$('#vinv').onclick=e=>{inv=!inv;e.target.classList.toggle('on',inv);tr();};
+$('#vlab').onclick=e=>{rot=!rot;e.target.classList.toggle('on',rot);$('#vst').style.cursor=rot?'crosshair':'grab';};
+$('#vls').onclick=e=>{$('#vlist').classList.toggle('on');e.target.classList.toggle('on');};
+$('#vhide').onclick=e=>{hide=!hide;e.target.classList.toggle('on',hide);pins();};
+$('#vsave').onclick=async()=>{const it=GAL[vi];try{const b=await (await fetch(it.src)).blob();const d=await new Promise(ok=>{const r=new FileReader();r.onload=()=>ok(r.result);r.readAsDataURL(b);});
+ const id='w'+Date.now();await dbPut({id,reg:it.reg,t:it.t,data:d,web:1,page:it.page,lic:it.lic,aut:it.aut});LS.set('pins:'+id,LS.get(key(it),[]));alert('Guardada en Mi atlas (disponible sin internet).');}catch(e){alert('No se pudo guardar: '+e.message);}};
+document.addEventListener('keydown',e=>{if(!$('#vw').classList.contains('open'))return;if(e.key=='Escape')cerrar();if(e.key=='ArrowRight')$('#vnext').click();if(e.key=='ArrowLeft')$('#vprev').click();});
+
 document.addEventListener('click',e=>{
- const t=e.target.closest('[data-m],[data-id],[data-home],[data-k],[data-quiz]');if(!t)return;
- if(t.dataset.quiz){quiz();}
+ const t=e.target.closest('[data-m],[data-id],[data-home],[data-quiz],[data-mi],[data-tab],[data-g],[data-goreg]');if(!t)return;
+ if(t.dataset.g!==undefined)abrir(+t.dataset.g);
+ else if(t.dataset.goreg)region(t.dataset.goreg,'mis');
+ else if(t.dataset.tab)region(cur,t.dataset.tab);
+ else if(t.dataset.quiz)quiz();
+ else if(t.dataset.mi)miAtlas();
  else if(t.dataset.m){mod=t.dataset.m;navMods();home();}
- else if(t.dataset.id){ficha(t.dataset.id);$('#side').classList.remove('open');}
+ else if(t.dataset.id){region(t.dataset.id);$('#side').classList.remove('open');}
  else if(t.dataset.home){home();$('#side').classList.remove('open');}
- else if(t.dataset.k){hl(t.dataset.k);}
 });
-$('#q').oninput=()=>{const it=lista();if(!cur)home();};
+$('#q').oninput=()=>{lista();if(!cur)home();};
 $('#menu').onclick=()=>$('#side').classList.toggle('open');
-$('#tema').onclick=()=>{const r=document.documentElement,d=r.dataset.theme=='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);r.dataset.theme=d?'light':'dark';try{localStorage.setItem('atlas-tema',r.dataset.theme)}catch(e){}};
-try{const t=localStorage.getItem('atlas-tema');if(t)document.documentElement.dataset.theme=t}catch(e){}
+$('#tema').onclick=()=>{const r=document.documentElement,d=r.dataset.theme=='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);r.dataset.theme=d?'light':'dark';LS.set('atlas-tema',r.dataset.theme);};
+{const t=LS.get('atlas-tema',null);if(t)document.documentElement.dataset.theme=t;}
+window.addEventListener('resize',()=>{if($('#vw').classList.contains('open'))fit();});
 navMods();home();
 </script>
 </body>

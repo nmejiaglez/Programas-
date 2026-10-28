@@ -1,3 +1,10 @@
-ATLAS RADIOLÓGICO
-Abrir AtlasRadiologico.html con doble clic (Chrome/Edge). Funciona sin internet, en PC y celular.
-Ecografía, Tomografía y Resonancia: esquemas interactivos, técnica, valores de referencia, patología, clasificaciones, buscador y autoevaluación.
+ATLAS RADIOLÓGICO — Ecografía, Tomografía y Resonancia
+Abrir AtlasRadiologico.html con doble clic (Chrome o Edge). Funciona en PC y celular.
+
+- 70 regiones de todo el cuerpo (US, TC, RM) con IMÁGENES REALES cargadas en vivo desde
+  Wikimedia Commons (licencia libre; las rotuladas aparecen primero). Requiere internet.
+- Visor: zoom, arrastre, brillo/contraste, invertir, y RÓTULOS anatómicos propios
+  (botón "Rotular" y tocar la imagen); se guardan en este equipo.
+- "Guardar en Mi atlas" deja la imagen disponible sin internet.
+- Pestaña "Mis imágenes": agregue sus capturas del ecógrafo/PACS por región.
+- Fichas de técnica, valores de referencia, patología y clasificaciones; buscador; autoevaluación.
