@@ -103,3 +103,69 @@ print('AtlasRadiologico.html', len(html) // 1024, 'KB · datos:', round(sum(f.st
 bloques = ''.join(f'<script type="text/plain" id="d_{f.stem}">{f.read_text()}</script>\n' for f in sorted(DATOS.glob('*.js')))
 (RAIZ / 'AtlasRadiologico_completo.html').write_text(html.replace('</body>', bloques + '</body>'))
 print('AtlasRadiologico_completo.html', round((RAIZ / 'AtlasRadiologico_completo.html').stat().st_size / 1e6, 1), 'MB')
+
+# ===== versiones descargables pequeñas (cada archivo < ~12 MB para que la descarga no se corte) =====
+def recomprimir(txt, f, q):
+    d = json.loads(txt[txt.index('(') + 1:txt.rindex(')')])
+    for k, L in d['series'].items():
+        for i, b in enumerate(L):
+            im = Image.open(io.BytesIO(base64.b64decode(b)))
+            modo = im.mode
+            if f < 1: im = im.resize((max(1, round(im.width * f)), max(1, round(im.height * f))), Image.LANCZOS)
+            o = io.BytesIO(); im.convert('RGB' if modo == 'RGB' else 'L').save(o, 'JPEG', quality=q, optimize=True)
+            L[i] = base64.b64encode(o.getvalue()).decode()
+    return 'ATLAS_CARGA(' + json.dumps(d, separators=(',', ':')) + ');\n'
+
+def portable(nombre, ids, maximo=11.5e6):
+    sub = [e for e in EST if e['id'] in ids]
+    js2 = ('const ESTUDIOS=' + json.dumps(sub, ensure_ascii=False, separators=(',', ':')) + ';\n'
+           + 'const FUENTES=' + json.dumps(FUENTES, ensure_ascii=False) + ';\n'
+           + (WEB / 'fichas.js').read_text() + '\n' + (WEB / 'app.js').read_text())
+    base = (WEB / 'plantilla.html').read_text().replace('/*JS*/', js2)
+    archivos = [f for f in sorted(DATOS.glob('*.js')) if f.stem.rsplit('_', 1)[0] in ids]
+    for f_, q in [(1, 82), (0.9, 75), (0.8, 70), (0.7, 66), (0.62, 62), (0.55, 58)]:
+        bloques = ''.join(f'<script type="text/plain" id="d_{f.stem}">{recomprimir(f.read_text(), f_, q) if (f_, q) != (1, 82) else f.read_text()}</script>\n' for f in archivos)
+        out = base.replace('</body>', bloques + '</body>')
+        if len(out.encode()) <= maximo: break
+    (RAIZ / 'descargas').mkdir(exist_ok=True)
+    (RAIZ / 'descargas' / nombre).write_text(out)
+    print(nombre, round(len(out.encode()) / 1e6, 1), 'MB', 'escala', f_, 'calidad', q)
+
+portable('Atlas_1_Ecografia_Radiografia_Mamografia.html', ['us-cuello', 'us-abdomen', 'us-venoso', 'rx-torax', 'rx-craneo-columna', 'rx-mmss', 'rx-mmii', 'rx-abdomen', 'mg-mama'])
+portable('Atlas_2_RM_Cerebro.html', ['rm-cerebro'])
+portable('Atlas_3_TC_Torax_Abdomen.html', ['tc-torax-abdomen'])
+portable('Atlas_4_TC_Abdomen_Pelvis_Masculino.html', ['tc-abdomen-pelvis-m'])
+portable('Atlas_5_TC_Abdomen_Pelvis_Femenino.html', ['tc-abdomen-pelvis-f'])
+
+# ===== paquetes ZIP pequeños (cada uno < ~10 MB para que la descarga no se corte) =====
+import zipfile
+def recomprimir(txt, f, q):
+    d = json.loads(txt[txt.index('(') + 1:txt.rindex(')')])
+    for L in d['series'].values():
+        for i, b in enumerate(L):
+            im = Image.open(io.BytesIO(base64.b64decode(b))); modo = im.mode
+            if f < 1: im = im.resize((max(1, round(im.width * f)), max(1, round(im.height * f))), Image.LANCZOS)
+            o = io.BytesIO(); im.convert('RGB' if modo == 'RGB' else 'L').save(o, 'JPEG', quality=q, optimize=True)
+            L[i] = base64.b64encode(o.getvalue()).decode()
+    return 'ATLAS_CARGA(' + json.dumps(d, separators=(',', ':')) + ');\n'
+
+def paquete(nombre, ids, maximo=14e6):
+    sub = [e for e in EST if e['id'] in ids]
+    js2 = ('const ESTUDIOS=' + json.dumps(sub, ensure_ascii=False, separators=(',', ':')) + ';\n'
+           + 'const FUENTES=' + json.dumps(FUENTES, ensure_ascii=False) + ';\n'
+           + (WEB / 'fichas.js').read_text() + '\n' + (WEB / 'app.js').read_text())
+    base = (WEB / 'plantilla.html').read_text().replace('/*JS*/', js2)
+    archivos = [f for f in sorted(DATOS.glob('*.js')) if f.stem.rsplit('_', 1)[0] in ids]
+    for f_, q in [(1, 0), (0.9, 75), (0.8, 70), (0.7, 65), (0.62, 60), (0.55, 56), (0.5, 52)]:
+        out = base.replace('</body>', ''.join(f'<script type="text/plain" id="d_{f.stem}">{f.read_text() if q == 0 else recomprimir(f.read_text(), f_, q)}</script>\n' for f in archivos) + '</body>')
+        if len(out.encode()) <= maximo: break
+    (RAIZ / 'descargas').mkdir(exist_ok=True)
+    z = RAIZ / 'descargas' / (nombre + '.zip')
+    with zipfile.ZipFile(z, 'w', zipfile.ZIP_DEFLATED) as zf: zf.writestr(nombre + '.html', out)
+    print(z.name, round(z.stat().st_size / 1e6, 1), 'MB · escala', f_, 'calidad', q)
+
+paquete('Atlas_1_Ecografia_Radiografia_Mamografia', ['us-cuello', 'us-abdomen', 'us-venoso', 'rx-torax', 'rx-craneo-columna', 'rx-mmss', 'rx-mmii', 'rx-abdomen', 'mg-mama'])
+paquete('Atlas_2_RM_Cerebro', ['rm-cerebro'])
+paquete('Atlas_3_TC_Torax_Abdomen', ['tc-torax-abdomen'])
+paquete('Atlas_4_TC_Abdomen_Pelvis_Masculino', ['tc-abdomen-pelvis-m'])
+paquete('Atlas_5_TC_Abdomen_Pelvis_Femenino', ['tc-abdomen-pelvis-f'])
