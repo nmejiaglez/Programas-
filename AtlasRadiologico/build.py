@@ -86,3 +86,8 @@ js = ('const ESTUDIOS=' + json.dumps(EST, ensure_ascii=False, separators=(',', '
 html = (WEB / 'plantilla.html').read_text().replace('/*JS*/', js)
 (RAIZ / 'AtlasRadiologico.html').write_text(html)
 print('AtlasRadiologico.html', len(html) // 1024, 'KB · datos:', round(sum(f.stat().st_size for f in DATOS.glob('*.js')) / 1e6, 1), 'MB')
+
+# versión de un solo archivo con todos los cortes incrustados (para descargar y abrir sin carpeta)
+bloques = ''.join(f'<script type="text/plain" id="d_{f.stem}">{f.read_text()}</script>\n' for f in sorted(DATOS.glob('*.js')))
+(RAIZ / 'AtlasRadiologico_completo.html').write_text(html.replace('</body>', bloques + '</body>'))
+print('AtlasRadiologico_completo.html', round((RAIZ / 'AtlasRadiologico_completo.html').stat().st_size / 1e6, 1), 'MB')

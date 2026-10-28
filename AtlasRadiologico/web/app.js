@@ -19,6 +19,8 @@ function pila(id, plano) {
   const porScript = () => {const s = document.createElement('script'); s.src = `datos/${k}.js`;
    s.onerror = () => ko(new Error('No se encontró datos/' + k + '.js. Descomprima el ZIP completo y mantenga la carpeta "datos" junto al archivo HTML.'));
    document.head.appendChild(s);};
+  const emb = document.getElementById('d_' + k);
+  if (emb) {setTimeout(() => {const t = emb.textContent; ATLAS_CARGA(JSON.parse(t.slice(t.indexOf('(') + 1, t.lastIndexOf(')'))));}, 0); return;}
   if (location.protocol == 'file:') return porScript();
   fetch(`datos/${k}.js`).then(r => {if (!r.ok) throw 0; return r.text();}).then(t => ATLAS_CARGA(JSON.parse(t.slice(t.indexOf('(') + 1, t.lastIndexOf(')'))))).catch(porScript);
  });
