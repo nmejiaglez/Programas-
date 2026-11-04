@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--ART-START-->
+<title>Doppler Materno-Fetal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: consola clínica de dos columnas — datos por vaso a la izquierda, panel de resultados fijo a la derecha; una columna en teléfono */
+:root{
+  --bg:#f2f5f9; --surface:#ffffff; --ink:#1b2836; --muted:#5a6a7b; --line:#d5dee8;
+  --accent:#123a78; --on-accent:#ffffff; --accent-soft:#e6eef9; --gold:#c9a227;
+  --ok:#1d7a4b; --ok-soft:#e3f4ea; --warn:#a66300; --warn-soft:#fbf0dc; --bad:#c00028; --bad-soft:#fbe3e7;
+  --band:#cfe0f5;
+  --f-body:"Source Sans 3",Arial,Helvetica,sans-serif;
+  --f-num:"JetBrains Mono",Consolas,"Courier New",monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e151e; --surface:#16202b; --ink:#e4ebf3; --muted:#98a9bb; --line:#2a3848;
+  --accent:#8fb3ee; --on-accent:#0e1a2c; --accent-soft:#1b2a40; --gold:#d8b84c;
+  --ok:#52c48d; --ok-soft:#163327; --warn:#e3a640; --warn-soft:#3a2c12; --bad:#ff5d72; --bad-soft:#3d1820;
+  --band:#24405f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e151e; --surface:#16202b; --ink:#e4ebf3; --muted:#98a9bb; --line:#2a3848;
+  --accent:#8fb3ee; --on-accent:#0e1a2c; --accent-soft:#1b2a40; --gold:#d8b84c;
+  --ok:#52c48d; --ok-soft:#163327; --warn:#e3a640; --warn-soft:#3a2c12; --bad:#ff5d72; --bad-soft:#3d1820;
+  --band:#24405f; color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.4}
+.wrap{max-width:1240px;margin:0 auto;padding-block:18px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 20px;border-bottom:2px solid var(--gold);padding-bottom:10px;margin-bottom:16px}
+header.top h1{margin:0;font-size:1.6rem;color:var(--accent);letter-spacing:.01em;text-wrap:balance}
+header.top p{margin:0;color:var(--muted);font-size:.95rem}
+.toolbar{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.col{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.card h2{margin:0 0 10px;font-size:.82rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.card h2 small{font-size:.75rem;text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.f{display:flex;flex-direction:column;gap:3px;min-width:0}
+.f label{font-size:.8rem;font-weight:600;color:var(--muted)}
+.f.wide{grid-column:1/-1}
+input,select{font:inherit;font-family:var(--f-num);font-size:.98rem;padding:8px 9px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);width:100%;min-width:0}
+input[type=text],select{font-family:var(--f-body)}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.chk{display:flex;flex-direction:row;align-items:center;gap:8px;cursor:pointer;font-size:.92rem;padding-top:6px}
+.chk input{width:18px;height:18px}
+.gaf{grid-column:span 2}
+.ga{display:flex;gap:6px;align-items:center}
+.ga input{text-align:center;width:4.4em;flex:none}
+.ga span{color:var(--muted);font-size:.85rem}
+.btn{font:inherit;font-weight:600;font-size:.92rem;border-radius:6px;padding:8px 14px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent)}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:hover{filter:brightness(1.08)}
+.res{position:sticky;top:max(12px,env(safe-area-inset-top,0px))}
+@media (max-width:900px){.res{position:static}}
+.stage{border-radius:8px;padding:14px 16px;border:1px solid var(--line);background:var(--accent-soft)}
+.stage .lbl{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.stage .big{font-size:1.35rem;font-weight:700;margin-top:2px;text-wrap:balance}
+.stage .sub{font-size:.92rem;color:var(--muted);margin-top:4px}
+.stage.ok{background:var(--ok-soft);border-color:var(--ok)} .stage.ok .big{color:var(--ok)}
+.stage.warn{background:var(--warn-soft);border-color:var(--warn)} .stage.warn .big{color:var(--warn)}
+.stage.bad{background:var(--bad-soft);border-color:var(--bad)} .stage.bad .big{color:var(--bad)}
+.stage.neutral .big{color:var(--accent)}
+table.r{width:100%;border-collapse:collapse;font-size:.92rem}
+table.r th{text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;padding:4px 6px;border-bottom:1px solid var(--line)}
+table.r td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.r td.n{font-family:var(--f-num);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tw{overflow-x:auto}
+.pill{display:inline-block;font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.warn{background:var(--warn-soft);color:var(--warn)} .pill.bad{background:var(--bad-soft);color:var(--bad)} .pill.na{background:var(--accent-soft);color:var(--muted)}
+.gauge{position:relative;height:12px;min-width:72px;border-radius:6px;background:var(--accent-soft)}
+.gauge .b{position:absolute;top:0;bottom:0;background:var(--band);border-radius:6px}
+.gauge .m{position:absolute;top:-3px;width:4px;height:18px;margin-left:-2px;border-radius:2px;background:var(--ink)}
+.gauge .c{position:absolute;top:0;bottom:0;width:1px;background:var(--muted);left:50%}
+.legend{font-size:.78rem;color:var(--muted);margin-top:6px}
+pre.rep{white-space:pre-wrap;font-family:var(--f-body);font-size:.95rem;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px;margin:0;max-height:520px;overflow:auto}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.note{font-size:.82rem;color:var(--muted)}
+.toast{font-size:.85rem;color:var(--ok);font-weight:600}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+textarea{font-family:var(--f-num);font-size:.85rem;width:100%;min-height:150px;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
+.tabs3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px}
+.example{align-self:center;font-size:.78rem;font-weight:700;color:var(--warn);background:var(--warn-soft);padding:2px 8px;border-radius:99px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div>
+    <h1>Doppler Materno-Fetal</h1>
+    <p>Calculadora de percentiles, índice cerebroplacentario, MoM de ACM y estadificación de la restricción del crecimiento (Barcelona)</p>
+  </div>
+  <div class="toolbar">
+    <span id="exTag" class="example">Datos de ejemplo</span>
+    <button class="btn ghost" id="btnEj" type="button">Cargar ejemplo</button>
+    <button class="btn ghost" id="btnClr" type="button">Limpiar</button>
+  </div>
+</header>
+
+<div class="grid">
+<div class="col">
+  <section class="card">
+    <h2>Paciente y edad gestacional</h2>
+    <div class="fields">
+      <div class="f wide"><label for="pac">Paciente</label><input type="text" id="pac" autocomplete="off"></div>
+      <div class="f"><label for="edad">Edad (años)</label><input type="number" id="edad" min="10" max="60" inputmode="numeric"></div>
+      <div class="f gaf"><label for="ga_w">Edad gestacional</label>
+        <div class="ga"><input type="number" id="ga_w" min="11" max="42" inputmode="numeric" aria-label="Semanas"><span>sem</span><input type="number" id="ga_d" min="0" max="6" inputmode="numeric" aria-label="Días"><span>d</span></div></div>
+      <div class="f"><label for="pfe">Percentil del PFE</label><input type="number" id="pfe" min="0" max="100" step="0.1" inputmode="decimal" placeholder="opcional"></div>
+      <div class="f"><label for="pfeg">PFE (g)</label><input type="number" id="pfeg" min="100" max="6000" inputmode="numeric" placeholder="opcional"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Arterias uterinas <small>Gómez 2008 · 11–41 sem</small></h2>
+    <div class="fields">
+      <div class="f"><label for="ut_d">IP uterina derecha</label><input type="number" id="ut_d" step="0.01" inputmode="decimal"></div>
+      <div class="f"><label for="ut_i">IP uterina izquierda</label><input type="number" id="ut_i" step="0.01" inputmode="decimal"></div>
+      <div class="f"><label for="notch">Muesca protodiastólica</label>
+        <select id="notch"><option value="">No evaluada</option><option value="no">Ausente</option><option value="der">Derecha</option><option value="izq">Izquierda</option><option value="bil">Bilateral</option></select></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Arteria umbilical <small>Arduini 1990 · 20–40 sem</small></h2>
+    <div class="fields">
+      <div class="f"><label for="ua_pi">IP umbilical</label><input type="number" id="ua_pi" step="0.01" inputmode="decimal"></div>
+      <div class="f"><label for="ua_ri">IR umbilical</label><input type="number" id="ua_ri" step="0.01" inputmode="decimal" placeholder="opcional"></div>
+      <div class="f"><label for="ua_sd">Relación S/D</label><input type="number" id="ua_sd" step="0.01" inputmode="decimal" placeholder="opcional"></div>
+      <div class="f"><label for="ua_flow">Flujo diastólico</label>
+        <select id="ua_flow"><option value="pres">Presente</option><option value="aus">Ausente (AEDF)</option><option value="rev">Reverso (REDF)</option></select></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Arteria cerebral media <small>IP Arduini 1990 · VPS Mari 2000</small></h2>
+    <div class="fields">
+      <div class="f"><label for="mca_pi">IP ACM</label><input type="number" id="mca_pi" step="0.01" inputmode="decimal"></div>
+      <div class="f"><label for="mca_psv">VPS ACM (cm/s)</label><input type="number" id="mca_psv" step="0.1" inputmode="decimal" placeholder="opcional"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Territorio venoso e istmo aórtico</h2>
+    <div class="fields">
+      <div class="f"><label for="dv_pi">IP ductus venoso</label><input type="number" id="dv_pi" step="0.01" inputmode="decimal" placeholder="opcional"></div>
+      <div class="f"><label for="dv_a">Onda a del ductus</label>
+        <select id="dv_a"><option value="">No evaluada</option><option value="pos">Positiva</option><option value="aus">Ausente</option><option value="rev">Reversa</option></select></div>
+      <div class="f"><label for="istmo">Istmo aórtico</label>
+        <select id="istmo"><option value="">No evaluado</option><option value="ant">Flujo anterógrado</option><option value="rev">Flujo reverso</option></select></div>
+      <div class="f"><label for="vu">Vena umbilical</label>
+        <select id="vu"><option value="">No evaluada</option><option value="no">Sin pulsaciones</option><option value="si">Con pulsaciones</option></select></div>
+      <label class="chk f wide"><input type="checkbox" id="dv_p95"> IP del ductus venoso &gt; p95 según su tabla de referencia</label>
+      <label class="chk f wide"><input type="checkbox" id="ctg"> Registro cardiotocográfico patológico (variabilidad reducida o desaceleraciones)</label>
+    </div>
+  </section>
+
+  <section class="card">
+    <details>
+      <summary>Tablas de referencia (editables)</summary>
+      <p class="note">Una semana por renglón: <b>semana p5 p50 p95</b>. Los cambios se guardan en este navegador. Verifique los valores contra la publicación original antes de usarlos en un informe.</p>
+      <div class="tabs3">
+        <div><label class="note" for="t_ut"><b>Arteria uterina, IP medio (Gómez O, et al. UOG 2008;32:128)</b></label><textarea id="t_ut" spellcheck="false"></textarea></div>
+        <div><label class="note" for="t_ua"><b>Arteria umbilical, IP (Arduini D, Rizzo G. J Perinat Med 1990;18:165)</b></label><textarea id="t_ua" spellcheck="false"></textarea></div>
+        <div><label class="note" for="t_mca"><b>Arteria cerebral media, IP (Arduini D, Rizzo G. 1990)</b></label><textarea id="t_mca" spellcheck="false"></textarea></div>
+      </div>
+      <div class="fields" style="margin-top:10px">
+        <div class="f"><label for="t_cpr">Umbral del ICP (p5)</label><input type="number" id="t_cpr" step="0.01"></div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" type="button" id="btnTabSave">Guardar tablas</button>
+        <button class="btn ghost" type="button" id="btnTabReset">Restaurar valores originales</button>
+        <span class="toast" id="tabMsg" aria-live="polite"></span>
+      </div>
+    </details>
+  </section>
+</div>
+
+<div class="col res">
+  <div class="stage neutral" id="stage"><div class="lbl">Clasificación</div><div class="big" id="stBig">—</div><div class="sub" id="stSub"></div></div>
+
+  <section class="card">
+    <h2>Resultados <small id="gaLbl"></small></h2>
+    <div class="tw"><table class="r">
+      <thead><tr><th>Parámetro</th><th>Valor</th><th>Percentil</th><th>Rango p5–p95</th><th>Estado</th></tr></thead>
+      <tbody id="tb"></tbody>
+    </table></div>
+    <div class="legend">La franja marca el rango p5–p95 de la tabla y la línea central el p50. ICP = IP ACM / IP AU. ICU = IP AU / IP ACM.</div>
+  </section>
+
+  <section class="card" id="conductaCard">
+    <h2>Conducta de referencia <small>Figueras y Gratacós 2014</small></h2>
+    <div id="conducta" class="note"></div>
+  </section>
+
+  <section class="card">
+    <h2>Texto para el informe</h2>
+    <pre class="rep" id="rep"></pre>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" type="button" id="btnCopy">Copiar texto</button>
+      <span class="toast" id="copyMsg" aria-live="polite"></span>
+    </div>
+  </section>
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var DEF = {
+ut: "11 1.18 1.79 2.70\n12 1.11 1.68 2.53\n13 1.05 1.58 2.38\n14 0.99 1.49 2.24\n15 0.94 1.41 2.11\n16 0.89 1.33 1.99\n17 0.85 1.27 1.88\n18 0.81 1.20 1.79\n19 0.78 1.15 1.70\n20 0.74 1.10 1.61\n21 0.71 1.05 1.54\n22 0.69 1.00 1.47\n23 0.66 0.96 1.41\n24 0.64 0.93 1.35\n25 0.62 0.89 1.30\n26 0.60 0.86 1.25\n27 0.58 0.84 1.21\n28 0.56 0.81 1.17\n29 0.55 0.79 1.13\n30 0.54 0.77 1.10\n31 0.52 0.75 1.06\n32 0.51 0.73 1.04\n33 0.50 0.71 1.01\n34 0.50 0.70 0.99\n35 0.49 0.69 0.97\n36 0.48 0.68 0.95\n37 0.48 0.67 0.94\n38 0.47 0.66 0.92\n39 0.47 0.65 0.91\n40 0.47 0.65 0.90\n41 0.47 0.65 0.89",
+ua: "20 1.04 1.54 2.03\n21 0.98 1.47 1.96\n22 0.92 1.41 1.90\n23 0.86 1.35 1.85\n24 0.81 1.30 1.79\n25 0.76 1.25 1.74\n26 0.71 1.20 1.69\n27 0.67 1.16 1.65\n28 0.63 1.12 1.61\n29 0.59 1.08 1.57\n30 0.56 1.05 1.54\n31 0.53 1.02 1.51\n32 0.50 0.99 1.48\n33 0.48 0.97 1.46\n34 0.46 0.95 1.44\n35 0.44 0.94 1.43\n36 0.43 0.92 1.42\n37 0.42 0.92 1.41\n38 0.42 0.91 1.40\n39 0.42 0.91 1.40\n40 0.42 0.91 1.40",
+mca: "20 1.36 1.83 2.31\n21 1.40 1.87 2.34\n22 1.44 1.91 2.37\n23 1.47 1.93 2.40\n24 1.49 1.96 2.42\n25 1.51 1.97 2.44\n26 1.52 1.98 2.45\n27 1.53 1.99 2.45\n28 1.53 1.99 2.46\n29 1.53 1.99 2.45\n30 1.52 1.98 2.44\n31 1.51 1.97 2.43\n32 1.49 1.95 2.41\n33 1.46 1.93 2.39\n34 1.43 1.90 2.36\n35 1.40 1.86 2.32\n36 1.36 1.82 2.28\n37 1.32 1.78 2.24\n38 1.27 1.73 2.19\n39 1.21 1.67 2.14\n40 1.15 1.61 2.08",
+cpr: 1.08
+};
+var KEY = "dmf_tablas_v1";
+var EXAMPLE = {pac:"Paciente de ejemplo", edad:"28", ga_w:"33", ga_d:"2", pfe:"6", pfeg:"1720",
+  ut_d:"1.21", ut_i:"1.05", notch:"bil", ua_pi:"1.38", ua_ri:"", ua_sd:"", ua_flow:"pres",
+  mca_pi:"1.35", mca_psv:"45.2", dv_pi:"0.58", dv_a:"pos", istmo:"ant", vu:"no", dv_p95:false, ctg:false};
+var IDS = ["pac","edad","ga_w","ga_d","pfe","pfeg","ut_d","ut_i","notch","ua_pi","ua_ri","ua_sd","ua_flow","mca_pi","mca_psv","dv_pi","dv_a","istmo","vu","dv_p95","ctg"];
+var $ = function(id){return document.getElementById(id);};
+var isExample = true;
+
+function parseTable(txt){
+  var t = {};
+  String(txt).split(/\n/).forEach(function(l){
+    var p = l.trim().replace(/,/g,".").split(/\s+/).map(Number);
+    if (p.length >= 4 && p.every(function(v){return isFinite(v);})) t[Math.round(p[0])] = [p[1],p[2],p[3]];
+  });
+  return t;
+}
+var TXT = {ut:DEF.ut, ua:DEF.ua, mca:DEF.mca, cpr:DEF.cpr};
+try { var s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s && s.ut) TXT = s; } catch(e){}
+var TAB = {};
+function buildTabs(){ TAB.ut = parseTable(TXT.ut); TAB.ua = parseTable(TXT.ua); TAB.mca = parseTable(TXT.mca); TAB.cpr = Number(TXT.cpr) || DEF.cpr; }
+function fillTabEditors(){ $("t_ut").value = TXT.ut; $("t_ua").value = TXT.ua; $("t_mca").value = TXT.mca; $("t_cpr").value = TXT.cpr; }
+buildTabs(); fillTabEditors();
+
+function refAt(tab, ga){
+  var ws = Object.keys(tab).map(Number).sort(function(a,b){return a-b;});
+  if (!ws.length || ga < ws[0] || ga >= ws[ws.length-1] + 1) return null;
+  var w = Math.floor(ga), f = ga - w, a = tab[w], b = tab[w+1] || a;
+  if (!a) return null;
+  return a.map(function(v,i){ return v + (b[i]-v)*f; });
+}
+function erf(x){ var s = x<0?-1:1; x=Math.abs(x); var t=1/(1+0.3275911*x);
+  var y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x); return s*y; }
+function zOf(x, r){ var sd = x >= r[1] ? (r[2]-r[1])/1.645 : (r[1]-r[0])/1.645; return (x - r[1]) / sd; }
+function pctOf(z){ return 50*(1+erf(z/Math.SQRT2)); }
+function pTab(p){ return p < 1 ? "< p1" : p > 99 ? "> p99" : "p" + Math.round(p); }
+function fmtP(p){ if (p < 1) return "< 1"; if (p > 99) return "> 99"; return String(Math.round(p)); }
+function num(id){ var v = String($(id).value).replace(",", ".").trim(); if (v === "") return null; var n = Number(v); return isFinite(n) ? n : null; }
+function f2(n){ return n.toFixed(2); }
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+
+function gaugeHTML(z){
+  if (z === null) return "";
+  var pos = function(zz){ return Math.max(0, Math.min(100, (zz + 3) / 6 * 100)); };
+  var lo = pos(-1.645), hi = pos(1.645), m = pos(z);
+  return '<div class="gauge" aria-hidden="true"><div class="b" style="left:'+lo+'%;width:'+(hi-lo)+'%"></div><div class="c"></div><div class="m" style="left:'+m+'%"></div></div>';
+}
+function pill(cls, txt){ return '<span class="pill '+cls+'">'+txt+'</span>'; }
+
+function compute(){
+  var w = num("ga_w"), d = num("ga_d") || 0;
+  var ga = (w !== null) ? w + Math.min(6, Math.max(0, d)) / 7 : null;
+  var R = {ga: ga, w: w, d: d};
+  R.pfe = num("pfe"); R.pfeg = num("pfeg");
+  // Uterinas
+  var ud = num("ut_d"), ui = num("ut_i");
+  R.utD = ud; R.utI = ui;
+  if (ud !== null || ui !== null){
+    var vals = [ud, ui].filter(function(v){return v !== null;});
+    R.ut = vals.reduce(function(a,b){return a+b;},0) / vals.length; R.utUni = vals.length === 1;
+    R.utRef = ga !== null ? refAt(TAB.ut, ga) : null;
+    if (R.utRef){ R.utZ = zOf(R.ut, R.utRef); R.utP = pctOf(R.utZ); R.utHigh = R.ut > R.utRef[2]; }
+  }
+  R.notch = $("notch").value;
+  // Umbilical
+  R.ua = num("ua_pi"); R.uaRI = num("ua_ri"); R.uaSD = num("ua_sd"); R.uaFlow = $("ua_flow").value;
+  if (R.ua !== null){ R.uaRef = ga !== null ? refAt(TAB.ua, ga) : null;
+    if (R.uaRef){ R.uaZ = zOf(R.ua, R.uaRef); R.uaP = pctOf(R.uaZ); R.uaHigh = R.ua > R.uaRef[2]; } }
+  // ACM
+  R.mca = num("mca_pi"); R.psv = num("mca_psv");
+  if (R.mca !== null){ R.mcaRef = ga !== null ? refAt(TAB.mca, ga) : null;
+    if (R.mcaRef){ R.mcaZ = zOf(R.mca, R.mcaRef); R.mcaP = pctOf(R.mcaZ); R.mcaLow = R.mca < R.mcaRef[0]; } }
+  if (R.psv !== null && ga !== null){
+    R.psvMed = Math.exp(2.31 + 0.046 * ga); R.mom = R.psv / R.psvMed;
+    R.anemia = R.mom >= 1.55 ? "grave" : R.mom >= 1.5 ? "moderada" : R.mom >= 1.29 ? "leve" : "";
+  }
+  // ICP
+  if (R.ua !== null && R.mca !== null && R.ua > 0){ R.cpr = R.mca / R.ua; R.ucr = R.ua / R.mca; R.cprLow = R.cpr < TAB.cpr; }
+  R.dv = num("dv_pi"); R.dvA = $("dv_a").value; R.dvHigh = $("dv_p95").checked; R.istmo = $("istmo").value; R.vu = $("vu").value; R.ctg = $("ctg").checked;
+  R.stage = stage(R);
+  return R;
+}
+
+function stage(R){
+  var crit = [];
+  var st = {code:"", title:"", sub:"", cls:"neutral", crit:crit, early: R.ga !== null && R.ga < 32};
+  var placenta = R.uaHigh || R.uaFlow !== "pres" || R.cprLow || R.mcaLow || R.utHigh;
+  if (R.pfe === null){
+    var ab = dopplerAbn(R);
+    if (!ab.length){ st.title = (R.ua !== null || R.mca !== null || R.ut !== undefined) ? "Doppler dentro de parámetros esperados" : "Ingrese los datos del estudio"; st.cls = (R.ua !== null || R.mca !== null || R.ut !== undefined) ? "ok" : "neutral"; }
+    else { st.title = ab[0]; st.cls = (R.uaFlow !== "pres" || R.dvA === "rev" || R.dvA === "aus" || R.anemia === "grave" || R.anemia === "moderada") ? "bad" : "warn"; }
+    st.sub = "Sin percentil de PFE no se estadifica la restricción del crecimiento.";
+    return st;
+  }
+  if (R.pfe >= 10){
+    var ab2 = dopplerAbn(R);
+    st.title = "PFE ≥ p10: no cumple criterio de PEG ni de RCIU";
+    st.cls = ab2.length ? "warn" : "ok";
+    st.sub = ab2.length ? "Alteración Doppler en feto con peso adecuado: " + ab2.map(function(x){return /^[A-ZÁÉÍÓÚ][a-záéíóú]/.test(x) ? x.charAt(0).toLowerCase()+x.slice(1) : x;}).join("; ") + "." : "Índices Doppler dentro de parámetros esperados.";
+    return st;
+  }
+  var e = st.early ? "precoz" : "tardía";
+  if (R.dvA === "rev" || R.ctg){ st.code = "IV"; if (R.dvA === "rev") crit.push("onda a reversa en ductus venoso"); if (R.ctg) crit.push("registro cardiotocográfico patológico"); }
+  else if (R.uaFlow === "rev" || R.dvHigh || R.dvA === "aus"){ st.code = "III"; if (R.uaFlow === "rev") crit.push("flujo diastólico reverso en arteria umbilical"); if (R.dvHigh) crit.push("IP del ductus venoso > p95"); if (R.dvA === "aus") crit.push("onda a ausente en ductus venoso"); }
+  else if (R.uaFlow === "aus" || R.istmo === "rev"){ st.code = "II"; if (R.uaFlow === "aus") crit.push("flujo diastólico ausente en arteria umbilical"); if (R.istmo === "rev") crit.push("flujo reverso en istmo aórtico"); }
+  else if (R.pfe < 3 || placenta){ st.code = "I";
+    if (R.pfe < 3) crit.push("PFE < p3"); if (R.cprLow) crit.push("ICP < p5"); if (R.uaHigh) crit.push("IP umbilical > p95"); if (R.mcaLow) crit.push("IP de ACM < p5"); if (R.utHigh) crit.push("IP medio de uterinas > p95"); }
+  if (st.code){
+    st.title = "RCIU " + e + " · Estadio " + st.code; st.cls = st.code === "I" ? "warn" : "bad";
+    st.sub = "PFE p" + fmtNum(R.pfe) + " · " + crit.join(" · ");
+  } else {
+    st.title = "Feto pequeño para la edad gestacional (PEG)"; st.cls = "ok";
+    st.sub = "PFE p" + fmtNum(R.pfe) + " (p3–p10) con Doppler dentro de parámetros esperados.";
+  }
+  return st;
+}
+function fmtNum(n){ return (Math.round(n*10)/10).toString(); }
+function dopplerAbn(R){
+  var a = [];
+  if (R.uaFlow === "rev") a.push("Flujo diastólico reverso en arteria umbilical");
+  if (R.uaFlow === "aus") a.push("Flujo diastólico ausente en arteria umbilical");
+  if (R.dvA === "rev") a.push("Onda a reversa en ductus venoso");
+  if (R.dvA === "aus") a.push("Onda a ausente en ductus venoso");
+  if (R.dvHigh) a.push("IP del ductus venoso > p95");
+  if (R.anemia) a.push("VPS de ACM " + f2(R.mom) + " MoM, sugestiva de anemia fetal " + R.anemia);
+  if (R.cprLow) a.push("Índice cerebroplacentario disminuido");
+  if (R.mcaLow) a.push("IP de ACM < p5 (vasodilatación cerebral)");
+  if (R.uaHigh) a.push("IP umbilical > p95");
+  if (R.utHigh) a.push("IP medio de arterias uterinas > p95");
+  if (R.istmo === "rev") a.push("Flujo reverso en istmo aórtico");
+  return a;
+}
+
+var CONDUCTA = {
+  "PEG":"Control cada 2 semanas. Finalización del embarazo a las 40 semanas; inducción permitida.",
+  "I":"Control semanal (1–2 semanas). Finalización a las 37 semanas; inducción permitida.",
+  "II":"Control 2 veces por semana. Finalización a las 34 semanas por cesárea.",
+  "III":"Control cada 1–2 días. Finalización a las 30 semanas por cesárea, con corticoides y neuroprotección según protocolo.",
+  "IV":"Control cada 12–48 horas. Finalización a partir de las 26 semanas por cesárea, con corticoides y neuroprotección según protocolo."
+};
+
+function render(){
+  var R = compute(), rows = [];
+  $("gaLbl").textContent = R.ga !== null ? ("EG " + R.w + "+" + (R.d||0) + " sem") : "Ingrese la edad gestacional";
+  function row(name, val, p, r, z, state){
+    rows.push("<tr><td>"+name+"</td><td class='n'>"+val+"</td><td class='n'>"+(p!=null?pTab(p):"—")+"</td><td>"+(r?gaugeHTML(z)+"<div class='note n'>"+f2(r[0])+" – "+f2(r[2])+"</div>":"<span class='note'>"+(R.ga===null?"sin EG":"fuera de tabla")+"</span>")+"</td><td>"+state+"</td></tr>");
+  }
+  if (R.ut !== undefined) row("IP medio uterinas"+(R.utUni?" (unilateral)":""), f2(R.ut), R.utP, R.utRef, R.utZ, R.utRef ? (R.utHigh ? pill("bad","> p95") : pill("ok","≤ p95")) : pill("na","sin ref."));
+  if (R.ua !== null) row("IP umbilical", f2(R.ua), R.uaP, R.uaRef, R.uaZ, R.uaFlow === "rev" ? pill("bad","Flujo reverso") : R.uaFlow === "aus" ? pill("bad","Flujo ausente") : R.uaRef ? (R.uaHigh ? pill("bad","> p95") : pill("ok","≤ p95")) : pill("na","sin ref."));
+  if (R.mca !== null) row("IP ACM", f2(R.mca), R.mcaP, R.mcaRef, R.mcaZ, R.mcaRef ? (R.mcaLow ? pill("bad","< p5") : pill("ok","≥ p5")) : pill("na","sin ref."));
+  if (R.cpr !== undefined) rows.push("<tr><td>ICP (ACM/AU)</td><td class='n'>"+f2(R.cpr)+"</td><td class='n'>—</td><td class='note n'>umbral &lt; "+f2(TAB.cpr)+"</td><td>"+(R.cprLow?pill("bad","Disminuido"):pill("ok","Conservado"))+"</td></tr>",
+    "<tr><td>ICU (AU/ACM)</td><td class='n'>"+f2(R.ucr)+"</td><td class='n'>—</td><td class='note'>inverso del ICP</td><td></td></tr>");
+  if (R.mom !== undefined) rows.push("<tr><td>VPS ACM</td><td class='n'>"+fmtNum(R.psv)+" cm/s</td><td class='n'>"+f2(R.mom)+" MoM</td><td class='note n'>1.5 MoM: "+fmtNum(R.psvMed*1.5)+" cm/s</td><td>"+(R.anemia?pill(R.anemia==="leve"?"warn":"bad","Anemia "+R.anemia):pill("ok","< 1.29 MoM"))+"</td></tr>");
+  if (R.dv !== null || R.dvA) rows.push("<tr><td>Ductus venoso</td><td class='n'>"+(R.dv!==null?f2(R.dv):"—")+"</td><td class='n'>"+(R.dvHigh?"> p95":"—")+"</td><td class='note'>onda a "+({pos:"positiva",aus:"ausente",rev:"reversa"}[R.dvA]||"no evaluada")+"</td><td>"+((R.dvA==="rev"||R.dvA==="aus"||R.dvHigh)?pill("bad","Alterado"):R.dvA==="pos"?pill("ok","Conservado"):"")+"</td></tr>");
+  $("tb").innerHTML = rows.join("") || "<tr><td colspan='5' class='note'>Ingrese al menos un índice Doppler.</td></tr>";
+
+  var st = R.stage, box = $("stage");
+  box.className = "stage " + st.cls; $("stBig").textContent = st.title; $("stSub").textContent = st.sub;
+  var ck = st.code || (R.pfe !== null && R.pfe < 10 ? "PEG" : "");
+  $("conductaCard").hidden = !ck;
+  $("conducta").textContent = ck ? (CONDUCTA[ck] + " Es orientativa y no se incluye en el texto del informe.") : "";
+  $("rep").textContent = report(R);
+}
+
+function report(R){
+  var L = [], c = [];
+  var notchTxt = {no:"Sin muesca protodiastólica demostrable.", der:"Se identifica muesca protodiastólica en la arteria uterina derecha.", izq:"Se identifica muesca protodiastólica en la arteria uterina izquierda.", bil:"Se identifica muesca protodiastólica bilateral."};
+  L.push("ULTRASONIDO DOPPLER MATERNO-FETAL");
+  if ($("pac").value.trim()) L.push("Paciente: " + $("pac").value.trim() + (num("edad")!==null ? " · " + num("edad") + " años" : ""));
+  if (R.ga !== null) L.push("Edad gestacional: " + R.w + " semanas " + (R.d||0) + " días.");
+  if (R.pfe !== null || R.pfeg !== null) L.push("Peso fetal estimado: " + (R.pfeg!==null ? R.pfeg + " g" : "") + (R.pfeg!==null && R.pfe!==null ? ", " : "") + (R.pfe!==null ? "percentil " + fmtNum(R.pfe) : "") + ".");
+  L.push("", "HALLAZGOS");
+  var main = dopplerAbn(R);
+  if (R.ut !== undefined){
+    var t = "Arterias uterinas. ";
+    if (R.utD !== null) t += "Arteria uterina derecha con IP de " + f2(R.utD) + (R.utI !== null ? "; " : ". ");
+    if (R.utI !== null) t += (R.utD !== null ? "arteria uterina izquierda" : "Arteria uterina izquierda") + " con IP de " + f2(R.utI) + ". ";
+    if (!R.utUni) t += "IP medio de " + f2(R.ut);
+    else t += "Evaluación unilateral (IP " + f2(R.ut) + ")";
+    if (R.utRef) t += " (percentil " + fmtP(R.utP) + "), " + (R.utHigh ? "por encima del percentil 95 para la edad gestacional, en relación con aumento de la impedancia en la circulación uteroplacentaria." : "por debajo del percentil 95 para la edad gestacional, con impedancia uteroplacentaria dentro de parámetros esperados.");
+    else t += ".";
+    if (notchTxt[R.notch]) t += " " + notchTxt[R.notch];
+    L.push(t);
+  }
+  if (R.ua !== null){
+    var u = "Arteria umbilical. IP de " + f2(R.ua) + (R.uaRef ? " (percentil " + fmtP(R.uaP) + ")" : "");
+    if (R.uaRI !== null) u += ", IR de " + f2(R.uaRI);
+    if (R.uaSD !== null) u += ", relación S/D de " + f2(R.uaSD);
+    u += ", " + ({pres:"con flujo diastólico anterógrado conservado durante todo el ciclo cardiaco", aus:"con AUSENCIA del flujo al final de la diástole", rev:"con flujo diastólico REVERSO"}[R.uaFlow]) + ". ";
+    if (R.uaRef) u += R.uaHigh ? "Impedancia por encima del percentil 95 para la edad gestacional, traduce aumento de la resistencia vascular placentaria." : "Impedancia placentaria dentro de parámetros esperados para la edad gestacional.";
+    L.push(u.trim());
+  }
+  if (R.mca !== null || R.psv !== null){
+    var m = "Arteria cerebral media. ";
+    if (R.mca !== null){ m += "IP de " + f2(R.mca) + (R.mcaRef ? " (percentil " + fmtP(R.mcaP) + ")" : "");
+      m += R.mcaRef ? (R.mcaLow ? ", por debajo del percentil 5, en relación con vasodilatación cerebral (redistribución hemodinámica con preservación del flujo cerebral). " : ", dentro de parámetros esperados para la edad gestacional, sin signos de vasodilatación cerebral. ") : ". "; }
+    if (R.mom !== undefined) m += "Velocidad pico sistólica de " + fmtNum(R.psv) + " cm/s, equivalente a " + f2(R.mom) + " MoM para la edad gestacional, " + (R.anemia ? "sugestiva de anemia fetal " + R.anemia + "." : "sin criterios Doppler de anemia fetal.");
+    L.push(m.trim());
+  }
+  if (R.cpr !== undefined) L.push("Índice cerebroplacentario. Relación IP ACM / IP AU de " + f2(R.cpr) + ", " + (R.cprLow ? "por debajo del umbral de " + f2(TAB.cpr) + ", indicativo de redistribución del flujo sanguíneo hacia el territorio cerebral." : "por encima del umbral de " + f2(TAB.cpr) + ", sin evidencia de redistribución hemodinámica.") + " Índice umbilicocerebral de " + f2(R.ucr) + ".");
+  if (R.dv !== null || R.dvA){
+    var dv = "Ductus venoso. ";
+    if (R.dv !== null) dv += "IP de " + f2(R.dv) + (R.dvHigh ? ", por encima del percentil 95 para la edad gestacional" : "") + ". ";
+    if (R.dvA) dv += ({pos:"Onda a anterógrada (positiva), sin signos de aumento de la presión venosa central.", aus:"Onda a AUSENTE, traduce aumento de la presión al final de la diástole ventricular.", rev:"Onda a REVERSA, signo de descompensación cardiaca fetal."}[R.dvA]);
+    L.push(dv.trim());
+  }
+  if (R.istmo) L.push("Istmo aórtico. " + (R.istmo === "rev" ? "Flujo diastólico REVERSO." : "Flujo anterógrado conservado."));
+  if (R.vu) L.push("Vena umbilical. " + (R.vu === "si" ? "Presenta pulsaciones venosas, en relación con aumento de la presión venosa central." : "Flujo continuo, sin pulsaciones venosas."));
+
+  L.push("", "CONCLUSIONES");
+  var st = R.stage;
+  if (st.code) c.push("Restricción del crecimiento intrauterino " + (st.early ? "precoz" : "tardía") + ", estadio " + st.code + " (criterios de Barcelona): peso fetal estimado en el percentil " + fmtNum(R.pfe) + ", con " + st.crit.join(", ") + ".");
+  else if (R.pfe !== null && R.pfe < 10) c.push("Feto pequeño para la edad gestacional (peso fetal estimado en el percentil " + fmtNum(R.pfe) + "), con estudio Doppler materno-fetal dentro de parámetros esperados.");
+  if (!st.code){ main.forEach(function(x){ c.push(x + "."); }); }
+  else {
+    if (R.utHigh && st.crit.indexOf("IP medio de uterinas > p95") < 0) c.push("IP medio de arterias uterinas por encima del percentil 95.");
+    if (R.anemia) c.push("VPS de ACM de " + f2(R.mom) + " MoM, sugestiva de anemia fetal " + R.anemia + ".");
+    if (R.cprLow && st.crit.indexOf("ICP < p5") < 0) c.push("Índice cerebroplacentario disminuido, con redistribución hemodinámica.");
+  }
+  if (!c.length && (R.ua !== null || R.mca !== null || R.ut !== undefined)) c.push("Estudio Doppler materno-fetal con índices de impedancia uteroplacentaria, umbilical y cerebral dentro de parámetros esperados para la edad gestacional.");
+  if (R.pfe !== null && R.pfe >= 10 && c.length && main.length) c.push("Peso fetal estimado en el percentil " + fmtNum(R.pfe) + ", sin criterio de feto pequeño para la edad gestacional.");
+  c.forEach(function(x,i){ L.push((i+1) + ". " + x); });
+
+  var et = [];
+  var plac = R.utHigh || R.uaHigh || R.uaFlow !== "pres" || R.cprLow || R.mcaLow;
+  if (plac){
+    var s = "Patrón Doppler compatible con insuficiencia placentaria";
+    if (R.utHigh) s += " de origen vascular materno (alteración de la invasión trofoblástica y de la remodelación de las arterias espirales)";
+    var rep = [];
+    if (R.cprLow || R.mcaLow) rep.push("redistribución hemodinámica cerebral");
+    if (R.uaFlow !== "pres") rep.push("aumento grave de la resistencia placentaria");
+    if (R.dvA === "aus" || R.dvA === "rev" || R.dvHigh) rep.push("compromiso del territorio venoso");
+    s += rep.length ? ", con repercusión fetal: " + rep.join(", ") + "." : ", sin repercusión hemodinámica fetal demostrable en el presente estudio.";
+    et.push(s);
+  }
+  if (R.anemia) et.push("Aumento de la velocidad pico sistólica de la ACM por estado hiperdinámico secundario a anemia fetal; causas probables: aloinmunización, infección (parvovirus B19) o hemorragia fetomaterna.");
+  if (et.length){ L.push("", "ANÁLISIS ETIOLÓGICO / CAUSA PROBABLE"); et.forEach(function(x){ L.push(x); }); }
+  return L.join("\n");
+}
+
+function setExample(on){ isExample = on; $("exTag").hidden = !on; }
+function load(obj){ IDS.forEach(function(id){ var el = $(id); if (el.type === "checkbox") el.checked = !!obj[id]; else el.value = obj[id] != null ? obj[id] : (el.tagName === "SELECT" ? el.options[0].value : ""); }); }
+document.addEventListener("input", function(ev){ if (ev.target.closest && ev.target.closest("details")) return; if (isExample && ev.isTrusted) setExample(false); render(); });
+document.addEventListener("change", function(ev){ if (ev.target.closest && ev.target.closest("details")) return; render(); });
+$("btnEj").addEventListener("click", function(){ load(EXAMPLE); setExample(true); render(); });
+$("btnClr").addEventListener("click", function(){ load({ua_flow:"pres"}); setExample(false); render(); $("ga_w").focus(); });
+$("btnCopy").addEventListener("click", function(){
+  var txt = $("rep").textContent, msg = $("copyMsg");
+  function sel(){ var r = document.createRange(); r.selectNodeContents($("rep")); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent = "Texto seleccionado: pulse Ctrl+C"; }
+  try { navigator.clipboard.writeText(txt).then(function(){ msg.textContent = "Copiado"; setTimeout(function(){ msg.textContent = ""; }, 2500); }, sel); } catch(e){ sel(); }
+});
+$("btnTabSave").addEventListener("click", function(){
+  TXT = {ut:$("t_ut").value, ua:$("t_ua").value, mca:$("t_mca").value, cpr:Number(String($("t_cpr").value).replace(",", ".")) || DEF.cpr};
+  buildTabs(); try { localStorage.setItem(KEY, JSON.stringify(TXT)); $("tabMsg").textContent = "Tablas guardadas"; } catch(e){ $("tabMsg").textContent = "Aplicadas solo en esta sesión (el navegador no permite guardar)"; }
+  render();
+});
+$("btnTabReset").addEventListener("click", function(){
+  TXT = {ut:DEF.ut, ua:DEF.ua, mca:DEF.mca, cpr:DEF.cpr}; buildTabs(); fillTabEditors();
+  try { localStorage.removeItem(KEY); } catch(e){} $("tabMsg").textContent = "Valores originales restaurados"; render();
+});
+load(EXAMPLE); setExample(true); render();
+})();
+</script>
+<!--ART-END-->
+</body>
+</html>

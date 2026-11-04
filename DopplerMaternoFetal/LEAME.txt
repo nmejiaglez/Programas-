@@ -1,0 +1,39 @@
+DOPPLER MATERNO-FETAL - Instrucciones
+=====================================
+Calculadora de Doppler obstetrico. Un solo archivo, no necesita instalar
+nada. Funciona sin internet (sin internet usa la letra Arial).
+
+1. Copie DopplerMaternoFetal.html a la computadora o al telefono.
+2. Doble clic para abrirlo (Google Chrome o Microsoft Edge).
+3. Escriba la edad gestacional (semanas y dias) y los indices medidos.
+   Los resultados y el texto del informe se actualizan solos.
+
+QUE CALCULA:
+- Arterias uterinas: IP medio, percentil y si esta por encima del p95
+  (Gomez O, et al. Ultrasound Obstet Gynecol 2008; 11 a 41 semanas).
+- Arteria umbilical: IP con percentil (Arduini y Rizzo 1990; 20 a 40
+  semanas), IR, relacion S/D y flujo diastolico presente/ausente/reverso.
+- Arteria cerebral media: IP con percentil (Arduini y Rizzo 1990) y
+  velocidad pico sistolica en MoM (Mari 2000: mediana = e^(2.31 + 0.046 x EG)).
+  Anemia: 1.29 MoM leve, 1.50 moderada, 1.55 grave.
+- Indice cerebroplacentario (IP ACM / IP AU), umbral 1.08 editable,
+  e indice umbilicocerebral.
+- Ductus venoso (IP y onda a), istmo aortico y vena umbilical.
+- Con el percentil del peso fetal estimado: clasifica PEG o RCIU
+  precoz (< 32 sem) / tardia (>= 32 sem) en estadios I a IV
+  (Figueras F, Gratacos E. Fetal Diagn Ther 2014, protocolo Barcelona).
+
+TEXTO PARA EL INFORME:
+- Hallazgos por vaso, conclusiones numeradas y analisis etiologico.
+- Boton "Copiar texto" y pegarlo en el Word del informe.
+- La conducta de referencia (Barcelona) se muestra aparte y NO se
+  incluye en el texto del informe.
+
+TABLAS DE REFERENCIA (MUY IMPORTANTE):
+- En "Tablas de referencia (editables)" estan los valores p5, p50 y p95
+  por semana. Antes del primer uso cotejelos con la publicacion original
+  o con la tabla que usa su servicio. Puede cambiarlos y pulsar
+  "Guardar tablas"; quedan guardados en ese navegador.
+- "Restaurar valores originales" vuelve a los valores de fabrica.
+- El percentil exacto se estima desde p5-p50-p95 (distribucion normal
+  a cada lado de la mediana), interpolando por dias de gestacion.
