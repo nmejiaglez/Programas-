@@ -73,6 +73,7 @@ ol.pasos{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
 .ojo{font-size:15px;color:var(--alto)}
 .evitar ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
 .nota{font-size:15px;color:var(--muted)}
+.cmd{margin:0;font:500 14px/1.5 var(--mono);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px;white-space:pre-wrap;word-break:break-all;user-select:all}
 @media (max-width:480px){.paso{grid-template-columns:1fr}.cuerpo{grid-column:1}.check{position:static}}
 @media (prefers-reduced-motion:reduce){.barra i{transition:none}}
 </style>
@@ -115,6 +116,29 @@ ol.pasos{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
       <span class="nota" id="estadoTest" role="status"></span>
     </div>
     <p class="nota">Para una medición justa: tablet con más de 20% de batería, sin estar caliente y con esta página como única app abierta.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="t-auto" style="border:2px solid var(--accent)">
+    <span class="lbl">Requiere Android 11 o más nuevo y Wi-Fi</span>
+    <h2 id="t-auto">Modo automático: que la tablet lo haga sola</h2>
+    <p class="sub">Con un solo comando la tablet pone las animaciones al doble de velocidad, cierra las apps de segundo plano, borra la caché de todas las apps y las optimiza para que abran más rápido. Preparación una sola vez (5 minutos):</p>
+    <div class="ruta"><ol>
+      <li>Active las <b>Opciones de desarrollador</b>: Ajustes &gt; Acerca de la tablet &gt; toque 7 veces <b>Número de compilación</b> (Xiaomi: <b>Versión de MIUI / HyperOS</b>).</li>
+      <li>Instale de Play Store <b>Shizuku</b> y <b>aShell</b> (ambas gratis).</li>
+      <li>Abra Shizuku &gt; <b>Emparejar</b> (Depuración inalámbrica). Siga lo que indica: en Opciones de desarrollador active <b>Depuración inalámbrica</b> &gt; <b>Vincular dispositivo con código</b> y escriba el código en la notificación de Shizuku.</li>
+      <li>En Shizuku toque <b>Iniciar</b>. Debe decir "Shizuku está en ejecución".</li>
+      <li>Abra aShell, permita el acceso a Shizuku, toque <b>Copiar</b> abajo, pegue en aShell y toque enviar.</li>
+    </ol></div>
+    <span class="lbl">1. Acelerar todo (puede tardar hasta 15 minutos; espere a que diga LISTO)</span>
+    <pre class="cmd" id="cmdTodo">settings put global window_animation_scale 0.5; settings put global transition_animation_scale 0.5; settings put global animator_duration_scale 0.5; am kill-all; pm trim-caches 999G; cmd package bg-dexopt-job; echo LISTO</pre>
+    <div class="fila"><button class="prim" data-copiar="cmdTodo">Copiar comando</button></div>
+    <span class="lbl">2. Opcional: desactivar servicios preinstalados de Facebook y anuncios de Xiaomi</span>
+    <pre class="cmd" id="cmdApps">for p in com.facebook.system com.facebook.appmanager com.facebook.services com.miui.msa.global com.miui.analytics com.samsung.android.app.spage com.samsung.android.bixby.agent; do pm disable-user --user 0 $p 2>/dev/null; done; echo LISTO</pre>
+    <div class="fila"><button class="sec" data-copiar="cmdApps">Copiar comando</button></div>
+    <span class="lbl">Deshacer (dejar todo como estaba)</span>
+    <pre class="cmd" id="cmdDeshacer">settings put global window_animation_scale 1; settings put global transition_animation_scale 1; settings put global animator_duration_scale 1; for p in com.facebook.system com.facebook.appmanager com.facebook.services com.miui.msa.global com.miui.analytics com.samsung.android.app.spage com.samsung.android.bixby.agent; do pm enable $p 2>/dev/null; done; echo LISTO</pre>
+    <div class="fila"><button class="sec" data-copiar="cmdDeshacer">Copiar comando</button><span class="nota" id="estadoCopia" role="status"></span></div>
+    <p class="nota">No borra fotos, chats, cuentas ni documentos. Repita el comando 1 cada semana o cuando la note lenta. Después de un reinicio, Shizuku hay que volver a iniciarlo (paso 4).</p>
   </section>
 
   <section style="display:flex;flex-direction:column;gap:12px" aria-labelledby="t-pasos">
@@ -327,6 +351,15 @@ ol.pasos{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;g
       $('fCambio').textContent = c >= 3 ? 'La tablet responde más rápido' : c <= -3 ? 'Más lenta: ¿está caliente o con apps abiertas?' : 'Sin cambio importante en el procesador';
     } else { $('vCambio').textContent = '—'; $('vCambio').style.color = ''; $('fCambio').textContent = 'Mida antes y después'; }
   }
+  document.addEventListener('click', function(e){
+    var id = e.target.getAttribute && e.target.getAttribute('data-copiar'); if (!id) return;
+    var el = $(id), txt = el.textContent;
+    var marcar = function(){ var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    var aviso = function(t){ $('estadoCopia').textContent = t; };
+    try {
+      navigator.clipboard.writeText(txt).then(function(){ aviso('Copiado. Péguelo en aShell.'); }, function(){ marcar(); aviso('Texto seleccionado: mantenga presionado y toque Copiar.'); });
+    } catch(err) { marcar(); aviso('Texto seleccionado: mantenga presionado y toque Copiar.'); }
+  });
   $('bAntes').addEventListener('click', function(){ medir('antes'); });
   $('bDesp').addEventListener('click', function(){ medir('despues'); });
   mostrar();
