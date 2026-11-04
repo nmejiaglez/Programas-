@@ -1,0 +1,39 @@
+ACELERADOR TABLET - Instrucciones
+=================================
+Para tablets y celulares ANDROID (Samsung, Lenovo, Xiaomi, Huawei,
+Alcatel, etc.) con Android 5 o mas nuevo. Se usa desde una computadora
+con Windows 7, 8, 10 u 11 y el cable USB de la tablet.
+
+PRIMERA VEZ - activar la "Depuracion USB" en la tablet:
+1. Ajustes > Acerca de la tablet (Samsung: > Informacion de software).
+2. Toque 7 veces "Numero de compilacion" hasta que diga
+   "Ahora eres desarrollador".
+3. Ajustes > Opciones de desarrollador > active "Depuracion USB".
+
+USO:
+1. Conecte la tablet a la computadora con el cable USB.
+2. Doble clic en AceleradorTablet.bat (no necesita administrador).
+3. La primera vez descarga la herramienta oficial de Google (ADB, 7 MB).
+4. En la tablet toque PERMITIR (marque "Permitir siempre").
+5. Elija la opcion 1 (TODO) y al terminar REINICIE la tablet.
+
+QUE HACE:
+- Diagnostico: RAM, espacio libre, temperatura y las apps que mas
+  memoria gastan (le dice que hace lenta la tablet).
+- Animaciones a 0.5x: abrir y cambiar de app se siente el doble de rapido.
+- Cierra apps que quedaron abiertas en segundo plano (libera RAM).
+- Borra la cache de todas las apps (libera espacio).
+- Optimiza (compila) las apps para que abran mas rapido (Android 7+).
+- Desactiva apps preinstaladas innecesarias (Facebook de fabrica,
+  Bixby, anuncios de Xiaomi, etc.). Pregunta UNA POR UNA.
+
+SEGURIDAD:
+- NO borra fotos, videos, documentos, WhatsApp, contactos ni cuentas.
+- Las apps se DESACTIVAN, no se borran.
+- Opcion 8 (DESHACER): vuelve a poner las animaciones como estaban y
+  reactiva las apps que el programa desactivo.
+- Despues de usarlo puede apagar la "Depuracion USB" si quiere.
+
+NOTA: ningun programa hace milagros. Si la tablet tiene menos de
+15% de espacio libre, pase fotos y videos a la computadora: es lo que
+mas la acelera. Con 2 GB de RAM o menos, tenga pocas apps abiertas.
