@@ -37,3 +37,9 @@ SEGURIDAD:
 NOTA: ningun programa hace milagros. Si la tablet tiene menos de
 15% de espacio libre, pase fotos y videos a la computadora: es lo que
 mas la acelera. Con 2 GB de RAM o menos, tenga pocas apps abiertas.
+
+VERSION PARA USAR DESDE LA TABLET (sin computadora)
+---------------------------------------------------
+Abra web/index.html en el navegador de la tablet. Tiene una prueba de
+rapidez (antes y despues) y los pasos guiados segun la marca (Samsung,
+Xiaomi, Lenovo, Huawei u otra), con casillas para marcar lo hecho.
