@@ -71,11 +71,12 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 table.r{width:100%;border-collapse:collapse;font-size:.92rem}
 table.r th{text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;padding:4px 6px;border-bottom:1px solid var(--line)}
 table.r td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.r td:nth-child(4){width:26%}
 table.r td.n{font-family:var(--f-num);font-variant-numeric:tabular-nums;white-space:nowrap}
 .tw{overflow-x:auto}
-.pill{display:inline-block;font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.pill{display:inline-block;font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:99px}
 .pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.warn{background:var(--warn-soft);color:var(--warn)} .pill.bad{background:var(--bad-soft);color:var(--bad)} .pill.na{background:var(--accent-soft);color:var(--muted)}
-.gauge{position:relative;height:12px;min-width:72px;border-radius:6px;background:var(--accent-soft)}
+.gauge{position:relative;height:12px;width:100%;max-width:120px;min-width:60px;border-radius:6px;background:var(--accent-soft)}
 .gauge .b{position:absolute;top:0;bottom:0;background:var(--band);border-radius:6px}
 .gauge .m{position:absolute;top:-3px;width:4px;height:18px;margin-left:-2px;border-radius:2px;background:var(--ink)}
 .gauge .c{position:absolute;top:0;bottom:0;width:1px;background:var(--muted);left:50%}
@@ -87,6 +88,9 @@ pre.rep{white-space:pre-wrap;font-family:var(--f-body);font-size:.95rem;backgrou
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 textarea{font-family:var(--f-num);font-size:.85rem;width:100%;min-height:150px;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
 .tabs3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px}
+.vres{margin-top:10px;padding:8px 10px;border-radius:6px;font-size:.95rem;background:var(--accent-soft);display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.vres.ok{background:var(--ok-soft)}.vres.bad{background:var(--bad-soft)}.vres.warn{background:var(--warn-soft)}
+.vres .pill{font-size:.8rem}
 .example{align-self:center;font-size:.78rem;font-weight:700;color:var(--warn);background:var(--warn-soft);padding:2px 8px;border-radius:99px}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
@@ -127,6 +131,7 @@ textarea{font-family:var(--f-num);font-size:.85rem;width:100%;min-height:150px;p
       <div class="f"><label for="notch">Muesca protodiastólica</label>
         <select id="notch"><option value="">No evaluada</option><option value="no">Ausente</option><option value="der">Derecha</option><option value="izq">Izquierda</option><option value="bil">Bilateral</option></select></div>
     </div>
+    <div class="vres" id="v_ut" hidden></div>
   </section>
 
   <section class="card">
@@ -138,6 +143,7 @@ textarea{font-family:var(--f-num);font-size:.85rem;width:100%;min-height:150px;p
       <div class="f"><label for="ua_flow">Flujo diastólico</label>
         <select id="ua_flow"><option value="pres">Presente</option><option value="aus">Ausente (AEDF)</option><option value="rev">Reverso (REDF)</option></select></div>
     </div>
+    <div class="vres" id="v_ua" hidden></div>
   </section>
 
   <section class="card">
@@ -146,6 +152,9 @@ textarea{font-family:var(--f-num);font-size:.85rem;width:100%;min-height:150px;p
       <div class="f"><label for="mca_pi">IP ACM</label><input type="number" id="mca_pi" step="0.01" inputmode="decimal"></div>
       <div class="f"><label for="mca_psv">VPS ACM (cm/s)</label><input type="number" id="mca_psv" step="0.1" inputmode="decimal" placeholder="opcional"></div>
     </div>
+    <div class="vres" id="v_mca" hidden></div>
+    <div class="vres" id="v_cpr" hidden></div>
+    <div class="vres" id="v_psv" hidden></div>
   </section>
 
   <section class="card">
@@ -161,6 +170,7 @@ textarea{font-family:var(--f-num);font-size:.85rem;width:100%;min-height:150px;p
       <label class="chk f wide"><input type="checkbox" id="dv_p95"> IP del ductus venoso &gt; p95 según su tabla de referencia</label>
       <label class="chk f wide"><input type="checkbox" id="ctg"> Registro cardiotocográfico patológico (variabilidad reducida o desaceleraciones)</label>
     </div>
+    <div class="vres" id="v_dv" hidden></div>
   </section>
 
   <section class="card">
@@ -190,7 +200,7 @@ textarea{font-family:var(--f-num);font-size:.85rem;width:100%;min-height:150px;p
   <section class="card">
     <h2>Resultados <small id="gaLbl"></small></h2>
     <div class="tw"><table class="r">
-      <thead><tr><th>Parámetro</th><th>Valor</th><th>Percentil</th><th>Rango p5–p95</th><th>Estado</th></tr></thead>
+      <thead><tr><th>Parámetro</th><th>Valor</th><th>Percentil</th><th>Rango normal p5–p95</th><th>Resultado</th></tr></thead>
       <tbody id="tb"></tbody>
     </table></div>
     <div class="legend">La franja marca el rango p5–p95 de la tabla y la línea central el p50. ICP = IP ACM / IP AU. ICU = IP AU / IP ACM.</div>
@@ -362,20 +372,41 @@ var CONDUCTA = {
   "IV":"Control cada 12–48 horas. Finalización a partir de las 26 semanas por cesárea, con corticoides y neuroprotección según protocolo."
 };
 
+function verdicts(R){
+  var V = {}, NR = R.ga === null ? "Falta la edad gestacional" : "Sin referencia para esta edad gestacional";
+  function v(cls, txt){ return {cls:cls, txt:txt}; }
+  if (R.ut !== undefined) V.ut = !R.utRef ? v("na", NR) : R.utHigh ? v("bad","ANORMAL · por encima del p95") : v("ok","NORMAL · por debajo del p95");
+  if (R.ua !== null) V.ua = R.uaFlow === "rev" ? v("bad","ANORMAL · flujo diastólico reverso") : R.uaFlow === "aus" ? v("bad","ANORMAL · flujo diastólico ausente") : !R.uaRef ? v("na", NR) : R.uaHigh ? v("bad","ANORMAL · por encima del p95") : v("ok","NORMAL · por debajo del p95");
+  if (R.mca !== null) V.mca = !R.mcaRef ? v("na", NR) : R.mcaLow ? v("bad","ANORMAL · por debajo del p5 (vasodilatación)") : v("ok","NORMAL · por encima del p5");
+  if (R.cpr !== undefined) V.cpr = R.cprLow ? v("bad","ANORMAL · menor de " + f2(TAB.cpr) + " (redistribución)") : v("ok","NORMAL · mayor de " + f2(TAB.cpr));
+  if (R.mom !== undefined) V.psv = R.anemia ? v(R.anemia === "leve" ? "warn" : "bad", "ANORMAL · anemia fetal " + R.anemia) : v("ok","NORMAL · menor de 1.29 MoM");
+  if (R.dv !== null || R.dvA) V.dv = R.dvA === "rev" ? v("bad","ANORMAL · onda a reversa") : R.dvA === "aus" ? v("bad","ANORMAL · onda a ausente") : R.dvHigh ? v("bad","ANORMAL · IP por encima del p95") : R.dvA === "pos" ? v("ok","NORMAL · onda a positiva") : v("na","Indique la onda a");
+  return V;
+}
+
 function render(){
-  var R = compute(), rows = [];
+  var R = compute(), rows = [], V = verdicts(R);
   $("gaLbl").textContent = R.ga !== null ? ("EG " + R.w + "+" + (R.d||0) + " sem") : "Ingrese la edad gestacional";
-  function row(name, val, p, r, z, state){
-    rows.push("<tr><td>"+name+"</td><td class='n'>"+val+"</td><td class='n'>"+(p!=null?pTab(p):"—")+"</td><td>"+(r?gaugeHTML(z)+"<div class='note n'>"+f2(r[0])+" – "+f2(r[2])+"</div>":"<span class='note'>"+(R.ga===null?"sin EG":"fuera de tabla")+"</span>")+"</td><td>"+state+"</td></tr>");
+  function cell(x){ return x ? pill(x.cls, x.cls === "na" ? "Sin ref." : x.txt.split(" · ")[0]) : ""; }
+  function row(name, val, p, r, z, vv){
+    rows.push("<tr><td>"+name+"</td><td class='n'>"+val+"</td><td class='n'>"+(p!=null?pTab(p):"—")+"</td><td>"+(r?gaugeHTML(z)+"<div class='note n'>"+f2(r[0])+" – "+f2(r[2])+"</div>":"<span class='note'>—</span>")+"</td><td>"+cell(vv)+"</td></tr>");
   }
-  if (R.ut !== undefined) row("IP medio uterinas"+(R.utUni?" (unilateral)":""), f2(R.ut), R.utP, R.utRef, R.utZ, R.utRef ? (R.utHigh ? pill("bad","> p95") : pill("ok","≤ p95")) : pill("na","sin ref."));
-  if (R.ua !== null) row("IP umbilical", f2(R.ua), R.uaP, R.uaRef, R.uaZ, R.uaFlow === "rev" ? pill("bad","Flujo reverso") : R.uaFlow === "aus" ? pill("bad","Flujo ausente") : R.uaRef ? (R.uaHigh ? pill("bad","> p95") : pill("ok","≤ p95")) : pill("na","sin ref."));
-  if (R.mca !== null) row("IP ACM", f2(R.mca), R.mcaP, R.mcaRef, R.mcaZ, R.mcaRef ? (R.mcaLow ? pill("bad","< p5") : pill("ok","≥ p5")) : pill("na","sin ref."));
-  if (R.cpr !== undefined) rows.push("<tr><td>ICP (ACM/AU)</td><td class='n'>"+f2(R.cpr)+"</td><td class='n'>—</td><td class='note n'>umbral &lt; "+f2(TAB.cpr)+"</td><td>"+(R.cprLow?pill("bad","Disminuido"):pill("ok","Conservado"))+"</td></tr>",
+  if (R.ut !== undefined) row("IP medio uterinas"+(R.utUni?" (unilateral)":""), f2(R.ut), R.utP, R.utRef, R.utZ, V.ut);
+  if (R.ua !== null) row("IP umbilical", f2(R.ua), R.uaP, R.uaRef, R.uaZ, V.ua);
+  if (R.mca !== null) row("IP ACM", f2(R.mca), R.mcaP, R.mcaRef, R.mcaZ, V.mca);
+  if (R.cpr !== undefined) rows.push("<tr><td>ICP (ACM/AU)</td><td class='n'>"+f2(R.cpr)+"</td><td class='n'>—</td><td class='note'>normal ≥ "+f2(TAB.cpr)+"</td><td>"+cell(V.cpr)+"</td></tr>",
     "<tr><td>ICU (AU/ACM)</td><td class='n'>"+f2(R.ucr)+"</td><td class='n'>—</td><td class='note'>inverso del ICP</td><td></td></tr>");
-  if (R.mom !== undefined) rows.push("<tr><td>VPS ACM</td><td class='n'>"+fmtNum(R.psv)+" cm/s</td><td class='n'>"+f2(R.mom)+" MoM</td><td class='note n'>1.5 MoM: "+fmtNum(R.psvMed*1.5)+" cm/s</td><td>"+(R.anemia?pill(R.anemia==="leve"?"warn":"bad","Anemia "+R.anemia):pill("ok","< 1.29 MoM"))+"</td></tr>");
-  if (R.dv !== null || R.dvA) rows.push("<tr><td>Ductus venoso</td><td class='n'>"+(R.dv!==null?f2(R.dv):"—")+"</td><td class='n'>"+(R.dvHigh?"> p95":"—")+"</td><td class='note'>onda a "+({pos:"positiva",aus:"ausente",rev:"reversa"}[R.dvA]||"no evaluada")+"</td><td>"+((R.dvA==="rev"||R.dvA==="aus"||R.dvHigh)?pill("bad","Alterado"):R.dvA==="pos"?pill("ok","Conservado"):"")+"</td></tr>");
+  if (R.mom !== undefined) rows.push("<tr><td>VPS ACM</td><td class='n'>"+fmtNum(R.psv)+" cm/s</td><td class='n'>"+f2(R.mom)+" MoM</td><td class='note'>normal &lt; 1.29 MoM ("+fmtNum(R.psvMed*1.29)+" cm/s)</td><td>"+cell(V.psv)+"</td></tr>");
+  if (V.dv) rows.push("<tr><td>Ductus venoso</td><td class='n'>"+(R.dv!==null?f2(R.dv):"—")+"</td><td class='n'>"+(R.dvHigh?"> p95":"—")+"</td><td class='note'>onda a "+({pos:"positiva",aus:"ausente",rev:"reversa"}[R.dvA]||"no evaluada")+"</td><td>"+cell(V.dv)+"</td></tr>");
   $("tb").innerHTML = rows.join("") || "<tr><td colspan='5' class='note'>Ingrese al menos un índice Doppler.</td></tr>";
+
+  function inline(id, parts, vv){ var el = $(id); if (!vv){ el.hidden = true; el.innerHTML = ""; return; } el.hidden = false; el.className = "vres " + vv.cls; el.innerHTML = parts.filter(Boolean).join(" · ") + " <span class='pill " + vv.cls + "'>" + vv.txt + "</span>"; }
+  inline("v_ut", [R.ut !== undefined ? "<b>IP medio " + f2(R.ut) + "</b>" : "", R.utP !== undefined && R.utRef ? "Percentil <b>" + fmtP(R.utP) + "</b>" : ""], V.ut);
+  inline("v_ua", [R.ua !== null ? "<b>IP " + f2(R.ua) + "</b>" : "", R.uaRef ? "Percentil <b>" + fmtP(R.uaP) + "</b>" : ""], V.ua);
+  inline("v_mca", [R.mca !== null ? "<b>IP " + f2(R.mca) + "</b>" : "", R.mcaRef ? "Percentil <b>" + fmtP(R.mcaP) + "</b>" : ""], V.mca);
+  inline("v_cpr", [R.cpr !== undefined ? "<b>ICP " + f2(R.cpr) + "</b>" : ""], V.cpr);
+  inline("v_psv", [R.mom !== undefined ? "<b>VPS " + fmtNum(R.psv) + " cm/s = " + f2(R.mom) + " MoM</b>" : ""], V.psv);
+  inline("v_dv", [R.dv !== null ? "<b>IP DV " + f2(R.dv) + "</b>" : ""], V.dv);
 
   var st = R.stage, box = $("stage");
   box.className = "stage " + st.cls; $("stBig").textContent = st.title; $("stSub").textContent = st.sub;

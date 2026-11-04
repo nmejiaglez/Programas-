@@ -23,6 +23,11 @@ QUE CALCULA:
   precoz (< 32 sem) / tardia (>= 32 sem) en estadios I a IV
   (Figueras F, Gratacos E. Fetal Diagn Ther 2014, protocolo Barcelona).
 
+RESULTADO POR VASO:
+- Debajo de cada vaso aparece el valor, su percentil y si es NORMAL o
+  ANORMAL (verde = normal, rojo = anormal). La tabla de resultados
+  repite el percentil, el rango normal p5-p95 y el resultado.
+
 TEXTO PARA EL INFORME:
 - Hallazgos por vaso, conclusiones numeradas y analisis etiologico.
 - Boton "Copiar texto" y pegarlo en el Word del informe.
