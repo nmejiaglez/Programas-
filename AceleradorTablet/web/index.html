@@ -1,0 +1,368 @@
+<title>Acelerador Tablet</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: una columna de herramienta, medidor arriba, pasos como lista de tareas grandes para el dedo */
+:root{
+  --bg:#eef2f1; --surface:#ffffff; --ink:#14201e; --muted:#53635f; --line:#d3dcda;
+  --accent:#0f6b5c; --accent-ink:#ffffff; --accent-soft:#d6ebe6;
+  --alto:#b4321f; --medio:#9a6a00; --bajo:#4a5a8a; --ok:#1d7a3e;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1716; --surface:#172220; --ink:#e4ecea; --muted:#9aaba7; --line:#2a3836;
+  --accent:#4cc3a9; --accent-ink:#06201b; --accent-soft:#183a33;
+  --alto:#ff8a73; --medio:#e8b94a; --bajo:#a4b4ee; --ok:#6fd690; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0f1716; --surface:#172220; --ink:#e4ecea; --muted:#9aaba7; --line:#2a3836;
+  --accent:#4cc3a9; --accent-ink:#06201b; --accent-soft:#183a33;
+  --alto:#ff8a73; --medio:#e8b94a; --bajo:#a4b4ee; --ok:#6fd690; color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:17px/1.5 var(--body);
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:20px 48px}
+.wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+h1,h2{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:clamp(30px,6vw,44px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:22px;font-weight:600}
+p{margin:0}
+.sub{color:var(--muted);max-width:62ch}
+.lbl{font:700 12px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.equipo{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px}
+.chip b{font-family:var(--mono);font-weight:700}
+/* medidor */
+.medidor{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.lect{border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.num{font:700 34px/1 var(--mono);font-variant-numeric:tabular-nums}
+.num small{font-size:14px;color:var(--muted);font-weight:500}
+.dif{font:700 15px var(--mono)}
+.barra{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.barra i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.fila{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button{font:700 17px var(--body);border-radius:10px;padding:13px 20px;border:2px solid var(--accent);cursor:pointer;min-height:50px}
+.prim{background:var(--accent);color:var(--accent-ink)}
+.sec{background:transparent;color:var(--accent)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button:disabled{opacity:.55;cursor:wait}
+select{font:17px var(--body);padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);min-height:50px;max-width:100%}
+/* progreso */
+.prog{display:flex;align-items:center;gap:12px}
+.prog .barra{flex:1;height:14px;border-radius:7px}
+.prog .barra i{background:var(--ok)}
+.prog span{font:700 16px var(--mono);white-space:nowrap}
+/* pasos */
+ol.pasos{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;counter-reset:p}
+.paso{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;counter-increment:p}
+.paso.hecho{border-color:var(--ok)}
+.paso.hecho .tit{text-decoration:line-through;text-decoration-color:var(--ok);color:var(--muted)}
+.check{width:30px;height:30px;margin:2px 0 0;accent-color:var(--ok);cursor:pointer}
+.cab{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;min-width:0}
+.tit{font:700 19px/1.3 var(--body);cursor:pointer}
+.tit::before{content:counter(p) ". ";font-family:var(--mono);color:var(--muted)}
+.imp{font:700 11px/1 var(--body);letter-spacing:.07em;text-transform:uppercase;padding:5px 8px;border-radius:5px;border:1.5px solid currentColor}
+.imp.alto{color:var(--alto)} .imp.medio{color:var(--medio)} .imp.bajo{color:var(--bajo)}
+.cuerpo{grid-column:2;display:flex;flex-direction:column;gap:8px;min-width:0}
+.por{color:var(--muted);font-size:16px}
+.ruta{font-size:16px;background:var(--accent-soft);border-radius:8px;padding:10px 12px}
+.ruta b{color:var(--ink)}
+.ruta ol{margin:4px 0 0;padding-left:22px}
+.ojo{font-size:15px;color:var(--alto)}
+.evitar ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.nota{font-size:15px;color:var(--muted)}
+.cmd{margin:0;font:500 14px/1.5 var(--mono);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px;white-space:pre-wrap;word-break:break-all;user-select:all}
+@media (max-width:480px){.paso{grid-template-columns:1fr}.cuerpo{grid-column:1}.check{position:static}}
+@media (prefers-reduced-motion:reduce){.barra i{transition:none}}
+</style>
+
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:8px">
+    <span class="lbl">Para tablets y celulares Android</span>
+    <h1>Acelerador Tablet</h1>
+    <p class="sub">Mida la rapidez de su tablet, haga los pasos en orden y vuelva a medir. Los pasos usan las opciones del propio Android: no instala nada ni borra fotos, chats o documentos.</p>
+  </header>
+
+  <section class="panel" aria-labelledby="t-eq">
+    <h2 id="t-eq">Su tablet</h2>
+    <div class="equipo" id="equipo"></div>
+    <div class="fila">
+      <label for="marca" class="lbl">Marca</label>
+      <select id="marca">
+        <option value="samsung">Samsung</option>
+        <option value="xiaomi">Xiaomi / Redmi / POCO</option>
+        <option value="lenovo">Lenovo</option>
+        <option value="huawei">Huawei / Honor</option>
+        <option value="otra">Otra marca (Alcatel, Motorola, Nokia...)</option>
+      </select>
+    </div>
+    <p class="nota">Los menús de los pasos cambian según la marca. Si un nombre no coincide exactamente, use la lupa de Ajustes y escriba la palabra en negrita.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="t-med">
+    <h2 id="t-med">Prueba de rapidez</h2>
+    <p class="sub">Pone a trabajar el procesador durante unos segundos. Más puntos = más rápido. Hágala antes y después de los pasos.</p>
+    <div class="medidor">
+      <div class="lect"><span class="lbl">Antes</span><span class="num" id="vAntes">—</span><span class="nota" id="fAntes">Sin medir</span></div>
+      <div class="lect"><span class="lbl">Después</span><span class="num" id="vDesp">—</span><span class="nota" id="fDesp">Sin medir</span></div>
+      <div class="lect"><span class="lbl">Cambio</span><span class="num" id="vCambio">—</span><span class="nota" id="fCambio">Mida antes y después</span></div>
+    </div>
+    <div class="barra" aria-hidden="true"><i id="barraTest"></i></div>
+    <div class="fila">
+      <button class="prim" id="bAntes">Medir ANTES</button>
+      <button class="sec" id="bDesp">Medir DESPUÉS</button>
+      <span class="nota" id="estadoTest" role="status"></span>
+    </div>
+    <p class="nota">Para una medición justa: tablet con más de 20% de batería, sin estar caliente y con esta página como única app abierta.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="t-auto" style="border:2px solid var(--accent)">
+    <span class="lbl">Requiere Android 11 o más nuevo y Wi-Fi</span>
+    <h2 id="t-auto">Modo automático: que la tablet lo haga sola</h2>
+    <p class="sub">Con un solo comando la tablet pone las animaciones al doble de velocidad, cierra las apps de segundo plano, borra la caché de todas las apps y las optimiza para que abran más rápido. Preparación una sola vez (5 minutos):</p>
+    <div class="ruta"><ol>
+      <li>Active las <b>Opciones de desarrollador</b>: Ajustes &gt; Acerca de la tablet &gt; toque 7 veces <b>Número de compilación</b> (Xiaomi: <b>Versión de MIUI / HyperOS</b>).</li>
+      <li>Instale <b>Shizuku</b> desde Play Store (gratis).</li>
+      <li>Instale <b>aShell</b> (no está en Play Store): abra <a href="https://f-droid.org/packages/in.sunilpaulmathew.ashell/">f-droid.org/packages/in.sunilpaulmathew.ashell</a>, baje hasta <b>Paquetes</b> y toque <b>Descargar APK</b> en la primera versión. Abra el archivo descargado &gt; <b>Instalar</b>. Si pide permiso, toque <b>Configuración</b> &gt; active <b>Permitir de esta fuente</b> &gt; vuelva atrás &gt; Instalar.</li>
+      <li>Abra Shizuku &gt; <b>Emparejar</b> (Depuración inalámbrica). Siga lo que indica: en Opciones de desarrollador active <b>Depuración inalámbrica</b> &gt; <b>Vincular dispositivo con código</b> y escriba el código en la notificación de Shizuku.</li>
+      <li>En Shizuku toque <b>Iniciar</b>. Debe decir "Shizuku está en ejecución".</li>
+      <li>Abra aShell, permita el acceso a Shizuku, toque <b>Copiar</b> abajo, pegue en aShell y toque enviar.</li>
+    </ol></div>
+    <span class="lbl">1. Acelerar todo (puede tardar hasta 15 minutos; espere a que diga LISTO)</span>
+    <pre class="cmd" id="cmdTodo">settings put global window_animation_scale 0.5; settings put global transition_animation_scale 0.5; settings put global animator_duration_scale 0.5; am kill-all; pm trim-caches 999G; cmd package bg-dexopt-job; echo LISTO</pre>
+    <div class="fila"><button class="prim" data-copiar="cmdTodo">Copiar comando</button></div>
+    <span class="lbl">2. Opcional: desactivar servicios preinstalados de Facebook y anuncios de Xiaomi</span>
+    <pre class="cmd" id="cmdApps">for p in com.facebook.system com.facebook.appmanager com.facebook.services com.miui.msa.global com.miui.analytics com.samsung.android.app.spage com.samsung.android.bixby.agent; do pm disable-user --user 0 $p 2>/dev/null; done; echo LISTO</pre>
+    <div class="fila"><button class="sec" data-copiar="cmdApps">Copiar comando</button></div>
+    <span class="lbl">Deshacer (dejar todo como estaba)</span>
+    <pre class="cmd" id="cmdDeshacer">settings put global window_animation_scale 1; settings put global transition_animation_scale 1; settings put global animator_duration_scale 1; for p in com.facebook.system com.facebook.appmanager com.facebook.services com.miui.msa.global com.miui.analytics com.samsung.android.app.spage com.samsung.android.bixby.agent; do pm enable $p 2>/dev/null; done; echo LISTO</pre>
+    <div class="fila"><button class="sec" data-copiar="cmdDeshacer">Copiar comando</button><span class="nota" id="estadoCopia" role="status"></span></div>
+    <p class="nota">No borra fotos, chats, cuentas ni documentos. Repita el comando 1 cada semana o cuando la note lenta. Después de un reinicio, Shizuku hay que volver a iniciarlo (paso 4).</p>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:12px" aria-labelledby="t-pasos">
+    <div class="fila" style="justify-content:space-between">
+      <h2 id="t-pasos">Pasos para acelerarla</h2>
+      <button class="sec" id="bReiniciar" style="min-height:40px;padding:8px 14px;font-size:15px">Desmarcar todo</button>
+    </div>
+    <div class="prog"><div class="barra"><i id="barraProg"></i></div><span id="txtProg">0 de 0</span></div>
+    <ol class="pasos" id="pasos"></ol>
+  </section>
+
+  <section class="panel evitar" aria-labelledby="t-ev">
+    <h2 id="t-ev">Lo que NO conviene hacer</h2>
+    <ul>
+      <li><b>No instale apps "limpiadoras" o "boosters"</b> (Clean Master, aceleradores de RAM, antivirus de limpieza). Corren todo el tiempo y la ponen más lenta.</li>
+      <li><b>No toque "Borrar datos"</b> en una app si solo quiere limpiar: eso cierra la sesión y puede borrar chats no respaldados. Use solo <b>Borrar caché</b>.</li>
+      <li><b>No cierre las apps a cada rato</b> desde el botón de apps recientes: Android las vuelve a abrir desde cero y gasta más. Ciérrelas solo si la tablet está trabada.</li>
+      <li><b>El restablecimiento de fábrica</b> es el último recurso: borra TODO. Antes respalde fotos (Google Fotos) y WhatsApp (Ajustes de WhatsApp &gt; Chats &gt; Copia de seguridad).</li>
+    </ul>
+  </section>
+
+  <p class="nota">Si tiene computadora con Windows, el programa <b>AceleradorTablet.bat</b> hace varios de estos pasos de forma automática por cable USB y además compila las apps para que abran más rápido.</p>
+</div>
+
+<script>
+(function(){
+  var guardar = function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} };
+  var leer = function(k,d){ try{ var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } };
+  var $ = function(id){ return document.getElementById(id); };
+
+  // ---------- Datos del equipo ----------
+  var ua = navigator.userAgent || '';
+  var android = (ua.match(/Android\s([\d.]+)/) || [])[1] || '';
+  var modelo = (ua.match(/Android[^;]*;\s*([^;)]+?)(?:\sBuild|\))/) || [])[1] || '';
+  function pintarEquipo(){
+    var chips = [];
+    if (modelo && modelo !== 'K') chips.push(['Modelo', modelo]);
+    if (android) chips.push(['Android', android]);
+    if (navigator.hardwareConcurrency) chips.push(['Núcleos', navigator.hardwareConcurrency]);
+    if (navigator.deviceMemory) chips.push(['RAM', (navigator.deviceMemory >= 8 ? '8 GB o más' : 'aprox. ' + navigator.deviceMemory + ' GB')]);
+    if (!chips.length) chips.push(['Equipo', 'no se pudo leer desde el navegador']);
+    $('equipo').innerHTML = chips.map(function(c){ return '<span class="chip">' + c[0] + ': <b>' + String(c[1]).replace(/</g,'&lt;') + '</b></span>'; }).join('');
+  }
+  function adivinarMarca(m){
+    m = (m || '').toLowerCase();
+    if (/^sm-|samsung|galaxy/.test(m)) return 'samsung';
+    if (/redmi|xiaomi|poco|^mi\s|^m\d{4}|^2\d{3}/.test(m)) return 'xiaomi';
+    if (/lenovo|^tb-|^tb\d|yoga/.test(m)) return 'lenovo';
+    if (/huawei|honor|^ags|^bah|^kob|^mrx|^dbr|matepad/.test(m)) return 'huawei';
+    return '';
+  }
+  pintarEquipo();
+  if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+    navigator.userAgentData.getHighEntropyValues(['model','platformVersion']).then(function(d){
+      if (d.model) modelo = d.model;
+      if (d.platformVersion && !android) android = d.platformVersion;
+      pintarEquipo();
+      if (!leer('at_marca', '')) { var g = adivinarMarca(modelo); if (g) { $('marca').value = g; pintar(); } }
+    }).catch(function(){});
+  }
+  var marca = leer('at_marca', '') || adivinarMarca(modelo) || 'otra';
+  $('marca').value = marca;
+  $('marca').addEventListener('change', function(){ marca = this.value; guardar('at_marca', marca); pintar(); });
+
+  // ---------- Pasos ----------
+  // r: rutas por marca; "def" se usa si la marca no tiene una propia
+  var DESARROLLADOR = {
+    samsung: 'Ajustes &gt; <b>Acerca de la tablet</b> &gt; Información de software &gt; toque 7 veces <b>Número de compilación</b>.',
+    xiaomi:  'Ajustes &gt; <b>Sobre la tablet</b> &gt; toque 7 veces <b>Versión de MIUI / HyperOS</b>.',
+    huawei:  'Ajustes &gt; <b>Acerca de la tablet</b> &gt; toque 7 veces <b>Número de compilación</b>.',
+    def:     'Ajustes &gt; <b>Acerca de la tablet</b> &gt; toque 7 veces <b>Número de compilación</b>.'
+  };
+  var PASOS = [
+    { id:'reinicio', t:'Reiniciar la tablet', imp:'alto',
+      por:'Libera la memoria que las apps dejaron ocupada y cierra procesos trabados. Es lo que más se nota en el momento.',
+      r:{ def:'Mantenga presionado el botón de encendido &gt; <b>Reiniciar</b>. Hágalo una vez por semana.',
+          samsung:'Mantenga presionado el botón lateral (o baje la barra superior y toque el icono de apagado) &gt; <b>Reiniciar</b>. Puede programarlo: Ajustes &gt; <b>Atención del dispositivo</b> &gt; ⋮ &gt; Automatización &gt; <b>Reinicio automático</b>.' } },
+    { id:'espacio', t:'Dejar al menos 15% de espacio libre', imp:'alto',
+      por:'Cuando el almacenamiento está casi lleno, Android se vuelve muy lento al guardar y abrir cualquier cosa.',
+      r:{ samsung:'Ajustes &gt; <b>Batería y mantenimiento</b> (o Atención del dispositivo) &gt; <b>Almacenamiento</b>: revise Videos, Imágenes y Archivos duplicados o grandes.',
+          xiaomi:'Abra la app <b>Seguridad</b> &gt; <b>Limpiador</b> &gt; Limpiar. Luego Ajustes &gt; <b>Sobre la tablet</b> &gt; Almacenamiento.',
+          huawei:'Abra <b>Optimizador</b> (Administrador del teléfono) &gt; <b>Limpieza</b>.',
+          def:'Ajustes &gt; <b>Almacenamiento</b>. También sirve la app <b>Files de Google</b> &gt; Limpiar.' },
+      extra:'Lo que más ocupa casi siempre: videos y fotos de WhatsApp. En WhatsApp: Ajustes &gt; <b>Almacenamiento y datos</b> &gt; <b>Administrar almacenamiento</b> &gt; borre archivos "más de 5 MB" que no necesite.' },
+    { id:'optimizar', t:'Usar el optimizador del fabricante', imp:'medio',
+      por:'Cierra apps en segundo plano, borra temporales y revisa errores con las herramientas oficiales de la marca.',
+      r:{ samsung:'Ajustes &gt; <b>Batería y mantenimiento</b> (o Atención del dispositivo) &gt; <b>Optimizar ahora</b> &gt; Listo.',
+          xiaomi:'App <b>Seguridad</b> &gt; <b>Aumentar velocidad</b> (o Acelerar).',
+          huawei:'App <b>Optimizador</b> &gt; <b>Optimizar</b>.',
+          lenovo:'Ajustes &gt; <b>Batería</b>: revise qué apps gastan más. Lenovo no trae optimizador; haga los demás pasos.',
+          def:'Su marca puede no tener optimizador propio. Busque en Ajustes la palabra <b>Optimizar</b> o <b>Mantenimiento</b>; si no aparece, siga con el siguiente paso.' } },
+    { id:'animaciones', t:'Animaciones al doble de velocidad', imp:'alto',
+      por:'Cada vez que abre o cambia de app hay una animación. A 0.5x se siguen viendo pero duran la mitad: la tablet se siente mucho más ágil.',
+      lista:function(m){ return [
+        'Active las Opciones de desarrollador (solo una vez): ' + (DESARROLLADOR[m] || DESARROLLADOR.def) + ' Puede pedir su PIN.',
+        'Vuelva a Ajustes &gt; ' + (m === 'samsung' ? 'al final, <b>Opciones de desarrollador</b>' : m === 'xiaomi' ? '<b>Ajustes adicionales</b> &gt; <b>Opciones de desarrollador</b>' : '<b>Sistema</b> &gt; <b>Opciones de desarrollador</b>') + '.',
+        'Baje hasta la sección <b>Dibujo</b> y cambie a <b>0.5x</b>: Escala de animación de ventana, Escala de animación de transición y Escala de duración de animador.'
+      ]; },
+      ojo:'En Opciones de desarrollador cambie solo esas tres opciones.' },
+    { id:'cache', t:'Borrar caché de las apps más pesadas', imp:'medio',
+      por:'Chrome, Facebook, TikTok y YouTube guardan cientos de MB de temporales. Borrarlos libera espacio sin cerrar la sesión.',
+      r:{ samsung:'Ajustes &gt; <b>Aplicaciones</b> &gt; toque la app &gt; <b>Almacenamiento</b> &gt; <b>Borrar caché</b>.',
+          xiaomi:'Ajustes &gt; <b>Apps</b> &gt; Administrar apps &gt; toque la app &gt; <b>Almacenamiento</b> &gt; Borrar datos &gt; <b>Borrar caché</b> (solo caché).',
+          def:'Ajustes &gt; <b>Aplicaciones</b> &gt; Ver todas &gt; toque la app &gt; <b>Almacenamiento y caché</b> &gt; <b>Borrar caché</b>.' },
+      ojo:'Toque solo "Borrar caché". NO toque "Borrar datos" ni "Borrar almacenamiento".' },
+    { id:'apps', t:'Desinstalar o desactivar apps que no usa', imp:'alto',
+      por:'Muchas apps se quedan funcionando escondidas: notificaciones, ubicación, actualizaciones. Menos apps = más memoria libre.',
+      r:{ def:'Ajustes &gt; <b>Aplicaciones</b> &gt; toque la app &gt; <b>Desinstalar</b>. Si solo aparece <b>Desactivar</b> (apps de fábrica), use Desactivar: se puede volver a activar cuando quiera.',
+          samsung:'Ajustes &gt; <b>Aplicaciones</b> &gt; toque la app &gt; <b>Desinstalar</b> o <b>Desactivar</b>. Candidatas de fábrica: Bixby, Samsung Free, AR Zone, Facebook preinstalado, OneDrive (si no los usa).' },
+      extra:'Si usa Facebook, cambie a <b>Facebook Lite</b> desde Play Store: hace lo mismo y gasta mucha menos memoria.' },
+    { id:'pantalla', t:'Quitar widgets y fondo animado', imp:'medio',
+      por:'Los widgets (clima, noticias, reloj grande) y los fondos animados se actualizan todo el tiempo y gastan procesador.',
+      r:{ def:'Mantenga presionado el widget en la pantalla de inicio &gt; <b>Quitar</b>. Para el fondo: mantenga presionado un espacio vacío &gt; <b>Fondo de pantalla</b> &gt; elija una foto fija.',
+          samsung:'Mantenga presionado el widget &gt; <b>Quitar</b>. Desactive también la página de noticias a la izquierda: mantenga presionado un espacio vacío, deslice a la izquierda y apague <b>Samsung Free / Google Discover</b>.' } },
+    { id:'actualizar', t:'Actualizar apps y sistema', imp:'medio',
+      por:'Las actualizaciones corrigen errores que causan lentitud y bloqueos.',
+      r:{ samsung:'Play Store &gt; su foto &gt; <b>Administrar apps y dispositivo</b> &gt; <b>Actualizar todo</b>. Sistema: Ajustes &gt; <b>Actualización de software</b> &gt; Descargar e instalar.',
+          xiaomi:'Play Store &gt; su foto &gt; <b>Administrar apps y dispositivo</b> &gt; <b>Actualizar todo</b>. Sistema: Ajustes &gt; <b>Sobre la tablet</b> &gt; toque la versión de MIUI/HyperOS.',
+          def:'Play Store &gt; su foto &gt; <b>Administrar apps y dispositivo</b> &gt; <b>Actualizar todo</b>. Sistema: Ajustes &gt; <b>Sistema</b> &gt; <b>Actualización del sistema</b>.' },
+      extra:'Hágalo con Wi-Fi y la tablet cargando.' },
+    { id:'chrome', t:'Cerrar pestañas viejas de Chrome', imp:'bajo',
+      por:'Cada pestaña abierta ocupa memoria. Es común tener decenas abiertas sin saberlo.',
+      r:{ def:'En Chrome toque el cuadrito con número (arriba a la derecha) &gt; ⋮ &gt; <b>Cerrar todas las pestañas</b>.' } },
+    { id:'segundo', t:'Limitar apps en segundo plano', imp:'bajo',
+      por:'Útil en tablets con 2 GB de RAM o menos: obliga a Android a tener menos apps abiertas a la vez.',
+      r:{ samsung:'Ajustes &gt; <b>Batería y mantenimiento</b> &gt; Batería &gt; <b>Límites de uso en segundo plano</b> &gt; active <b>Suspender apps no usadas</b> y agregue a <b>Apps en suspensión profunda</b> las que casi no usa.',
+          xiaomi:'Ajustes &gt; <b>Apps</b> &gt; Administrar apps &gt; toque la app &gt; <b>Ahorro de batería</b> &gt; <b>Restringir apps en segundo plano</b>.',
+          def:'Ajustes &gt; <b>Aplicaciones</b> &gt; toque la app &gt; <b>Batería</b> &gt; <b>Restringido</b> (para apps que casi no usa).' },
+      ojo:'No restrinja WhatsApp ni apps de mensajes: dejaría de recibir avisos.' },
+    { id:'calor', t:'Evitar que se caliente', imp:'bajo',
+      por:'Cuando la tablet se calienta, Android baja la velocidad del procesador a propósito para protegerla.',
+      r:{ def:'No la use para juegos o videos mientras carga, quítele el forro si se calienta y no la deje al sol. Use el cargador original.' } }
+  ];
+
+  var hechos = leer('at_hechos', {});
+  function ruta(p, m){
+    if (p.lista) return '<div class="ruta"><ol>' + p.lista(m).map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ol></div>';
+    return '<div class="ruta">' + (p.r[m] || p.r.def) + '</div>';
+  }
+  var IMP = { alto:'Mejora alta', medio:'Mejora media', bajo:'Mejora baja' };
+  function pintar(){
+    var m = $('marca').value;
+    $('pasos').innerHTML = PASOS.map(function(p){
+      var h = !!hechos[p.id];
+      return '<li class="paso' + (h ? ' hecho' : '') + '">' +
+        '<input type="checkbox" class="check" id="c-' + p.id + '" data-id="' + p.id + '"' + (h ? ' checked' : '') + ' aria-label="Marcar como hecho: ' + p.t + '">' +
+        '<div class="cab"><label class="tit" for="c-' + p.id + '">' + p.t + '</label><span class="imp ' + p.imp + '">' + IMP[p.imp] + '</span></div>' +
+        '<div class="cuerpo"><p class="por">' + p.por + '</p>' + ruta(p, m) +
+        (p.extra ? '<p class="por">' + p.extra + '</p>' : '') +
+        (p.ojo ? '<p class="ojo"><b>Cuidado:</b> ' + p.ojo + '</p>' : '') + '</div></li>';
+    }).join('');
+    progreso();
+  }
+  function progreso(){
+    var n = PASOS.filter(function(p){ return hechos[p.id]; }).length;
+    $('txtProg').textContent = n + ' de ' + PASOS.length;
+    $('barraProg').style.width = (n * 100 / PASOS.length) + '%';
+  }
+  $('pasos').addEventListener('change', function(e){
+    var id = e.target.getAttribute('data-id'); if (!id) return;
+    if (e.target.checked) hechos[id] = 1; else delete hechos[id];
+    guardar('at_hechos', hechos);
+    e.target.closest('.paso').classList.toggle('hecho', e.target.checked);
+    progreso();
+  });
+  $('bReiniciar').addEventListener('click', function(){ hechos = {}; guardar('at_hechos', hechos); pintar(); });
+  pintar();
+
+  // ---------- Prueba de rapidez ----------
+  function trabajo(){
+    var t0 = performance.now(), x = 0, i;
+    for (i = 1; i < 1500000; i++) x += Math.sqrt(i) * Math.sin(i);
+    var a = []; for (i = 0; i < 60000; i++) a.push((i * 7919) % 10007);
+    a.sort(function(p, q){ return p - q; });
+    var s = ''; for (i = 0; i < 20000; i++) s += String.fromCharCode(65 + (i % 26));
+    var o = {}; for (i = 0; i < 40000; i++) o['k' + (i % 5000)] = i;
+    if (x === 0.5 && s.length < 0 && a[0] < 0) console.log(o); // evita que se elimine el trabajo
+    return performance.now() - t0;
+  }
+  var RONDAS = 7, ocupado = false;
+  function medir(cual){
+    if (ocupado) return;
+    ocupado = true; $('bAntes').disabled = $('bDesp').disabled = true;
+    $('estadoTest').textContent = 'Midiendo... no toque la pantalla';
+    var tiempos = [], ronda = 0;
+    (function sig(){
+      tiempos.push(trabajo()); ronda++;
+      $('barraTest').style.width = (ronda * 100 / RONDAS) + '%';
+      if (ronda < RONDAS) { setTimeout(sig, 60); return; }
+      tiempos.sort(function(a, b){ return a - b; });
+      var medio = (tiempos[1] + tiempos[2] + tiempos[3]) / 3;   // descarta la ronda más rápida y las más lentas
+      var puntos = Math.round(100000 / medio);
+      var res = leer('at_res', {}); res[cual] = { p: puntos, f: Date.now() }; guardar('at_res', res);
+      ocupado = false; $('bAntes').disabled = $('bDesp').disabled = false;
+      $('estadoTest').textContent = 'Listo: ' + puntos + ' puntos';
+      setTimeout(function(){ $('barraTest').style.width = '0'; }, 800);
+      mostrar();
+    })();
+  }
+  function fecha(t){ var d = new Date(t); return d.toLocaleDateString('es') + ' ' + d.toLocaleTimeString('es', { hour:'numeric', minute:'2-digit' }); }
+  function mostrar(){
+    var res = leer('at_res', {});
+    var a = res.antes, d = res.despues;
+    $('vAntes').innerHTML = a ? a.p + ' <small>pts</small>' : '—'; $('fAntes').textContent = a ? fecha(a.f) : 'Sin medir';
+    $('vDesp').innerHTML  = d ? d.p + ' <small>pts</small>' : '—'; $('fDesp').textContent  = d ? fecha(d.f) : 'Sin medir';
+    if (a && d) {
+      var c = Math.round((d.p - a.p) * 100 / a.p);
+      $('vCambio').textContent = (c > 0 ? '+' : '') + c + '%';
+      $('vCambio').style.color = c >= 3 ? 'var(--ok)' : c <= -3 ? 'var(--alto)' : 'var(--ink)';
+      $('fCambio').textContent = c >= 3 ? 'La tablet responde más rápido' : c <= -3 ? 'Más lenta: ¿está caliente o con apps abiertas?' : 'Sin cambio importante en el procesador';
+    } else { $('vCambio').textContent = '—'; $('vCambio').style.color = ''; $('fCambio').textContent = 'Mida antes y después'; }
+  }
+  document.addEventListener('click', function(e){
+    var id = e.target.getAttribute && e.target.getAttribute('data-copiar'); if (!id) return;
+    var el = $(id), txt = el.textContent;
+    var marcar = function(){ var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    var aviso = function(t){ $('estadoCopia').textContent = t; };
+    try {
+      navigator.clipboard.writeText(txt).then(function(){ aviso('Copiado. Péguelo en aShell.'); }, function(){ marcar(); aviso('Texto seleccionado: mantenga presionado y toque Copiar.'); });
+    } catch(err) { marcar(); aviso('Texto seleccionado: mantenga presionado y toque Copiar.'); }
+  });
+  $('bAntes').addEventListener('click', function(){ medir('antes'); });
+  $('bDesp').addEventListener('click', function(){ medir('despues'); });
+  mostrar();
+})();
+</script>
