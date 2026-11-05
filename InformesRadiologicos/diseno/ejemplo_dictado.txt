@@ -1,0 +1,36 @@
+@formato HOSPITAL
+@paciente María José López Sequeira
+@edad 42 años
+@sexo Femenino
+@medico Dr. Carlos Ruiz
+@procedencia Consulta externa
+@modalidad Ultrasonido renal
+@archivo Maria_Lopez_US_Renal
+@protocolo renal
+@atlas litiasis_renal_derecho_inferior
+## ESTUDIO
+Ultrasonido renal y de vías urinarias. Indicación clínica: dolor lumbar derecho intermitente de dos semanas de evolución.
+# RIÑÓN DERECHO !
+De situación habitual en la fosa renal, eje conservado y forma reniforme, mide {m:104x48x46} con volumen de {v:104x48x46}. Contornos lisos y espesor parenquimatoso conservado de 15 mm, con diferenciación corticomedular preservada. !!En el grupo calicial inferior se identifica imagen hiperecogénica de 7.2 mm con sombra acústica posterior limpia, compatible con litiasis calicial inferior no obstructiva.!! El infundíbulo inferior no muestra dilatación y no existe ectasia pielocalicial. El espacio perirrenal está libre de colecciones.
+# RIÑÓN IZQUIERDO
+De situación habitual, eje y forma conservados, mide {m:106x50x44} con volumen de {v:106x50x44}. Contornos lisos, espesor parenquimatoso de 16 mm, ecogenicidad cortical inferior a la hepática y diferenciación corticomedular preservada. El seno renal es de aspecto habitual, sin dilatación del sistema pielocalicial ni imágenes de litiasis, quistes o masas.
+# URÉTERES
+Los segmentos proximales evaluables no muestran dilatación. Los segmentos medio y distal no se visualizan por interposición de gas intestinal, sin signos indirectos de obstrucción.
+# RETROPERITONEO Y ESPACIOS PERIRRENALES
+Sin colecciones perirrenales ni adenopatías retroperitoneales identificables. Grasa perirrenal de ecogenicidad conservada.
+# VEJIGA URINARIA
+Adecuada repleción, forma conservada, paredes delgadas y regulares de 3 mm, contenido anecoico sin ecos en suspensión ni imágenes de litiasis. Volumen prevaciado de {v:85x70x60}.
+# RESIDUO POSTMICCIONAL
+Volumen residual de {v:40x30x20}, que corresponde al 6.7 % del volumen prevaciado, dentro de parámetros esperados.
+## MEDICIONES
+Riñón derecho | L × AP × T | 104 x 48 x 46 | auto | Dimensiones conservadas
+Litiasis calicial inferior derecha | Diámetro mayor | 7.2 | — | Litiasis no obstructiva !
+Riñón izquierdo | L × AP × T | 106 x 50 x 44 | auto | Dimensiones conservadas
+Vejiga prevaciado | L × AP × T | 85 x 70 x 60 | auto | Repleción adecuada
+Residuo postmiccional | L × AP × T | 40 x 30 x 20 | auto | 6.7 % del prevaciado
+## CONCLUSIONES
+1. PROBLEMA PRINCIPAL: Litiasis calicial inferior derecha de 7.2 mm, no obstructiva.
+2. Riñón izquierdo sin alteraciones morfológicas demostrables.
+3. Vejiga de paredes regulares con residuo postmiccional no significativo (6.7 %).
+## ETIOLOGIA
+Hallazgo compatible con nefrolitiasis cálcica, favorecida por estasis urinaria en el grupo calicial declive.
