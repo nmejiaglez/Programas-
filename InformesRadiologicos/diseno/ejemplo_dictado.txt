@@ -1,36 +1,113 @@
 @formato HOSPITAL
-@paciente María José López Sequeira
-@edad 42 años
+@paciente Rosa Elena Martínez Duarte
+@edad 48 años
 @sexo Femenino
 @medico Dr. Carlos Ruiz
 @procedencia Consulta externa
-@modalidad Ultrasonido renal
-@archivo Maria_Lopez_US_Renal
-@protocolo renal
-@atlas litiasis_renal_derecho_inferior
+@modalidad Ultrasonido abdominopélvico
+@archivo Rosa_Martinez_US_General
+@protocolo general_femenino
 ## ESTUDIO
-Ultrasonido renal y de vías urinarias. Indicación clínica: dolor lumbar derecho intermitente de dos semanas de evolución.
-# RIÑÓN DERECHO !
-De situación habitual en la fosa renal, eje conservado y forma reniforme, mide {m:104x48x46} con volumen de {v:104x48x46}. Contornos lisos y espesor parenquimatoso conservado de 15 mm, con diferenciación corticomedular preservada. !!En el grupo calicial inferior se identifica imagen hiperecogénica de 7.2 mm con sombra acústica posterior limpia, compatible con litiasis calicial inferior no obstructiva.!! El infundíbulo inferior no muestra dilatación y no existe ectasia pielocalicial. El espacio perirrenal está libre de colecciones.
-# RIÑÓN IZQUIERDO
-De situación habitual, eje y forma conservados, mide {m:106x50x44} con volumen de {v:106x50x44}. Contornos lisos, espesor parenquimatoso de 16 mm, ecogenicidad cortical inferior a la hepática y diferenciación corticomedular preservada. El seno renal es de aspecto habitual, sin dilatación del sistema pielocalicial ni imágenes de litiasis, quistes o masas.
+Ultrasonido abdominal y pélvico transabdominal. Indicación clínica: dolor en hipocondrio derecho y sangrado uterino anormal.
+# VESÍCULA BILIAR !
+Ayuno adecuado, forma piriforme conservada, {m:82x30x28}; pared de 2.5 mm, regular, con patrón en capas preservado y sin edema.
+>> Colelitiasis múltiple
+- Estado: No complicada
+- Hallazgo: 4 litos (fondo ×2, cuerpo y bacinete), el mayor de 12.4 mm; focos hiperecogénicos redondeados, de contornos definidos, con sombra acústica posterior limpia, móviles con los cambios de posición, sin impactación en el cuello ni en el conducto cístico
+- Signos inflamatorios: Murphy ecográfico negativo, sin líquido perivesicular ni engrosamiento parietal
+- Impresión: Colelitiasis múltiple sin signos ecográficos de colecistitis aguda.
+# ÚTERO !
+En anteversoflexión, globuloso por los nódulos descritos, {m:98x62x70}, volumen de {v:98x62x70}; contornos lobulados en la pared anterior.
+>> Miomatosis uterina
+- Estado: Submucoso
+- Hallazgo: 3 miomas: intramural anterior FIGO 4 (32 mm), subseroso fúndico FIGO 6 (24 mm) y submucoso posterior FIGO 2 (15 mm); redondeados, hipoecogénicos, de contornos definidos, con sombras acústicas en abanico
+- Doppler: Vascularización periférica circunferencial, sin flujo central anárquico ni degeneración quística
+- Efecto vecino: El mioma submucoso deforma parcialmente la cavidad endometrial posterior
+- Impresión: Miomatosis uterina múltiple con componente submucoso que deforma la cavidad.
+# RIÑÓN IZQUIERDO !
+Situación, eje y forma conservados, {m:108x50x46}, volumen de {v:108x50x46}; contornos lisos, parénquima de 16 mm y diferenciación corticomedular preservada.
+>> Nefrolitiasis izquierda
+- Estado: No obstructiva
+- Hallazgo: 3 litos caliciales (superior 4.3 mm, medio 5.6 mm, inferior 6.8 mm); focos hiperecogénicos con sombra acústica posterior limpia y artefacto de centelleo en Doppler color
+- Vía excretora: Sin ectasia pielocalicial; unión ureteropiélica libre y espacio perirrenal sin colecciones
+- Impresión: Nefrolitiasis izquierda múltiple no obstructiva.
+# HÍGADO !
+Situación habitual, 152 mm en línea medioclavicular, contornos lisos y bordes de ángulo conservado.
+>> Esteatosis grado 1
+- Estado: Leve
+- Hallazgo: Ecogenicidad discretamente aumentada respecto a la corteza renal derecha, con paredes portales y diafragma nítidos y sin atenuación posterior
+>> Quistes simples
+- Estado: Benignos
+- Hallazgo: 4 quistes en los segmentos II, IV-a, VI y VII, el mayor de 30 mm (VII); anecoicos, redondeados, de paredes finas, con refuerzo acústico posterior, sin septos, componente sólido ni flujo Doppler
+- Efecto vecino: Sin compresión de la vía biliar ni de estructuras vasculares
+- Impresión: Esteatosis hepática grado 1 y cuatro quistes hepáticos simples.
+# SISTEMA PORTAL Y VENAS HEPÁTICAS
+Vena porta de 10 mm de calibre, permeable, con flujo hepatópeto. Venas hepáticas permeables, de calibre conservado y convergencia habitual, sin signos ecográficos de hipertensión portal.
+# VÍAS BILIARES INTRA Y EXTRAHEPÁTICAS / COLÉDOCO
+Vía biliar intrahepática sin dilatación. Colédoco de 4 mm de calibre, de trayecto habitual, sin imágenes de litiasis en su porción distal evaluable.
+# PÁNCREAS
+Cabeza, cuerpo y cola visibles, de tamaño y contornos conservados, ecogenicidad homogénea, conducto de Wirsung no dilatado y sin colecciones peripancreáticas.
+# BAZO
+De situación habitual en el hipocondrio izquierdo, mide 98 mm de eje longitudinal, de forma y contornos conservados, ecotextura homogénea, sin lesiones focales; hilio de aspecto habitual.
+# GLÁNDULAS SUPRARRENALES (REGIONES)
+Regiones suprarrenales sin imágenes nodulares ni masas identificables.
+# RIÑÓN DERECHO
+De situación habitual, eje y forma conservados, mide {m:104x48x46} con volumen de {v:104x48x46}. Contornos lisos, espesor parenquimatoso de 15 mm, diferenciación corticomedular preservada, sin dilatación pielocalicial, litiasis ni masas.
 # URÉTERES
-Los segmentos proximales evaluables no muestran dilatación. Los segmentos medio y distal no se visualizan por interposición de gas intestinal, sin signos indirectos de obstrucción.
-# RETROPERITONEO Y ESPACIOS PERIRRENALES
-Sin colecciones perirrenales ni adenopatías retroperitoneales identificables. Grasa perirrenal de ecogenicidad conservada.
+Segmentos proximales sin dilatación; segmentos medio y distal no visualizados por interposición de gas, sin signos indirectos de obstrucción.
+# RETROPERITONEO Y GRANDES VASOS (AORTA Y VENA CAVA INFERIOR)
+Aorta abdominal de calibre conservado, sin dilatación aneurismática; vena cava inferior permeable. Sin adenopatías retroperitoneales.
 # VEJIGA URINARIA
-Adecuada repleción, forma conservada, paredes delgadas y regulares de 3 mm, contenido anecoico sin ecos en suspensión ni imágenes de litiasis. Volumen prevaciado de {v:85x70x60}.
-# RESIDUO POSTMICCIONAL
-Volumen residual de {v:40x30x20}, que corresponde al 6.7 % del volumen prevaciado, dentro de parámetros esperados.
+Adecuada repleción, paredes delgadas y regulares, contenido anecoico sin litiasis ni lesiones endoluminales.
+# CAVIDAD PERITONEAL, LÍQUIDO LIBRE Y ESPACIOS EXTRAPERITONEALES
+Sin líquido libre ni colecciones en la cavidad peritoneal ni en los espacios extraperitoneales evaluados.
+# ASAS INTESTINALES Y PARED ABDOMINAL
+Asas de calibre conservado con peristalsis presente; pared abdominal sin defectos herniarios.
+# ENDOMETRIO
+Línea endometrial de 9 mm, parcialmente deformada en su cara posterior por el mioma submucoso, sin colecciones en la cavidad.
+# CÉRVIX
+De morfología habitual, canal endocervical lineal sin colecciones.
+# OVARIO DERECHO
+Mide {m:30x18x22} con volumen de {v:30x18x22}, patrón folicular conservado, sin lesiones focales.
+# OVARIO IZQUIERDO
+Mide {m:28x17x20} con volumen de {v:28x17x20}, de morfología conservada, sin lesiones focales.
+# REGIONES ANEXIALES
+Sin masas anexiales ni imágenes tubulares que sugieran hidrosálpinx.
+# FONDO DE SACO / ESPACIO DE DOUGLAS
+Libre, sin líquido ni colecciones.
 ## MEDICIONES
-Riñón derecho | L × AP × T | 104 x 48 x 46 | auto | Dimensiones conservadas
-Litiasis calicial inferior derecha | Diámetro mayor | 7.2 | — | Litiasis no obstructiva !
-Riñón izquierdo | L × AP × T | 106 x 50 x 44 | auto | Dimensiones conservadas
-Vejiga prevaciado | L × AP × T | 85 x 70 x 60 | auto | Repleción adecuada
-Residuo postmiccional | L × AP × T | 40 x 30 x 20 | auto | 6.7 % del prevaciado
+== Hígado
+Hígado | LMC | 152 | — | Esteatosis !
+Quiste 1 · seg. II | L × AP × T | 18 x 16 x 15 | auto | Simple !
+Quiste 2 · seg. IV-a | L × AP × T | 24 x 21 x 20 | auto | Simple !
+Quiste 3 · seg. VI | L × AP × T | 12 x 11 x 10 | auto | Simple !
+Quiste 4 · seg. VII | L × AP × T | 30 x 27 x 25 | auto | Simple !
+== Vesícula y vía biliar
+Vesícula biliar | L × AP × T | 82 x 30 x 28 | — | Conservada
+Lito 1 · Fondo | Diámetro | 12.4 | — | Móvil !
+Lito 2 · Fondo | Diámetro | 10.1 | — | Móvil !
+Lito 3 · Cuerpo | Diámetro | 8.6 | — | Móvil !
+Lito 4 · Bacinete | Diámetro | 6.2 | — | Libre !
+Colédoco | Calibre | 4 | — | Conservado
+== Bazo y riñones
+Bazo | Longitud | 98 | — | Conservado
+Riñón derecho | L × AP × T | 104 x 48 x 46 | auto | Conservado
+Riñón izquierdo | L × AP × T | 108 x 50 x 46 | auto | Conservado
+Lito 1 · cáliz sup. | Diámetro | 4.3 | — | No obstruye !
+Lito 2 · cáliz medio | Diámetro | 5.6 | — | No obstruye !
+Lito 3 · cáliz inf. | Diámetro | 6.8 | — | No obstruye !
+== Útero y ovarios
+Útero | L × AP × T | 98 x 62 x 70 | auto | Aumentado
+Mioma 1 · intramural | L × AP × T | 32 x 28 x 30 | auto | FIGO 4 !
+Mioma 2 · subseroso | L × AP × T | 24 x 20 x 22 | auto | FIGO 6 !
+Mioma 3 · submucoso | L × AP × T | 15 x 13 x 14 | auto | FIGO 2 !
+Endometrio | Espesor | 9 | — | Deformado
+Ovario derecho | L × AP × T | 30 x 18 x 22 | auto | Conservado
+Ovario izquierdo | L × AP × T | 28 x 17 x 20 | auto | Conservado
 ## CONCLUSIONES
-1. PROBLEMA PRINCIPAL: Litiasis calicial inferior derecha de 7.2 mm, no obstructiva.
-2. Riñón izquierdo sin alteraciones morfológicas demostrables.
-3. Vejiga de paredes regulares con residuo postmiccional no significativo (6.7 %).
+1. PROBLEMA PRINCIPAL: Colelitiasis múltiple no complicada || Cuatro litos móviles (mayor de 12.4 mm), sin impactación ni signos de colecistitis aguda y con vía biliar no dilatada (colédoco de 4 mm); correlaciona con el dolor en hipocondrio derecho.
+2. Miomatosis uterina múltiple con componente submucoso || Útero aumentado (222.44 cm³) con miomas FIGO 4, 6 y 2; el submucoso (15 mm) deforma la cavidad endometrial y es el sustrato más probable del sangrado uterino anormal.
+3. Nefrolitiasis izquierda múltiple no obstructiva || Tres litos caliciales (mayor de 6.8 mm) sin ectasia pielocalicial ni compromiso de la unión ureteropiélica.
+4. Esteatosis hepática grado 1 y quistes hepáticos simples || Infiltración grasa leve sin signos de hepatopatía crónica; cuatro quistes simples (mayor de 30 mm, segmento VII) sin complejidad ni efecto compresivo.
 ## ETIOLOGIA
-Hallazgo compatible con nefrolitiasis cálcica, favorecida por estasis urinaria en el grupo calicial declive.
+Sustrato metabólico común (colelitiasis, esteatosis, nefrolitiasis); miomatosis estrógeno-dependiente; quistes congénitos.

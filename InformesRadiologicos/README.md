@@ -10,21 +10,20 @@ Tres programas separados, cada uno en su carpeta y listo para usarse por su cuen
 
 Cada `.py` trae dentro las instrucciones, los protocolos, los logos, el sello y el programa que arma el Word.
 
-## Diseño de los hallazgos y las tablas
-- **Hallazgos**: tabla de dos columnas. A la izquierda, el órgano con su ilustración, su nombre y sus medidas clave;
-  a la derecha, la descripción completa, justificada y a lo ancho de la página (ya no en dos columnas estrechas).
-  Una fila por estructura y en el orden del protocolo; los hallazgos patológicos van primero, en rojo, con la etiqueta
-  HALLAZGO RELEVANTE. Un órgano nunca queda separado de su descripción entre páginas.
-- **Cuadro de mediciones**: ancho completo, columnas fijas (Estructura | Parámetro | Medida | Vol. (cm³) | Interpretación),
-  filas alternas, números que no se parten y la fila patológica en rojo.
-- **Conclusiones**: numeradas en recuadros; la 1 (PROBLEMA PRINCIPAL) en rojo.
-- **Análisis etiológico** y recomendaciones: en recuadro con filete lateral.
+## Diseño: PLANTILLA VISUAL DE 2 HOJAS
+- **Hallazgos relevantes** primero, en tarjetas: rótulo rojo con el órgano, etiqueta de estado (gris azulado si es
+  tranquilizador, roja si importa), dibujo anatómico con el texto alrededor, cada lesión con apartados cortos y
+  las medidas en negrita.
+- **Órganos normales** agrupados por región, cada región con su dibujo y cada órgano con su nombre en negrita.
+- **Cuadro de mediciones** en dos mitades lado a lado, separado por órgano, filas patológicas en rojo.
+- **Conclusiones** en tarjetas con dibujo: diagnóstico en negrita y debajo su sustento y significado clínico;
+  la 1 (PROBLEMA PRINCIPAL) en rojo. **Causa probable** en tarjeta dorada junto a la firma.
+- Un abdominopélvico con 5 patologías queda en 2 hojas.
 
 ## Cambiar el diseño más adelante
-`diseno/nuevo_render.py` contiene las funciones de diseño y `diseno/aplicar.py` las inserta en un archivo original:
+En `diseno/`: `diseno_visual.py` (funciones de diseño), `compactar.py` (encabezado/pie), `aplicar_final.py`
+(arma un archivo nuevo a partir del original) y `ejemplo_dictado.txt` (dictado de prueba con 5 patologías):
 
 ```
-python3 diseno/aplicar.py ORIGINAL.py NUEVO.py diseno/nuevo_render.py
+python3 diseno/aplicar_final.py ORIGINAL.py NUEVO.py
 ```
-
-`diseno/ejemplo_dictado.txt` es un dictado de prueba.

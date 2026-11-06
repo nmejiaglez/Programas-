@@ -11,6 +11,7 @@ Cómo usarlo en ChatGPT:
    No imprimas el resto del archivo. Para cada paciente escribe el dictado en /mnt/data/dictado.txt
    y ejecuta el archivo con: dictado.txt /mnt/data/salida. Entrega el enlace del .docx.
 
-El diseño del Word es el mismo que el de la skill FORMATO HOSPITAL de Claude: hallazgos en tabla
-[órgano con ilustración y medidas | descripción], cuadro de mediciones a ancho completo, conclusiones
-numeradas y análisis etiológico en recuadro.
+El diseño del Word es la PLANTILLA VISUAL DE 2 HOJAS, igual que la skill FORMATO HOSPITAL de Claude:
+hallazgos relevantes en tarjetas rojas con dibujo anatómico y etiqueta de estado, órganos normales agrupados
+por región con su dibujo, medidas en negrita, cuadro de mediciones en dos mitades, conclusiones en tarjetas
+(DIAGNÓSTICO || sustento) y análisis etiológico en tarjeta dorada junto a la firma.

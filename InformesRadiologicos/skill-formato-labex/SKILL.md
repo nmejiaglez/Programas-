@@ -25,14 +25,18 @@ sed -n '1,/FIN DE INSTRUCCIONES/p' ARCHIVO_UNICO_LABEX.py
    a ejecutar sin preguntarle nada al doctor.
 4. Entregar el .docx con una respuesta breve. Dos estudios = dos archivos.
 
-## Presentación del Word (la arma el programa, no se diseña a mano)
-- Encabezado con logos, cuadro de datos del paciente y fecha/hora de Managua.
-- **HALLAZGOS en tabla ordenada**: columna izquierda con la ilustración del órgano, su nombre y sus medidas clave
-  (las que se escriben con `{m:}` y `{v:}`); columna derecha con la descripción completa. Una fila por estructura,
-  en orden del protocolo; los hallazgos marcados con `!` van primero, en rojo y con la etiqueta HALLAZGO RELEVANTE.
-- **CUADRO DE MEDICIONES** a ancho completo: Estructura | Parámetro | Medida | Vol. (cm³) | Interpretación, filas
-  alternas, números que no se parten y la fila patológica en rojo.
-- **CONCLUSIONES** numeradas (la 1 = PROBLEMA PRINCIPAL en rojo) y **ANÁLISIS ETIOLÓGICO** en recuadro.
+## Presentación del Word — PLANTILLA VISUAL DE 2 HOJAS (la arma el programa, no se diseña a mano)
+- Encabezado con logos, cuadro de datos del paciente, fecha/hora de Managua y estudio/indicación en recuadro.
+- **Hallazgos relevantes** (títulos con `!`): primero, en **tarjetas** con el nombre del órgano como rótulo rojo,
+  etiqueta de estado (`- Estado:`), dibujo anatómico con el texto alrededor y cada lesión (`>>`) con apartados
+  cortos (`- Hallazgo:`, `- Doppler:`, `- Efecto vecino:`…). Medidas y clasificaciones en negrita automática.
+- **Resto del estudio**: órganos normales agrupados por región (ABDOMEN SUPERIOR, VÍA URINARIA, PERITONEO Y PARED,
+  PELVIS…) con su dibujo; nombre de cada órgano en azul negrita y descripción completa.
+- **Cuadro de mediciones** en dos mitades lado a lado, grupos por órgano (`== Órgano`), filas patológicas en rojo.
+- **Conclusiones y causa probable**: tarjetas con dibujo; `DIAGNÓSTICO || sustento y significado clínico`.
+  La 1 = PROBLEMA PRINCIPAL en rojo. Análisis etiológico en tarjeta dorada junto a la firma.
+- Meta: abdominopélvico con varios hallazgos en 2 hojas. El formato completo del dictado está en las instrucciones
+  del archivo (sección "Formato del .txt").
 
 Si el doctor escribe FORMATO LABEX sin datos de un paciente, responder solo:
 "Listo, Dr. Mejía. Formato LABEX activo. Envíe los datos del paciente."

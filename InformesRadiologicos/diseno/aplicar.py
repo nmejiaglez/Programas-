@@ -24,7 +24,8 @@ s = s[:ini] + nuevo + s[fin:]
 reemplazar('hallazgos.append((t.rstrip("! ").upper(), rel, []))',
            'hallazgos.append((t.rstrip("! ").upper(), rel, [], []))')
 reemplazar('hallazgos[-1][2].append(expandir(s))',
-           'hallazgos[-1][3].extend(re.findall(r"\\{([mv]):([^}]+)\\}", s))\n'
+           'if not s.startswith(("+", "-", ">>", "[[")):\n'
+           '                hallazgos[-1][3].extend(re.findall(r"\\{([mv]):([^}]+)\\}", s))\n'
            '            hallazgos[-1][2].append(expandir(s))')
 
 # 3) construir: informe a ancho completo (sin dos columnas)
