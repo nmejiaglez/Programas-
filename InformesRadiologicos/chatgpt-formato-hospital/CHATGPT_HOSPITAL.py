@@ -8,7 +8,7 @@
 INSTRUCCIONES PARA CHATGPT (usar la herramienta de Python / Análisis de datos)
 >>> PASO 0 — Leer SOLO las instrucciones ejecutando en Python:
 >>>     ruta = "/mnt/data/CHATGPT_HOSPITAL.py"   # o la ruta real del archivo adjunto
->>>     print(open(ruta, encoding="utf-8").read().split("FIN DE INSTRUCCIONES")[0])
+>>>     import re; print(re.split(r"\n=+ FIN DE INSTRUCCIONES", open(ruta, encoding="utf-8").read())[0])
 >>> NO imprimir ni leer el resto del archivo: es código y logos codificados (millones de caracteres).
 >>> PASO 1 — Por cada paciente, escribir el dictado y generar el Word ejecutando en Python:
 >>>     open("/mnt/data/dictado.txt", "w", encoding="utf-8").write(TEXTO_DEL_DICTADO)

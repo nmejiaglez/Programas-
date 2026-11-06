@@ -7,7 +7,7 @@ Cómo usarlo en ChatGPT:
 
    Usa la herramienta de Python. Primero lee SOLO las instrucciones del archivo ejecutando:
        ruta = "/mnt/data/CHATGPT_HOSPITAL.py"
-       print(open(ruta, encoding="utf-8").read().split("FIN DE INSTRUCCIONES")[0])
+       import re; print(re.split(r"\n=+ FIN DE INSTRUCCIONES", open(ruta, encoding="utf-8").read())[0])
    No imprimas el resto del archivo. Para cada paciente escribe el dictado en /mnt/data/dictado.txt
    y ejecuta el archivo con: dictado.txt /mnt/data/salida. Entrega el enlace del .docx.
 

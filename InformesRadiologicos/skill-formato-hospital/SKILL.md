@@ -10,7 +10,7 @@ está en `ARCHIVO_UNICO_HOSPITAL.py`, en esta misma carpeta.
 
 ## Paso 0: leer solo las instrucciones
 ```bash
-sed -n '1,/FIN DE INSTRUCCIONES/p' ARCHIVO_UNICO_HOSPITAL.py
+sed -n '1,/^=* FIN DE INSTRUCCIONES/p' ARCHIVO_UNICO_HOSPITAL.py
 ```
 (o leer el archivo hasta la línea "FIN DE INSTRUCCIONES"). NO leer el resto: es código y logos codificados.
 
