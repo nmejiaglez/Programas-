@@ -1,0 +1,114 @@
+@formato LABEX
+@paciente Maria Fernandez
+@edad 73 años
+@sexo Femenino
+@medico Dr. Morales
+@procedencia Emergencia
+@modalidad Ultrasonido abdominal y pélvico
+@archivo EJEMPLO_Maria_Fernandez_US_Abdominopelvico
+@protocolo general_femenino
+## ESTUDIO
+Ultrasonido abdominal y pélvico transabdominal. Paciente de 73 años procedente de Emergencia.
+# CAVIDAD PERITONEAL, LÍQUIDO LIBRE Y ESPACIOS EXTRAPERITONEALES !
+Líquido libre moderado en todos los espacios peritoneales.
+>> Líquido libre generalizado
+- Estado: Moderado
+- Distribución: Morison, esplenorrenal, ambas goteras parietocólicas y fondo de saco
+- Cuantía: bolsillo mayor de 42 mm en fondo de saco
+- Características: anecoico, sin tabiques ni ecos; asas flotantes, sin implantes visibles
+# ÚTERO !
+Útero aumentado de tamaño por miomatosis múltiple.
+>> Útero y miomas
+- Estado: Submucoso
+- Posición: anteversoflexión, contornos lobulados por los miomas
+- Dimensiones: {m:98x62x58} · Volumen {v:98x62x58}
+- Miometrio: heterogéneo a expensas de tres miomas
+- Mioma 1 · fúndico intramural: {m:32x28x26} · {v:32x28x26} · hipoecogénico · FIGO 4
+- Mioma 2 · posterior subseroso: {m:24x21x20} · {v:24x21x20} · calcificación periférica · FIGO 6
+- Mioma 3 · anterior submucoso: {m:14x12x11} · {v:14x12x11} · protruye < 50 % en la cavidad · FIGO 2
+# HÍGADO !
+Hígado con esteatosis grado I y dos quistes simples.
+>> Hallazgos
+- Estado: Leve
+- Tamaño y contornos: 148 mm en LMC, contornos lisos, borde inferior agudo
+- Parénquima: ecogenicidad difusa leve aumentada, vasos visibles · grado I
+- Lesiones: dos quistes simples
+- Quiste 1 · seg. VII: {m:18x16x15} · {v:18x16x15} · anecoico, pared fina, refuerzo posterior
+- Quiste 2 · seg. III: {m:11x10x9} · {v:11x10x9} · mismas características, sin flujo Doppler
+# RIÑÓN DERECHO !
+Riñón derecho con litiasis calicial inferior no obstructiva.
+>> Riñón derecho
+- Estado: No obstructiva
+- Lito · GCI: 5.5 mm, hiperecogénico con sombra acústica, sin migración a infundíbulo ni UPU
+- Situación y forma: fosa renal derecha, eje conservado, reniforme, contornos lisos
+- Dimensiones: {m:102.1x45.1x45.8} · Volumen {v:102.1x45.1x45.8}
+- Parénquima: cortical 12.1 mm, ecogenicidad menor que el hígado, diferenciación corticomedular preservada
+- Sistema excretor: sin dilatación; sin lesiones focales; espacio perirrenal libre
+# RIÑÓN IZQUIERDO !
+Riñón izquierdo con litiasis calicial media no obstructiva y doble sistema pielocalicial.
+>> Riñón izquierdo
+- Estado: No obstructiva
+- Lito · GCM: 7.2 mm, hiperecogénico con sombra acústica posterior
+- Situación y forma: fosa renal izquierda, eje conservado, reniforme, contornos lisos
+- Dimensiones: {m:95.0x46.3x45.5} · Volumen {v:95.0x46.3x45.5}
+- Parénquima: cortical 14.1 mm, ecogenicidad menor que el bazo, diferenciación corticomedular preservada
+- Sistema excretor: doble sistema (superior e inferior) separado por puente parenquimatoso, sin dilatación; sin lesiones focales
+# SISTEMA PORTAL Y VENAS HEPÁTICAS
+Porta de 10 mm, permeable, hepatópeta; venas hepáticas permeables.
+# VESÍCULA BILIAR
+Distendida, paredes de 2 mm, sin litos ni barro; Murphy negativo.
+# VÍAS BILIARES INTRA Y EXTRAHEPÁTICAS / COLÉDOCO
+Sin dilatación intrahepática; colédoco de 4 mm.
+# PÁNCREAS
+Cabeza y cuerpo de tamaño y ecogenicidad conservados; cola parcialmente oculta por gas.
+# BAZO
+Bazo de 98 mm, homogéneo, sin lesiones focales.
+# GLÁNDULAS SUPRARRENALES (REGIONES)
+Regiones suprarrenales sin masas ni nódulos visibles.
+# URÉTERES
+Proximales no dilatados; distales no visualizados por gas.
+# RETROPERITONEO Y GRANDES VASOS (AORTA Y VENA CAVA INFERIOR)
+Aorta de 18 mm sin aneurisma; cava permeable; sin adenopatías.
+# VEJIGA URINARIA
+Repleción adecuada, paredes regulares, contenido anecoico.
+# ASAS INTESTINALES Y PARED ABDOMINAL
+Asas no distendidas con peristalsis presente; pared sin hernias.
+# ENDOMETRIO
+Lineal, de 4 mm, homogéneo, con discreta impronta del mioma submucoso.
+# CÉRVIX
+Morfología y ecoestructura conservadas, sin lesiones.
+# OVARIO DERECHO
+Atrófico, de 18 × 12 × 10 mm, sin lesiones.
+# OVARIO IZQUIERDO
+Atrófico, de 17 × 11 × 10 mm, sin lesiones.
+# REGIONES ANEXIALES
+Regiones anexiales sin masas ni hidrosálpinx.
+# FONDO DE SACO / ESPACIO DE DOUGLAS
+Ocupado por el líquido libre descrito.
+## MEDICIONES
+== Hígado
+Hígado | LMC | 148 | — | Esteatosis I !
+Quiste 1 · seg. VII | L × AP × T | 18 x 16 x 15 | auto | Simple !
+Quiste 2 · seg. III | L × AP × T | 11 x 10 x 9 | auto | Simple !
+Porta · Colédoco | calibre | 10 · 4 | — | Conservado
+Bazo | longitud | 98 | — | Conservado
+== Riñones
+Riñón derecho | L × AP × T | 102.1 x 45.1 x 45.8 | auto | Conservado
+Lito · GCI der. | diámetro | 5.5 | — | No obstruye !
+Riñón izquierdo | L × AP × T | 95.0 x 46.3 x 45.5 | auto | Doble sistema
+Lito · GCM izq. | diámetro | 7.2 | — | No obstruye !
+== Pelvis
+Útero | L × AP × T | 98 x 62 x 58 | auto | Aumentado !
+Mioma 1 · fúndico | L × AP × T | 32 x 28 x 26 | auto | FIGO 4 !
+Mioma 2 · subseroso | L × AP × T | 24 x 21 x 20 | auto | FIGO 6 !
+Mioma 3 · submucoso | L × AP × T | 14 x 12 x 11 | auto | FIGO 2 !
+Endometrio | espesor | 4 | — | Conservado
+Ovario der. · izq. | L × AP × T | 18x12x10 · 17x11x10 | — | Atróficos
+Líquido libre | bolsillo mayor | 42 | — | Moderado !
+## CONCLUSIONES
+1. PROBLEMA PRINCIPAL: Líquido libre moderado generalizado en todos los espacios peritoneales || Anecoico, sin tabiques ni implantes visibles.
+2. Miomatosis uterina múltiple (FIGO 4, 6 y 2) con útero aumentado || Mayor de 32 mm intramural; el submucoso deforma discretamente la cavidad.
+3. Nefrolitiasis bilateral no obstructiva || Litos de 7.2 mm (izquierdo) y 5.5 mm (derecho), sin hidronefrosis; doble sistema izquierdo.
+4. Esteatosis hepática grado I con dos quistes hepáticos simples || Quistes en segmentos VII y III, sin características de complicación.
+## ETIOLOGIA
+Ascitis de origen a precisar; litiasis y esteatosis metabólicas.

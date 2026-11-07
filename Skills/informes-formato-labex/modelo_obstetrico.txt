@@ -1,0 +1,98 @@
+@formato LABEX
+@paciente Reyna Sequeira
+@edad 25 años
+@sexo Femenino
+@medico Dr. Morales
+@procedencia Emergencia
+@modalidad Ultrasonido obstétrico con Doppler
+@archivo Reyna_Sequeira_US_Obstetrico_Doppler
+@protocolo libre
+## ESTUDIO
+Ultrasonido obstétrico del tercer trimestre con biometría fetal, perfil de líquido amniótico y Doppler de arteria umbilical y arteria uterina izquierda. Gestación de término por biometría. Paciente procedente del servicio de Emergencia.
+# GESTACIÓN ÚNICA DE TÉRMINO CON VITALIDAD Y BIENESTAR HEMODINÁMICO CONSERVADOS !
+Gestación única intrauterina de término.
+>> Estática y vitalidad fetal
+- Estado: Benignos
+- Feto: único, vivo, cefálico, dorso derecho · FCF 144 lpm
+- EG biométrica: 37 s 4 d · FPP 24/11/2026
+- PFE: 3340 g · percentil 68.8 · crecimiento armónico
+- Doppler: umbilical IP 0.98 · uterina izquierda IP 1.05 · ambos conservados
+- Impresión: bienestar fetal y perfusión uteroplacentaria conservados para la edad gestacional
+# NÚMERO DE FETOS, VITALIDAD Y ESTÁTICA FETAL
+Gestación única intrauterina con feto vivo.
+>> Estática y vitalidad
+- Situación: longitudinal
+- Presentación: cefálica, dorso derecho
+- FCF: 144 lpm, rítmica y regular
+- Movimientos: espontáneos presentes durante la exploración
+# BIOMETRÍA FETAL Y PESO FETAL ESTIMADO
+Crecimiento armónico, acorde con el término.
+>> Biometría (Hadlock)
+- DBP: 90.5 mm → 36 s 5 d
+- CC: 326.7 mm → 37 s 1 d
+- CA: 342.8 mm → 38 s 1 d
+- LF: 74.9 mm → 38 s 3 d
+- EG promedio: 37 s 4 d · FPP 24/11/2026
+>> Relaciones y peso
+- Índice cefálico: 78.59 (DOF 115.2 mm), conservado
+- Relaciones: CC/CA 0.95 · LF/DBP 82.77 % · LF/CC 22.94 · LF/CA 21.86 %, sin asimetría
+- PFE: 3340 g, percentil 68.8, adecuado para la edad gestacional
+# ANATOMÍA FETAL: CRÁNEO Y SNC
+Calota ovalada con osificación habitual y sin defectos. Línea media y sistema ventricular sin alteraciones demostrables en los cortes biométricos. Sin colecciones ni lesiones intracraneales.
+# ANATOMÍA FETAL: TÓRAX Y CORAZÓN
+Tórax de morfología conservada. Actividad cardíaca rítmica (144 lpm). Sin derrame pleural ni pericárdico.
+# ANATOMÍA FETAL: ABDOMEN, ESTÓMAGO, RIÑONES Y VEJIGA
+Pared abdominal anterior íntegra. Burbuja gástrica en posición habitual. Sin ascitis ni dilatación de asas.
+# ANATOMÍA FETAL: EXTREMIDADES
+Fémur de 74.9 mm, acorde con la edad gestacional, rectilíneo, con osificación homogénea y sin acortamiento.
+# PLACENTA
+Placenta madura, sin complicaciones.
+>> Placenta
+- Inserción: anterior
+- Maduración: grado III de Grannum, esperable a las 37 semanas
+- Complicaciones: sin desprendimiento ni colecciones retroplacentarias
+# CORDÓN UMBILICAL
+Sin circulares al cuello. Diástole anterógrada conservada.
+>> Doppler arteria umbilical
+- Índices: IP 0.98 · IR 0.63 · S/D 2.72
+- Velocidades: VPS 161.07 cm/s · VDF 59.23 cm/s
+- Espectro: baja resistencia, sin ausencia ni reversión diastólica
+# ARTERIA UTERINA IZQUIERDA
+Perfusión uteroplacentaria conservada.
+>> Doppler arteria uterina izquierda
+- Índices: IP 1.05 · IR 0.59
+- Velocidades: VPS 109.07 cm/s · VDF 44.78 cm/s
+- Espectro: baja resistencia, sin escotadura protodiastólica
+# LÍQUIDO AMNIÓTICO
+Volumen conservado, en rango alto, sin polihidramnios. Líquido anecoico.
+>> Índice de líquido amniótico
+- Cuadrantes: 49.4 + 45.0 + 51.6 + 52.4 mm
+- ILA total: 198.4 mm
+## MEDICIONES
+== Estática y vitalidad
+Presentación | Situación / dorso | Longitudinal · cefálica · dorso derecho | — | Favorable
+FCF | lpm | 144 | — | Rítmica
+== Biometría (Hadlock)
+DBP | mm · EG | 90.5 · 36.5 s | — | Acorde
+CC | mm · EG | 326.7 · 37.1 s | — | Acorde
+CA | mm · EG | 342.8 · 38.1 s | — | Acorde
+LF | mm · EG | 74.9 · 38.3 s | — | Acorde
+EG biométrica | promedio | 37.4 s | — | FPP 24/11/2026
+PFE | g · percentil | 3340 · p68.8 | — | Adecuado
+CC/CA · LF/CA | relación | 0.95 · 21.86 % | — | Armónico
+== Placenta y líquido
+Placenta | localización · grado | Anterior · Grannum III | — | Madura
+ILA | 49.4+45.0+51.6+52.4 mm | 198.4 | — | Conservado
+Cordón | circulares | Ausentes | — | Libre
+== Doppler
+A. umbilical | IP · IR · S/D | 0.98 · 0.63 · 2.72 | — | Conservado
+A. umbilical | VPS · VDF cm/s | 161.07 · 59.23 | — | Diástole +
+A. uterina izq. | IP · IR | 1.05 · 0.59 | — | Conservado
+A. uterina izq. | VPS · VDF cm/s | 109.07 · 44.78 | — | Sin notch
+## CONCLUSIONES
+1. PROBLEMA PRINCIPAL: Embarazo único de 37.4 semanas por biometría, feto vivo en presentación cefálica, dorso derecho || FCF 144 lpm, crecimiento armónico y PFE de 3340 g (p68.8), adecuado para la edad gestacional; FPP 24/11/2026.
+2. Doppler fetoplacentario y uteroplacentario sin alteraciones || Arteria umbilical con IP 0.98 y diástole anterógrada conservada; arteria uterina izquierda con IP 1.05 sin escotadura protodiastólica; sin signos de insuficiencia placentaria.
+3. Placenta anterior grado III de Grannum, sin circular de cordón || Maduración placentaria acorde con el término, sin desprendimiento ni colecciones retroplacentarias.
+4. Líquido amniótico conservado en rango alto || ILA de 198.4 mm, sin criterio de polihidramnios.
+## ETIOLOGIA
+Gestación de término con crecimiento y hemodinamia fetoplacentaria acordes; no se demuestra sustrato ecográfico de insuficiencia placentaria ni de compromiso fetal.
