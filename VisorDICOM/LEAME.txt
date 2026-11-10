@@ -160,3 +160,10 @@ INTESTINO Y COLON (sirve sin contraste: el colon tiene aire)
   como salientes pequenas y los polipos como muescas o defectos.
   Con Recorte "Superior" quite las bases pulmonares. Opacidad mas baja
   = molde transparente para ver defectos por dentro.
+
+VENTANAS VASCULARES ("Ventanas...")
+- Angio-TC (600/300): arterias en fase arterial.
+- Vascular: placas y stents (1200/350), embolia pulmonar (700/100),
+  venas / fase portal (400/100), diseccion aortica (600/200).
+- Para circulacion: MIP 10-20 mm, MPR curvo de la aorta o carotida,
+  Perfil de densidades y 3D "Vasos con contraste" o "MIP 3D vasos".
