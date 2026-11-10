@@ -31,7 +31,16 @@ HERRAMIENTAS (barra superior)
 - Distancia, Angulo (arrastre el primer brazo y toque el final del segundo),
   ROI elipse y ROI rectangulo (media, DE, min, max y area), Densidad
   (UH en un punto) y Flecha con texto.
+- Al terminar una medida, la herramienta vuelve sola a Ventana (no se
+  queda pegada). Para hacer varias medidas seguidas, toque DOS VECES el
+  boton de la herramienta (queda con borde amarillo = fija).
 - Toque y arrastre los puntos amarillos de una medida para corregirla.
+- Los NUMEROS de la medida y el TEXTO de la nota se pueden arrastrar
+  por separado a donde quiera; queda una linea guia hacia la medida.
+- Pasar imagenes: flechas del teclado, rueda o trackball del raton,
+  Re Pag / Av Pag (de 10 en 10), Inicio y Fin.
+  Ctrl + rueda = zoom. Clic derecho y arrastrar = mover la imagen.
+  Clic derecho mientras dibuja un angulo = cancelar.
 - Invertir, Rotar, Voltear, Restaurar y Datos (datos del estudio y
   mostrar/ocultar los textos sobre la imagen).
 
