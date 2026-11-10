@@ -167,3 +167,21 @@ VENTANAS VASCULARES ("Ventanas...")
   venas / fase portal (400/100), diseccion aortica (600/200).
 - Para circulacion: MIP 10-20 mm, MPR curvo de la aorta o carotida,
   Perfil de densidades y 3D "Vasos con contraste" o "MIP 3D vasos".
+
+BARRA ORDENADA POR PESTANAS
+- Ver: ventana, mover, zoom, cortes, ventanas, invertir, rotar, voltear,
+  restaurar, cine.
+- Medir y notas: distancia, angulo, ROI, densidad | Nota, Editar nota,
+  Flecha | volumen, nodulo, Cobb, altura vertebral, ICT, perfil, ASPECTS.
+- MPR · 3D · Comparar: distribucion (1, 2, 4 visores, comparar, MPR, 3D),
+  MIP/MinIP, cruz MPR, MPR curvo, sincronizar.
+- Guardar: marcar estrella y panel de guardar (imagenes, hoja, videos).
+- Opciones: datos del estudio, lupa, anonimo, atajos.
+El punto amarillo en una pestana indica que ahi esta la herramienta activa.
+
+NOTAS EN LA IMAGEN
+- "Nota": toque donde quiera y escriba lo que observa. Se guarda con la
+  imagen (PNG, marcadas, hoja de imagenes clave) y va al informe.
+- Para la nota de una MEDIDA: toque DOS VECES sus numeros, o seleccionela
+  y pulse "Editar nota". Tambien en la pestana Medidas del panel.
+- Las notas y los numeros se pueden arrastrar a donde quiera.
