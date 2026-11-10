@@ -1277,6 +1277,8 @@ async function construirVolumen(s){
   for(let k=0;k<n;k++){
     if(k%8===0){ progreso('Preparando MPR '+(k+1)+' de '+n, k/n); await espera(); }
     const m=s.imgs[k]; let d;
+    // preparar varias imágenes a la vez (estudios comprimidos)
+    if(k%NUCLEOS===0){ const sig=s.imgs.slice(k,k+NUCLEOS*2).filter(x=>!x.dec); if(sig.length) try{ await Promise.all(sig.map(x=>decodificar(x))); }catch(e){} }
     try{ d=await decodificar(m); }catch(e){ progreso(null); aviso(e.message,5000); return; }
     if(d.w!==w||d.h!==h||!d.v||(vol instanceof Int16Array && !(d.v instanceof Int16Array))){ progreso(null); aviso('Los cortes no tienen el mismo tamaño; no se puede hacer MPR.',5000); return; }
     vol.set(d.v,k*w*h);
