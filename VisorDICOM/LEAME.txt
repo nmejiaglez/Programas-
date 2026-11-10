@@ -17,9 +17,8 @@ ABRIR UN ESTUDIO
   estudio (de un CD suelen estar en la carpeta DICOM o IMAGES y a veces no
   tienen extension). Tambien acepta un archivo .ZIP con el estudio.
 - "Elegir una carpeta completa" abre todas las imagenes de esa carpeta.
-- Formatos: DICOM sin compresion, JPEG, JPEG sin perdida y RLE.
-  JPEG 2000 no es compatible: si aparece ese aviso, pida el estudio
-  exportado "sin compresion".
+- Formatos: DICOM sin compresion, JPEG, JPEG sin perdida, RLE,
+  JPEG 2000 y JPEG-LS (los mas usados en CD de hospitales).
 
 HERRAMIENTAS (barra superior)
 - Ventana: deslice el dedo izquierda/derecha (ancho) y arriba/abajo (nivel).
