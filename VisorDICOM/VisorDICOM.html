@@ -113,6 +113,8 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
       <option value="150,90">Hígado</option>
       <option value="350,50">Mediastino</option>
       <option value="1500,-600">Pulmón</option>
+      <option value="1000,-700">Pulmón MIP (nódulos)</option>
+      <option value="500,-850">Enfisema / MinIP</option>
       <option value="2000,500">Hueso</option>
       <option value="80,40">Cerebro</option>
       <option value="200,75">Subdural</option>
@@ -133,15 +135,35 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
       <option value="4">4 visores</option>
       <option value="mpr">MPR 3 planos</option>
     </select>
-    <select class="b" id="sGrosor" title="Grosor MPR / MIP">
-      <option value="0">Grosor: corte</option>
-      <option value="3">MIP 3 mm</option>
-      <option value="5">MIP 5 mm</option>
-      <option value="10">MIP 10 mm</option>
-      <option value="20">MIP 20 mm</option>
-      <option value="m5">Prom. 5 mm</option>
-      <option value="m10">Prom. 10 mm</option>
-      <option value="n10">MinIP 10 mm</option>
+    <select class="b" id="sGrosor" title="MIP / MinIP / grosor de corte" style="min-width:150px">
+      <option value="0">Corte normal</option>
+      <optgroup label="Pulmón (pone la ventana sola)">
+        <option value="pmip8">MIP 8 mm: micronódulos y vasos</option>
+        <option value="pmip15">MIP 15 mm: nódulos y vasos</option>
+        <option value="pmin8">MinIP 8 mm: enfisema centrolobulillar</option>
+        <option value="pmin15">MinIP 15 mm: enfisema, atrapamiento aéreo y vía aérea</option>
+      </optgroup>
+      <optgroup label="MIP (resalta lo denso: vasos, contraste, nódulos)">
+        <option value="3">MIP 3 mm</option>
+        <option value="5">MIP 5 mm</option>
+        <option value="8">MIP 8 mm</option>
+        <option value="10">MIP 10 mm</option>
+        <option value="15">MIP 15 mm</option>
+        <option value="20">MIP 20 mm</option>
+        <option value="30">MIP 30 mm</option>
+      </optgroup>
+      <optgroup label="MinIP (resalta el aire: enfisema, vía aérea)">
+        <option value="n5">MinIP 5 mm</option>
+        <option value="n8">MinIP 8 mm</option>
+        <option value="n10">MinIP 10 mm</option>
+        <option value="n15">MinIP 15 mm</option>
+        <option value="n20">MinIP 20 mm</option>
+      </optgroup>
+      <optgroup label="Promedio (corte grueso, menos ruido)">
+        <option value="m3">Promedio 3 mm</option>
+        <option value="m5">Promedio 5 mm</option>
+        <option value="m10">Promedio 10 mm</option>
+      </optgroup>
     </select>
     <button class="b" id="bPlay"><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg>Cine</button>
   </div>
@@ -767,7 +789,9 @@ async function cargarImagen(v){
   try{
     let d, clave, img=null;
     if(v.plano){ d=extraerPlano(v.plano, v.idx); clave=mprClave(v); }
-    else { img=v.serie.imgs[v.idx]; d=await decodificar(img); clave=img.key; }
+    else { img=v.serie.imgs[v.idx]; const g=mprGrosor();
+      if(g.mm && esVolumen(v.serie)){ d=await losaPila(v.serie,v.idx,g); clave=img.key+'|'+$('#sGrosor').value; }
+      else { d=await decodificar(img); clave=img.key; } }
     if(tok!==v._tok) return;
     v.dec=d; v.img=img; v.clave=clave;
     if(!v.wlOk){ ventanaInicial(v,d); v.wlOk=true; }
@@ -839,7 +863,7 @@ function dibujarTexto(v){
   const tl=[I.paciente, (I.pid?'ID '+I.pid+'  ':'')+(I.sexo||'')+(I.edad?' '+I.edad:''), fechaDicom(I.fecha), I.institucion].filter(Boolean);
   tl.forEach((t,i)=>sombra(t,8*k,6*k+i*lh,'left'));
   const nombrePlano={ax:planoNombre('ax'),co:planoNombre('co'),sa:planoNombre('sa')};
-  const tr=[ (v.plano?'MPR '+nombrePlano[v.plano]+(mprGrosor().mm?' · '+mprGrosor().modo+' '+mprGrosor().mm+' mm':''):'Serie '+(v.serie.num||'')+' '+(v.serie.desc||'')).trim(), I.modalidad+(I.equipo?' · '+I.equipo:'') ].filter(Boolean);
+  const tr=[ (v.plano?'MPR '+nombrePlano[v.plano]:'Serie '+(v.serie.num||'')+' '+(v.serie.desc||'')).trim(), (textoLosa() && (v.plano||(v.dec&&v.dec.losa))) ? textoLosa() : '', I.modalidad+(I.equipo?' · '+I.equipo:'') ].filter(Boolean);
   tr.forEach((t,i)=>sombra(t.slice(0,48),cw-8*k,6*k+i*lh,'right'));
   const tot=totalImgs(v);
   const bl=['Img '+(v.idx+1)+' / '+tot];
@@ -961,7 +985,7 @@ function calcular(v,a){
 }
 
 /* ====================== MPR ====================== */
-function mprGrosor(){ const s=$('#sGrosor').value; if(s==='0') return {mm:0}; const modo=s[0]==='m'?'Prom.':s[0]==='n'?'MinIP':'MIP'; return {mm:parseFloat(s.replace(/^[mn]/,'')), modo}; }
+function mprGrosor(){ const s=$('#sGrosor').value.replace(/^pmip/,'').replace(/^pmin/,'n'); if(s==='0') return {mm:0}; const modo=s[0]==='m'?'Prom.':s[0]==='n'?'MinIP':'MIP'; return {mm:parseFloat(s.replace(/^[mn]/,'')), modo}; }
 function planoNombre(p){
   if(!mpr) return '';
   const n=mpr.serie.normal||[0,0,1], I=mpr.serie.info, row=I.iop?I.iop.slice(0,3):[1,0,0], col=I.iop?I.iop.slice(3,6):[0,1,0];
@@ -979,6 +1003,8 @@ async function iniciarMPR(sPref){
     v.idx = mpr.punto[{ax:2,co:1,sa:0}[v.plano]]; });
   for(const v of vps) await cargarImagen(v);
   // misma ventana en los tres
+  const gv=$('#sGrosor').value, vent=/^pmip/.test(gv)?[1000,-700]:/^pmin/.test(gv)?[500,-850]:null;
+  if(vent && s.modalidad==='CT'){ vps[0].ww=vent[0]; vps[0].wc=vent[1]; }
   vps.forEach(v=>{v.ww=vps[0].ww; v.wc=vps[0].wc; dibujar(v);});
   actualizarPie(); pintarSeries();
 }
@@ -1021,6 +1047,24 @@ function extraerPlano(pl, idx){
     out[y*w+x]=acc; if(acc<mn)mn=acc; if(acc>mx)mx=acc; }
   return {w,h,v:out,min:mn,max:mx};
 }
+// MIP / MinIP / promedio en la vista normal: combina los cortes vecinos
+async function losaPila(s,idx,g){
+  if(!s.dz){ let dz=0; for(let k=1;k<s.imgs.length;k++) dz+=Math.abs(s.imgs[k].pos-s.imgs[k-1].pos); s.dz=dz/(s.imgs.length-1)||s.info.grosor||1; }
+  const capas=Math.max(1,Math.round(g.mm/s.dz)), ini=Math.max(0,idx-Math.floor((capas-1)/2)), fin=Math.min(s.imgs.length-1,ini+capas-1);
+  const lista=[]; for(let k=ini;k<=fin;k++) lista.push(decodificar(s.imgs[k]));
+  const ds=await Promise.all(lista), d0=ds[0], n=d0.w*d0.h;
+  if(ds.some(d=>!d.v||d.w!==d0.w||d.h!==d0.h)) return ds[idx-ini]||d0;
+  const prom=g.modo==='Prom.', out=prom? new Float32Array(n) : new d0.v.constructor(n);
+  out.set(d0.v);
+  for(let c=1;c<ds.length;c++){ const z=ds[c].v;
+    if(g.modo==='MIP'){ for(let i=0;i<n;i++) if(z[i]>out[i]) out[i]=z[i]; }
+    else if(g.modo==='MinIP'){ for(let i=0;i<n;i++) if(z[i]<out[i]) out[i]=z[i]; }
+    else for(let i=0;i<n;i++) out[i]+=z[i]; }
+  if(prom) for(let i=0;i<n;i++) out[i]/=ds.length;
+  let mn=Infinity,mx=-Infinity; for(let i=0;i<n;i++){ const x=out[i]; if(x<mn)mn=x; if(x>mx)mx=x; }
+  return {w:d0.w,h:d0.h,v:out,min:mn,max:mx,mono1:d0.mono1,losa:(fin-ini+1)};
+}
+function textoLosa(){ const g=mprGrosor(); return g.mm? g.modo+' '+g.mm+' mm' : ''; }
 function mprClave(v){ const g=$('#sGrosor').value; return 'MPR|'+mpr.serie.id+'|'+v.plano+'|'+v.idx+'|'+g; }
 function dibujarCruz(v,m){
   const [i,j,k]=mpr.punto, c=v.ctx, d=v.dec, kk=v.dpr||1;
@@ -1381,7 +1425,14 @@ $('#bTexto').onclick=()=>{ const v=vpAct; if(!v||!v.serie){ textoVisible=!textoV
   abrirModal('#mDatos'); $('#chTxt').onchange=e=>{ textoVisible=e.target.checked; vps.forEach(x=>dibujar(x)); }; };
 $('#sLayout').onchange=e=>{ e.target.blur(); cambiarLayout(e.target.value); };
 $$('select').forEach(el=>el.addEventListener('change',()=>el.blur()));
-$('#sGrosor').onchange=()=>{ if(!mpr){ aviso('El grosor (MIP) se usa en el modo MPR 3 planos.'); return; } vps.forEach(v=>v.plano&&cargarImagen(v)); };
+$('#sGrosor').onchange=e=>{ const val=e.target.value; e.target.blur();
+  // las opciones de pulmón ponen también la ventana adecuada
+  const vent = /^pmip/.test(val)? [1000,-700] : /^pmin/.test(val)? [500,-850] : null;
+  if(vent) vps.forEach(v=>{ if(v.serie && v.serie.modalidad==='CT'){ v.ww=vent[0]; v.wc=vent[1]; v.wlOk=true; } });
+  const conVol=vps.some(v=>v.serie && (v.plano || esVolumen(v.serie)));
+  if(val!=='0' && !conVol) aviso('MIP / MinIP necesitan una serie de cortes (TC o RM). Esta serie no lo permite.',4000);
+  else if(val!=='0') aviso(textoLosa()+(vent?(/^pmip/.test(val)?' — ventana pulmón para nódulos y vasos':' — ventana para enfisema'):''),2500);
+  vps.forEach(v=>v.serie&&cargarImagen(v)); };
 $('#bCopiarMed').onclick=async()=>{ const t=textoMedidas(); try{ await navigator.clipboard.writeText(t); aviso('Medidas copiadas. Péguelas en su informe.'); }catch(e){ $('#mTextoTit').textContent='Seleccione y copie'; $('#mTextoVal').value=t; abrirModal('#mTexto'); $('#mTextoOk').onclick=cerrarModales; } };
 $('#bTxtMed').onclick=()=>descargar(new Blob([textoMedidas()],{type:'text/plain;charset=utf-8'}), nombreBase(vpAct)+'_medidas.txt');
 function cambiarSerie(v,paso){

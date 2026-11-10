@@ -55,7 +55,16 @@ NOTAS EN LAS MEDIDAS
 MPR
 - Elija "MPR 3 planos": axial, coronal y sagital de la serie de cortes.
 - Herramienta "Cruz MPR": toque un punto y los otros planos van a ese punto.
-- "Grosor": MIP 3/5/10/20 mm, promedio o MinIP (vias aereas).
+MIP Y MinIP (funcionan en la vista normal y en MPR)
+- Lista "Corte normal" de la barra. Las opciones de PULMON ponen solas
+  la ventana adecuada:
+  * MIP 8 mm: micronodulos y vasos (nodulos ocultos entre los vasos).
+  * MIP 15 mm: nodulos y arbol vascular.
+  * MinIP 8 mm: enfisema centrolobulillar.
+  * MinIP 15 mm: enfisema, atrapamiento aereo y via aerea.
+- Tambien hay MIP 3 a 30 mm (vasos, contraste), MinIP 5 a 20 mm y
+  Promedio 3/5/10 mm (corte grueso con menos ruido).
+- Para volver a lo normal elija "Corte normal".
 
 GUARDAR (se guardan en Descargas)
 - Imagen actual (PNG), con medidas y notas.
