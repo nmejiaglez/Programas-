@@ -148,3 +148,15 @@ modo anonimo, lupa, atajos y ventanas favoritas ("Ventanas..." >
 "Guardar ventana actual como favorita").
 Los CD con programas incluidos abren mas rapido: el visor salta los
 archivos que no son imagenes (DICOMDIR, .exe, etc.).
+
+INTESTINO Y COLON (sirve sin contraste: el colon tiene aire)
+- Ventanas: "Intestino / pared intestinal" (350/50), "Realce de pared
+  intestinal" (250/60), "Colon con aire (diverticulos, polipos)"
+  (1500/-600) y "Neumoperitoneo / neumatosis" (1000/-200).
+- Recomendado: MPR coronal y sagital con la ventana de colon con aire;
+  MPR curvo para "estirar" un segmento del colon.
+- 3D > "Colon con aire: molde 3D": muestra solo el aire DENTRO del
+  cuerpo (colon, asas, estomago) como un molde. Los diverticulos se ven
+  como salientes pequenas y los polipos como muescas o defectos.
+  Con Recorte "Superior" quite las bases pulmonares. Opacidad mas baja
+  = molde transparente para ver defectos por dentro.

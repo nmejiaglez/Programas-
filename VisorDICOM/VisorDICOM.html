@@ -139,6 +139,10 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
       <option value="40,40">ACV (estrecha)</option>
       <option value="600,300">Angio-TC</option>
       <option value="4000,700">Hueso temporal</option>
+      <option value="350,50">Intestino / pared intestinal</option>
+      <option value="250,60">Realce de pared intestinal</option>
+      <option value="1500,-600">Colon con aire (divertículos, pólipos)</option>
+      <option value="1000,-200">Neumoperitoneo / neumatosis</option>
     </select>
     <button class="b" id="bInvertir"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor"/></svg>Invertir</button>
     <button class="b" id="bRotar"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-3-6.2M20 4v5h-5"/></svg>Rotar</button>
@@ -293,7 +297,7 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
 </div></div>
 <div class="modal" id="mAtajos"><div class="caja">
   <h3>Atajos de teclado</h3>
-  <p class="nota">Toque "Cambiar" y presione la tecla nueva. Los números 1 a 9 ponen las ventanas de la lista (1 = abdomen, 4 = pulmón, 5 = hueso…). Flechas ← → imágenes, ↑ ↓ series.</p>
+  <p class="nota">Toque "Cambiar" y presione la tecla nueva. Los números 1 a 9 ponen las ventanas de la lista (en el mismo orden de la lista: 1 = abdomen, 2 = hígado, 3 = mediastino, 4 = pulmón…). Flechas ← → imágenes, ↑ ↓ series.</p>
   <div id="atajosLista"></div>
   <div class="fila"><button class="chico" id="atajosDef">Restaurar originales</button><button class="chico" data-cerrar>Cerrar</button></div>
 </div></div>
@@ -1777,6 +1781,7 @@ const PRESETS3D=[
   {id:'piel', nombre:'Piel / superficie', tipo:'vr', puntos:[[-1024,0,0,0,0],[-450,.9,.7,.6,0],[-250,.93,.74,.63,.5],[100,.95,.78,.68,.7],[400,1,.95,.9,.8],[3071,1,1,1,.9]]},
   {id:'musculo', nombre:'Músculo y hueso', tipo:'vr', puntos:[[-1024,0,0,0,0],[-100,.6,.2,.15,0],[20,.75,.25,.2,.03],[90,.85,.35,.3,.06],[180,.9,.8,.7,.1],[400,1,.95,.85,.6],[3071,1,1,1,.9]]},
   {id:'pulmon', nombre:'Pulmón: vasos y bronquios', tipo:'vr', puntos:[[-1024,0,0,0,0],[-930,.5,.6,.85,0],[-850,.6,.7,.9,.015],[-650,.9,.55,.5,.12],[-400,.95,.45,.4,.25],[-200,.9,.4,.35,0],[3071,1,1,1,0]]},
+  {id:'colon', nombre:'Colon con aire: molde 3D (divertículos, pólipos)', tipo:'vr', molde:true, puntos:[[-1024,0,0,0,0],[380,.85,.5,.45,0],[520,.9,.58,.5,.3],[700,.94,.68,.6,.65],[1024,.97,.78,.72,.85],[3071,1,1,1,.9]]},
   {id:'mip_angio', nombre:'MIP 3D vasos (angio)', tipo:'mip', ww:600, wc:300},
   {id:'mip_pulmon', nombre:'MIP 3D pulmón (nódulos)', tipo:'mip', ww:1000, wc:-650},
   {id:'mip_hueso', nombre:'MIP 3D hueso', tipo:'mip', ww:2000, wc:700},
@@ -1833,6 +1838,16 @@ function crearPrograma3D(gl){
   return {pr,u};
 }
 function calidadInicial(){ if(prefs.calidad3d) return prefs.calidad3d; const mem=navigator.deviceMemory||4, movil=/Android|iPad|iPhone|CrOS/i.test(navigator.userAgent); return (mem>=8 && !movil)?384:256; }
+// molde de aire: sólo el aire DENTRO del cuerpo (colon, asas, estómago); el aire de fuera se elimina corte por corte
+function moldeAire(out,w,h,n){
+  const res=new Float32Array(out.length).fill(-1024), U=-400, ext=new Uint8Array(w*h), pila=new Int32Array(w*h);
+  for(let k=0;k<n;k++){ const o=k*w*h; ext.fill(0); let sp=0;
+    const sem=i=>{ if(!ext[i] && out[o+i]<U){ ext[i]=1; pila[sp++]=i; } };
+    for(let x=0;x<w;x++){ sem(x); sem((h-1)*w+x); } for(let y=0;y<h;y++){ sem(y*w); sem(y*w+w-1); }
+    while(sp){ const i=pila[--sp], x=i%w; if(x>0) sem(i-1); if(x<w-1) sem(i+1); if(i>=w) sem(i-w); if(i<w*(h-1)) sem(i+w); }
+    for(let i=0;i<w*h;i++){ const z=out[o+i]; if(!ext[i] && z<-150) res[o+i]=Math.min(1024,-z); } }
+  return res;
+}
 function cerrar3D(){ if(!v3d) return; cancelAnimationFrame(v3d.raf); v3d.vivo=false; const gl=v3d.gl; try{ gl.getExtension('WEBGL_lose_context')?.loseContext(); }catch(e){} v3d=null; }
 async function iniciar3D(sPref){
   cerrar3D();
@@ -1880,10 +1895,11 @@ async function subirVolumen3D(){
           val=c0*(1-az)+c1*az; }
         out[(k*h+y)*w+x]=val; if(val<mn)mn=val; if(val>mx)mx=val; } } }
   progreso('Enviando a la tarjeta de video…',1); await espera();
+  const datos = v3d.preset.molde ? moldeAire(out,w,h,n) : out; v3d.moldeHecho=!!v3d.preset.molde;
   if(v3d.tex) gl.deleteTexture(v3d.tex);
   const tex=gl.createTexture(); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_3D,tex);
   gl.pixelStorei(gl.UNPACK_ALIGNMENT,1);
-  try{ gl.texImage3D(gl.TEXTURE_3D,0,gl.R16F,w,h,n,0,gl.RED,gl.FLOAT,out); }catch(e){}
+  try{ gl.texImage3D(gl.TEXTURE_3D,0,gl.R16F,w,h,n,0,gl.RED,gl.FLOAT,datos); }catch(e){}
   if(gl.getError()!==gl.NO_ERROR){ progreso(null); if(v3d.calidad>192){ v3d.calidad=Math.max(128,v3d.calidad-128); aviso('Poca memoria de video: bajando la calidad del 3D.',3000); return subirVolumen3D(); } aviso('La tarjeta de video no pudo cargar este volumen.',5000); return; }
   for(const [k,v] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_R,gl.CLAMP_TO_EDGE]]) gl.texParameteri(gl.TEXTURE_3D,k,v);
   v3d.tex=tex; v3d.dims=[w,h,n]; v3d.vmin=mn; v3d.vmax=mx;
@@ -2010,7 +2026,9 @@ function crearPanel3D(){
   const q=s=>p.querySelector(s);
   q('#p3preset').value=v3d.preset.id; q('#p3cal').value=String(v3d.calidad);
   q('#p3min').onclick=()=>{ p.classList.toggle('min'); q('#p3min').textContent=p.classList.contains('min')?'Controles ▼':'Ocultar ▲'; };
-  q('#p3preset').onchange=e=>{ v3d.preset=PRESETS3D.find(x=>x.id===e.target.value); v3d.desp=0; v3d.opac=1; q('#p3desp').value=0; q('#p3opac').value=100; q('#p3dv').textContent='0'; actualizarTF3D(); };
+  q('#p3preset').onchange=async e=>{ v3d.preset=PRESETS3D.find(x=>x.id===e.target.value); v3d.desp=0; v3d.opac=1; q('#p3desp').value=0; q('#p3opac').value=100; q('#p3dv').textContent='0';
+    if(!!v3d.preset.molde!==!!v3d.moldeHecho) await subirVolumen3D(); else actualizarTF3D();
+    if(v3d.preset.molde) aviso('Molde del aire dentro del cuerpo: colon, intestino y estómago (y bases pulmonares). Use Recorte "Superior" para quitar los pulmones.',6000); };
   q('#p3desp').oninput=e=>{ v3d.desp=+e.target.value; q('#p3dv').textContent=e.target.value; v3d.interactuando=true; v3d.sucio=true; clearTimeout(v3d.tInt); v3d.tInt=setTimeout(()=>{v3d.interactuando=false;v3d.sucio=true;},200); };
   q('#p3opac').oninput=e=>{ v3d.opac=e.target.value/100; v3d.sucio=true; };
   q('#p3sombra').onclick=()=>{ v3d.sombra=!v3d.sombra; actualizarPanel3D(); v3d.sucio=true; };
