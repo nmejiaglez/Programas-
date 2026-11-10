@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Visor DICOM Dr. Mejía</title>
+<style>
+/* Visor oscuro: barra superior de herramientas, panel lateral de series/medidas, rejilla de visores */
+:root{
+  --bg:#0b0f14; --panel:#141b24; --panel2:#1c2531; --borde:#2a3646;
+  --texto:#e6edf5; --suave:#8fa1b5; --acento:#3d9be9; --acento2:#1e5f99;
+  --amarillo:#ffd34d; --verde:#4cd97b; --rojo:#ff5c5c; --cian:#4fd6e8;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--texto);font:14px/1.3 Arial,Helvetica,sans-serif;display:flex;flex-direction:column;overflow:hidden;
+  padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);user-select:none;-webkit-user-select:none}
+button,select,input,textarea{font:inherit;color:inherit}
+#barra{display:flex;gap:4px;padding:5px 6px;background:var(--panel);border-bottom:1px solid var(--borde);overflow-x:auto;flex:none;align-items:stretch;scrollbar-width:thin}
+.grupo{display:flex;gap:3px;padding-right:6px;margin-right:2px;border-right:1px solid var(--borde);flex:none}
+.grupo:last-child{border-right:0}
+.b{background:var(--panel2);border:1px solid var(--borde);border-radius:8px;min-width:52px;height:52px;padding:3px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;flex:none;font-size:11px;white-space:nowrap}
+.b svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.b.act{background:var(--acento2);border-color:var(--acento);color:#fff}
+.b:active{transform:scale(.96)}
+.b:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--acento);outline-offset:1px}
+select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
+#cuerpo{flex:1;display:flex;min-height:0}
+#lado{width:290px;flex:none;background:var(--panel);border-right:1px solid var(--borde);display:flex;flex-direction:column;min-height:0}
+#lado.oculto{display:none}
+.pest{display:flex;flex:none;border-bottom:1px solid var(--borde)}
+.pest button{flex:1;background:none;border:0;border-bottom:3px solid transparent;padding:11px 4px;cursor:pointer;color:var(--suave);font-weight:bold}
+.pest button.act{color:var(--texto);border-bottom-color:var(--acento)}
+.vistaLado{flex:1;overflow-y:auto;padding:8px;display:none;-webkit-overflow-scrolling:touch;user-select:text;-webkit-user-select:text}
+.vistaLado.act{display:block}
+.serie{display:flex;gap:8px;padding:6px;border:1px solid var(--borde);border-radius:8px;margin-bottom:6px;cursor:pointer;background:var(--panel2);align-items:center}
+.serie.act{border-color:var(--acento);background:#173250}
+.serie canvas{width:72px;height:72px;background:#000;border-radius:4px;flex:none}
+.serie .t{font-size:12px;min-width:0;flex:1}
+.serie .t b{display:block;font-size:13px;margin-bottom:2px;word-break:break-word}
+.serie input{width:22px;height:22px;flex:none}
+.med{border:1px solid var(--borde);border-radius:8px;padding:7px;margin-bottom:7px;background:var(--panel2)}
+.med .cab{display:flex;gap:6px;align-items:center;margin-bottom:5px}
+.med .cab b{flex:1;font-size:13px}
+.med .val{font-size:13px;color:var(--amarillo);margin-bottom:5px;white-space:pre-line}
+.med textarea{width:100%;min-height:52px;background:#0d131a;border:1px solid var(--borde);border-radius:6px;padding:6px;resize:vertical}
+.chico{background:var(--panel);border:1px solid var(--borde);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:12px}
+.chico.rojo{color:var(--rojo)}
+.btnAncho{width:100%;background:var(--acento2);border:1px solid var(--acento);border-radius:8px;padding:11px;margin-bottom:7px;cursor:pointer;font-weight:bold;color:#fff}
+.btnAncho.sec{background:var(--panel2);border-color:var(--borde);color:var(--texto);font-weight:normal}
+.tit{font-size:12px;color:var(--suave);text-transform:uppercase;letter-spacing:.06em;margin:10px 2px 6px}
+.nota{font-size:12px;color:var(--suave);margin:4px 2px 8px}
+.marcada{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+.marcada img{width:64px;height:64px;object-fit:contain;background:#000;border-radius:4px}
+.marcada span{flex:1;font-size:12px}
+#zona{flex:1;display:grid;gap:3px;background:#000;min-width:0;min-height:0;position:relative;padding:3px}
+.vp{position:relative;background:#000;border:2px solid #1a222c;overflow:hidden;min-width:0;min-height:0;touch-action:none}
+.vp.act{border-color:var(--acento)}
+.vp canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vp .vacio{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--suave);text-align:center;padding:20px;font-size:15px;pointer-events:none}
+#pie{flex:none;display:flex;gap:8px;align-items:center;padding:6px 10px;background:var(--panel);border-top:1px solid var(--borde)}
+#corte{flex:1;height:34px;accent-color:var(--acento)}
+#pie .info{font-size:13px;min-width:86px;text-align:center;font-variant-numeric:tabular-nums}
+#pie label{font-size:12px;color:var(--suave);display:flex;align-items:center;gap:4px}
+#pie input[type=number]{width:58px;background:#0d131a;border:1px solid var(--borde);border-radius:6px;padding:6px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.act{display:flex}
+.caja{background:var(--panel);border:1px solid var(--borde);border-radius:12px;padding:16px;max-width:520px;width:100%;max-height:90%;overflow:auto;user-select:text;-webkit-user-select:text}
+.caja h3{margin:0 0 10px;font-size:17px}
+.caja .fila{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;justify-content:flex-end}
+.caja label{display:flex;gap:8px;align-items:center;margin:8px 0}
+.caja input[type=text],.caja input[type=number],.caja textarea,.caja select{background:#0d131a;border:1px solid var(--borde);border-radius:6px;padding:8px;width:100%}
+.caja table{border-collapse:collapse;width:100%;font-size:12px}
+.caja td{border-bottom:1px solid var(--borde);padding:4px;vertical-align:top;word-break:break-word}
+.caja td:first-child{color:var(--suave);white-space:nowrap}
+#aviso{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);background:#1d2a3a;border:1px solid var(--acento);padding:10px 16px;border-radius:10px;z-index:60;display:none;max-width:90%;text-align:center}
+#progreso{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:70;flex-direction:column;gap:12px;font-size:16px}
+#progreso .barraP{width:260px;height:10px;background:#222;border-radius:5px;overflow:hidden}
+#progreso .barraP div{height:100%;width:0;background:var(--acento)}
+#grabCanvas{position:fixed;left:-99999px;top:0}
+@media (max-width:700px){#lado{position:absolute;z-index:20;height:calc(100% - 120px);width:86%}}
+@media (prefers-reduced-motion:reduce){.b:active{transform:none}}
+</style>
+</head>
+<body>
+<div id="barra">
+  <div class="grupo">
+    <button class="b" id="bAbrir" title="Abrir archivos DICOM, carpetas o ZIP"><svg viewBox="0 0 24 24"><path d="M3 7h6l2 2h10v10H3z"/></svg>Abrir</button>
+    <button class="b" id="bLado" title="Mostrar u ocultar panel"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16"/><path d="M9 4v16"/></svg>Panel</button>
+  </div>
+  <div class="grupo" id="herr">
+    <button class="b act" data-h="wl"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16" /><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>Ventana</button>
+    <button class="b" data-h="pan"><svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20M12 2l-3 3M12 2l3 3M12 22l-3-3M12 22l3-3M2 12l3-3M2 12l3 3M22 12l-3-3M22 12l-3 3"/></svg>Mover</button>
+    <button class="b" data-h="zoom"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6M10 7v6M7 10h6"/></svg>Zoom</button>
+    <button class="b" data-h="scroll"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="7"/><rect x="6" y="14" width="12" height="7"/><path d="M12 10v4"/></svg>Cortes</button>
+    <button class="b" data-h="dist"><svg viewBox="0 0 24 24"><path d="M4 20L20 4M4 20l1-4M4 20l4-1M20 4l-4 1M20 4l-1 4"/></svg>Distancia</button>
+    <button class="b" data-h="angulo"><svg viewBox="0 0 24 24"><path d="M20 6L5 19h16"/><path d="M11 19a6 6 0 0 0-2-4"/></svg>Ángulo</button>
+    <button class="b" data-h="elipse"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="6"/></svg>ROI elipse</button>
+    <button class="b" data-h="rect"><svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12"/></svg>ROI rect.</button>
+    <button class="b" data-h="punto"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 3v5M12 16v5M3 12h5M16 12h5"/></svg>Densidad</button>
+    <button class="b" data-h="texto"><svg viewBox="0 0 24 24"><path d="M4 20l7-7M4 20h4M4 20v-4"/><path d="M13 4h8M17 4v9"/></svg>Flecha</button>
+    <button class="b" data-h="cruz"><svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="3"/></svg>Cruz MPR</button>
+  </div>
+  <div class="grupo">
+    <select class="b" id="sPreset" title="Ventanas predefinidas">
+      <option value="">Ventanas…</option>
+      <option value="auto">Original del estudio</option>
+      <option value="400,40">Abdomen / partes blandas</option>
+      <option value="150,90">Hígado</option>
+      <option value="350,50">Mediastino</option>
+      <option value="1500,-600">Pulmón</option>
+      <option value="2000,500">Hueso</option>
+      <option value="80,40">Cerebro</option>
+      <option value="200,75">Subdural</option>
+      <option value="40,40">ACV (estrecha)</option>
+      <option value="600,300">Angio-TC</option>
+      <option value="4000,700">Hueso temporal</option>
+    </select>
+    <button class="b" id="bInvertir"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor"/></svg>Invertir</button>
+    <button class="b" id="bRotar"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-3-6.2M20 4v5h-5"/></svg>Rotar</button>
+    <button class="b" id="bVoltear"><svg viewBox="0 0 24 24"><path d="M12 3v18M9 7L4 12l5 5zM15 7l5 5-5 5z"/></svg>Voltear</button>
+    <button class="b" id="bReset"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v5h5"/></svg>Restaurar</button>
+    <button class="b" id="bTexto"><svg viewBox="0 0 24 24"><path d="M5 6h14M12 6v13"/></svg>Datos</button>
+  </div>
+  <div class="grupo">
+    <select class="b" id="sLayout" title="Distribución">
+      <option value="1">1 visor</option>
+      <option value="2">2 visores</option>
+      <option value="4">4 visores</option>
+      <option value="mpr">MPR 3 planos</option>
+    </select>
+    <select class="b" id="sGrosor" title="Grosor MPR / MIP">
+      <option value="0">Grosor: corte</option>
+      <option value="3">MIP 3 mm</option>
+      <option value="5">MIP 5 mm</option>
+      <option value="10">MIP 10 mm</option>
+      <option value="20">MIP 20 mm</option>
+      <option value="m5">Prom. 5 mm</option>
+      <option value="m10">Prom. 10 mm</option>
+      <option value="n10">MinIP 10 mm</option>
+    </select>
+    <button class="b" id="bPlay"><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg>Cine</button>
+  </div>
+  <div class="grupo">
+    <button class="b" id="bMarcar"><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>Marcar</button>
+    <button class="b" id="bGuardar"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>Guardar</button>
+  </div>
+</div>
+
+<div id="cuerpo">
+  <div id="lado">
+    <div class="pest">
+      <button class="act" data-v="vSeries">Series</button>
+      <button data-v="vMedidas">Medidas</button>
+      <button data-v="vGuardar">Guardar</button>
+    </div>
+    <div class="vistaLado act" id="vSeries">
+      <div id="listaSeries"><p class="nota">Toque <b>Abrir</b> y elija los archivos DICOM del estudio (puede elegir todos a la vez, una carpeta o un archivo .ZIP). Nada se sube a internet: todo se procesa dentro de la tablet.</p></div>
+    </div>
+    <div class="vistaLado" id="vMedidas">
+      <p class="nota">Cada medida tiene un espacio para escribir lo que se observa. El texto aparece junto a la medida en la imagen y en las imágenes guardadas.</p>
+      <button class="btnAncho sec" id="bCopiarMed">Copiar todas las medidas y notas</button>
+      <button class="btnAncho sec" id="bTxtMed">Guardar medidas en archivo .txt</button>
+      <div id="listaMed"></div>
+    </div>
+    <div class="vistaLado" id="vGuardar">
+      <div class="tit">Imágenes</div>
+      <button class="btnAncho" id="gActual">Guardar imagen actual (PNG)</button>
+      <button class="btnAncho" id="gMarcadas">Guardar imágenes marcadas (★)</button>
+      <button class="btnAncho sec" id="gSerie">Guardar todas las imágenes de la serie</button>
+      <button class="btnAncho sec" id="gTodasImg">Guardar todas las imágenes de todas las series</button>
+      <div class="tit">Videos (cine)</div>
+      <button class="btnAncho" id="vActual">Video de la serie actual</button>
+      <button class="btnAncho sec" id="vElegidas">Videos de las series elegidas ☑</button>
+      <button class="btnAncho sec" id="vTodas">Videos de todas las series</button>
+      <label class="nota" style="display:flex;gap:6px;align-items:center">Velocidad del video <input type="number" id="vFps" value="10" min="1" max="60" style="width:64px;background:#0d131a;border:1px solid var(--borde);border-radius:6px;padding:6px"> imágenes/seg</label>
+      <p class="nota">Para elegir series, marque la casilla ☑ de cada serie en la pestaña Series. Varias imágenes o videos se guardan juntos en un archivo .ZIP.</p>
+      <div class="tit">Imágenes marcadas</div>
+      <div id="listaMarcadas"><p class="nota">Aún no hay imágenes marcadas. Toque ★ Marcar para agregar la imagen que está viendo.</p></div>
+    </div>
+  </div>
+  <div id="zona"></div>
+</div>
+
+<div id="pie">
+  <button class="chico" id="bAnt" style="padding:8px 14px">◀</button>
+  <input type="range" id="corte" min="0" max="0" value="0">
+  <button class="chico" id="bSig" style="padding:8px 14px">▶</button>
+  <span class="info" id="infoCorte">–</span>
+  <label>img/s <input type="number" id="fps" value="12" min="1" max="60"></label>
+</div>
+
+<input type="file" id="fArchivos" multiple hidden>
+<input type="file" id="fCarpeta" webkitdirectory multiple hidden>
+<canvas id="grabCanvas" width="512" height="512"></canvas>
+
+<div class="modal" id="mAbrir"><div class="caja">
+  <h3>Abrir estudio</h3>
+  <button class="btnAncho" id="abArch">Elegir archivos (DICOM o ZIP)</button>
+  <button class="btnAncho sec" id="abCarp">Elegir una carpeta completa</button>
+  <p class="nota">Los archivos de un CD suelen estar en la carpeta DICOM o IMAGES y a veces no tienen extensión: eso es normal. El visor ignora lo que no sea imagen DICOM.</p>
+  <label><input type="checkbox" id="chAgregar"> Agregar al estudio abierto (no borrar lo anterior)</label>
+  <div class="fila"><button class="chico" data-cerrar>Cerrar</button></div>
+</div></div>
+
+<div class="modal" id="mTexto"><div class="caja">
+  <h3 id="mTextoTit">Nota</h3>
+  <textarea id="mTextoVal" rows="4" placeholder="Escriba lo que se observa…"></textarea>
+  <div class="fila"><button class="chico" data-cerrar>Cancelar</button><button class="chico" id="mTextoOk" style="background:var(--acento2)">Aceptar</button></div>
+</div></div>
+
+<div class="modal" id="mDatos"><div class="caja">
+  <h3>Datos del estudio</h3>
+  <div id="datosTabla"></div>
+  <div class="fila"><button class="chico" data-cerrar>Cerrar</button></div>
+</div></div>
+
+<div id="aviso"></div>
+<div id="progreso"><div id="progTxt">Cargando…</div><div class="barraP"><div id="progBar"></div></div></div>
+
+<script>
+'use strict';
+/* ====================== utilidades ====================== */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+let avisoT;
+function aviso(t, ms=2600){ const a=$('#aviso'); a.textContent=t; a.style.display='block'; clearTimeout(avisoT); avisoT=setTimeout(()=>a.style.display='none',ms); }
+function progreso(t, f){ const p=$('#progreso'); if(t===null){p.style.display='none';return;} p.style.display='flex'; $('#progTxt').textContent=t; $('#progBar').style.width=Math.round((f||0)*100)+'%'; }
+const espera = () => new Promise(r=>setTimeout(r,0));
+function fmt(n,d=1){ return (Math.round(n*10**d)/10**d).toFixed(d); }
+function limpiaNombre(s){ return (s||'').replace(/\^+/g,' ').trim(); }
+function nombreArchivo(s){ return (s||'estudio').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9._-]+/g,'_').replace(/_+/g,'_').slice(0,60) || 'estudio'; }
+function fechaDicom(d){ return d && d.length>=8 ? d.slice(6,8)+'/'+d.slice(4,6)+'/'+d.slice(0,4) : (d||''); }
+
+/* ====================== lector ZIP (con DecompressionStream) ====================== */
+async function leerZip(buf){
+  const dv=new DataView(buf), u8=new Uint8Array(buf), out=[];
+  let eocd=-1;
+  for(let i=buf.byteLength-22;i>=Math.max(0,buf.byteLength-70000);i--){ if(dv.getUint32(i,true)===0x06054b50){eocd=i;break;} }
+  if(eocd<0) throw new Error('ZIP dañado');
+  let n=dv.getUint16(eocd+10,true), p=dv.getUint32(eocd+16,true);
+  for(let k=0;k<n;k++){
+    if(dv.getUint32(p,true)!==0x02014b50) break;
+    const metodo=dv.getUint16(p+10,true), csize=dv.getUint32(p+20,true), nl=dv.getUint16(p+28,true), el=dv.getUint16(p+30,true), cl=dv.getUint16(p+32,true), off=dv.getUint32(p+42,true);
+    const nombre=new TextDecoder().decode(u8.subarray(p+46,p+46+nl));
+    p+=46+nl+el+cl;
+    if(nombre.endsWith('/')) continue;
+    const lnl=dv.getUint16(off+26,true), lel=dv.getUint16(off+28,true);
+    const datos=u8.subarray(off+30+lnl+lel, off+30+lnl+lel+csize);
+    out.push({nombre, metodo, datos});
+  }
+  return out;
+}
+async function descomprimir(e){
+  if(e.metodo===0) return e.datos.slice().buffer;
+  if(e.metodo!==8 || typeof DecompressionStream==='undefined') return null;
+  const s=new Blob([e.datos]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+  return await new Response(s).arrayBuffer();
+}
+
+/* ====================== escritor ZIP (sin compresión) ====================== */
+const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}return t;})();
+function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+async function crearZip(archivos){ // [{nombre, blob}]
+  const partes=[], central=[]; let off=0; const enc=new TextEncoder();
+  for(const a of archivos){
+    const d=new Uint8Array(await a.blob.arrayBuffer()), nb=enc.encode(a.nombre), crc=crc32(d);
+    const h=new DataView(new ArrayBuffer(30));
+    h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);
+    h.setUint32(14,crc,true);h.setUint32(18,d.length,true);h.setUint32(22,d.length,true);h.setUint16(26,nb.length,true);
+    partes.push(h.buffer,nb,d);
+    const c=new DataView(new ArrayBuffer(46));
+    c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);
+    c.setUint32(16,crc,true);c.setUint32(20,d.length,true);c.setUint32(24,d.length,true);c.setUint16(28,nb.length,true);c.setUint32(42,off,true);
+    central.push(c.buffer,nb);
+    off+=30+nb.length+d.length;
+  }
+  const tam=central.reduce((s,x)=>s+(x.byteLength||x.length),0);
+  const e=new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true);e.setUint16(8,archivos.length,true);e.setUint16(10,archivos.length,true);e.setUint32(12,tam,true);e.setUint32(16,off,true);
+  return new Blob([...partes,...central,e.buffer],{type:'application/zip'});
+}
+function descargar(blob, nombre){
+  const url=URL.createObjectURL(blob), a=document.createElement('a');
+  a.href=url; a.download=nombre; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+
+/* ====================== lector DICOM ====================== */
+const TS_IMPL='1.2.840.10008.1.2', TS_EXPL='1.2.840.10008.1.2.1', TS_BIG='1.2.840.10008.1.2.2';
+const VR_LARGO=new Set(['OB','OD','OF','OL','OW','SQ','UC','UR','UT','UN','OV','SV','UV']);
+const VR_IMPL={'00280010':'US','00280011':'US','00280100':'US','00280101':'US','00280102':'US','00280103':'US','00280002':'US','00280006':'US',
+ '00180050':'DS','00280030':'DS','00281050':'DS','00281051':'DS','00281052':'DS','00281053':'DS','00200032':'DS','00200037':'DS','00180088':'DS','00181164':'DS',
+ '00280008':'IS','00200013':'IS','00200011':'IS','00181063':'DS','00082144':'IS','00201041':'DS','7FE00010':'OW',
+ '0018602C':'FD','0018602E':'FD','00186024':'US','00186026':'US','00186018':'UL','0018601A':'UL','0018601C':'UL','0018601E':'UL','00186011':'SQ','00289110':'SQ','52009229':'SQ','52009230':'SQ','00209113':'SQ','00209116':'SQ','00289145':'SQ','00289132':'SQ'};
+function tagStr(g,e){ return (g.toString(16).padStart(4,'0')+e.toString(16).padStart(4,'0')).toUpperCase(); }
+
+function parseDicom(buf){
+  const dv=new DataView(buf), u8=new Uint8Array(buf);
+  let pos=0, tieneMeta=false;
+  if(buf.byteLength>132 && u8[128]===68&&u8[129]===73&&u8[130]===67&&u8[131]===77){ pos=132; tieneMeta=true; }
+  const ds={}; let ts=TS_IMPL;
+  // meta (explícito LE)
+  if(tieneMeta){
+    while(pos<buf.byteLength-8){
+      const g=dv.getUint16(pos,true); if(g!==2) break;
+      const r=leerElem(dv,u8,pos,false,true); ds[r.tag]=r; pos=r.fin;
+    }
+    if(ds['00020010']) ts=txt(u8,ds['00020010']).replace(/\0/g,'').trim();
+  } else {
+    // sin preámbulo: adivinar explícito/implícito
+    const vr=String.fromCharCode(u8[4],u8[5]);
+    ts=/^[A-Z]{2}$/.test(vr)?TS_EXPL:TS_IMPL;
+  }
+  const explicito=ts!==TS_IMPL, little=ts!==TS_BIG;
+  if(ts==='1.2.840.10008.1.2.1.99') throw new Error('Formato DICOM comprimido "deflate" no compatible');
+  leerDataset(dv,u8,pos,buf.byteLength,explicito,little,ds);
+  ds._ts=ts;
+  return ds;
+}
+function txt(u8,el){ let s=''; for(let i=el.off;i<el.off+el.len;i++) s+=String.fromCharCode(u8[i]); return s; }
+function leerDataset(dv,u8,pos,fin,expl,little,ds){
+  while(pos<fin-7){
+    const g=dv.getUint16(pos,little), e=dv.getUint16(pos+2,little);
+    if(g===0xFFFE){ // delimitador de item
+      if(e===0xE00D) return pos+8;
+      pos+=8; continue;
+    }
+    const r=leerElem(dv,u8,pos,!expl,little);
+    ds[r.tag]=r; pos=r.fin;
+    if(r.tag==='7FE00010') break;
+  }
+  return pos;
+}
+function leerElem(dv,u8,pos,impl,little){
+  const g=dv.getUint16(pos,little), e=dv.getUint16(pos+2,little), tag=tagStr(g,e);
+  let vr, len, p=pos+4;
+  if(impl && g!==2){ vr=VR_IMPL[tag]||'UN'; len=dv.getUint32(p,little); p+=4; if(len===0xFFFFFFFF && tag!=='7FE00010') vr='SQ'; }
+  else {
+    vr=String.fromCharCode(u8[p],u8[p+1]);
+    if(VR_LARGO.has(vr)){ len=dv.getUint32(p+4,little); p+=8; } else { len=dv.getUint16(p+2,little); p+=4; }
+  }
+  const el={tag,vr,off:p,len,little};
+  if(tag==='7FE00010' && len===0xFFFFFFFF){ // encapsulado
+    el.frag=[]; let q=p;
+    while(q<dv.byteLength-7){
+      const ig=dv.getUint16(q,true), ie=dv.getUint16(q+2,true), il=dv.getUint32(q+4,true);
+      if(ig===0xFFFE&&ie===0xE0DD){ q+=8; break; }
+      if(ig===0xFFFE&&ie===0xE000){ el.frag.push({off:q+8,len:il}); q+=8+il; } else break;
+    }
+    el.fin=q; el.len=0; return el;
+  }
+  if(vr==='SQ'){
+    el.items=[];
+    const finSq = len===0xFFFFFFFF ? dv.byteLength : p+len;
+    let q=p;
+    while(q<finSq-7){
+      const ig=dv.getUint16(q,little), ie=dv.getUint16(q+2,little), il=dv.getUint32(q+4,little);
+      if(ig===0xFFFE&&ie===0xE0DD){ q+=8; break; }
+      if(ig===0xFFFE&&ie===0xE000){
+        const item={}; q+=8;
+        if(il===0xFFFFFFFF) q=leerDataset(dv,u8,q,dv.byteLength,!impl,little,item);
+        else { leerDataset(dv,u8,q,q+il,!impl,little,item); q+=il; }
+        el.items.push(item);
+      } else break;
+    }
+    el.fin = len===0xFFFFFFFF ? q : p+len;
+    return el;
+  }
+  el.fin=p+len; return el;
+}
+// valores
+function vStr(ds,tag,u8){ const el=ds[tag]; if(!el||!el.len) return ''; return txt(u8,el).replace(/\0/g,'').trim(); }
+function vNums(ds,tag,u8){ const s=vStr(ds,tag,u8); return s? s.split('\\').map(parseFloat).filter(x=>!isNaN(x)) : []; }
+function vNum(ds,tag,u8,def){ const el=ds[tag]; if(!el||!el.len) return def;
+  const dv=new DataView(u8.buffer);
+  if(el.vr==='US') return dv.getUint16(el.off,el.little);
+  if(el.vr==='SS') return dv.getInt16(el.off,el.little);
+  if(el.vr==='UL') return dv.getUint32(el.off,el.little);
+  if(el.vr==='SL') return dv.getInt32(el.off,el.little);
+  if(el.vr==='FD') return dv.getFloat64(el.off,el.little);
+  if(el.vr==='FL') return dv.getFloat32(el.off,el.little);
+  if(el.vr==='UN' && el.len===2) return dv.getUint16(el.off,el.little);
+  const n=vNums(ds,tag,u8); return n.length?n[0]:def; }
+function buscaEnSq(ds,ruta){ // primer item de cada secuencia
+  let cur=ds; for(const t of ruta){ const el=cur&&cur[t]; if(!el||!el.items||!el.items.length) return null; cur=el.items[0]; } return cur; }
+
+/* ====================== decodificadores ====================== */
+// RLE DICOM
+function decodRLE(u8, frag, filas, cols, bytesPix, muestras){
+  const dv=new DataView(u8.buffer,u8.byteOffset+frag.off,frag.len);
+  const nseg=dv.getUint32(0,true), n=filas*cols, out=new Uint8Array(n*bytesPix*muestras);
+  for(let s=0;s<nseg;s++){
+    const ini=dv.getUint32(4+4*s,true), fin=s+1<nseg?dv.getUint32(8+4*s,true):frag.len;
+    const seg=new Uint8Array(u8.buffer,u8.byteOffset+frag.off+ini,fin-ini);
+    const tmp=new Uint8Array(n); let i=0,o=0;
+    while(i<seg.length&&o<n){ let c=seg[i++]; if(c>127)c-=256;
+      if(c>=0){ for(let k=0;k<=c&&o<n;k++) tmp[o++]=seg[i++]; }
+      else if(c>-128){ const v=seg[i++]; for(let k=0;k<1-c&&o<n;k++) tmp[o++]=v; } }
+    // reordenar: segmentos = byte alto primero
+    if(muestras===1){ const b=bytesPix-1-s; for(let k=0;k<n;k++) out[k*bytesPix+b]=tmp[k]; }
+    else { for(let k=0;k<n;k++) out[k*3+s]=tmp[k]; }
+  }
+  return out;
+}
+// JPEG sin pérdida (proceso 14, SOF3), 1 componente
+function decodJpegLossless(bytes){
+  let p=0; const tablas={}; let prec=16,alto=0,ancho=0,ncomp=1,pred=1,pt=0,tablaComp=0, ri=0;
+  const r16=()=>{const v=(bytes[p]<<8)|bytes[p+1];p+=2;return v;};
+  while(p<bytes.length){
+    if(bytes[p]!==0xFF){p++;continue;}
+    const m=bytes[p+1]; p+=2;
+    if(m===0xD8||m===0x01||(m>=0xD0&&m<=0xD7)) continue;
+    const L=r16(), fin=p+L-2;
+    if(m===0xC4){ while(p<fin){ const tc=bytes[p++], id=tc&15; const cnt=bytes.subarray(p,p+16); p+=16; let tot=0; for(const c of cnt) tot+=c;
+        const vals=bytes.subarray(p,p+tot); p+=tot;
+        // tabla canónica
+        const mapa=new Map(); let cod=0,k=0;
+        for(let l=1;l<=16;l++){ for(let j=0;j<cnt[l-1];j++){ mapa.set((l<<16)|cod, vals[k++]); cod++; } cod<<=1; }
+        tablas[id]=mapa; } }
+    else if(m===0xC3){ prec=bytes[p]; alto=(bytes[p+1]<<8)|bytes[p+2]; ancho=(bytes[p+3]<<8)|bytes[p+4]; ncomp=bytes[p+5]; p=fin; }
+    else if(m===0xDD){ ri=r16(); p=fin; }
+    else if(m===0xDA){ const ns=bytes[p]; tablaComp=bytes[p+2]>>4; pred=bytes[p+1+ns*2]; pt=bytes[p+3+ns*2]&15; p=fin;
+      if(ns!==1||ncomp!==1) throw new Error('JPEG sin pérdida multicomponente no compatible');
+      // datos de escaneo
+      const tabla=tablas[tablaComp], out=new Uint16Array(ancho*alto);
+      let bitBuf=0,bitCnt=0;
+      const bit=()=>{ if(bitCnt===0){ let b=bytes[p++]; if(b===0xFF){ const b2=bytes[p]; if(b2===0) p++; else if(b2>=0xD0&&b2<=0xD7){ /* reinicio */ } } bitBuf=b; bitCnt=8; } bitCnt--; return (bitBuf>>bitCnt)&1; };
+      const decod=()=>{ let cod=0; for(let l=1;l<=16;l++){ cod=(cod<<1)|bit(); const v=tabla.get((l<<16)|cod); if(v!==undefined) return v; } throw new Error('Huffman inválido'); };
+      const recibir=(s)=>{ if(s===0) return 0; if(s===16) return 32768; let v=0; for(let i=0;i<s;i++) v=(v<<1)|bit(); if(v<(1<<(s-1))) v-= (1<<s)-1; return v; };
+      const base=1<<(prec-pt-1), mask=(1<<prec)-1;
+      let cuenta=0, filaIni=0, colIni=0;
+      for(let y=0;y<alto;y++){
+        for(let x=0;x<ancho;x++){
+          if(ri && cuenta===ri){ // marcador de reinicio: se reinicia la predicción
+            bitCnt=0; while(p<bytes.length-1 && !(bytes[p]===0xFF && bytes[p+1]>=0xD0 && bytes[p+1]<=0xD7)) p++; p+=2; cuenta=0; filaIni=y; colIni=x; }
+          const i=y*ancho+x; let px;
+          if(y===filaIni && x===colIni) px=base;
+          else if(y===filaIni) px=out[i-1];
+          else if(x===0) px=out[i-ancho];
+          else { const a=out[i-1], b=out[i-ancho], c=out[i-ancho-1];
+            switch(pred){ case 1:px=a;break; case 2:px=b;break; case 3:px=c;break; case 4:px=a+b-c;break; case 5:px=a+((b-c)>>1);break; case 6:px=b+((a-c)>>1);break; case 7:px=(a+b)>>1;break; default:px=a; } }
+          const s=decod(); out[i]=(px+recibir(s))&mask; cuenta++;
+        }
+      }
+      if(pt) for(let i=0;i<out.length;i++) out[i]<<=pt;
+      return {datos:out, ancho, alto, prec};
+    }
+    else p=fin;
+  }
+  throw new Error('JPEG sin pérdida inválido');
+}
+async function decodJpegNavegador(bytes){
+  const bmp=await createImageBitmap(new Blob([bytes],{type:'image/jpeg'}));
+  const c=document.createElement('canvas'); c.width=bmp.width; c.height=bmp.height;
+  const x=c.getContext('2d',{willReadFrequently:true}); x.drawImage(bmp,0,0);
+  return x.getImageData(0,0,c.width,c.height).data;
+}
+
+/* ====================== modelo: imágenes y series ====================== */
+let series=[]; // {id, desc, num, modalidad, imgs:[img], paciente, ...}
+function crearImagenes(ds,u8,archivo){
+  const pix=ds['7FE00010']; if(!pix) return [];
+  const g=t=>vStr(ds,t,u8);
+  const filas=vNum(ds,'00280010',u8,0), cols=vNum(ds,'00280011',u8,0); if(!filas||!cols) return [];
+  const nf=Math.max(1,vNum(ds,'00280008',u8,1)|0);
+  let ps=vNums(ds,'00280030',u8);
+  if(!ps.length){ const fg=buscaEnSq(ds,['52009229','00289110']); if(fg) ps=vNums(fg,'00280030',u8); }
+  if(!ps.length) ps=vNums(ds,'00181164',u8);
+  let calibrado=ps.length>=2;
+  let sy=ps[0]||1, sx=ps[1]||ps[0]||1;
+  // ultrasonido: regiones calibradas
+  const reg=ds['00186011'];
+  if(!calibrado && reg && reg.items && reg.items.length){
+    for(const it of reg.items){ const ux=vNum(it,'00186024',u8,0), dx=vNum(it,'0018602C',u8,0), dy=vNum(it,'0018602E',u8,0);
+      if(ux===3 && dx>0){ sx=dx*10; sy=(dy||dx)*10; calibrado=true; break; } }
+  }
+  let ipp=vNums(ds,'00200032',u8), iop=vNums(ds,'00200037',u8);
+  if(ipp.length<3){ const fg=buscaEnSq(ds,['52009230','00209113']); if(fg) ipp=vNums(fg,'00200032',u8); }
+  if(iop.length<6){ const fg=buscaEnSq(ds,['52009229','00209116'])||buscaEnSq(ds,['52009230','00209116']); if(fg) iop=vNums(fg,'00200037',u8); }
+  let pend=vNum(ds,'00281053',u8,NaN), inter=vNum(ds,'00281052',u8,NaN);
+  if(isNaN(pend)){ const fg=buscaEnSq(ds,['52009229','00289145'])||buscaEnSq(ds,['52009230','00289145']); if(fg){ pend=vNum(fg,'00281053',u8,1); inter=vNum(fg,'00281052',u8,0);} }
+  if(isNaN(pend)) pend=1; if(isNaN(inter)) inter=0;
+  let wc=vNums(ds,'00281050',u8), ww=vNums(ds,'00281051',u8);
+  if(!wc.length){ const fg=buscaEnSq(ds,['52009229','00289132'])||buscaEnSq(ds,['52009230','00289132']); if(fg){ wc=vNums(fg,'00281050',u8); ww=vNums(fg,'00281051',u8);} }
+  const info={
+    u8, ds, archivo, ts:ds._ts, filas, cols, nf,
+    bitsAsig:vNum(ds,'00280100',u8,16), bitsAlm:vNum(ds,'00280101',u8,16), signo:vNum(ds,'00280103',u8,0),
+    muestras:vNum(ds,'00280002',u8,1), foto:g('00280004')||'MONOCHROME2', planar:vNum(ds,'00280006',u8,0),
+    pend, inter, wc:wc[0], ww:ww[0], sx, sy, calibrado, ipp:ipp.length>=3?ipp:null, iop:iop.length>=6?iop:null,
+    grosor:parseFloat(g('00180050'))||0, inst:parseInt(g('00200013'))||0, loc:g('00201041'),
+    modalidad:g('00080060'), serieUID:g('0020000E')||'sin-serie', serieNum:parseInt(g('00200011'))||0, serieDesc:g('0008103E'),
+    estudioDesc:g('00081030'), paciente:limpiaNombre(g('00100010')), pid:g('00100020'), sexo:g('00100040'), edad:g('00101010'),
+    nac:g('00100030'), fecha:g('00080020'), hora:g('00080030'), institucion:g('00080080'), equipo:g('00081090')||g('00080070'), estudioUID:g('0020000D'),
+    tiempoCuadro:vNum(ds,'00181063',u8,0), fpsRec:vNum(ds,'00082144',u8,0), pix
+  };
+  const r=[]; for(let f=0;f<nf;f++) r.push({info, frame:f, key:archivo+'#'+f});
+  return r;
+}
+// decodifica un cuadro → {w,h,v:Float32Array|Int16Array (valores reales), rgb:Uint8ClampedArray}
+const cacheDec=new Map(); const ORDEN_CACHE=[]; const MAX_CACHE=400;
+async function decodificar(img){
+  if(img.dec) return img.dec;
+  if(img.decP) return img.decP;
+  img.decP=(async()=>{
+    const I=img.info, u8=I.u8, n=I.filas*I.cols, f=img.frame, ts=I.ts;
+    const rgb = I.muestras===3 || /RGB|YBR|PALETTE/.test(I.foto);
+    let res;
+    const bpp=I.bitsAsig>8?2:1;
+    if(!I.pix.frag){
+      if(rgb && I.muestras===3){
+        const tam=n*3, ini=I.pix.off+f*tam, src=u8.subarray(ini,ini+tam), out=new Uint8ClampedArray(n*4);
+        for(let i=0;i<n;i++){ let r,g,b; if(I.planar){r=src[i];g=src[i+n];b=src[i+2*n];} else {r=src[i*3];g=src[i*3+1];b=src[i*3+2];}
+          if(I.foto==='YBR_FULL'){ const y=r,cb=g-128,cr=b-128; r=y+1.402*cr; g=y-0.344136*cb-0.714136*cr; b=y+1.772*cb; }
+          out[i*4]=r;out[i*4+1]=g;out[i*4+2]=b;out[i*4+3]=255; }
+        res={rgb:out};
+      } else {
+        const tam=n*bpp, ini=I.pix.off+f*tam;
+        res={crudo:leerCrudo(u8,ini,n,bpp,I)};
+      }
+    } else {
+      const frs=fragmentosCuadro(I,f), bytes=frs;
+      if(ts==='1.2.840.10008.1.2.5'){
+        const dec=decodRLE(bytes,{off:0,len:bytes.length},I.filas,I.cols,bpp,I.muestras);
+        if(I.muestras===3){ const out=new Uint8ClampedArray(n*4); for(let i=0;i<n;i++){out[i*4]=dec[i*3];out[i*4+1]=dec[i*3+1];out[i*4+2]=dec[i*3+2];out[i*4+3]=255;} res={rgb:out}; }
+        else { // dec en little endian
+          res={crudo:leerCrudo(dec,0,n,bpp,I,true)}; }
+      } else if(ts==='1.2.840.10008.1.2.4.57'||ts==='1.2.840.10008.1.2.4.70'){
+        const j=decodJpegLossless(bytes); res={crudo:ajustarSigno(j.datos,I)};
+      } else if(ts==='1.2.840.10008.1.2.4.50'||ts==='1.2.840.10008.1.2.4.51'){
+        const d=await decodJpegNavegador(bytes);
+        if(rgb) res={rgb:new Uint8ClampedArray(d.buffer)};
+        else { const c=new Uint8Array(n); for(let i=0;i<n;i++) c[i]=d[i*4]; res={crudo:c}; }
+      } else {
+        throw new Error('Compresión no compatible ('+nombreTS(ts)+'). Exporte el estudio sin compresión o en JPEG.');
+      }
+    }
+    if(res.crudo){
+      const c=res.crudo, v=new Float32Array(n), m=I.pend, b=I.inter; let mn=Infinity,mx=-Infinity;
+      for(let i=0;i<n;i++){ const x=c[i]*m+b; v[i]=x; if(x<mn)mn=x; if(x>mx)mx=x; }
+      if(I.foto==='MONOCHROME1') res.mono1=true;
+      res.v=v; res.min=mn; res.max=mx; delete res.crudo;
+    }
+    res.w=I.cols; res.h=I.filas;
+    img.dec=res; delete img.decP;
+    ORDEN_CACHE.push(img); if(ORDEN_CACHE.length>MAX_CACHE){ const viejo=ORDEN_CACHE.shift(); if(!viejo.fijo) delete viejo.dec; }
+    return res;
+  })();
+  try{ return await img.decP; } catch(e){ delete img.decP; throw e; }
+}
+function nombreTS(ts){ return ({'1.2.840.10008.1.2.4.90':'JPEG 2000 sin pérdida','1.2.840.10008.1.2.4.91':'JPEG 2000','1.2.840.10008.1.2.4.80':'JPEG-LS','1.2.840.10008.1.2.4.81':'JPEG-LS','1.2.840.10008.1.2.4.100':'MPEG2 video','1.2.840.10008.1.2.4.102':'MPEG4 video','1.2.840.10008.1.2.4.103':'MPEG4 video'})[ts]||ts; }
+function fragmentosCuadro(I,f){
+  const fr=I.pix.frag, u8=I.u8; const bot=fr[0], datos=fr.slice(1);
+  let partes;
+  if(I.nf===1) partes=datos;
+  else if(datos.length===I.nf) partes=[datos[f]];
+  else if(bot.len>=4*I.nf){
+    const dv=new DataView(u8.buffer,bot.off,bot.len); const ofs=[]; for(let k=0;k<I.nf;k++) ofs.push(dv.getUint32(4*k,true));
+    const ini=ofs[f], fin=f+1<I.nf?ofs[f+1]:Infinity; partes=[]; let acc=0;
+    for(const d of datos){ if(acc>=ini && acc<fin) partes.push(d); acc+=d.len+8; }
+  } else partes=[datos[f]||datos[0]];
+  let tot=0; for(const d of partes) tot+=d.len; const out=new Uint8Array(tot); let o=0;
+  for(const d of partes){ out.set(u8.subarray(d.off,d.off+d.len),o); o+=d.len; }
+  return out;
+}
+function leerCrudo(u8,ini,n,bpp,I,forzarLE){
+  if(bpp===1) return u8.subarray(ini,ini+n);
+  const little=forzarLE?true:I.pix.little!==false;
+  const dv=new DataView(u8.buffer,u8.byteOffset+ini,n*2), out=I.signo?new Int16Array(n):new Uint16Array(n);
+  const bs=I.bitsAlm||16;
+  if(I.signo){ for(let i=0;i<n;i++){ let x=dv.getUint16(i*2,little); if(bs<16){ x&=(1<<bs)-1; if(x&(1<<(bs-1))) x-=1<<bs; out[i]=x;} else out[i]=dv.getInt16(i*2,little);} }
+  else { const mk=bs<16?(1<<bs)-1:0xFFFF; for(let i=0;i<n;i++) out[i]=dv.getUint16(i*2,little)&mk; }
+  return out;
+}
+function ajustarSigno(d,I){ if(!I.signo) return d; const bs=I.bitsAlm||16, out=new Int16Array(d.length); for(let i=0;i<d.length;i++){ let x=d[i]; if(x&(1<<(bs-1))) x-=1<<bs; out[i]=x;} return out; }
+
+/* ====================== carga de archivos ====================== */
+async function cargarArchivos(lista, agregar){
+  const pendientes=[];
+  for(const f of lista) pendientes.push({nombre:f.webkitRelativePath||f.name, file:f});
+  if(!agregar){ series=[]; marcadas.length=0; anotaciones.clear(); pintarMarcadas(); }
+  const mapa=new Map(series.map(s=>[s.id,s]));
+  let ok=0, errores=0, ultimoError='';
+  const todos=[];
+  // expandir ZIP
+  for(let i=0;i<pendientes.length;i++){
+    const p=pendientes[i];
+    progreso('Leyendo '+(i+1)+' de '+pendientes.length, i/pendientes.length);
+    let buf; try{ buf=await p.file.arrayBuffer(); }catch(e){ errores++; continue; }
+    const u=new Uint8Array(buf,0,Math.min(4,buf.byteLength));
+    if(u[0]===0x50&&u[1]===0x4B&&u[2]===3&&u[3]===4){
+      try{ const ent=await leerZip(buf);
+        for(let k=0;k<ent.length;k++){ progreso('Descomprimiendo '+ent[k].nombre.slice(-30), k/ent.length); const b=await descomprimir(ent[k]); if(b) todos.push({nombre:ent[k].nombre,buf:b}); if(k%20===0) await espera(); }
+      }catch(e){ errores++; ultimoError='ZIP: '+e.message; }
+    } else todos.push({nombre:p.nombre,buf});
+    if(i%25===0) await espera();
+  }
+  for(let i=0;i<todos.length;i++){
+    if(i%20===0){ progreso('Analizando imágenes '+(i+1)+' de '+todos.length, i/todos.length); await espera(); }
+    const t=todos[i];
+    try{
+      const ds=parseDicom(t.buf), u8=new Uint8Array(t.buf);
+      const imgs=crearImagenes(ds,u8,t.nombre+'_'+i);
+      if(!imgs.length) continue;
+      const I=imgs[0].info, id=I.serieUID+'|'+(I.nf>1?I.archivo:'')+'|'+I.filas+'x'+I.cols;
+      let s=mapa.get(id);
+      if(!s){ s={id, num:I.serieNum, desc:I.serieDesc||I.estudioDesc||I.modalidad, modalidad:I.modalidad, imgs:[], info:I, elegida:false}; mapa.set(id,s); series.push(s); }
+      s.imgs.push(...imgs); ok++;
+    }catch(e){ errores++; ultimoError=e.message; }
+  }
+  progreso(null);
+  for(const s of series) ordenarSerie(s);
+  series.sort((a,b)=>(a.info.estudioUID>b.info.estudioUID?1:a.info.estudioUID<b.info.estudioUID?-1:0)||a.num-b.num);
+  pintarSeries();
+  if(!series.length){ aviso(errores?'No se pudo leer ningún DICOM. '+ultimoError:'No se encontraron imágenes DICOM en lo elegido.',5000); return; }
+  aviso(ok+' archivos cargados en '+series.length+' series'+(errores?' ('+errores+' no se pudieron leer)':''),3500);
+  if(!agregar || !vps.some(v=>v.serie)){ cambiarLayout($('#sLayout').value==='mpr'?'1':$('#sLayout').value, true); vps.forEach((v,i)=>{ const s=series[Math.min(i,series.length-1)]; asignarSerie(v,s); }); }
+}
+function ordenarSerie(s){
+  const I=s.imgs[0].info;
+  if(I.nf>1 && s.imgs.every(m=>m.info===I)) return;
+  let normal=null;
+  if(I.iop){ const r=I.iop.slice(0,3), c=I.iop.slice(3,6); normal=[r[1]*c[2]-r[2]*c[1], r[2]*c[0]-r[0]*c[2], r[0]*c[1]-r[1]*c[0]]; }
+  for(const m of s.imgs){ m.pos = (normal&&m.info.ipp)? m.info.ipp[0]*normal[0]+m.info.ipp[1]*normal[1]+m.info.ipp[2]*normal[2] : null; }
+  const conPos=s.imgs.every(m=>m.pos!==null) && new Set(s.imgs.map(m=>fmt(m.pos,2))).size>1;
+  if(conPos){
+    s.imgs.sort((a,b)=>b.pos-a.pos || a.info.inst-b.info.inst);
+    // si normal apunta a pies, invertir para que el primero sea craneal en axiales
+  } else s.imgs.sort((a,b)=>a.info.inst-b.info.inst || a.frame-b.frame);
+  s.normal=normal; s.conPos=conPos;
+}
+
+/* ====================== visores ====================== */
+const vps=[]; let vpAct=null; let herramienta='wl';
+const anotaciones=new Map(); // clave imagen → [anot]
+const marcadas=[];
+let mpr=null; // {serie, vol, dims, esp, punto:[i,j,k]}
+let idAnot=1;
+
+function crearVisor(){
+  const el=document.createElement('div'); el.className='vp';
+  const cv=document.createElement('canvas'); el.appendChild(cv);
+  const vac=document.createElement('div'); vac.className='vacio'; vac.textContent='Toque una serie del panel para verla aquí'; el.appendChild(vac);
+  const v={el, cv, ctx:cv.getContext('2d'), vac, serie:null, idx:0, ww:400, wc:40, zoom:1, panX:0, panY:0, rot:0, flipH:false, invert:false, plano:null, img:null, dec:null, mapa:null, wlOk:false};
+  el.addEventListener('pointerdown',ev=>activar(v));
+  configurarPuntero(v);
+  return v;
+}
+function activar(v){ if(vpAct===v) return; vpAct=v; vps.forEach(x=>x.el.classList.toggle('act',x===v)); actualizarPie(); pintarSeries(); pintarMedidas(); }
+function cambiarLayout(val, sinAsignar){
+  const zona=$('#zona'); detenerCine();
+  const n = val==='mpr'?3:parseInt(val);
+  const previas=vps.map(v=>v.serie);
+  zona.innerHTML=''; vps.length=0;
+  if(val==='mpr'){ zona.style.gridTemplateColumns='2fr 1fr'; zona.style.gridTemplateRows='1fr 1fr'; }
+  else if(n===1){ zona.style.gridTemplateColumns='1fr'; zona.style.gridTemplateRows='1fr'; }
+  else if(n===2){ const vertical=zona.clientHeight>zona.clientWidth; zona.style.gridTemplateColumns=vertical?'1fr':'1fr 1fr'; zona.style.gridTemplateRows=vertical?'1fr 1fr':'1fr'; }
+  else { zona.style.gridTemplateColumns='1fr 1fr'; zona.style.gridTemplateRows='1fr 1fr'; }
+  for(let i=0;i<n;i++){ const v=crearVisor(); vps.push(v); zona.appendChild(v.el); }
+  if(val==='mpr'){ vps[0].el.style.gridRow='1 / span 2'; }
+  vpAct=null; activar(vps[0]);
+  requestAnimationFrame(()=>{ redimensionar();
+    if(val==='mpr') return iniciarMPR(previas.find(Boolean));
+    mpr=null;
+    if(!sinAsignar) vps.forEach((v,i)=>{ const s=previas[i]||series[i]; if(s) asignarSerie(v,s); });
+  });
+}
+function redimensionar(){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  for(const v of vps){ const r=v.el.getBoundingClientRect(); v.cv.width=Math.max(1,Math.round(r.width*dpr)); v.cv.height=Math.max(1,Math.round(r.height*dpr)); v.dpr=dpr; dibujar(v); }
+}
+window.addEventListener('resize',()=>{ clearTimeout(window._rz); window._rz=setTimeout(redimensionar,120); });
+
+async function asignarSerie(v,s,idx){
+  v.serie=s; v.plano=null; v.wlOk=false; v.zoom=1; v.panX=v.panY=0; v.rot=0; v.flipH=false; v.invert=false;
+  v.idx = idx!==undefined? idx : Math.floor((s.imgs.length-1)/2) * (s.info.nf>1?0:1);
+  if(s.info.nf>1) v.idx=0;
+  v.vac.style.display='none';
+  await cargarImagen(v);
+  actualizarPie(); pintarSeries(); pintarMedidas();
+}
+function totalImgs(v){ if(v.plano) return mpr? mpr.dims[{ax:2,co:1,sa:0}[v.plano]] : 0; return v.serie? v.serie.imgs.length : 0; }
+async function cargarImagen(v){
+  if(!v.serie) return;
+  const tok=(v._tok=(v._tok||0)+1);
+  try{
+    let d, clave, img=null;
+    if(v.plano){ d=extraerPlano(v.plano, v.idx); clave=mprClave(v); }
+    else { img=v.serie.imgs[v.idx]; d=await decodificar(img); clave=img.key; }
+    if(tok!==v._tok) return;
+    v.dec=d; v.img=img; v.clave=clave;
+    if(!v.wlOk){ ventanaInicial(v,d); v.wlOk=true; }
+    dibujar(v); actualizarPie();
+    // precarga vecinas
+    if(!v.plano){ for(const k of [v.idx+1,v.idx-1,v.idx+2]){ const m=v.serie.imgs[k]; if(m && !m.dec) decodificar(m).catch(()=>{}); } }
+  }catch(e){ v.dec=null; dibujar(v); aviso(e.message,6000); }
+}
+function ventanaInicial(v,d){
+  if(d.rgb){ v.ww=255; v.wc=127.5; return; }
+  const I=v.serie.info;
+  if(I.ww>0 && !isNaN(I.wc)){ v.ww=I.ww; v.wc=I.wc; }
+  else { v.ww=Math.max(1,d.max-d.min); v.wc=(d.max+d.min)/2; }
+}
+// lienzo intermedio por visor
+function renderBase(v){
+  const d=v.dec; if(!d) return null;
+  if(!v.base || v.base.width!==d.w || v.base.height!==d.h){ v.base=document.createElement('canvas'); v.base.width=d.w; v.base.height=d.h; v.bctx=v.base.getContext('2d'); v.bimg=v.bctx.createImageData(d.w,d.h); }
+  const out=v.bimg.data, n=d.w*d.h;
+  if(d.rgb){
+    const lo=v.wc-v.ww/2, k=255/v.ww;
+    for(let i=0;i<n*4;i+=4){ for(let c=0;c<3;c++){ let x=(d.rgb[i+c]-lo)*k; x=x<0?0:x>255?255:x; out[i+c]=v.invert?255-x:x; } out[i+3]=255; }
+  } else {
+    const lo=v.wc-v.ww/2, k=255/Math.max(1e-6,v.ww), inv=(!!d.mono1)!==v.invert, val=d.v;
+    for(let i=0,j=0;i<n;i++,j+=4){ let x=(val[i]-lo)*k; x=x<0?0:x>255?255:x; if(inv)x=255-x; out[j]=out[j+1]=out[j+2]=x; out[j+3]=255; }
+  }
+  v.bctx.putImageData(v.bimg,0,0);
+  return v.base;
+}
+function espaciado(v){ // mm por pixel {sx,sy}
+  if(v.plano){ const e=mpr.esp; return v.plano==='ax'?{sx:e[0],sy:e[1]}: v.plano==='co'?{sx:e[0],sy:e[2]}:{sx:e[1],sy:e[2]}; }
+  const I=v.img?v.img.info:v.serie.info; return {sx:I.sx||1, sy:I.sy||1};
+}
+function matriz(v){
+  const d=v.dec, cw=v.cv.width, ch=v.cv.height, {sx,sy}=espaciado(v);
+  const wmm=d.w*sx, hmm=d.h*sy, rotado=v.rot%180!==0;
+  const ajuste=Math.min(cw/(rotado?hmm:wmm), ch/(rotado?wmm:hmm))*0.96;
+  const s=ajuste*v.zoom;
+  return new DOMMatrix().translate(cw/2+v.panX*v.dpr, ch/2+v.panY*v.dpr).scale(s,s).rotate(v.rot).scale(v.flipH?-1:1,1).scale(sx,sy).translate(-d.w/2,-d.h/2);
+}
+function aPantalla(m,x,y){ const p=m.transformPoint(new DOMPoint(x,y)); return [p.x,p.y]; }
+function aImagen(v,cx,cy){ const r=v.cv.getBoundingClientRect(); const p=matriz(v).inverse().transformPoint(new DOMPoint((cx-r.left)*v.dpr,(cy-r.top)*v.dpr)); return [p.x,p.y]; }
+
+function dibujar(v, opciones={}){
+  const c=v.ctx, cw=v.cv.width, ch=v.cv.height;
+  c.setTransform(1,0,0,1,0,0); c.fillStyle='#000'; c.fillRect(0,0,cw,ch);
+  if(!v.dec){ if(v.serie){ c.fillStyle='#8fa1b5'; c.font=(14*(v.dpr||1))+'px Arial'; c.fillText('No se pudo mostrar esta imagen',12,30);} return; }
+  const base=renderBase(v), m=matriz(v);
+  c.setTransform(m); c.imageSmoothingEnabled=v.zoom<4; c.imageSmoothingQuality='high';
+  c.drawImage(base,0,0);
+  c.setTransform(1,0,0,1,0,0);
+  if(mpr && v.plano) dibujarCruz(v,m);
+  dibujarAnotaciones(v,m);
+  if(!opciones.sinTexto && textoVisible) dibujarTexto(v);
+}
+let textoVisible=true;
+function dibujarTexto(v){
+  const c=v.ctx, k=v.dpr||1, cw=v.cv.width, ch=v.cv.height, I=(v.img||v.serie.imgs[0]).info;
+  const fs=Math.round(Math.max(11,Math.min(14,cw/k/45))*k); c.font=fs+'px Arial'; c.textBaseline='top';
+  const lh=fs*1.25, sombra=(t,x,y,al)=>{ c.textAlign=al; c.fillStyle='rgba(0,0,0,.8)'; c.fillText(t,x+1,y+1); c.fillStyle='#f2f5f8'; c.fillText(t,x,y); };
+  const tl=[I.paciente, (I.pid?'ID '+I.pid+'  ':'')+(I.sexo||'')+(I.edad?' '+I.edad:''), fechaDicom(I.fecha), I.institucion].filter(Boolean);
+  tl.forEach((t,i)=>sombra(t,8*k,6*k+i*lh,'left'));
+  const nombrePlano={ax:planoNombre('ax'),co:planoNombre('co'),sa:planoNombre('sa')};
+  const tr=[ (v.plano?'MPR '+nombrePlano[v.plano]+(mprGrosor().mm?' · '+mprGrosor().modo+' '+mprGrosor().mm+' mm':''):'Serie '+(v.serie.num||'')+' '+(v.serie.desc||'')).trim(), I.modalidad+(I.equipo?' · '+I.equipo:'') ].filter(Boolean);
+  tr.forEach((t,i)=>sombra(t.slice(0,48),cw-8*k,6*k+i*lh,'right'));
+  const tot=totalImgs(v);
+  const bl=['Img '+(v.idx+1)+' / '+tot];
+  if(!v.plano && I.grosor) bl.push('Grosor '+fmt(I.grosor,1)+' mm'+(v.img && v.img.pos!=null?'  Pos '+fmt(v.img.pos,1):''));
+  bl.push('V '+Math.round(v.ww)+'  N '+Math.round(v.wc)+'   Zoom '+fmt(v.zoom*100,0)+'%');
+  bl.forEach((t,i)=>sombra(t,8*k,ch-6*k-(bl.length-i)*lh,'left'));
+  // escala
+  const {sx}=espaciado(v), m=matriz(v), esc=Math.hypot(m.a,m.b)/sx; // px pantalla por pixel imagen / mm
+  const pxmm=Math.hypot(m.a,m.b)*1/sx*sx/sx; void pxmm;
+  const pxPorMm=Math.hypot(m.a,m.b)/1; // m incluye sx -> por pixel; por mm:
+  const ppmm=Math.hypot(m.a,m.b)/sx;
+  if(I.calibrado||v.plano){
+    let mm=[1,2,5,10,20,50,100,200].find(x=>x*ppmm>cw*0.12)||10; const L=mm*ppmm;
+    c.strokeStyle='#f2f5f8'; c.lineWidth=k*1.5; const x0=cw-12*k-L, y0=ch-10*k;
+    c.beginPath(); c.moveTo(x0,y0-5*k); c.lineTo(x0,y0); c.lineTo(x0+L,y0); c.lineTo(x0+L,y0-5*k); c.stroke();
+    sombra((mm>=10?mm/10+' cm':mm+' mm'),x0+L,y0-8*k-fs,'right');
+  } else sombra('Sin calibración: medidas en píxeles',cw-8*k,ch-6*k-lh,'right');
+  void esc; void pxPorMm;
+  // orientación
+  const ori=orientaciones(v);
+  if(ori){ c.font='bold '+Math.round(fs*1.1)+'px Arial';
+    c.textBaseline='middle';
+    sombra(ori.izq,8*k,ch/2,'left'); sombra(ori.der,cw-8*k,ch/2,'right');
+    c.textBaseline='top'; sombra(ori.arr,cw/2,6*k,'center');
+    c.textBaseline='bottom'; sombra(ori.abj,cw/2,ch-6*k,'center'); }
+  if(marcadas.some(x=>x.clave===v.clave)){ c.textBaseline='top'; c.font='bold '+(fs*1.4)+'px Arial'; sombra('★',cw/2+fs*2,6*k,'left'); }
+}
+function letra(vec){
+  const L=[['L','R'],['P','A'],['S','I']]; // +x izquierda paciente, +y posterior, +z superior
+  const ord=[0,1,2].sort((a,b)=>Math.abs(vec[b])-Math.abs(vec[a]));
+  let s=''; for(const i of ord){ if(Math.abs(vec[i])>0.25) s+=vec[i]>0?L[i][0]:L[i][1]; } return s;
+}
+function orientaciones(v){
+  const I=v.serie.info; if(!I.iop) return null;
+  let row=I.iop.slice(0,3), col=I.iop.slice(3,6);
+  if(v.plano){ const n=v.serie.normal, ab=n.map(x=>-x); // índice k crece hacia -normal (ordenado descendente)
+    if(v.plano==='co'){ col=ab; } else if(v.plano==='sa'){ row=I.iop.slice(3,6); col=ab; } }
+  // aplicar rotación/volteo de pantalla: derecha de pantalla = dirección imagen transformada
+  const m=new DOMMatrix().rotate(v.rot).scale(v.flipH?-1:1,1).inverse();
+  const dir=(px,py)=>{ const p=m.transformPoint(new DOMPoint(px,py)); const q=m.transformPoint(new DOMPoint(0,0)); const dx=p.x-q.x, dy=p.y-q.y; return [0,1,2].map(i=>row[i]*dx+col[i]*dy); };
+  const neg=a=>a.map(x=>-x);
+  const der=dir(1,0), abj=dir(0,1);
+  return {der:letra(der), izq:letra(neg(der)), abj:letra(abj), arr:letra(neg(abj))};
+}
+
+/* ====================== anotaciones ====================== */
+function listaAnot(clave){ if(!anotaciones.has(clave)) anotaciones.set(clave,[]); return anotaciones.get(clave); }
+function dibujarAnotaciones(v,m){
+  const arr=anotaciones.get(v.clave); if(!arr||!arr.length) { if(v.temp) dibujarUna(v,m,v.temp); return; }
+  for(const a of arr) dibujarUna(v,m,a);
+  if(v.temp) dibujarUna(v,m,v.temp);
+}
+function dibujarUna(v,m,a){
+  const c=v.ctx, k=v.dpr||1, P=a.pts.map(p=>aPantalla(m,p[0],p[1]));
+  const color=a.sel?'#4fd6e8':'#ffd34d';
+  c.lineWidth=2*k; c.strokeStyle=color; c.fillStyle=color;
+  c.save(); c.shadowColor='rgba(0,0,0,.9)'; c.shadowBlur=3*k;
+  c.beginPath();
+  if(a.tipo==='dist'||a.tipo==='texto'){ c.moveTo(...P[0]); if(P[1]) c.lineTo(...P[1]); c.stroke();
+    if(a.tipo==='texto'&&P[1]){ const [x0,y0]=P[0],[x1,y1]=P[1], an=Math.atan2(y0-y1,x0-x1), L=12*k; c.beginPath(); c.moveTo(x0,y0); c.lineTo(x0-L*Math.cos(an-0.4),y0-L*Math.sin(an-0.4)); c.moveTo(x0,y0); c.lineTo(x0-L*Math.cos(an+0.4),y0-L*Math.sin(an+0.4)); c.stroke(); } }
+  else if(a.tipo==='angulo'){ c.moveTo(...P[0]); for(const p of P.slice(1)) c.lineTo(...p); c.stroke(); }
+  else if(a.tipo==='elipse'&&P[1]){ // en espacio imagen
+    const [x0,y0]=a.pts[0],[x1,y1]=a.pts[1]; c.save(); c.setTransform(m); c.beginPath(); c.ellipse((x0+x1)/2,(y0+y1)/2,Math.abs(x1-x0)/2||.01,Math.abs(y1-y0)/2||.01,0,0,Math.PI*2); c.restore(); c.stroke(); }
+  else if(a.tipo==='rect'&&P[1]){ const [x0,y0]=a.pts[0],[x1,y1]=a.pts[1]; const q=[[x0,y0],[x1,y0],[x1,y1],[x0,y1]].map(p=>aPantalla(m,p[0],p[1])); c.moveTo(...q[0]); q.slice(1).forEach(p=>c.lineTo(...p)); c.closePath(); c.stroke(); }
+  else if(a.tipo==='punto'){ const [x,y]=P[0]; c.moveTo(x-8*k,y); c.lineTo(x+8*k,y); c.moveTo(x,y-8*k); c.lineTo(x,y+8*k); c.stroke(); }
+  // asas
+  for(const p of P){ c.beginPath(); c.arc(p[0],p[1],(a.sel?5:3)*k,0,Math.PI*2); c.fill(); }
+  c.restore();
+  // etiqueta
+  const txt=[a.n?'#'+a.n+' ':'' , a.res||''].join('').trim();
+  const lineas=[]; if(txt) lineas.push(...txt.split('\n')); if(a.nota) lineas.push(...partirTexto(a.nota,34));
+  if(!lineas.length) return;
+  const fs=Math.round(13*k); c.font=fs+'px Arial'; c.textBaseline='top'; c.textAlign='left';
+  let [lx,ly]=a.tipo==='texto'?P[1]||P[0]:P.reduce((m2,p)=>p[0]>m2[0]?p:m2,P[0]); lx+=10*k; ly-=fs/2;
+  const ancho=Math.max(...lineas.map(t=>c.measureText(t).width))+8*k;
+  if(lx+ancho>v.cv.width) lx=Math.max(2,v.cv.width-ancho-2);
+  if(ly+lineas.length*fs*1.2>v.cv.height) ly=v.cv.height-lineas.length*fs*1.2-4;
+  c.fillStyle='rgba(0,0,0,.6)'; c.fillRect(lx-4*k,ly-2*k,ancho,lineas.length*fs*1.2+4*k);
+  lineas.forEach((t,i)=>{ c.fillStyle=i< (txt?txt.split('\n').length:0) ? color : '#ffffff'; c.fillText(t,lx,ly+i*fs*1.2); });
+}
+function partirTexto(t,n){ const out=[]; for(const par of t.split('\n')){ let l=''; for(const w of par.split(' ')){ if((l+' '+w).trim().length>n && l){ out.push(l); l=w; } else l=(l+' '+w).trim(); } out.push(l); } return out; }
+
+function unidad(v){ const I=v.serie.info; if(v.dec&&v.dec.rgb) return ''; return I.modalidad==='CT'?' UH':''; }
+function calcular(v,a){
+  const {sx,sy}=espaciado(v), cal=(v.serie.info.calibrado||v.plano), u=cal?' mm':' px';
+  const fx=cal?sx:1, fy=cal?sy:1, d=v.dec;
+  const val=(x,y)=>{ x=Math.floor(x); y=Math.floor(y); if(x<0||y<0||x>=d.w||y>=d.h) return null; const i=y*d.w+x; if(d.rgb) return (d.rgb[i*4]+d.rgb[i*4+1]+d.rgb[i*4+2])/3; return d.v[i]; };
+  if(a.tipo==='dist'){ const [p,q]=a.pts; const L=Math.hypot((q[0]-p[0])*fx,(q[1]-p[1])*fy);
+    a.res = L>=10&&cal? fmt(L,1)+' mm ('+fmt(L/10,2)+' cm)' : fmt(L,1)+u; a.valor=L; }
+  else if(a.tipo==='angulo' && a.pts.length===3){ const [p,q,r]=a.pts; const v1=[(p[0]-q[0])*fx,(p[1]-q[1])*fy], v2=[(r[0]-q[0])*fx,(r[1]-q[1])*fy];
+    let ang=Math.abs(Math.atan2(v1[0]*v2[1]-v1[1]*v2[0], v1[0]*v2[0]+v1[1]*v2[1]))*180/Math.PI; a.res=fmt(ang,1)+'°'; }
+  else if(a.tipo==='punto'){ const x=val(a.pts[0][0],a.pts[0][1]); a.res = x===null?'fuera de imagen': (d.rgb?'Intensidad '+fmt(x,0):fmt(x,unidad(v)?0:1)+unidad(v)); }
+  else if((a.tipo==='elipse'||a.tipo==='rect') && a.pts.length===2){
+    const [p,q]=a.pts, x0=Math.min(p[0],q[0]), x1=Math.max(p[0],q[0]), y0=Math.min(p[1],q[1]), y1=Math.max(p[1],q[1]);
+    const cx=(x0+x1)/2, cy=(y0+y1)/2, rx=(x1-x0)/2, ry=(y1-y0)/2; let n=0,s=0,s2=0,mn=Infinity,mx=-Infinity;
+    for(let y=Math.floor(y0);y<=Math.ceil(y1);y++) for(let x=Math.floor(x0);x<=Math.ceil(x1);x++){
+      const px=x+0.5, py=y+0.5;
+      if(a.tipo==='elipse'){ if(rx<=0||ry<=0) continue; if(((px-cx)/rx)**2+((py-cy)/ry)**2>1) continue; } else if(px<x0||px>x1||py<y0||py>y1) continue;
+      const z=val(x,y); if(z===null) continue; n++; s+=z; s2+=z*z; if(z<mn)mn=z; if(z>mx)mx=z; }
+    const area = a.tipo==='elipse'? Math.PI*rx*ry*fx*fy : (x1-x0)*(y1-y0)*fx*fy;
+    const ejes = fmt((x1-x0)*fx,1)+' × '+fmt((y1-y0)*fy,1)+u;
+    if(!n){ a.res='Área '+fmt(area/(cal?100:1),2)+(cal?' cm²':' px²'); return; }
+    const media=s/n, de=Math.sqrt(Math.max(0,s2/n-media*media)), un=unidad(v), dd=un?1:1;
+    a.res='Media '+fmt(media,dd)+un+'  DE '+fmt(de,dd)+'\nMín '+fmt(mn,dd)+'  Máx '+fmt(mx,dd)+'\nÁrea '+(cal?fmt(area/100,2)+' cm²':fmt(area,0)+' px²')+'  ('+ejes+')';
+  }
+  else if(a.tipo==='texto') a.res='';
+}
+
+/* ====================== MPR ====================== */
+function mprGrosor(){ const s=$('#sGrosor').value; if(s==='0') return {mm:0}; const modo=s[0]==='m'?'Prom.':s[0]==='n'?'MinIP':'MIP'; return {mm:parseFloat(s.replace(/^[mn]/,'')), modo}; }
+function planoNombre(p){
+  if(!mpr) return '';
+  const n=mpr.serie.normal||[0,0,1], I=mpr.serie.info, row=I.iop?I.iop.slice(0,3):[1,0,0], col=I.iop?I.iop.slice(3,6):[0,1,0];
+  const nor = p==='ax'? n : p==='co'? col : row;
+  const ix=[0,1,2].reduce((a,b)=>Math.abs(nor[b])>Math.abs(nor[a])?b:a,0);
+  return ['Sagital','Coronal','Axial'][ix];
+}
+async function iniciarMPR(sPref){
+  const s = (sPref && esVolumen(sPref))? sPref : (vpAct&&vpAct.serie&&esVolumen(vpAct.serie)? vpAct.serie : series.find(esVolumen));
+  if(!s){ aviso('Para MPR se necesita una serie de cortes (TC o RM) con al menos 10 imágenes del mismo tamaño.',5000); $('#sLayout').value='1'; cambiarLayout('1'); return; }
+  await construirVolumen(s);
+  if(!mpr) return;
+  const planos=['ax','co','sa'];
+  vps.forEach((v,i)=>{ v.serie=s; v.plano=planos[i]; v.wlOk=false; v.zoom=1; v.panX=v.panY=0; v.rot=0; v.flipH=false; v.invert=false; v.vac.style.display='none';
+    v.idx = mpr.punto[{ax:2,co:1,sa:0}[v.plano]]; });
+  for(const v of vps) await cargarImagen(v);
+  // misma ventana en los tres
+  vps.forEach(v=>{v.ww=vps[0].ww; v.wc=vps[0].wc; dibujar(v);});
+  actualizarPie(); pintarSeries();
+}
+function esVolumen(s){ const I=s.info; return s.imgs.length>=10 && I.nf===1 && I.muestras===1 && s.conPos; }
+async function construirVolumen(s){
+  if(mpr && mpr.serie===s) return;
+  const n=s.imgs.length, I=s.info, w=I.cols, h=I.filas;
+  const memoria=n*w*h*4;
+  if(memoria>900e6){ aviso('La serie es demasiado grande para MPR en esta tablet ('+n+' cortes).',5000); return; }
+  let vol;
+  try{ vol=new Float32Array(n*w*h); }catch(e){ aviso('No hay memoria suficiente para MPR.',5000); return; }
+  for(let k=0;k<n;k++){
+    if(k%8===0){ progreso('Preparando MPR '+(k+1)+' de '+n, k/n); await espera(); }
+    const m=s.imgs[k]; let d;
+    try{ d=await decodificar(m); }catch(e){ progreso(null); aviso(e.message,5000); return; }
+    if(d.w!==w||d.h!==h||!d.v){ progreso(null); aviso('Los cortes no tienen el mismo tamaño; no se puede hacer MPR.',5000); return; }
+    vol.set(d.v,k*w*h);
+  }
+  progreso(null);
+  // espaciado entre cortes
+  const pos=s.imgs.map(m=>m.pos); let dz=0; for(let k=1;k<n;k++) dz+=Math.abs(pos[k]-pos[k-1]); dz=dz/(n-1)||I.grosor||1;
+  mpr={serie:s, vol, dims:[w,h,n], esp:[I.sx,I.sy,dz], punto:[w>>1,h>>1,n>>1]};
+}
+function extraerPlano(pl, idx){
+  const [W,H,N]=mpr.dims, vol=mpr.vol, g=mprGrosor();
+  const espN = pl==='ax'?mpr.esp[2]: pl==='co'?mpr.esp[1]:mpr.esp[0];
+  const capas = g.mm? Math.max(1,Math.round(g.mm/espN)) : 1, mitad=Math.floor(capas/2);
+  let w,h; if(pl==='ax'){w=W;h=H;} else if(pl==='co'){w=W;h=N;} else {w=H;h=N;}
+  const out=new Float32Array(w*h); let mn=Infinity,mx=-Infinity;
+  const maxIdx = pl==='ax'?N: pl==='co'?H:W;
+  const ini=Math.max(0,idx-mitad), fin=Math.min(maxIdx-1,idx-mitad+capas-1), cnt=fin-ini+1;
+  const modo=g.modo||'MIP';
+  for(let y=0;y<h;y++) for(let x=0;x<w;x++){
+    let acc = modo==='MIP'?-Infinity: modo==='MinIP'?Infinity:0;
+    for(let c=ini;c<=fin;c++){
+      let o; if(pl==='ax') o=c*W*H+y*W+x; else if(pl==='co') o=y*W*H+c*W+x; else o=y*W*H+x*W+c;
+      const z=vol[o]; if(capas===1){acc=z;break;} if(modo==='MIP'){ if(z>acc)acc=z; } else if(modo==='MinIP'){ if(z<acc)acc=z; } else acc+=z; }
+    if(capas>1&&modo==='Prom.') acc/=cnt;
+    out[y*w+x]=acc; if(acc<mn)mn=acc; if(acc>mx)mx=acc; }
+  return {w,h,v:out,min:mn,max:mx};
+}
+function mprClave(v){ const g=$('#sGrosor').value; return 'MPR|'+mpr.serie.id+'|'+v.plano+'|'+v.idx+'|'+g; }
+function dibujarCruz(v,m){
+  const [i,j,k]=mpr.punto, c=v.ctx, d=v.dec, kk=v.dpr||1;
+  let vx,hy; if(v.plano==='ax'){vx=i;hy=j;} else if(v.plano==='co'){vx=i;hy=k;} else {vx=j;hy=k;}
+  const col={ax:'#ff5c5c',co:'#4cd97b',sa:'#3d9be9'};
+  const lineaV = v.plano==='sa'?'co':'sa', lineaH = v.plano==='ax'?'co':'ax';
+  c.save(); c.lineWidth=1.2*kk; c.globalAlpha=.8; c.setLineDash([6*kk,4*kk]);
+  c.strokeStyle=col[lineaV]; c.beginPath(); c.moveTo(...aPantalla(m,vx+.5,0)); c.lineTo(...aPantalla(m,vx+.5,d.h)); c.stroke();
+  c.strokeStyle=col[lineaH]; c.beginPath(); c.moveTo(...aPantalla(m,0,hy+.5)); c.lineTo(...aPantalla(m,d.w,hy+.5)); c.stroke();
+  c.restore();
+  c.save(); c.fillStyle=col[v.plano]; c.fillRect(0,0,6*kk,v.cv.height); c.restore();
+}
+function moverCruz(v,x,y){
+  if(!mpr||!v.plano) return; const [W,H,N]=mpr.dims; const cl=(a,b)=>Math.max(0,Math.min(b-1,Math.floor(a)));
+  if(v.plano==='ax'){ mpr.punto[0]=cl(x,W); mpr.punto[1]=cl(y,H); }
+  else if(v.plano==='co'){ mpr.punto[0]=cl(x,W); mpr.punto[2]=cl(y,N); }
+  else { mpr.punto[1]=cl(x,H); mpr.punto[2]=cl(y,N); }
+  for(const o of vps){ if(!o.plano) continue; const ni=mpr.punto[{ax:2,co:1,sa:0}[o.plano]]; if(o!==v && o.idx!==ni){ o.idx=ni; cargarImagen(o); } else dibujar(o); }
+}
+
+/* ====================== punteros y gestos ====================== */
+function configurarPuntero(v){
+  const ptrs=new Map(); let gesto=null;
+  const cv=v.el;
+  cv.addEventListener('pointerdown',ev=>{
+    cv.setPointerCapture(ev.pointerId); ptrs.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});
+    if(!v.dec) return;
+    if(ptrs.size===2){ // pellizco
+      if(v.temp){ v.temp=null; }
+      if(gesto&&gesto.anot&&gesto.nueva){ const arr=listaAnot(v.clave); const i=arr.indexOf(gesto.anot); if(i>=0) arr.splice(i,1); }
+      const [a,b]=[...ptrs.values()]; gesto={tipo:'pinch', d0:Math.hypot(a.x-b.x,a.y-b.y), z0:v.zoom, cx:(a.x+b.x)/2, cy:(a.y+b.y)/2, px:v.panX, py:v.panY}; dibujar(v); return; }
+    if(ptrs.size>2) return;
+    let h=herramienta;
+    if(ev.button===2) h='pan'; if(ev.button===1) h='zoom';
+    const pi=aImagen(v,ev.clientX,ev.clientY);
+    // tocar una asa existente → moverla
+    const asa=buscarAsa(v,ev.clientX,ev.clientY);
+    if(asa && !['wl','pan','zoom','scroll','cruz'].includes(h)){ seleccionar(asa.a); gesto={tipo:'asa', a:asa.a, i:asa.i}; return; }
+    if(asa && h!=='cruz' && ev.pointerType==='mouse' && ev.button===0 && ['wl','pan','zoom','scroll'].includes(h)){ seleccionar(asa.a); gesto={tipo:'asa', a:asa.a, i:asa.i}; return; }
+    gesto={tipo:h, x0:ev.clientX, y0:ev.clientY, ww:v.ww, wc:v.wc, px:v.panX, py:v.panY, z0:v.zoom, idx0:v.idx, acum:0, t0:Date.now()};
+    if(['dist','elipse','rect','texto'].includes(h)){ v.temp={tipo:h, pts:[pi,pi.slice()], nota:''}; }
+    else if(h==='punto'){ const a={id:idAnot++, tipo:'punto', pts:[pi], nota:''}; calcular(v,a); agregarAnot(v,a); gesto={tipo:'asa',a,i:0}; }
+    else if(h==='angulo'){
+      if(v.temp && v.temp.tipo==='angulo'){ v.temp.pts.push(pi); gesto={tipo:'angPt'}; }
+      else { v.temp={tipo:'angulo',pts:[pi,pi.slice()],nota:''}; gesto={tipo:'angPt'}; }
+    }
+    else if(h==='cruz') moverCruz(v,pi[0],pi[1]);
+    dibujar(v);
+  });
+  cv.addEventListener('pointermove',ev=>{
+    if(!ptrs.has(ev.pointerId)){ // vista previa del ángulo con ratón
+      if(v.temp&&v.temp.tipo==='angulo'&&ev.pointerType==='mouse'){ v.temp.pts[v.temp.pts.length-1]=aImagen(v,ev.clientX,ev.clientY); calcular(v,v.temp); dibujar(v);} return; }
+    ptrs.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});
+    if(!gesto||!v.dec) return;
+    if(gesto.tipo==='pinch' && ptrs.size>=2){
+      const [a,b]=[...ptrs.values()]; const d=Math.hypot(a.x-b.x,a.y-b.y), cx=(a.x+b.x)/2, cy=(a.y+b.y)/2;
+      const nz=Math.max(0.1,Math.min(40,gesto.z0*d/gesto.d0));
+      const r=v.el.getBoundingClientRect(), ox=gesto.cx-r.left-r.width/2, oy=gesto.cy-r.top-r.height/2;
+      v.zoom=nz; v.panX=ox-(ox-gesto.px)*nz/gesto.z0+(cx-gesto.cx); v.panY=oy-(oy-gesto.py)*nz/gesto.z0+(cy-gesto.cy);
+      sincronizar(v); dibujar(v); return; }
+    const dx=ev.clientX-gesto.x0, dy=ev.clientY-gesto.y0;
+    switch(gesto.tipo){
+      case 'wl': { const f=Math.max(1,gesto.ww)/300; v.ww=Math.max(1,gesto.ww+dx*f*1.5); v.wc=gesto.wc+dy*f; sincronizarWL(v); break; }
+      case 'pan': v.panX=gesto.px+dx; v.panY=gesto.py+dy; sincronizar(v); break;
+      case 'zoom': v.zoom=Math.max(0.1,Math.min(40,gesto.z0*Math.exp(-dy/150))); sincronizar(v); break;
+      case 'scroll': { const paso=Math.max(4,Math.min(16,v.el.clientHeight/Math.max(8,totalImgs(v)))); const ni=gesto.idx0+Math.round(dy/paso); irA(v,ni); return; }
+      case 'cruz': { const p=aImagen(v,ev.clientX,ev.clientY); moverCruz(v,p[0],p[1]); return; }
+      case 'asa': { const p=aImagen(v,ev.clientX,ev.clientY); gesto.a.pts[gesto.i]=p; calcular(v,gesto.a); pintarMedidasLigero(); break; }
+      case 'angPt': if(v.temp){ v.temp.pts[v.temp.pts.length-1]=aImagen(v,ev.clientX,ev.clientY); calcular(v,v.temp);} break;
+      default: if(v.temp){ v.temp.pts[1]=aImagen(v,ev.clientX,ev.clientY); calcular(v,v.temp);} }
+    dibujar(v);
+  });
+  const fin=ev=>{
+    if(!ptrs.has(ev.pointerId)) return; ptrs.delete(ev.pointerId);
+    if(!gesto) return;
+    if(gesto.tipo==='pinch'){ if(ptrs.size===0) gesto=null; return; }
+    if(ptrs.size) return;
+    const g=gesto; gesto=null;
+    if(v.temp && ['dist','elipse','rect','texto'].includes(v.temp.tipo)){
+      const t=v.temp; v.temp=null;
+      const r=v.cv.getBoundingClientRect(), m=matriz(v), a0=aPantalla(m,...t.pts[0]), a1=aPantalla(m,...t.pts[1]);
+      const largo=Math.hypot(a0[0]-a1[0],a0[1]-a1[1])/(v.dpr||1); void r;
+      if(largo<6){ dibujar(v); return; }
+      const a={id:idAnot++, tipo:t.tipo, pts:t.pts, nota:''}; calcular(v,a); agregarAnot(v,a);
+      if(a.tipo==='texto') pedirNota(a,v);
+    }
+    else if(v.temp && v.temp.tipo==='angulo' && g.tipo==='angPt'){
+      // primer arrastre crea 2 puntos; luego toque para el tercero
+      if(v.temp.pts.length>=3){ const a={id:idAnot++, tipo:'angulo', pts:v.temp.pts, nota:''}; v.temp=null; calcular(v,a); agregarAnot(v,a); }
+    }
+    else if(g.tipo==='asa'){ pintarMedidas(); }
+    else if(g.tipo==='wl'||g.tipo==='zoom'||g.tipo==='pan'){ if(Date.now()-g.t0<250 && Math.hypot(ev.clientX-g.x0,ev.clientY-g.y0)<6){ const asa=buscarAsa(v,ev.clientX,ev.clientY,20); if(asa) seleccionar(asa.a);} }
+    dibujar(v);
+  };
+  cv.addEventListener('pointerup',fin); cv.addEventListener('pointercancel',fin);
+  cv.addEventListener('contextmenu',e=>e.preventDefault());
+  cv.addEventListener('wheel',ev=>{ ev.preventDefault(); if(!v.dec) return;
+    if(ev.ctrlKey){ v.zoom=Math.max(0.1,Math.min(40,v.zoom*Math.exp(-ev.deltaY/300))); sincronizar(v); dibujar(v); }
+    else irA(v, v.idx+(ev.deltaY>0?1:-1)); },{passive:false});
+  cv.addEventListener('dblclick',()=>{ v.zoom=1; v.panX=v.panY=0; dibujar(v); });
+}
+function buscarAsa(v,cx,cy,rad){
+  const arr=anotaciones.get(v.clave); if(!arr||!v.dec) return null;
+  const r=v.cv.getBoundingClientRect(), m=matriz(v), x=(cx-r.left)*v.dpr, y=(cy-r.top)*v.dpr, R=(rad||24)*v.dpr;
+  let mejor=null, dm=R;
+  for(const a of arr) a.pts.forEach((p,i)=>{ const q=aPantalla(m,p[0],p[1]); const d=Math.hypot(q[0]-x,q[1]-y); if(d<dm){dm=d; mejor={a,i};} });
+  return mejor;
+}
+function agregarAnot(v,a){
+  const arr=listaAnot(v.clave); arr.push(a);
+  a.clave=v.clave; a.serie=v.serie; a.idx=v.idx; a.plano=v.plano;
+  a.n=[...anotaciones.values()].reduce((s,l)=>s+l.length,0);
+  a.desc=descImagen(v);
+  seleccionar(a); pintarMedidas();
+}
+function seleccionar(a){ for(const l of anotaciones.values()) for(const x of l) x.sel=(x===a); vps.forEach(v=>dibujar(v)); pintarMedidas(); }
+function descImagen(v){ return v.plano? 'MPR '+planoNombre(v.plano)+' img '+(v.idx+1) : 'Serie '+(v.serie.num||'')+' '+(v.serie.desc||'')+' · img '+(v.idx+1); }
+function irA(v,ni){
+  const tot=totalImgs(v); if(!tot) return; ni=Math.max(0,Math.min(tot-1,ni)); if(ni===v.idx) return;
+  v.idx=ni;
+  if(v.plano){ mpr.punto[{ax:2,co:1,sa:0}[v.plano]]=ni; vps.forEach(o=>{ if(o!==v && o.plano) dibujar(o); }); }
+  cargarImagen(v);
+}
+let sincro=false;
+function sincronizar(v){ if(!mpr||!v.plano||!sincro) return; }
+function sincronizarWL(v){ if(v.plano) vps.forEach(o=>{ if(o!==v && o.plano){ o.ww=v.ww; o.wc=v.wc; dibujar(o);} }); actualizarPie(); }
+
+/* ====================== pie: control de cortes y cine ====================== */
+function actualizarPie(){
+  const v=vpAct; const r=$('#corte');
+  if(!v||!v.serie){ r.max=0; $('#infoCorte').textContent='–'; return; }
+  const tot=totalImgs(v); r.max=Math.max(0,tot-1); r.value=v.idx; $('#infoCorte').textContent=(v.idx+1)+' / '+tot;
+  const fpsS=v.serie.info.fpsRec || (v.serie.info.tiempoCuadro? 1000/v.serie.info.tiempoCuadro:0);
+  if(fpsS && !v._fpsPuesto){ $('#fps').value=Math.round(fpsS); v._fpsPuesto=true; }
+}
+$('#corte').addEventListener('input',e=>{ if(vpAct) irA(vpAct,parseInt(e.target.value)); });
+$('#bAnt').onclick=()=>vpAct&&irA(vpAct,vpAct.idx-1);
+$('#bSig').onclick=()=>vpAct&&irA(vpAct,vpAct.idx+1);
+let cine=null;
+function detenerCine(){ if(cine){ clearTimeout(cine); cine=null; $('#bPlay').classList.remove('act'); } }
+$('#bPlay').onclick=()=>{
+  if(cine) return detenerCine();
+  const v=vpAct; if(!v||totalImgs(v)<2) return aviso('Esta serie tiene una sola imagen.');
+  $('#bPlay').classList.add('act');
+  const paso=async()=>{ const tot=totalImgs(v); v.idx=(v.idx+1)%tot; if(v.plano) mpr.punto[{ax:2,co:1,sa:0}[v.plano]]=v.idx; await cargarImagen(v); if(v.plano) vps.forEach(o=>o!==v&&o.plano&&dibujar(o)); cine=setTimeout(paso,1000/Math.max(1,parseFloat($('#fps').value)||10)); };
+  paso();
+};
+
+/* ====================== panel lateral ====================== */
+function pintarSeries(){
+  const cont=$('#listaSeries'); if(!series.length) return;
+  const I=series[0].info;
+  let html='<div class="nota"><b style="color:var(--texto);font-size:14px">'+esc(I.paciente||'Sin nombre')+'</b><br>'+esc([I.pid&&'ID '+I.pid, I.sexo, I.edad, fechaDicom(I.fecha)].filter(Boolean).join(' · '))+'<br>'+esc(I.estudioDesc||'')+'</div>';
+  html+='<label class="nota" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="chTodas"> Elegir todas las series</label>';
+  series.forEach((s,i)=>{ const act=vpAct&&vpAct.serie===s;
+    html+='<div class="serie'+(act?' act':'')+'" data-i="'+i+'"><canvas width="96" height="96"></canvas><div class="t"><b>'+esc((s.num?s.num+'. ':'')+(s.desc||'Serie'))+'</b>'+esc(s.modalidad)+' · '+(s.info.nf>1?s.info.nf+' cuadros (cine)':s.imgs.length+' imágenes')+(esVolumen(s)?' · MPR':'')+'</div><input type="checkbox" data-el="'+i+'" '+(s.elegida?'checked':'')+' title="Elegir para guardar"></div>'; });
+  cont.innerHTML=html;
+  $$('#listaSeries .serie').forEach(el=>{ const s=series[+el.dataset.i];
+    el.addEventListener('click',e=>{ if(e.target.tagName==='INPUT') return; if(!vpAct) return;
+      if($('#sLayout').value==='mpr'){ mpr=null; iniciarMPR(s); return; }
+      asignarSerie(vpAct,s); if(window.innerWidth<=700) $('#lado').classList.add('oculto'); });
+    miniatura(s, el.querySelector('canvas')); });
+  $$('#listaSeries input[data-el]').forEach(ch=>ch.onchange=()=>{ series[+ch.dataset.el].elegida=ch.checked; });
+  const t=$('#chTodas'); if(t){ t.checked=series.every(s=>s.elegida); t.onchange=()=>{ series.forEach(s=>s.elegida=t.checked); pintarSeries(); }; }
+}
+async function miniatura(s,cv){
+  if(s.thumb){ cv.getContext('2d').drawImage(s.thumb,0,0,96,96); return; }
+  const img=s.imgs[Math.floor(s.imgs.length/2)];
+  try{ const d=await decodificar(img); const tmp={dec:d,base:null,ww:0,wc:0,invert:false,serie:s};
+    ventanaInicial(tmp,d); const b=renderBase(tmp); const c=document.createElement('canvas'); c.width=c.height=96; const x=c.getContext('2d');
+    const k=Math.min(96/b.width,96/b.height); x.fillStyle='#000'; x.fillRect(0,0,96,96); x.drawImage(b,(96-b.width*k)/2,(96-b.height*k)/2,b.width*k,b.height*k);
+    s.thumb=c; cv.getContext('2d').drawImage(c,0,0); }catch(e){ const x=cv.getContext('2d'); x.fillStyle='#ff5c5c'; x.font='11px Arial'; x.fillText('No compatible',8,50); }
+}
+function esc(t){ return String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+const NOMBRES={dist:'Distancia',angulo:'Ángulo',elipse:'ROI elipse',rect:'ROI rectángulo',punto:'Densidad',texto:'Flecha / nota'};
+function todasAnot(){ const l=[]; for(const a of anotaciones.values()) l.push(...a); return l.sort((a,b)=>a.n-b.n); }
+function pintarMedidas(){
+  const cont=$('#listaMed'), lista=todasAnot();
+  if(!lista.length){ cont.innerHTML='<p class="nota">Aún no hay medidas. Elija Distancia, Ángulo, ROI o Densidad y toque la imagen.</p>'; return; }
+  cont.innerHTML=lista.map(a=>'<div class="med" data-id="'+a.id+'" style="'+(a.sel?'border-color:var(--cian)':'')+'"><div class="cab"><b>#'+a.n+' '+NOMBRES[a.tipo]+'</b><button class="chico" data-ir>Ver</button><button class="chico rojo" data-borrar>Borrar</button></div>'
+    +'<div class="nota" style="margin:0 0 4px">'+esc(a.desc)+'</div>'+(a.res?'<div class="val">'+esc(a.res)+'</div>':'')
+    +'<textarea placeholder="Escriba lo que se observa (ej.: quiste simple en polo superior)…">'+esc(a.nota)+'</textarea></div>').join('');
+  $$('#listaMed .med').forEach(el=>{ const a=lista.find(x=>x.id===+el.dataset.id);
+    el.querySelector('textarea').addEventListener('input',e=>{ a.nota=e.target.value; vps.forEach(v=>v.clave===a.clave&&dibujar(v)); });
+    el.querySelector('[data-borrar]').onclick=()=>{ const arr=anotaciones.get(a.clave); arr.splice(arr.indexOf(a),1); pintarMedidas(); vps.forEach(v=>dibujar(v)); };
+    el.querySelector('[data-ir]').onclick=async()=>{ const v=vpAct; if(!v) return;
+      if(a.plano){ if(!mpr||mpr.serie!==a.serie){ aviso('Abra MPR de esa serie para ver esta medida.'); return; } const o=vps.find(x=>x.plano===a.plano)||v; o.idx=a.idx; await cargarImagen(o); }
+      else { if(v.serie!==a.serie||v.plano) await asignarSerie(v,a.serie,a.idx); else { v.idx=a.idx; await cargarImagen(v);} }
+      seleccionar(a); };
+  });
+}
+function pintarMedidasLigero(){ const lista=todasAnot(); $$('#listaMed .med').forEach(el=>{ const a=lista.find(x=>x.id===+el.dataset.id); const val=el.querySelector('.val'); if(a&&val) val.textContent=a.res; }); }
+function textoMedidas(){
+  const I=series[0]?series[0].info:{};
+  let t='MEDIDAS — '+(I.paciente||'')+(I.pid?' (ID '+I.pid+')':'')+' — '+fechaDicom(I.fecha)+'\n'+(I.estudioDesc||'')+'\n\n';
+  for(const a of todasAnot()){ t+='#'+a.n+' '+NOMBRES[a.tipo]+' — '+a.desc+'\n'; if(a.res) t+='   '+a.res.replace(/\n/g,'\n   ')+'\n'; if(a.nota) t+='   Nota: '+a.nota.replace(/\n/g,'\n         ')+'\n'; t+='\n'; }
+  return t;
+}
+function pedirNota(a,v){
+  $('#mTextoTit').textContent='#'+a.n+' '+NOMBRES[a.tipo]+(a.res?' — '+a.res.split('\n')[0]:'');
+  $('#mTextoVal').value=a.nota||''; abrirModal('#mTexto'); setTimeout(()=>$('#mTextoVal').focus(),50);
+  $('#mTextoOk').onclick=()=>{ a.nota=$('#mTextoVal').value.trim(); cerrarModales(); dibujar(v); pintarMedidas(); };
+}
+function abrirModal(s){ $(s).classList.add('act'); }
+function cerrarModales(){ $$('.modal').forEach(m=>m.classList.remove('act')); }
+$$('[data-cerrar]').forEach(b=>b.onclick=cerrarModales);
+$$('.modal').forEach(m=>m.addEventListener('pointerdown',e=>{ if(e.target===m) cerrarModales(); }));
+function pintarMarcadas(){
+  const c=$('#listaMarcadas');
+  if(!marcadas.length){ c.innerHTML='<p class="nota">Aún no hay imágenes marcadas. Toque ★ Marcar para agregar la imagen que está viendo.</p>'; return; }
+  c.innerHTML=marcadas.map((m,i)=>'<div class="marcada"><img src="'+m.url+'" alt=""><span>'+esc(m.desc)+'</span><button class="chico rojo" data-q="'+i+'">Quitar</button></div>').join('');
+  $$('#listaMarcadas [data-q]').forEach(b=>b.onclick=()=>{ const m=marcadas.splice(+b.dataset.q,1)[0]; URL.revokeObjectURL(m.url); pintarMarcadas(); vps.forEach(v=>dibujar(v)); });
+}
+
+/* ====================== guardar imágenes y videos ====================== */
+function canvasBlob(cv){ return new Promise(r=>cv.toBlob(r,'image/png')); }
+function nombreBase(v){ const I=(v&&v.serie?v.serie.info:series[0]&&series[0].info)||{}; return nombreArchivo((I.paciente||'paciente')+'_'+(I.fecha||'')); }
+async function capturaVisor(v){ // imagen a resolución del visor, con textos y medidas
+  const prevSel=todasAnot().filter(a=>a.sel); prevSel.forEach(a=>a.sel=false);
+  dibujar(v); const b=await canvasBlob(v.cv); prevSel.forEach(a=>a.sel=true); dibujar(v); return b;
+}
+// visor virtual para exportar series sin tocar la pantalla
+function visorVirtual(origen, s, ancho){
+  const cv=$('#grabCanvas');
+  const I=s.info; const {sx,sy}={sx:I.sx||1,sy:I.sy||1};
+  const ar=(I.filas*sy)/(I.cols*sx); let w=Math.min(1024,Math.max(512,ancho||I.cols)); w=Math.round(w/2)*2; let h=Math.round(w*ar/2)*2; if(h>1024){ h=1024; w=Math.round(h/ar/2)*2; }
+  cv.width=w; cv.height=h;
+  const v={cv, ctx:cv.getContext('2d'), el:cv, serie:s, idx:0, dpr:Math.max(1,w/600), plano:null, img:null, dec:null, wlOk:false,
+    ww:400,wc:40, zoom:1, panX:0, panY:0, rot:0, flipH:false, invert:false};
+  if(origen && origen.serie===s && !origen.plano){ Object.assign(v,{ww:origen.ww,wc:origen.wc,wlOk:true,rot:origen.rot,flipH:origen.flipH,invert:origen.invert}); }
+  return v;
+}
+async function exportarSerieImgs(origen, s, prefijo, archivos){
+  const v=visorVirtual(origen,s);
+  for(let i=0;i<s.imgs.length;i++){
+    if(i%5===0){ progreso('Guardando imágenes: '+(s.desc||'serie')+' '+(i+1)+'/'+s.imgs.length, i/s.imgs.length); await espera(); }
+    v.idx=i; await cargarImagen(v); if(!v.dec) continue;
+    archivos.push({nombre:prefijo+String(i+1).padStart(4,'0')+'.png', blob:await canvasBlob(v.cv)});
+  }
+}
+$('#gActual').onclick=async()=>{ const v=vpAct; if(!v||!v.dec) return aviso('No hay imagen en pantalla.'); descargar(await capturaVisor(v), nombreBase(v)+'_img'+(v.idx+1)+'.png'); aviso('Imagen guardada en Descargas.'); };
+$('#bGuardar').onclick=()=>{ $('#lado').classList.remove('oculto'); mostrarPest('vGuardar'); };
+$('#bMarcar').onclick=async()=>{ const v=vpAct; if(!v||!v.dec) return;
+  const i=marcadas.findIndex(m=>m.clave===v.clave);
+  if(i>=0){ URL.revokeObjectURL(marcadas[i].url); marcadas.splice(i,1); pintarMarcadas(); dibujar(v); return aviso('Imagen desmarcada.'); }
+  const blob=await capturaVisor(v); marcadas.push({clave:v.clave, blob, url:URL.createObjectURL(blob), desc:descImagen(v)}); pintarMarcadas(); dibujar(v); aviso('★ Imagen marcada ('+marcadas.length+'). Guárdelas en Guardar → Imágenes marcadas.'); };
+$('#gMarcadas').onclick=async()=>{
+  if(!marcadas.length) return aviso('No hay imágenes marcadas. Use ★ Marcar.');
+  if(marcadas.length===1) return descargar(marcadas[0].blob, nombreBase(vpAct)+'_marcada.png');
+  progreso('Creando ZIP…',.5); const zip=await crearZip(marcadas.map((m,i)=>({nombre:nombreBase(vpAct)+'_'+String(i+1).padStart(2,'0')+'.png', blob:m.blob}))); progreso(null);
+  descargar(zip, nombreBase(vpAct)+'_marcadas.zip'); aviso(marcadas.length+' imágenes guardadas en un ZIP.'); };
+$('#gSerie').onclick=async()=>{ const v=vpAct; if(!v||!v.serie) return;
+  const arch=[];
+  if(v.plano){ const tot=totalImgs(v), idx0=v.idx; for(let i=0;i<tot;i++){ if(i%5===0){progreso('Guardando MPR '+(i+1)+'/'+tot,i/tot); await espera();} v.idx=i; await cargarImagen(v); arch.push({nombre:'MPR_'+planoNombre(v.plano)+'_'+String(i+1).padStart(4,'0')+'.png', blob:await capturaVisor(v)}); } v.idx=idx0; await cargarImagen(v); }
+  else await exportarSerieImgs(v, v.serie, 'S'+(v.serie.num||'')+'_', arch);
+  progreso('Creando ZIP…',1); const zip=await crearZip(arch); progreso(null); descargar(zip, nombreBase(v)+'_serie'+(v.serie.num||'')+'.zip'); aviso(arch.length+' imágenes guardadas.'); };
+$('#gTodasImg').onclick=async()=>{ if(!series.length) return; const arch=[];
+  for(const s of series) await exportarSerieImgs(vpAct, s, nombreArchivo('S'+(s.num||'')+'_'+(s.desc||''))+'/', arch);
+  progreso('Creando ZIP…',1); const zip=await crearZip(arch); progreso(null); descargar(zip, nombreBase(vpAct)+'_todas.zip'); aviso(arch.length+' imágenes guardadas.'); };
+
+function tipoVideo(){ const t=['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm']; for(const x of t) if(window.MediaRecorder && MediaRecorder.isTypeSupported(x)) return x; return null; }
+async function grabarSerie(origen, s, plano){
+  const tipo=tipoVideo(); if(!tipo) throw new Error('Este navegador no permite crear videos. Use Google Chrome actualizado.');
+  const v=visorVirtual(origen,s);
+  if(plano){ const tmp=origen; v.plano=plano; v.ww=tmp.ww; v.wc=tmp.wc; v.wlOk=true; const W=mpr.dims; const d=extraerPlano(plano,0); const ar=(d.h*espaciado(v).sy)/(d.w*espaciado(v).sx); v.cv.width=768; v.cv.height=Math.round(768*ar/2)*2; v.dpr=1.3; }
+  const tot=plano? mpr.dims[{ax:2,co:1,sa:0}[plano]] : s.imgs.length;
+  const fps=Math.max(1,Math.min(60,parseFloat($('#vFps').value)||10));
+  v.idx=0; await cargarImagen(v);
+  const stream=v.cv.captureStream(0), track=stream.getVideoTracks()[0];
+  const rec=new MediaRecorder(stream,{mimeType:tipo, videoBitsPerSecond:6e6}); const trozos=[];
+  rec.ondataavailable=e=>{ if(e.data.size) trozos.push(e.data); };
+  const listo=new Promise(r=>rec.onstop=r);
+  rec.start();
+  const vueltas = tot<2?1:1;
+  for(let vt=0;vt<vueltas;vt++) for(let i=0;i<tot;i++){
+    const t0=performance.now();
+    v.idx=i; if(plano){ v.dec=extraerPlano(plano,i); v.clave='MPR|'+s.id+'|'+plano+'|'+i+'|'+$('#sGrosor').value; dibujar(v); } else await cargarImagen(v);
+    if(track.requestFrame) track.requestFrame();
+    progreso('Grabando video: '+(s.desc||'serie')+(plano?' '+planoNombre(plano):'')+' '+(i+1)+'/'+tot,(i+1)/tot);
+    const resto=1000/fps-(performance.now()-t0); await new Promise(r=>setTimeout(r,Math.max(0,resto)));
+  }
+  if(tot===1) await new Promise(r=>setTimeout(r,1000));
+  rec.stop(); await listo;
+  return {blob:new Blob(trozos,{type:tipo.split(';')[0]}), ext:tipo.includes('mp4')?'mp4':'webm'};
+}
+async function videosDe(lista){
+  const res=[];
+  try{
+    for(const it of lista){ const r=await grabarSerie(it.origen, it.s, it.plano); res.push({nombre:nombreArchivo((it.plano?'MPR_'+planoNombre(it.plano):'S'+(it.s.num||''))+'_'+(it.s.desc||''))+'.'+r.ext, blob:r.blob}); }
+  }catch(e){ progreso(null); aviso(e.message,6000); return; }
+  progreso(null);
+  if(!res.length) return;
+  if(res.length===1) descargar(res[0].blob, nombreBase(vpAct)+'_'+res[0].nombre);
+  else { progreso('Creando ZIP…',1); const z=await crearZip(res); progreso(null); descargar(z, nombreBase(vpAct)+'_videos.zip'); }
+  aviso(res.length===1?'Video guardado en Descargas.':res.length+' videos guardados en un ZIP.',4000);
+}
+$('#vActual').onclick=()=>{ const v=vpAct; if(!v||!v.serie) return aviso('Abra una serie primero.'); videosDe([{origen:v, s:v.serie, plano:v.plano}]); };
+$('#vElegidas').onclick=()=>{ const l=series.filter(s=>s.elegida); if(!l.length) return aviso('Marque las casillas ☑ de las series en la pestaña Series.',4000); videosDe(l.map(s=>({origen:vpAct,s}))); };
+$('#vTodas').onclick=()=>{ const l=series.filter(s=>s.imgs.length>1); if(!l.length) return aviso('No hay series con varias imágenes.'); videosDe(l.map(s=>({origen:vpAct,s}))); };
+
+/* ====================== barra ====================== */
+$$('#herr .b').forEach(b=>b.onclick=()=>{ herramienta=b.dataset.h; $$('#herr .b').forEach(x=>x.classList.toggle('act',x===b)); vps.forEach(v=>{ if(v.temp){v.temp=null; dibujar(v);} });
+  if(herramienta==='cruz' && !mpr) aviso('La cruz se usa en el modo MPR 3 planos.');
+  if(herramienta==='angulo') aviso('Ángulo: arrastre el primer brazo y luego toque el final del segundo.',3500); });
+$('#bLado').onclick=()=>{ $('#lado').classList.toggle('oculto'); setTimeout(redimensionar,50); };
+$$('.pest button').forEach(b=>b.onclick=()=>mostrarPest(b.dataset.v));
+function mostrarPest(id){ $$('.pest button').forEach(x=>x.classList.toggle('act',x.dataset.v===id)); $$('.vistaLado').forEach(x=>x.classList.toggle('act',x.id===id)); if(id==='vMedidas') pintarMedidas(); setTimeout(redimensionar,30); }
+$('#bAbrir').onclick=()=>abrirModal('#mAbrir');
+$('#abArch').onclick=()=>{ cerrarModales(); $('#fArchivos').value=''; $('#fArchivos').click(); };
+$('#abCarp').onclick=()=>{ cerrarModales(); $('#fCarpeta').value=''; $('#fCarpeta').click(); };
+$('#fArchivos').onchange=e=>e.target.files.length&&cargarArchivos(e.target.files,$('#chAgregar').checked);
+$('#fCarpeta').onchange=e=>e.target.files.length&&cargarArchivos(e.target.files,$('#chAgregar').checked);
+document.addEventListener('dragover',e=>e.preventDefault());
+document.addEventListener('drop',async e=>{ e.preventDefault(); const fs=[]; const items=[...(e.dataTransfer.items||[])].map(i=>i.webkitGetAsEntry&&i.webkitGetAsEntry()).filter(Boolean);
+  if(items.length){ const leer=async ent=>{ if(ent.isFile) fs.push(await new Promise(r=>ent.file(r))); else if(ent.isDirectory){ const rd=ent.createReader(); let lote; do{ lote=await new Promise(r=>rd.readEntries(r)); for(const x of lote) await leer(x);}while(lote.length);} }; for(const it of items) await leer(it); }
+  else fs.push(...e.dataTransfer.files);
+  if(fs.length) cargarArchivos(fs,false); });
+$('#sPreset').onchange=e=>{ const v=vpAct, val=e.target.value; e.target.value=''; if(!v||!v.dec) return;
+  if(val==='auto'){ v.wlOk=false; ventanaInicial(v,v.dec); v.wlOk=true; } else { const [w,c]=val.split(',').map(Number); v.ww=w; v.wc=c; }
+  dibujar(v); sincronizarWL(v); };
+$('#bInvertir').onclick=()=>{ const v=vpAct; if(v){ v.invert=!v.invert; dibujar(v);} };
+$('#bRotar').onclick=()=>{ const v=vpAct; if(v){ v.rot=(v.rot+90)%360; dibujar(v);} };
+$('#bVoltear').onclick=()=>{ const v=vpAct; if(v){ v.flipH=!v.flipH; dibujar(v);} };
+$('#bReset').onclick=()=>{ const v=vpAct; if(!v||!v.dec) return; v.zoom=1; v.panX=v.panY=0; v.rot=0; v.flipH=false; v.invert=false; v.wlOk=false; ventanaInicial(v,v.dec); v.wlOk=true; dibujar(v); sincronizarWL(v); };
+$('#bTexto').onclick=()=>{ const v=vpAct; if(!v||!v.serie){ textoVisible=!textoVisible; vps.forEach(x=>dibujar(x)); return; }
+  const I=(v.img||v.serie.imgs[0]).info;
+  const filas=[['Paciente',I.paciente],['ID',I.pid],['Sexo',I.sexo],['Edad',I.edad],['Nacimiento',fechaDicom(I.nac)],['Fecha del estudio',fechaDicom(I.fecha)],['Estudio',I.estudioDesc],['Serie',(I.serieNum||'')+' '+(I.serieDesc||'')],['Modalidad',I.modalidad],['Institución',I.institucion],['Equipo',I.equipo],['Matriz',I.cols+' × '+I.filas],['Píxel (mm)',I.calibrado?fmt(I.sx,3)+' × '+fmt(I.sy,3):'sin calibración'],['Grosor de corte',I.grosor?I.grosor+' mm':''],['Imágenes / cuadros',v.serie.imgs.length+''],['Compresión',nombreTS(I.ts)]];
+  $('#datosTabla').innerHTML='<table>'+filas.filter(f=>f[1]).map(f=>'<tr><td>'+esc(f[0])+'</td><td>'+esc(f[1])+'</td></tr>').join('')+'</table><label style="margin-top:12px"><input type="checkbox" id="chTxt" '+(textoVisible?'checked':'')+'> Mostrar textos sobre la imagen</label>';
+  abrirModal('#mDatos'); $('#chTxt').onchange=e=>{ textoVisible=e.target.checked; vps.forEach(x=>dibujar(x)); }; };
+$('#sLayout').onchange=e=>cambiarLayout(e.target.value);
+$('#sGrosor').onchange=()=>{ if(!mpr){ aviso('El grosor (MIP) se usa en el modo MPR 3 planos.'); return; } vps.forEach(v=>v.plano&&cargarImagen(v)); };
+$('#bCopiarMed').onclick=async()=>{ const t=textoMedidas(); try{ await navigator.clipboard.writeText(t); aviso('Medidas copiadas. Péguelas en su informe.'); }catch(e){ $('#mTextoTit').textContent='Seleccione y copie'; $('#mTextoVal').value=t; abrirModal('#mTexto'); $('#mTextoOk').onclick=cerrarModales; } };
+$('#bTxtMed').onclick=()=>descargar(new Blob([textoMedidas()],{type:'text/plain;charset=utf-8'}), nombreBase(vpAct)+'_medidas.txt');
+document.addEventListener('keydown',e=>{ if(/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return; const v=vpAct; if(!v) return;
+  if(e.key==='ArrowDown'||e.key==='ArrowRight'||e.key==='PageDown') irA(v,v.idx+1);
+  else if(e.key==='ArrowUp'||e.key==='ArrowLeft'||e.key==='PageUp') irA(v,v.idx-1);
+  else if(e.key==='Escape'){ vps.forEach(x=>{x.temp=null;dibujar(x);}); cerrarModales(); }
+  else if(e.key==='Delete'){ const a=todasAnot().find(x=>x.sel); if(a){ const arr=anotaciones.get(a.clave); arr.splice(arr.indexOf(a),1); pintarMedidas(); vps.forEach(x=>dibujar(x)); } } });
+
+cambiarLayout('1', true);
+if(window.innerWidth<=700) $('#lado').classList.add('oculto');
+</script>
+</body>
+</html>

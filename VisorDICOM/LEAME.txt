@@ -1,0 +1,58 @@
+VISOR DICOM - Instrucciones
+===========================
+Funciona SIN INTERNET y no necesita instalar nada: es un solo archivo.
+Las imagenes se procesan dentro de la tablet; nada se sube a internet.
+
+COMO ABRIRLO EN LA TABLET (Android)
+1. Copie VisorDICOM.html a la tablet (por cable, WhatsApp, Drive o memoria).
+2. Abralo con Google Chrome: Archivos > toque el archivo > Abrir con Chrome.
+   Si no aparece Chrome, escriba en la barra de Chrome:
+   file:///sdcard/Download/VisorDICOM.html
+3. En Chrome: menu (tres puntos) > "Agregar a la pantalla principal"
+   para tenerlo como una aplicacion.
+En computadora: doble clic y se abre en Chrome o Edge.
+
+ABRIR UN ESTUDIO
+- Boton Abrir > "Elegir archivos": seleccione TODOS los archivos del
+  estudio (de un CD suelen estar en la carpeta DICOM o IMAGES y a veces no
+  tienen extension). Tambien acepta un archivo .ZIP con el estudio.
+- "Elegir una carpeta completa" abre todas las imagenes de esa carpeta.
+- Formatos: DICOM sin compresion, JPEG, JPEG sin perdida y RLE.
+  JPEG 2000 no es compatible: si aparece ese aviso, pida el estudio
+  exportado "sin compresion".
+
+HERRAMIENTAS (barra superior)
+- Ventana: deslice el dedo izquierda/derecha (ancho) y arriba/abajo (nivel).
+  "Ventanas..." trae: abdomen, higado, mediastino, pulmon, hueso, cerebro,
+  subdural, ACV, angio-TC y hueso temporal.
+- Mover (pan), Zoom y Cortes (deslizar para pasar imagenes).
+- Con DOS DEDOS siempre se puede ampliar y mover, en cualquier herramienta.
+- Barra inferior: pasa los cortes; Cine reproduce (img/s = velocidad).
+- Distancia, Angulo (arrastre el primer brazo y toque el final del segundo),
+  ROI elipse y ROI rectangulo (media, DE, min, max y area), Densidad
+  (UH en un punto) y Flecha con texto.
+- Toque y arrastre los puntos amarillos de una medida para corregirla.
+- Invertir, Rotar, Voltear, Restaurar y Datos (datos del estudio y
+  mostrar/ocultar los textos sobre la imagen).
+
+NOTAS EN LAS MEDIDAS
+- Pestana "Medidas": cada medida tiene un recuadro para escribir lo que se
+  ve. La nota aparece junto a la medida en la imagen y al guardarla.
+- "Copiar todas las medidas y notas" para pegarlas en el informe, o
+  guardarlas en un archivo .txt.
+
+MPR
+- Elija "MPR 3 planos": axial, coronal y sagital de la serie de cortes.
+- Herramienta "Cruz MPR": toque un punto y los otros planos van a ese punto.
+- "Grosor": MIP 3/5/10/20 mm, promedio o MinIP (vias aereas).
+
+GUARDAR (se guardan en Descargas)
+- Imagen actual (PNG), con medidas y notas.
+- Marcar (estrella) varias imagenes y "Guardar imagenes marcadas": en un ZIP.
+- Todas las imagenes de la serie, o de todas las series (ZIP).
+- Videos: de la serie actual, de las series elegidas (casillas en la
+  pestana Series) o de todas las series. Varios videos van en un ZIP.
+  La velocidad del video se ajusta en "Velocidad del video".
+
+El visor ayuda a revisar y documentar imagenes; no reemplaza la estacion
+de diagnostico oficial del hospital.
