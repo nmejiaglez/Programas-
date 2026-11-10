@@ -106,3 +106,46 @@ EN QUE EQUIPOS FUNCIONA
   Microsoft Edge actualizados. iPad: Safari o Chrome recientes.
 - El 3D necesita aceleracion por hardware (WebGL2). Si no aparece:
   Chrome > Configuracion > Sistema > "Usar aceleracion de graficos".
+
+HERRAMIENTAS NUEVAS (barra superior)
+- Volumen: dibuje con el dedo el borde de la lesion en varios cortes;
+  calcula area, densidad media y el VOLUMEN en cm3. "Nueva lesion"
+  (pestana Medidas) empieza otra lesion (L2, L3...).
+- Nodulo: eje largo y luego eje corto -> diametro medio, volumen
+  aproximado, categoria Lung-RADS (solido, basal) y grupo Fleischner.
+- Cobb: linea del platillo superior y luego del inferior -> angulo.
+- Alt. vert.: altura de la vertebra afectada y luego de una sana ->
+  % de perdida de altura y grado de Genant.
+- ICT: diametro cardiaco maximo y luego toracico interno -> indice.
+- Perfil: arrastre una linea -> grafica de densidades (UH) en el recorrido.
+- MPR curvo (en modo MPR): toque puntos siguiendo la estructura (aorta,
+  arco dental, columna); toque 2 veces el ultimo punto o Enter.
+- ASPECTS: marque las regiones afectadas y se pone el puntaje en la imagen.
+- Lupa: al medir con el dedo aparece una lupa encima del dedo.
+- Anonimo: oculta nombre, ID e institucion en pantalla, imagenes,
+  videos, hojas y nombres de archivo.
+- Atajos: W ventana, P mover, Z zoom, C cortes, M distancia, A angulo,
+  E elipse, R rectangulo, D densidad, F flecha, V volumen, N nodulo,
+  B Cobb, H altura, I ICT, L perfil, K curvo, X invertir, Espacio cine,
+  S marcar, G guardar, 0 restaurar, Y sincronizar, U lupa, O anonimo,
+  T panel. Numeros 1-9 = ventanas. Se pueden cambiar en "Atajos".
+
+COMPARAR ESTUDIOS (actual y previo)
+1. Abra el estudio actual. 2. Abrir > marque "Agregar al estudio
+   abierto" > elija el estudio previo.
+3. En la lista de distribucion elija "Comparar estudios": quedan lado a
+   lado y SINCRONIZADOS (al pasar cortes en uno, el otro va a la misma
+   altura y con la misma ventana). Boton "Sincronizar" lo activa o quita.
+
+INFORME E IMAGENES CLAVE
+- Pestana Medidas > "Pasar al informe (copiar)": copia todas las medidas,
+  notas y volumenes ordenados por serie; pegue en Word con Ctrl+V.
+- Pestana Guardar > "Hoja de imagenes clave": junta las imagenes
+  marcadas con estrella en una hoja (auto, 1x2, 2x2, 2x3, 3x3) con los
+  datos del paciente, lista para WhatsApp o el expediente.
+
+EL VISOR RECUERDA: herramienta preferida, velocidades, calidad 3D,
+modo anonimo, lupa, atajos y ventanas favoritas ("Ventanas..." >
+"Guardar ventana actual como favorita").
+Los CD con programas incluidos abren mas rapido: el visor salta los
+archivos que no son imagenes (DICOMDIR, .exe, etc.).

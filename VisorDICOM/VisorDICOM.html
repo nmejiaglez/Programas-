@@ -114,6 +114,13 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
     <button class="b" data-h="rect"><svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12"/></svg>ROI rect.</button>
     <button class="b" data-h="punto"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 3v5M12 16v5M3 12h5M16 12h5"/></svg>Densidad</button>
     <button class="b" data-h="texto"><svg viewBox="0 0 24 24"><path d="M4 20l7-7M4 20h4M4 20v-4"/><path d="M13 4h8M17 4v9"/></svg>Flecha</button>
+    <button class="b" data-h="contorno"><svg viewBox="0 0 24 24"><path d="M5 12c0-5 4-8 8-7s7 4 6 8-5 7-9 6-5-3-5-7z"/><path d="M9 12h6M12 9v6"/></svg>Volumen</button>
+    <button class="b" data-h="nodulo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M4 12h16M12 7v10"/></svg>Nódulo</button>
+    <button class="b" data-h="cobb"><svg viewBox="0 0 24 24"><path d="M4 6l16 3M4 18l16-4"/><path d="M14 8c2 3 2 5 0 7"/></svg>Cobb</button>
+    <button class="b" data-h="altura"><svg viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="6" rx="1"/><path d="M6 14l12 1v5H6z"/><path d="M3 4v16"/></svg>Alt. vert.</button>
+    <button class="b" data-h="ict"><svg viewBox="0 0 24 24"><path d="M12 20c-5-3-8-6-8-10a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 4-3 7-8 10z"/><path d="M2 13h20"/></svg>ICT</button>
+    <button class="b" data-h="perfil"><svg viewBox="0 0 24 24"><path d="M3 20h18M3 20V4"/><path d="M5 16l4-6 3 4 4-8 4 6"/></svg>Perfil</button>
+    <button class="b" data-h="curvo"><svg viewBox="0 0 24 24"><path d="M4 19c4-1 3-7 7-8s4-6 9-7"/><circle cx="4" cy="19" r="1.5"/><circle cx="20" cy="4" r="1.5"/></svg>MPR curvo</button>
     <button class="b" data-h="cruz"><svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="3"/></svg>Cruz MPR</button>
   </div>
   <div class="grupo">
@@ -140,9 +147,17 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
     <button class="b" id="bTexto"><svg viewBox="0 0 24 24"><path d="M5 6h14M12 6v13"/></svg>Datos</button>
   </div>
   <div class="grupo">
+    <button class="b" id="bSincro" title="Sincronizar cortes entre visores (comparar estudios)"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="7" height="14"/><rect x="14" y="5" width="7" height="14"/><path d="M10 12h4"/></svg>Sincronizar</button>
+    <button class="b" id="bAspects" title="Puntaje ASPECTS"><svg viewBox="0 0 24 24"><path d="M12 3c-5 0-8 4-8 9s3 9 8 9 8-4 8-9-3-9-8-9z"/><path d="M12 3v18M8 9h3M8 14h3"/></svg>ASPECTS</button>
+    <button class="b" id="bLupa" title="Lupa al medir con el dedo"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16 16l5 5M11 8v6M8 11h6"/></svg>Lupa</button>
+    <button class="b" id="bAnonimo" title="Ocultar datos del paciente"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 4-7 8-7s7 2 8 7"/><path d="M3 3l18 18"/></svg>Anónimo</button>
+    <button class="b" id="bAtajos" title="Atajos de teclado"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h1M10 10h1M14 10h1M18 10h1M7 14h10"/></svg>Atajos</button>
+  </div>
+  <div class="grupo">
     <select class="b" id="sLayout" title="Distribución">
       <option value="1">1 visor</option>
       <option value="2">2 visores</option>
+      <option value="comp">Comparar estudios</option>
       <option value="4">4 visores</option>
       <option value="mpr">MPR 3 planos</option>
       <option value="3d">3D volumen</option>
@@ -197,7 +212,8 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
     </div>
     <div class="vistaLado" id="vMedidas">
       <p class="nota">Cada medida tiene un espacio para escribir lo que se observa. El texto aparece junto a la medida en la imagen y en las imágenes guardadas.</p>
-      <button class="btnAncho sec" id="bCopiarMed">Copiar todas las medidas y notas</button>
+      <button class="btnAncho" id="bCopiarMed">Pasar al informe (copiar)</button>
+      <button class="btnAncho sec" id="bNuevaLesion">Nueva lesión para volumen (actual: L1)</button>
       <button class="btnAncho sec" id="bTxtMed">Guardar medidas en archivo .txt</button>
       <div id="listaMed"></div>
     </div>
@@ -205,6 +221,9 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
       <div class="tit">Imágenes</div>
       <button class="btnAncho" id="gActual">Guardar imagen actual (PNG)</button>
       <button class="btnAncho" id="gMarcadas">Guardar imágenes marcadas (★)</button>
+      <div style="display:flex;gap:6px;margin-bottom:7px"><button class="btnAncho" id="gHoja" style="margin:0;flex:1">Hoja de imágenes clave</button>
+        <select id="sHoja" style="background:#0d131a;border:1px solid var(--borde);border-radius:8px;padding:6px"><option value="auto">Auto</option><option value="1x2">1 × 2</option><option value="2x2">2 × 2</option><option value="2x3">2 × 3</option><option value="3x3">3 × 3</option></select></div>
+      <label class="nota" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="chAnon"> Ocultar datos del paciente (anónimo) en imágenes, videos y hojas</label>
       <button class="btnAncho sec" id="gSerie">Guardar todas las imágenes de la serie</button>
       <button class="btnAncho sec" id="gTodasImg">Guardar todas las imágenes de todas las series</button>
       <div class="tit">Videos (cine)</div>
@@ -253,11 +272,45 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
   <div class="fila"><button class="chico" data-cerrar>Cerrar</button></div>
 </div></div>
 
+<div class="modal" id="mPerfil"><div class="caja" style="max-width:760px">
+  <h3 id="mPerfilTit">Perfil de densidades</h3>
+  <canvas id="cvPerfil" width="1400" height="640" style="width:100%;background:#0d131a;border-radius:8px"></canvas>
+  <div class="fila"><button class="chico" id="bPerfilPng">Guardar gráfica</button><button class="chico" data-cerrar>Cerrar</button></div>
+</div></div>
+<div class="modal" id="mCurvo"><div class="caja" style="max-width:960px">
+  <h3 id="mCurvoTit">MPR curvo</h3>
+  <canvas id="cvCurvo" width="900" height="600" style="width:100%;background:#000;border-radius:8px;touch-action:none"></canvas>
+  <p class="nota">Deslice sobre la imagen para cambiar la ventana. La línea dibujada queda horizontal (de izquierda a derecha).</p>
+  <div class="fila"><button class="chico" id="bCurvoPng">Guardar imagen</button><button class="chico" id="bCurvoMarcar">★ Marcar</button><button class="chico" data-cerrar>Cerrar</button></div>
+</div></div>
+<div class="modal" id="mAspects"><div class="caja">
+  <h3>ASPECTS (TC de cráneo)</h3>
+  <p class="nota">Marque las regiones con signos de isquemia temprana (hipodensidad, pérdida de diferenciación). Puntaje = 10 − regiones marcadas.</p>
+  <label>Hemisferio <select id="aspHemi"><option value="derecho">Derecho</option><option value="izquierdo">Izquierdo</option></select></label>
+  <div id="aspLista" style="display:grid;grid-template-columns:1fr 1fr;gap:2px 10px"></div>
+  <h3 id="aspPuntaje" style="margin-top:10px">ASPECTS 10 / 10</h3>
+  <div class="fila"><button class="chico" data-cerrar>Cancelar</button><button class="chico" id="aspOk" style="background:var(--acento2)">Poner en la imagen</button></div>
+</div></div>
+<div class="modal" id="mAtajos"><div class="caja">
+  <h3>Atajos de teclado</h3>
+  <p class="nota">Toque "Cambiar" y presione la tecla nueva. Los números 1 a 9 ponen las ventanas de la lista (1 = abdomen, 4 = pulmón, 5 = hueso…). Flechas ← → imágenes, ↑ ↓ series.</p>
+  <div id="atajosLista"></div>
+  <div class="fila"><button class="chico" id="atajosDef">Restaurar originales</button><button class="chico" data-cerrar>Cerrar</button></div>
+</div></div>
+
 <div id="aviso"></div>
 <div id="progreso"><div id="progTxt">Cargando…</div><div class="barraP"><div id="progBar"></div></div></div>
 
 <script>
 'use strict';
+/* ====================== preferencias guardadas ====================== */
+const PREF_KEY='visorDicomPrefs';
+let prefs={}; try{ prefs=JSON.parse(localStorage.getItem(PREF_KEY)||'{}')||{}; }catch(e){ prefs={}; }
+function guardarPrefs(){ try{ localStorage.setItem(PREF_KEY,JSON.stringify(prefs)); }catch(e){} }
+let anonimo=!!prefs.anonimo;
+const tactil=('ontouchstart' in window)||navigator.maxTouchPoints>0;
+let lupaActiva = prefs.lupa!==undefined ? !!prefs.lupa : tactil;
+function pac(I){ I=I||{}; return anonimo? {paciente:'ANÓNIMO', pid:'', nac:'', institucion:'', sexo:I.sexo, edad:I.edad} : {paciente:I.paciente, pid:I.pid, nac:I.nac, institucion:I.institucion, sexo:I.sexo, edad:I.edad}; }
 /* ====================== utilidades ====================== */
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -694,6 +747,7 @@ async function cargarArchivos(lista, agregar){
   };
   const procesar=async(p)=>{
     const i=cuenta++;
+    if(/(^|[\\/])DICOMDIR$/i.test(p.nombre) || /\.(exe|dll|inf|ini|txt|html?|xml|pdf|js|css|ico|bmp|png|gif|jpe?g|cab|msi|sys|bat|cmd|lnk|url|json|db|mp4|avi)$/i.test(p.nombre) || p.file.size<132) return;
     try{
       const {buf,completo}=await leerEncabezado(p.file);
       const u=new Uint8Array(buf,0,Math.min(4,buf.byteLength));
@@ -766,6 +820,7 @@ function cambiarLayout(val, sinAsignar){
   const zona=$('#zona'); detenerCine();
   if(val==='3d'){ const previa=(vpAct&&vpAct.serie)||vps.map(v=>v.serie).find(Boolean); zona.innerHTML=''; vps.length=0; vpAct=null; actualizarPie(); iniciar3D(previa); return; }
   cerrar3D();
+  const comparar = val==='comp'; if(comparar) val='2';
   const n = val==='mpr'?3:parseInt(val);
   const previas=vps.map(v=>v.serie);
   zona.innerHTML=''; vps.length=0;
@@ -779,8 +834,17 @@ function cambiarLayout(val, sinAsignar){
   requestAnimationFrame(()=>{ redimensionar();
     if(val==='mpr') return iniciarMPR(previas.find(Boolean));
     mpr=null;
+    if(comparar){ const izq=previas.find(Boolean)||series[0]; if(izq){ const der=serieComparable(izq); Promise.all([asignarSerie(vps[0],izq), asignarSerie(vps[1],der)]).then(()=>ponerSincro(true)); } return; }
     if(!sinAsignar) vps.forEach((v,i)=>{ const s=previas[i]||series[i]; if(s) asignarSerie(v,s); });
   });
+}
+// para comparar: la serie equivalente de OTRO estudio (estudio previo), si existe
+function serieComparable(s){
+  const otros=series.filter(x=>x.info.estudioUID!==s.info.estudioUID && x.modalidad===s.modalidad);
+  if(otros.length){ const pal=t=>(t||'').toLowerCase().split(/[^a-z0-9áéíóúñ]+/).filter(Boolean); const ps=pal(s.desc);
+    otros.sort((a,b)=>pal(b.desc).filter(w=>ps.includes(w)).length-pal(a.desc).filter(w=>ps.includes(w)).length || Math.abs(a.imgs.length-s.imgs.length)-Math.abs(b.imgs.length-s.imgs.length));
+    return otros[0]; }
+  const i=series.indexOf(s); return series[(i+1)%series.length]||s;
 }
 function redimensionar(){
   if(v3d) redimensionar3D();
@@ -795,6 +859,7 @@ async function asignarSerie(v,s,idx){
   if(s.info.nf>1) v.idx=0;
   v.vac.style.display='none';
   await cargarImagen(v);
+  if(sincroCortes) fijarRefSincro();
   actualizarPie(); pintarSeries(); pintarMedidas();
 }
 function totalImgs(v){ if(v.plano) return mpr? mpr.dims[{ax:2,co:1,sa:0}[v.plano]] : 0; return v.serie? v.serie.imgs.length : 0; }
@@ -808,6 +873,7 @@ async function cargarImagen(v){
       if(g.mm && esVolumen(v.serie)){ d=await losaPila(v.serie,v.idx,g); clave=img.key+'|'+$('#sGrosor').value; }
       else { d=await decodificar(img); clave=img.key; } }
     if(tok!==v._tok) return;
+    if(v.clave!==clave && v.temp) v.temp=null;
     v.dec=d; v.img=img; v.clave=clave;
     if(!v.wlOk){ ventanaInicial(v,d); v.wlOk=true; }
     dibujar(v); actualizarPie();
@@ -869,13 +935,23 @@ function dibujar(v, opciones={}){
   if(mpr && v.plano) dibujarCruz(v,m);
   dibujarAnotaciones(v,m);
   if(!opciones.sinTexto && textoVisible) dibujarTexto(v);
+  if(v.lupa && !opciones.sinTexto) dibujarLupa(v);
+}
+function dibujarLupa(v){
+  const c=v.ctx, k=v.dpr||1, R=64*k, Z=2.4; let cx=v.lupa.x, cy=v.lupa.y-120*k;
+  if(cy-R<0) cy=v.lupa.y+120*k; cx=Math.max(R+2,Math.min(v.cv.width-R-2,cx));
+  const lado=2*R/Z;
+  c.save(); c.beginPath(); c.arc(cx,cy,R,0,Math.PI*2); c.clip(); c.fillStyle='#000'; c.fillRect(cx-R,cy-R,2*R,2*R);
+  try{ c.drawImage(v.cv, v.lupa.x-lado/2, v.lupa.y-lado/2, lado, lado, cx-R, cy-R, 2*R, 2*R); }catch(e){}
+  c.strokeStyle='#4fd6e8'; c.lineWidth=1*k; c.beginPath(); c.moveTo(cx-10*k,cy); c.lineTo(cx+10*k,cy); c.moveTo(cx,cy-10*k); c.lineTo(cx,cy+10*k); c.stroke();
+  c.restore(); c.save(); c.strokeStyle='#4fd6e8'; c.lineWidth=2*k; c.beginPath(); c.arc(cx,cy,R,0,Math.PI*2); c.stroke(); c.restore();
 }
 let textoVisible=true;
 function dibujarTexto(v){
   const c=v.ctx, k=v.dpr||1, cw=v.cv.width, ch=v.cv.height, I=(v.img||v.serie.imgs[0]).info;
   const fs=Math.round(Math.max(11,Math.min(14,cw/k/45))*k); c.font=fs+'px Arial'; c.textBaseline='top';
   const lh=fs*1.25, sombra=(t,x,y,al)=>{ c.textAlign=al; c.fillStyle='rgba(0,0,0,.8)'; c.fillText(t,x+1,y+1); c.fillStyle='#f2f5f8'; c.fillText(t,x,y); };
-  const tl=[I.paciente, (I.pid?'ID '+I.pid+'  ':'')+(I.sexo||'')+(I.edad?' '+I.edad:''), fechaDicom(I.fecha), I.institucion].filter(Boolean);
+  const Pc=pac(I), tl=[Pc.paciente, (Pc.pid?'ID '+Pc.pid+'  ':'')+(I.sexo||'')+(I.edad?' '+I.edad:''), fechaDicom(I.fecha), Pc.institucion].filter(Boolean);
   tl.forEach((t,i)=>sombra(t,8*k,6*k+i*lh,'left'));
   const nombrePlano={ax:planoNombre('ax'),co:planoNombre('co'),sa:planoNombre('sa')};
   const tr=[ (v.plano?'MPR '+nombrePlano[v.plano]:'Serie '+(v.serie.num||'')+' '+(v.serie.desc||'')).trim(), (textoLosa() && (v.plano||(v.dec&&v.dec.losa))) ? textoLosa() : '', I.modalidad+(I.equipo?' · '+I.equipo:'') ].filter(Boolean);
@@ -945,8 +1021,12 @@ function dibujarUna(v,m,a){
     const [x0,y0]=a.pts[0],[x1,y1]=a.pts[1]; c.save(); c.setTransform(m); c.beginPath(); c.ellipse((x0+x1)/2,(y0+y1)/2,Math.abs(x1-x0)/2||.01,Math.abs(y1-y0)/2||.01,0,0,Math.PI*2); c.restore(); c.stroke(); }
   else if(a.tipo==='rect'&&P[1]){ const [x0,y0]=a.pts[0],[x1,y1]=a.pts[1]; const q=[[x0,y0],[x1,y0],[x1,y1],[x0,y1]].map(p=>aPantalla(m,p[0],p[1])); c.moveTo(...q[0]); q.slice(1).forEach(p=>c.lineTo(...p)); c.closePath(); c.stroke(); }
   else if(a.tipo==='punto'){ const [x,y]=P[0]; c.moveTo(x-8*k,y); c.lineTo(x+8*k,y); c.moveTo(x,y-8*k); c.lineTo(x,y+8*k); c.stroke(); }
-  // asas
-  for(const p of P){ c.beginPath(); c.arc(p[0],p[1],(a.sel?5:3)*k,0,Math.PI*2); c.fill(); }
+  else if(a.tipo==='perfil'){ c.setLineDash([6*k,3*k]); c.moveTo(...P[0]); if(P[1]) c.lineTo(...P[1]); c.stroke(); c.setLineDash([]); }
+  else if(DOS_LINEAS.includes(a.tipo)){ c.moveTo(...P[0]); c.lineTo(...P[1]); if(P[3]){ c.moveTo(...P[2]); c.lineTo(...P[3]); } c.stroke(); }
+  else if(a.tipo==='contorno'||a.tipo==='curvo'){ c.moveTo(...P[0]); for(const q of P.slice(1)) c.lineTo(...q); if(a.tipo==='contorno' && v.temp!==a) c.closePath(); c.stroke();
+    if(a.tipo==='contorno'){ c.globalAlpha=.12; c.fill(); c.globalAlpha=1; } }
+  // asas (el contorno no tiene asas: se borra y se vuelve a dibujar)
+  if(a.tipo!=='contorno') for(const p of P){ c.beginPath(); c.arc(p[0],p[1],(a.sel?5:3)*k,0,Math.PI*2); c.fill(); }
   c.restore();
   // etiquetas movibles: resultado y nota en cajas separadas
   const txt=[a.n?'#'+a.n+' ':'' , a.res||''].join('').trim();
@@ -997,6 +1077,59 @@ function calcular(v,a){
     a.res='Media '+fmt(media,dd)+un+'  DE '+fmt(de,dd)+'\nMín '+fmt(mn,dd)+'  Máx '+fmt(mx,dd)+'\nÁrea '+(cal?fmt(area/100,2)+' cm²':fmt(area,0)+' px²')+'  ('+ejes+')';
   }
   else if(a.tipo==='texto') a.res='';
+  else if(a.tipo==='perfil' && a.pts.length===2){
+    const [p,q]=a.pts, Lpx=Math.hypot(q[0]-p[0],q[1]-p[1]), n=Math.max(2,Math.min(2000,Math.ceil(Lpx*2)));
+    const vals=[]; for(let i=0;i<n;i++){ const f=i/(n-1), z=val(p[0]+(q[0]-p[0])*f, p[1]+(q[1]-p[1])*f); vals.push(z===null?NaN:z); }
+    const ok=vals.filter(x=>!isNaN(x)), L=Math.hypot((q[0]-p[0])*fx,(q[1]-p[1])*fy), un=unidad(v);
+    a.perfil=vals; a.largo=L; a.unidadL=u.trim(); a.unidadV=un.trim();
+    a.res= ok.length? 'Perfil '+fmt(L,1)+u+'\nMín '+fmt(Math.min(...ok),0)+'  Máx '+fmt(Math.max(...ok),0)+'  Media '+fmt(ok.reduce((x,y)=>x+y,0)/ok.length,0)+un : 'Perfil fuera de la imagen'; }
+  else if(DOS_LINEAS.includes(a.tipo)){
+    const Lm=(p,q)=>Math.hypot((q[0]-p[0])*fx,(q[1]-p[1])*fy), l1=Lm(a.pts[0],a.pts[1]), l2=a.pts.length>=4?Lm(a.pts[2],a.pts[3]):null;
+    const pide={nodulo:'ahora dibuje el eje corto', cobb:'ahora la segunda línea (platillo inferior)', altura:'ahora la altura de referencia (vértebra sana)', ict:'ahora el diámetro torácico interno'};
+    if(l2===null){ a.res='Línea 1: '+fmt(l1,1)+u+' — '+pide[a.tipo]; return; }
+    if(a.tipo==='nodulo'){ const lg=Math.max(l1,l2), ct=Math.min(l1,l2), pr=(lg+ct)/2; a.valor=pr;
+      a.res='Nódulo '+fmt(lg,1)+' × '+fmt(ct,1)+u+'\nDiámetro medio '+fmt(pr,1)+u+(cal?'\nVol. aprox. '+fmt(Math.PI/6*lg*ct*ct,0)+' mm³\n'+clasifNodulo(pr):''); }
+    else if(a.tipo==='cobb'){ const d1=[(a.pts[1][0]-a.pts[0][0])*fx,(a.pts[1][1]-a.pts[0][1])*fy], d2=[(a.pts[3][0]-a.pts[2][0])*fx,(a.pts[3][1]-a.pts[2][1])*fy];
+      const cs=Math.abs(d1[0]*d2[0]+d1[1]*d2[1])/(Math.hypot(...d1)*Math.hypot(...d2)||1); const ang=Math.acos(Math.min(1,cs))*180/Math.PI; a.valor=ang;
+      a.res='Ángulo de Cobb '+fmt(ang,1)+'°'+(ang<10?'\n< 10°':ang<25?'\nLeve (10–25°)':ang<40?'\nModerado (25–40°)':'\nSevero (> 40°)'); }
+    else if(a.tipo==='altura'){ const per=Math.max(0,(1-l1/l2)*100); a.valor=per;
+      const gen= per<20?'Grado 0 (< 20 %)': per<25?'Genant grado 1 leve (20–25 %)': per<40?'Genant grado 2 moderado (25–40 %)':'Genant grado 3 severo (> 40 %)';
+      a.res='Altura '+fmt(l1,1)+u+' / referencia '+fmt(l2,1)+u+'\nPérdida de altura '+fmt(per,0)+' %\n'+gen; }
+    else if(a.tipo==='ict'){ const r=l1/l2; a.valor=r; a.res='Índice cardiotorácico '+fmt(r,2)+'\nCorazón '+fmt(l1/10,1)+' cm / tórax '+fmt(l2/10,1)+' cm'+(r>0.5?'\nAumentado (> 0.50)':'\nDentro de lo esperado (≤ 0.50)'); }
+  }
+  else if(a.tipo==='contorno' && a.pts.length>=3){
+    const P=a.pts; let ar=0; for(let i=0;i<P.length;i++){ const [x1,y1]=P[i],[x2,y2]=P[(i+1)%P.length]; ar+=x1*y2-x2*y1; } ar=Math.abs(ar)/2;
+    const area=ar*fx*fy; a.area=area;
+    // estadística por barrido de filas
+    let y0=Infinity,y1=-Infinity; for(const q of P){ if(q[1]<y0)y0=q[1]; if(q[1]>y1)y1=q[1]; }
+    let n=0,sm=0,s2=0,mn=Infinity,mx=-Infinity;
+    for(let y=Math.max(0,Math.floor(y0)); y<=Math.min(d.h-1,Math.ceil(y1)); y++){ const yc=y+.5, xs=[];
+      for(let i=0;i<P.length;i++){ const [ax,ay]=P[i],[bx,by]=P[(i+1)%P.length]; if((ay<=yc&&by>yc)||(by<=yc&&ay>yc)) xs.push(ax+(yc-ay)*(bx-ax)/(by-ay)); }
+      xs.sort((p1,p2)=>p1-p2);
+      for(let i=0;i+1<xs.length;i+=2) for(let x=Math.max(0,Math.ceil(xs[i]-.5)); x<=Math.min(d.w-1,Math.floor(xs[i+1]-.5)); x++){ const z=val(x,y); if(z===null) continue; n++; sm+=z; s2+=z*z; if(z<mn)mn=z; if(z>mx)mx=z; } }
+    const un=unidad(v), md=n?sm/n:0, de=n?Math.sqrt(Math.max(0,s2/n-md*md)):0;
+    a.base='L'+(a.lesion||1)+' · Área '+(cal?fmt(area/100,2)+' cm²':fmt(area,0)+' px²')+(n?'\nMedia '+fmt(md,1)+un+'  DE '+fmt(de,1):'');
+    a.res=a.base+(a.volTxt?'\n'+a.volTxt:''); }
+  else if(a.tipo==='aspects'){ a.res='ASPECTS '+a.puntaje+' / 10 (hemisferio '+a.hemi+')'; }
+}
+const DOS_LINEAS=['nodulo','cobb','altura','ict'];
+function clasifNodulo(d){ const lr= d<6?'2': d<8?'3': d<15?'4A':'4B'; const fl= d<6?'< 6 mm': d<=8?'6–8 mm':'> 8 mm';
+  return 'Lung-RADS (sólido, basal): '+lr+'\nFleischner (sólido): grupo '+fl; }
+function dzSerie(s){ if(!s.dz){ let dz=0; if(s.conPos){ for(let k=1;k<s.imgs.length;k++) dz+=Math.abs(s.imgs[k].pos-s.imgs[k-1].pos); dz/= (s.imgs.length-1); } s.dz=dz||s.info.grosor||1; } return s.dz; }
+let lesionActual=1; let volumenes=[];
+function actualizarVolumenes(){
+  const grupos=new Map();
+  for(const a of todasAnot()) if(a.tipo==='contorno' && !a.plano && a.area){ const k=a.serie.id+'|'+a.lesion; if(!grupos.has(k)) grupos.set(k,[]); grupos.get(k).push(a); }
+  volumenes=[];
+  for(const [k,l] of grupos){ const s=l[0].serie, dz=dzSerie(s), cal=s.info.calibrado;
+    const porCorte=new Map(); for(const a of l){ porCorte.set(a.idx,(porCorte.get(a.idx)||0)+a.area); }
+    const cortes=[...porCorte.entries()].map(([i,A])=>({pos: s.conPos? s.imgs[i].pos : i*dz, A})).sort((x,y)=>x.pos-y.pos);
+    let V; if(cortes.length===1) V=cortes[0].A*dz;
+    else { V=(cortes[0].A+cortes[cortes.length-1].A)/2*dz; for(let i=0;i+1<cortes.length;i++) V+=(cortes[i].A+cortes[i+1].A)/2*Math.abs(cortes[i+1].pos-cortes[i].pos); }
+    const txt='Volumen L'+l[0].lesion+': '+(cal?fmt(V/1000,2)+' cm³':fmt(V,0)+' px³')+' ('+cortes.length+' corte'+(cortes.length>1?'s':'')+')';
+    volumenes.push({serie:s, lesion:l[0].lesion, V, cortes:cortes.length, txt});
+    for(const a of l){ a.volTxt=txt; a.res=a.base+'\n'+txt; } }
+  for(const a of todasAnot()) if(a.tipo==='contorno' && !grupos.has(a.serie.id+'|'+a.lesion)){ a.volTxt=''; }
 }
 
 /* ====================== MPR ====================== */
@@ -1101,42 +1234,54 @@ function moverCruz(v,x,y){
 }
 
 /* ====================== punteros y gestos ====================== */
+const HERR_ARRASTRE=['dist','elipse','rect','texto','perfil'];
+const HERR_NAV=['wl','pan','zoom','scroll','cruz'];
 function configurarPuntero(v){
   const ptrs=new Map(); let gesto=null;
   const cv=v.el;
+  const ponerLupa=ev=>{ if(!lupaActiva || ev.pointerType!=='touch'){ v.lupa=null; return; } const r=v.cv.getBoundingClientRect(); v.lupa={x:(ev.clientX-r.left)*v.dpr, y:(ev.clientY-r.top)*v.dpr}; };
   cv.addEventListener('pointerdown',ev=>{
     cv.setPointerCapture(ev.pointerId); ptrs.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});
     if(!v.dec) return;
-    if(ptrs.size===2){ // pellizco
-      if(v.temp){ v.temp=null; }
-      if(gesto&&gesto.anot&&gesto.nueva){ const arr=listaAnot(v.clave); const i=arr.indexOf(gesto.anot); if(i>=0) arr.splice(i,1); }
-      const [a,b]=[...ptrs.values()]; gesto={tipo:'pinch', d0:Math.hypot(a.x-b.x,a.y-b.y), z0:v.zoom, cx:(a.x+b.x)/2, cy:(a.y+b.y)/2, px:v.panX, py:v.panY}; dibujar(v); return; }
+    if(ptrs.size===2){ // pellizco: cancela lo que se estaba dibujando
+      v.lupa=null; if(v.temp && !(v.temp.tipo==='curvo')) v.temp=null;
+      if(gesto&&gesto.tipo==='asa'&&gesto.nueva){ const arr=listaAnot(v.clave); const i=arr.indexOf(gesto.a); if(i>=0) arr.splice(i,1); pintarMedidas(); }
+      const [a,b]=[...ptrs.values()]; gesto={tipo:'pinch', d0:Math.hypot(a.x-b.x,a.y-b.y)||1, z0:v.zoom, cx:(a.x+b.x)/2, cy:(a.y+b.y)/2, px:v.panX, py:v.panY}; dibujar(v); return; }
     if(ptrs.size>2) return;
     let h=herramienta;
     if(ev.button===2) h='pan'; if(ev.button===1) h='zoom';
     const pi=aImagen(v,ev.clientX,ev.clientY);
-    // clic derecho mientras se dibuja un ángulo: cancelar
     if(ev.button===2 && v.temp){ v.temp=null; dibujar(v); gesto=null; return; }
-    // tocar el recuadro de números o de la nota → moverlo
-    const libre = ev.button===0 && h!=='cruz' && !(v.temp&&v.temp.tipo==='angulo');
+    const libre = ev.button===0 && h!=='cruz' && !v.temp;
     const cj = libre ? buscarCaja(v,ev.clientX,ev.clientY) : null;
     if(cj){ seleccionar(cj.a); gesto={tipo:'caja', c:cj, x0:ev.clientX, y0:ev.clientY, cx0:cj.x, cy0:cj.y}; return; }
-    // tocar un punto de una medida → moverlo
     const asa = libre ? buscarAsa(v,ev.clientX,ev.clientY, ev.pointerType==='mouse'?9:20) : null;
-    if(asa){ seleccionar(asa.a); gesto={tipo:'asa', a:asa.a, i:asa.i}; return; }
-    gesto={tipo:h, x0:ev.clientX, y0:ev.clientY, ww:v.ww, wc:v.wc, px:v.panX, py:v.panY, z0:v.zoom, idx0:v.idx, acum:0, t0:Date.now()};
-    if(['dist','elipse','rect','texto'].includes(h)){ v.temp={tipo:h, pts:[pi,pi.slice()], nota:''}; }
+    if(asa){ seleccionar(asa.a); gesto={tipo:'asa', a:asa.a, i:asa.i}; ponerLupa(ev); dibujar(v); return; }
+    gesto={tipo:h, x0:ev.clientX, y0:ev.clientY, ww:v.ww, wc:v.wc, px:v.panX, py:v.panY, z0:v.zoom, idx0:v.idx, t0:Date.now()};
+    if(HERR_ARRASTRE.includes(h)){ v.temp={tipo:h, pts:[pi,pi.slice()], nota:''}; }
+    else if(DOS_LINEAS.includes(h)){
+      if(v.temp && v.temp.tipo===h && v.temp.pts.length===2){ v.temp.pts.push(pi,pi.slice()); gesto={tipo:'linea2'}; }
+      else { v.temp={tipo:h, pts:[pi,pi.slice()], nota:''}; gesto={tipo:'linea1'}; } }
+    else if(h==='contorno'){ v.temp={tipo:'contorno', pts:[pi], nota:''}; gesto={tipo:'contorno', ux:ev.clientX, uy:ev.clientY}; }
+    else if(h==='curvo'){
+      if(!v.plano||!mpr){ aviso('El MPR curvo se dibuja en el modo "MPR 3 planos": toque puntos sobre el axial, coronal o sagital.',4500); gesto=null; return; }
+      if(v.temp && v.temp.tipo==='curvo'){
+        const m=matriz(v), ult=aPantalla(m,...v.temp.pts[v.temp.pts.length-1]), r=v.cv.getBoundingClientRect(), x=(ev.clientX-r.left)*v.dpr, y=(ev.clientY-r.top)*v.dpr;
+        if(v.temp.pts.length>=2 && Math.hypot(ult[0]-x,ult[1]-y)<18*v.dpr){ terminarCurvo(v); gesto=null; return; }
+        v.temp.pts.push(pi); }
+      else v.temp={tipo:'curvo', pts:[pi], nota:''};
+      gesto={tipo:'curvoPt'}; }
     else if(h==='punto'){ const a={id:idAnot++, tipo:'punto', pts:[pi], nota:''}; calcular(v,a); agregarAnot(v,a); gesto={tipo:'asa',a,i:0,nueva:true}; }
     else if(h==='angulo'){
       if(v.temp && v.temp.tipo==='angulo'){ v.temp.pts.push(pi); gesto={tipo:'angPt'}; }
-      else { v.temp={tipo:'angulo',pts:[pi,pi.slice()],nota:''}; gesto={tipo:'angPt'}; }
-    }
+      else { v.temp={tipo:'angulo',pts:[pi,pi.slice()],nota:''}; gesto={tipo:'angPt'}; } }
     else if(h==='cruz') moverCruz(v,pi[0],pi[1]);
+    if(!HERR_NAV.includes(h)) ponerLupa(ev);
     dibujar(v);
   });
   cv.addEventListener('pointermove',ev=>{
-    if(!ptrs.has(ev.pointerId)){ // vista previa del ángulo con ratón
-      if(v.temp&&v.temp.tipo==='angulo'&&ev.pointerType==='mouse'){ v.temp.pts[v.temp.pts.length-1]=aImagen(v,ev.clientX,ev.clientY); calcular(v,v.temp); dibujar(v);} return; }
+    if(!ptrs.has(ev.pointerId)){ // vista previa con ratón (ángulo, segunda línea, curvo)
+      if(v.temp && ev.pointerType==='mouse' && (v.temp.tipo==='angulo')){ v.temp.pts[v.temp.pts.length-1]=aImagen(v,ev.clientX,ev.clientY); calcular(v,v.temp); dibujar(v);} return; }
     ptrs.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});
     if(!gesto||!v.dec) return;
     if(gesto.tipo==='pinch' && ptrs.size>=2){
@@ -1144,58 +1289,71 @@ function configurarPuntero(v){
       const nz=Math.max(0.1,Math.min(40,gesto.z0*d/gesto.d0));
       const r=v.el.getBoundingClientRect(), ox=gesto.cx-r.left-r.width/2, oy=gesto.cy-r.top-r.height/2;
       v.zoom=nz; v.panX=ox-(ox-gesto.px)*nz/gesto.z0+(cx-gesto.cx); v.panY=oy-(oy-gesto.py)*nz/gesto.z0+(cy-gesto.cy);
-      sincronizar(v); dibujar(v); return; }
-    const dx=ev.clientX-gesto.x0, dy=ev.clientY-gesto.y0;
+      dibujar(v); return; }
+    if(v.lupa) ponerLupa(ev);
+    const dx=ev.clientX-gesto.x0, dy=ev.clientY-gesto.y0, p=()=>aImagen(v,ev.clientX,ev.clientY);
     switch(gesto.tipo){
       case 'wl': { const f=Math.max(1,gesto.ww)/300; v.ww=Math.max(1,gesto.ww+dx*f*1.5); v.wc=gesto.wc+dy*f; sincronizarWL(v); break; }
-      case 'pan': v.panX=gesto.px+dx; v.panY=gesto.py+dy; sincronizar(v); break;
-      case 'zoom': v.zoom=Math.max(0.1,Math.min(40,gesto.z0*Math.exp(-dy/150))); sincronizar(v); break;
+      case 'pan': v.panX=gesto.px+dx; v.panY=gesto.py+dy; break;
+      case 'zoom': v.zoom=Math.max(0.1,Math.min(40,gesto.z0*Math.exp(-dy/150))); break;
       case 'scroll': { const paso=Math.max(4,Math.min(16,v.el.clientHeight/Math.max(8,totalImgs(v)))); const ni=gesto.idx0+Math.round(dy/paso); irA(v,ni); return; }
-      case 'cruz': { const p=aImagen(v,ev.clientX,ev.clientY); moverCruz(v,p[0],p[1]); return; }
+      case 'cruz': { const q=p(); moverCruz(v,q[0],q[1]); return; }
       case 'caja': { const c=gesto.c, k=v.dpr||1; const nx=gesto.cx0+dx*k, ny=gesto.cy0+dy*k; const off=[(nx-c.anc[0])/k,(ny-c.anc[1])/k];
         if(c.tipo==='R') c.a.offR=off; else c.a.offN=off; break; }
-      case 'asa': { const p=aImagen(v,ev.clientX,ev.clientY); gesto.a.pts[gesto.i]=p; calcular(v,gesto.a); pintarMedidasLigero(); break; }
-      case 'angPt': if(v.temp){ v.temp.pts[v.temp.pts.length-1]=aImagen(v,ev.clientX,ev.clientY); calcular(v,v.temp);} break;
-      default: if(v.temp){ v.temp.pts[1]=aImagen(v,ev.clientX,ev.clientY); calcular(v,v.temp);} }
+      case 'asa': { gesto.a.pts[gesto.i]=p(); calcular(v,gesto.a); pintarMedidasLigero(); break; }
+      case 'angPt': if(v.temp){ v.temp.pts[v.temp.pts.length-1]=p(); calcular(v,v.temp);} break;
+      case 'linea1': if(v.temp){ v.temp.pts[1]=p(); calcular(v,v.temp);} break;
+      case 'linea2': if(v.temp&&v.temp.pts.length===4){ v.temp.pts[3]=p(); calcular(v,v.temp);} break;
+      case 'curvoPt': if(v.temp){ v.temp.pts[v.temp.pts.length-1]=p(); } break;
+      case 'contorno': if(v.temp && Math.hypot(ev.clientX-gesto.ux,ev.clientY-gesto.uy)>3){ v.temp.pts.push(p()); gesto.ux=ev.clientX; gesto.uy=ev.clientY; } break;
+      default: if(v.temp && HERR_ARRASTRE.includes(v.temp.tipo)){ v.temp.pts[1]=p(); calcular(v,v.temp);} }
     dibujar(v);
   });
+  const largoPx=(a,b)=>{ const m=matriz(v), A=aPantalla(m,...a), B=aPantalla(m,...b); return Math.hypot(A[0]-B[0],A[1]-B[1])/(v.dpr||1); };
   const fin=ev=>{
     if(!ptrs.has(ev.pointerId)) return; ptrs.delete(ev.pointerId);
-    if(!gesto) return;
+    v.lupa=null;
+    if(!gesto){ dibujar(v); return; }
     if(gesto.tipo==='pinch'){ if(ptrs.size===0) gesto=null; return; }
     if(ptrs.size) return;
-    const g=gesto; gesto=null;
-    if(v.temp && ['dist','elipse','rect','texto'].includes(v.temp.tipo)){
-      const t=v.temp; v.temp=null;
-      const r=v.cv.getBoundingClientRect(), m=matriz(v), a0=aPantalla(m,...t.pts[0]), a1=aPantalla(m,...t.pts[1]);
-      const largo=Math.hypot(a0[0]-a1[0],a0[1]-a1[1])/(v.dpr||1); void r;
-      if(largo<6){ dibujar(v); return; }
+    const g=gesto; gesto=null; const t=v.temp;
+    if(t && HERR_ARRASTRE.includes(t.tipo)){
+      v.temp=null;
+      if(largoPx(t.pts[0],t.pts[1])<6){ dibujar(v); return; }
       const a={id:idAnot++, tipo:t.tipo, pts:t.pts, nota:''}; calcular(v,a); agregarAnot(v,a);
       if(a.tipo==='texto') pedirNota(a,v);
-      volverANavegar();
-    }
-    else if(v.temp && v.temp.tipo==='angulo' && g.tipo==='angPt'){
-      // primer arrastre crea 2 puntos; luego toque para el tercero
-      if(v.temp.pts.length>=3){ const a={id:idAnot++, tipo:'angulo', pts:v.temp.pts, nota:''}; v.temp=null; calcular(v,a); agregarAnot(v,a); volverANavegar(); }
-    }
-    else if(g.tipo==='asa'){ pintarMedidas(); if(g.nueva) volverANavegar(); }
+      if(a.tipo==='perfil') mostrarPerfil(a);
+      volverANavegar(); }
+    else if(t && g.tipo==='linea1'){
+      if(largoPx(t.pts[0],t.pts[1])<6){ v.temp=null; }
+      else { calcular(v,t); aviso({nodulo:'Ahora dibuje el EJE CORTO del nódulo.',cobb:'Ahora dibuje la línea del PLATILLO INFERIOR.',altura:'Ahora dibuje la altura de una VÉRTEBRA SANA de referencia.',ict:'Ahora dibuje el DIÁMETRO TORÁCICO interno máximo.'}[t.tipo],3500); } }
+    else if(t && g.tipo==='linea2'){
+      if(largoPx(t.pts[2],t.pts[3])<6){ t.pts.length=2; }
+      else { v.temp=null; const a={id:idAnot++, tipo:t.tipo, pts:t.pts, nota:''}; calcular(v,a); agregarAnot(v,a); volverANavegar(); } }
+    else if(t && g.tipo==='contorno'){
+      v.temp=null;
+      if(t.pts.length>=4){ const a={id:idAnot++, tipo:'contorno', pts:t.pts, nota:'', lesion:lesionActual}; agregarAnot(v,a); calcular(v,a); actualizarVolumenes(); pintarMedidas(); volverANavegar();
+        aviso('Contorno de L'+a.lesion+'. Dibuje la misma lesión en otros cortes para el volumen.',3000); } }
+    else if(t && t.tipo==='angulo' && g.tipo==='angPt'){
+      if(t.pts.length>=3){ const a={id:idAnot++, tipo:'angulo', pts:t.pts, nota:''}; v.temp=null; calcular(v,a); agregarAnot(v,a); volverANavegar(); } }
+    else if(g.tipo==='asa'){ if(g.a.tipo==='contorno') actualizarVolumenes(); pintarMedidas(); if(g.nueva) volverANavegar(); }
     else if(g.tipo==='wl'||g.tipo==='zoom'||g.tipo==='pan'){ if(Date.now()-g.t0<250 && Math.hypot(ev.clientX-g.x0,ev.clientY-g.y0)<6){ const asa=buscarAsa(v,ev.clientX,ev.clientY,20); if(asa) seleccionar(asa.a);} }
     dibujar(v);
   };
   cv.addEventListener('pointerup',fin); cv.addEventListener('pointercancel',fin);
   cv.addEventListener('contextmenu',e=>e.preventDefault());
   cv.addEventListener('wheel',ev=>{ ev.preventDefault(); if(!v.dec) return;
-    if(ev.ctrlKey){ v.zoom=Math.max(0.1,Math.min(40,v.zoom*Math.exp(-ev.deltaY/300))); sincronizar(v); dibujar(v); }
+    if(ev.ctrlKey){ v.zoom=Math.max(0.1,Math.min(40,v.zoom*Math.exp(-ev.deltaY/300))); dibujar(v); }
     else { // rueda, trackball o panel táctil: cada "clic" de la rueda = una imagen
       let d=Math.abs(ev.deltaY)>=Math.abs(ev.deltaX)?ev.deltaY:ev.deltaX;
       if(ev.deltaMode===1) d*=40; else if(ev.deltaMode===2) d*=400;
       if(!d) return;
       const ahora=performance.now();
       if(Math.abs(d)>=40){ v._rueda=0; irA(v, v.idx+(d>0?1:-1)); v._ruedaT=ahora; return; }
-      if(ahora-(v._ruedaT||0)>250) v._rueda=0; // movimiento nuevo
+      if(ahora-(v._ruedaT||0)>250) v._rueda=0;
       v._rueda=(v._rueda||0)+d; v._ruedaT=ahora;
       if(Math.abs(v._rueda)>=12){ irA(v, v.idx+(v._rueda>0?1:-1)); v._rueda=0; } } },{passive:false});
-  cv.addEventListener('dblclick',()=>{ v.zoom=1; v.panX=v.panY=0; dibujar(v); });
+  cv.addEventListener('dblclick',()=>{ if(v.temp&&v.temp.tipo==='curvo'){ terminarCurvo(v); return; } v.zoom=1; v.panX=v.panY=0; dibujar(v); });
 }
 function buscarCaja(v,cx,cy){
   if(!v.cajas) return null; const r=v.cv.getBoundingClientRect(), x=(cx-r.left)*v.dpr, y=(cy-r.top)*v.dpr;
@@ -1204,13 +1362,13 @@ function buscarCaja(v,cx,cy){
 // después de una medida se vuelve a la herramienta de navegación (no se queda pegada)
 let herrNav='wl', fijarHerr=false;
 function volverANavegar(){ if(fijarHerr) return; elegirHerr(herrNav); }
-function elegirHerr(h){ herramienta=h; if(['wl','pan','zoom','scroll'].includes(h)) herrNav=h;
+function elegirHerr(h){ herramienta=h; if(['wl','pan','zoom','scroll'].includes(h)){ herrNav=h; if(typeof prefs!=='undefined' && prefs.herrNav!==h){ prefs.herrNav=h; guardarPrefs(); } }
   $$('#herr .b').forEach(x=>{ x.classList.toggle('act',x.dataset.h===h); x.classList.toggle('fija',fijarHerr&&x.dataset.h===h); }); }
 function buscarAsa(v,cx,cy,rad){
   const arr=anotaciones.get(v.clave); if(!arr||!v.dec) return null;
   const r=v.cv.getBoundingClientRect(), m=matriz(v), x=(cx-r.left)*v.dpr, y=(cy-r.top)*v.dpr, R=(rad||24)*v.dpr;
   let mejor=null, dm=R;
-  for(const a of arr) a.pts.forEach((p,i)=>{ const q=aPantalla(m,p[0],p[1]); const d=Math.hypot(q[0]-x,q[1]-y); if(d<dm){dm=d; mejor={a,i};} });
+  for(const a of arr) if(a.tipo!=='contorno') a.pts.forEach((p,i)=>{ const q=aPantalla(m,p[0],p[1]); const d=Math.hypot(q[0]-x,q[1]-y); if(d<dm){dm=d; mejor={a,i};} });
   return mejor;
 }
 function agregarAnot(v,a){
@@ -1227,10 +1385,26 @@ function irA(v,ni){
   v.idx=ni;
   if(v.plano){ mpr.punto[{ax:2,co:1,sa:0}[v.plano]]=ni; vps.forEach(o=>{ if(o!==v && o.plano) dibujar(o); }); }
   cargarImagen(v);
+  sincronizarCortes(v);
 }
-let sincro=false;
-function sincronizar(v){ if(!mpr||!v.plano||!sincro) return; }
-function sincronizarWL(v){ if(v.plano) vps.forEach(o=>{ if(o!==v && o.plano){ o.ww=v.ww; o.wc=v.wc; dibujar(o);} }); actualizarPie(); }
+/* --- sincronizar visores (comparar estudios) --- */
+let sincroCortes=false;
+function posDe(o){ const m=o.serie&&!o.plano&&o.serie.imgs[o.idx]; return (m&&o.serie.conPos&&m.pos!=null)? m.pos : null; }
+function fijarRefSincro(){ vps.forEach(o=>{ o.refIdx=o.idx; o.refPos=posDe(o); }); }
+function ponerSincro(on){ sincroCortes=on; $('#bSincro').classList.toggle('act',on); if(on){ fijarRefSincro(); aviso('Visores sincronizados: al pasar cortes en uno, los otros van a la misma altura.',3000); } }
+function sincronizarCortes(v){
+  if(!sincroCortes||v.plano||!v.serie) return; const p=posDe(v);
+  for(const o of vps){ if(o===v||!o.serie||o.plano) continue; let ni;
+    if(p!=null && o.refPos!=null && v.refPos!=null && o.serie.conPos){ const obj=o.refPos+(p-v.refPos); let bd=Infinity; ni=o.idx;
+      for(let i=0;i<o.serie.imgs.length;i++){ const dd=Math.abs(o.serie.imgs[i].pos-obj); if(dd<bd){bd=dd; ni=i;} } }
+    else ni=(o.refIdx||0)+(v.idx-(v.refIdx||0));
+    ni=Math.max(0,Math.min(o.serie.imgs.length-1,ni)); if(ni!==o.idx){ o.idx=ni; cargarImagen(o); } }
+}
+function sincronizar(){}
+function sincronizarWL(v){
+  if(v.plano) vps.forEach(o=>{ if(o!==v && o.plano){ o.ww=v.ww; o.wc=v.wc; dibujar(o);} });
+  else if(sincroCortes) vps.forEach(o=>{ if(o!==v && o.serie && !o.plano && o.serie.modalidad===v.serie.modalidad){ o.ww=v.ww; o.wc=v.wc; dibujar(o);} });
+  actualizarPie(); }
 
 /* ====================== pie: control de cortes y cine ====================== */
 function actualizarPie(){
@@ -1256,10 +1430,11 @@ $('#bPlay').onclick=()=>{
 /* ====================== panel lateral ====================== */
 function pintarSeries(){
   const cont=$('#listaSeries'); if(!series.length) return;
-  const I=series[0].info;
-  let html='<div class="nota"><b style="color:var(--texto);font-size:14px">'+esc(I.paciente||'Sin nombre')+'</b><br>'+esc([I.pid&&'ID '+I.pid, I.sexo, I.edad, fechaDicom(I.fecha)].filter(Boolean).join(' · '))+'<br>'+esc(I.estudioDesc||'')+'</div>';
-  html+='<label class="nota" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="chTodas"> Elegir todas las series</label>';
+  let html='<label class="nota" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="chTodas"> Elegir todas las series</label>';
+  let estudioPrev=null; const nEst=new Set(series.map(x=>x.info.estudioUID)).size;
   series.forEach((s,i)=>{ const act=vpAct&&vpAct.serie===s;
+    if(s.info.estudioUID!==estudioPrev){ estudioPrev=s.info.estudioUID; const I=s.info, Pc=pac(I);
+      html+='<div class="nota" style="margin-top:10px;border-top:1px solid var(--borde);padding-top:8px"><b style="color:var(--texto);font-size:14px">'+esc(Pc.paciente||'Sin nombre')+'</b><br>'+esc([Pc.pid&&'ID '+Pc.pid, I.sexo, I.edad].filter(Boolean).join(' · '))+'<br><b style="color:var(--amarillo)">'+esc(fechaDicom(I.fecha)||'Sin fecha')+'</b> · '+esc(I.estudioDesc||I.modalidad||'')+(nEst>1?' <span style="color:var(--cian)">(estudio '+([...new Set(series.map(x=>x.info.estudioUID))].indexOf(I.estudioUID)+1)+' de '+nEst+')</span>':'')+'</div>'; }
     html+='<div class="serie'+(act?' act':'')+'" data-i="'+i+'"><canvas width="96" height="96"></canvas><div class="t"><b>'+esc((s.num?s.num+'. ':'')+(s.desc||'Serie'))+'</b>'+esc(s.modalidad)+' · '+(s.info.nf>1?s.info.nf+' cuadros (cine)':s.imgs.length+' imágenes')+(esVolumen(s)?' · MPR':'')+'</div><input type="checkbox" data-el="'+i+'" '+(s.elegida?'checked':'')+' title="Elegir para guardar"></div>'; });
   cont.innerHTML=html;
   $$('#listaSeries .serie').forEach(el=>{ const s=series[+el.dataset.i];
@@ -1280,17 +1455,19 @@ async function miniatura(s,cv){
     s.thumb=c; cv.getContext('2d').drawImage(c,0,0); }catch(e){ const x=cv.getContext('2d'); x.fillStyle='#ff5c5c'; x.font='11px Arial'; x.fillText('No compatible',8,50); }
 }
 function esc(t){ return String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-const NOMBRES={dist:'Distancia',angulo:'Ángulo',elipse:'ROI elipse',rect:'ROI rectángulo',punto:'Densidad',texto:'Flecha / nota'};
+const NOMBRES={dist:'Distancia',angulo:'Ángulo',elipse:'ROI elipse',rect:'ROI rectángulo',punto:'Densidad',texto:'Flecha / nota',contorno:'Contorno / volumen',nodulo:'Nódulo pulmonar',cobb:'Ángulo de Cobb',altura:'Altura vertebral',ict:'Índice cardiotorácico',perfil:'Perfil de densidades',aspects:'ASPECTS'};
+function borrarAnot(a){ const arr=anotaciones.get(a.clave); if(!arr) return; const i=arr.indexOf(a); if(i>=0) arr.splice(i,1); if(a.tipo==='contorno') actualizarVolumenes(); pintarMedidas(); vps.forEach(v=>dibujar(v)); }
 function todasAnot(){ const l=[]; for(const a of anotaciones.values()) l.push(...a); return l.sort((a,b)=>a.n-b.n); }
 function pintarMedidas(){
   const cont=$('#listaMed'), lista=todasAnot();
   if(!lista.length){ cont.innerHTML='<p class="nota">Aún no hay medidas. Elija Distancia, Ángulo, ROI o Densidad y toque la imagen.</p>'; return; }
-  cont.innerHTML=lista.map(a=>'<div class="med" data-id="'+a.id+'" style="'+(a.sel?'border-color:var(--cian)':'')+'"><div class="cab"><b>#'+a.n+' '+NOMBRES[a.tipo]+'</b><button class="chico" data-ir>Ver</button><button class="chico rojo" data-borrar>Borrar</button></div>'
+  cont.innerHTML=lista.map(a=>'<div class="med" data-id="'+a.id+'" style="'+(a.sel?'border-color:var(--cian)':'')+'"><div class="cab"><b>#'+a.n+' '+NOMBRES[a.tipo]+'</b>'+(a.tipo==='perfil'?'<button class="chico" data-graf>Gráfica</button>':'')+'<button class="chico" data-ir>Ver</button><button class="chico rojo" data-borrar>Borrar</button></div>'
     +'<div class="nota" style="margin:0 0 4px">'+esc(a.desc)+'</div>'+(a.res?'<div class="val">'+esc(a.res)+'</div>':'')
     +'<textarea placeholder="Escriba lo que se observa (ej.: quiste simple en polo superior)…">'+esc(a.nota)+'</textarea></div>').join('');
   $$('#listaMed .med').forEach(el=>{ const a=lista.find(x=>x.id===+el.dataset.id);
     el.querySelector('textarea').addEventListener('input',e=>{ a.nota=e.target.value; vps.forEach(v=>v.clave===a.clave&&dibujar(v)); });
-    el.querySelector('[data-borrar]').onclick=()=>{ const arr=anotaciones.get(a.clave); arr.splice(arr.indexOf(a),1); pintarMedidas(); vps.forEach(v=>dibujar(v)); };
+    el.querySelector('[data-borrar]').onclick=()=>borrarAnot(a);
+    const bg=el.querySelector('[data-graf]'); if(bg) bg.onclick=()=>mostrarPerfil(a);
     el.querySelector('[data-ir]').onclick=async()=>{ const v=vpAct; if(!v) return;
       if(a.plano){ if(!mpr||mpr.serie!==a.serie){ aviso('Abra MPR de esa serie para ver esta medida.'); return; } const o=vps.find(x=>x.plano===a.plano)||v; o.idx=a.idx; await cargarImagen(o); }
       else { if(v.serie!==a.serie||v.plano) await asignarSerie(v,a.serie,a.idx); else { v.idx=a.idx; await cargarImagen(v);} }
@@ -1299,9 +1476,15 @@ function pintarMedidas(){
 }
 function pintarMedidasLigero(){ const lista=todasAnot(); $$('#listaMed .med').forEach(el=>{ const a=lista.find(x=>x.id===+el.dataset.id); const val=el.querySelector('.val'); if(a&&val) val.textContent=a.res; }); }
 function textoMedidas(){
-  const I=series[0]?series[0].info:{};
-  let t='MEDIDAS — '+(I.paciente||'')+(I.pid?' (ID '+I.pid+')':'')+' — '+fechaDicom(I.fecha)+'\n'+(I.estudioDesc||'')+'\n\n';
-  for(const a of todasAnot()){ t+='#'+a.n+' '+NOMBRES[a.tipo]+' — '+a.desc+'\n'; if(a.res) t+='   '+a.res.replace(/\n/g,'\n   ')+'\n'; if(a.nota) t+='   Nota: '+a.nota.replace(/\n/g,'\n         ')+'\n'; t+='\n'; }
+  const I=series[0]?series[0].info:{}, Pc=pac(I);
+  let t='MEDIDAS Y HALLAZGOS DEL VISOR\n'+(Pc.paciente||'')+(Pc.pid?' (ID '+Pc.pid+')':'')+' — '+fechaDicom(I.fecha)+(I.estudioDesc?' — '+I.estudioDesc:'')+'\n';
+  const lista=todasAnot(); if(!lista.length) return t+'\n(Sin medidas)';
+  const porSerie=new Map(); for(const a of lista){ const k=a.plano?'MPR '+planoNombre(a.plano)+' — serie '+(a.serie.num||'')+' '+(a.serie.desc||''):'Serie '+(a.serie.num||'')+' '+(a.serie.desc||'')+' ('+fechaDicom(a.serie.info.fecha)+')'; if(!porSerie.has(k)) porSerie.set(k,[]); porSerie.get(k).push(a); }
+  for(const [k,l] of porSerie){ t+='\n'+k.trim()+':\n';
+    for(const a of l){ if(a.tipo==='contorno') continue;
+      t+='• '+(a.res&&/^(Nódulo|Ángulo de Cobb|Altura|Índice|Perfil|ASPECTS)/.test(a.res)?'':NOMBRES[a.tipo]+': ')+(a.res?a.res.replace(/\n/g,'; '):'')+(a.nota?'. '+a.nota:'')+' (imagen '+(a.idx+1)+').\n'; } }
+  if(volumenes.length){ t+='\nVOLÚMENES (contornos):\n'; for(const x of volumenes){ const notas=lista.filter(a=>a.tipo==='contorno'&&a.serie===x.serie&&a.lesion===x.lesion&&a.nota).map(a=>a.nota);
+      t+='• Lesión L'+x.lesion+' — serie '+(x.serie.num||'')+' '+(x.serie.desc||'')+': '+x.txt.replace(/^Volumen L\d+: /,'')+(notas.length?'. '+notas.join('; '):'')+'.\n'; } }
   return t;
 }
 function pedirNota(a,v){
@@ -1322,7 +1505,7 @@ function pintarMarcadas(){
 
 /* ====================== guardar imágenes y videos ====================== */
 function canvasBlob(cv){ return new Promise(r=>cv.toBlob(r,'image/png')); }
-function nombreBase(v){ const I=(v&&v.serie?v.serie.info:series[0]&&series[0].info)||{}; return nombreArchivo((I.paciente||'paciente')+'_'+(I.fecha||'')); }
+function nombreBase(v){ const I=(v&&v.serie?v.serie.info:series[0]&&series[0].info)||{}; return nombreArchivo((pac(I).paciente||'paciente')+'_'+(I.fecha||'')); }
 async function capturaVisor(v){ // imagen a resolución del visor, con textos y medidas
   const prevSel=todasAnot().filter(a=>a.sel); prevSel.forEach(a=>a.sel=false);
   dibujar(v); const b=await canvasBlob(v.cv); prevSel.forEach(a=>a.sel=true); dibujar(v); return b;
@@ -1352,7 +1535,7 @@ $('#bMarcar').onclick=async()=>{ if(v3d){ const blob=await componer3D(); marcada
   const v=vpAct; if(!v||!v.dec) return;
   const i=marcadas.findIndex(m=>m.clave===v.clave);
   if(i>=0){ URL.revokeObjectURL(marcadas[i].url); marcadas.splice(i,1); pintarMarcadas(); dibujar(v); return aviso('Imagen desmarcada.'); }
-  const blob=await capturaVisor(v); marcadas.push({clave:v.clave, blob, url:URL.createObjectURL(blob), desc:descImagen(v)}); pintarMarcadas(); dibujar(v); aviso('★ Imagen marcada ('+marcadas.length+'). Guárdelas en Guardar → Imágenes marcadas.'); };
+  const desc=descImagen(v), clave=v.clave; const blob=await capturaVisor(v); marcadas.push({clave, blob, url:URL.createObjectURL(blob), desc}); pintarMarcadas(); dibujar(v); aviso('★ Imagen marcada ('+marcadas.length+'). Guárdelas en Guardar → Imágenes marcadas.'); };
 $('#gMarcadas').onclick=async()=>{
   if(!marcadas.length) return aviso('No hay imágenes marcadas. Use ★ Marcar.');
   if(marcadas.length===1) return descargar(marcadas[0].blob, nombreBase(vpAct)+'_marcada.png');
@@ -1412,7 +1595,10 @@ $$('#herr .b').forEach(b=>b.onclick=()=>{ const h=b.dataset.h, medir=!['wl','pan
   // segundo toque sobre la misma herramienta de medida = dejarla fija para varias medidas
   fijarHerr = medir && herramienta===h ? !fijarHerr : false;
   elegirHerr(h); b.blur(); vps.forEach(v=>{ if(v.temp){v.temp=null; dibujar(v);} });
-  if(medir && h!=='angulo') aviso(fijarHerr?'Herramienta fija: puede hacer varias medidas seguidas. Toque Ventana para salir.':'Hace una medida y vuelve sola a Ventana. Toque otra vez el botón para dejarla fija.',3200);
+  const MSG={dist:'Arrastre para medir.',angulo:'Arrastre el primer brazo y toque el final del segundo.',elipse:'Arrastre para dibujar la ROI.',rect:'Arrastre para dibujar la ROI.',punto:'Toque el punto para ver la densidad.',texto:'Arrastre la flecha y escriba la nota.',
+    contorno:'Dibuje con el dedo el borde de la lesión (L'+lesionActual+'). Repita en otros cortes: el volumen se calcula solo.',nodulo:'Dibuje el EJE LARGO del nódulo y luego el EJE CORTO.',cobb:'Dibuje la línea del platillo superior y luego la del inferior.',
+    altura:'Dibuje la altura de la vértebra afectada y luego la de una vértebra sana.',ict:'Dibuje el diámetro cardíaco máximo y luego el torácico interno máximo.',perfil:'Arrastre una línea: aparece la gráfica de densidades.',curvo:'En MPR: toque puntos siguiendo la estructura. Toque dos veces el último punto (o Enter) para terminar.'};
+  if(medir) aviso((MSG[h]||'')+(fijarHerr?' (Herramienta fija: toque Ventana para salir.)':''),3800);
   if(herramienta==='cruz' && !mpr) aviso('La cruz se usa en el modo MPR 3 planos.');
   if(herramienta==='angulo') aviso('Ángulo: arrastre el primer brazo y luego toque el final del segundo.',3500); });
 $('#bLado').onclick=()=>{ $('#lado').classList.toggle('oculto'); setTimeout(redimensionar,50); };
@@ -1450,7 +1636,7 @@ $('#sGrosor').onchange=e=>{ const val=e.target.value; e.target.blur();
   if(val!=='0' && !conVol) aviso('MIP / MinIP necesitan una serie de cortes (TC o RM). Esta serie no lo permite.',4000);
   else if(val!=='0') aviso(textoLosa()+(vent?(/^pmip/.test(val)?' — ventana pulmón para nódulos y vasos':' — ventana para enfisema'):''),2500);
   vps.forEach(v=>v.serie&&cargarImagen(v)); };
-$('#bCopiarMed').onclick=async()=>{ const t=textoMedidas(); try{ await navigator.clipboard.writeText(t); aviso('Medidas copiadas. Péguelas en su informe.'); }catch(e){ $('#mTextoTit').textContent='Seleccione y copie'; $('#mTextoVal').value=t; abrirModal('#mTexto'); $('#mTextoOk').onclick=cerrarModales; } };
+$('#bCopiarMed').onclick=async()=>{ const t=textoMedidas(); try{ await navigator.clipboard.writeText(t); aviso('Listo: medidas copiadas. Péguelas en el informe (Ctrl+V).'); }catch(e){ $('#mTextoTit').textContent='Seleccione y copie'; $('#mTextoVal').value=t; abrirModal('#mTexto'); $('#mTextoOk').onclick=cerrarModales; } };
 $('#bTxtMed').onclick=()=>descargar(new Blob([textoMedidas()],{type:'text/plain;charset=utf-8'}), nombreBase(vpAct)+'_medidas.txt');
 function cambiarSerie(v,paso){
   if(!series.length) return; if(e_repite()) return;
@@ -1468,7 +1654,7 @@ window.addEventListener('keydown',e=>{ const ae=document.activeElement; if(ae &&
     if(v.plano) irA(v,v.idx+paso); else cambiarSerie(v,paso); }
   else if(e.key==='Home') irA(v,0); else if(e.key==='End') irA(v,totalImgs(v)-1);
   else if(e.key==='Escape'){ vps.forEach(x=>{x.temp=null;dibujar(x);}); cerrarModales(); }
-  else if(e.key==='Delete'){ const a=todasAnot().find(x=>x.sel); if(a){ const arr=anotaciones.get(a.clave); arr.splice(arr.indexOf(a),1); pintarMedidas(); vps.forEach(x=>dibujar(x)); } } });
+  else if(e.key==='Delete'||e.key==='Backspace'){ const a=todasAnot().find(x=>x.sel); if(a){ e.preventDefault(); borrarAnot(a); } } });
 
 
 /* ====================== 3D: volumen (VR) y MIP con WebGL2 ====================== */
@@ -1535,7 +1721,7 @@ function crearPrograma3D(gl){
   const loc=gl.getAttribLocation(pr,'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
   return {pr,u};
 }
-function calidadInicial(){ const mem=navigator.deviceMemory||4, movil=/Android|iPad|iPhone|CrOS/i.test(navigator.userAgent); return (mem>=8 && !movil)?384:256; }
+function calidadInicial(){ if(prefs.calidad3d) return prefs.calidad3d; const mem=navigator.deviceMemory||4, movil=/Android|iPad|iPhone|CrOS/i.test(navigator.userAgent); return (mem>=8 && !movil)?384:256; }
 function cerrar3D(){ if(!v3d) return; cancelAnimationFrame(v3d.raf); v3d.vivo=false; const gl=v3d.gl; try{ gl.getExtension('WEBGL_lose_context')?.loseContext(); }catch(e){} v3d=null; }
 async function iniciar3D(sPref){
   cerrar3D();
@@ -1651,7 +1837,7 @@ function textos3D(c,cw,ch,k){
   c.clearRect(0,0,cw,ch);
   const I=v3d.serie.info, fs=Math.round(13*k); c.font=fs+'px Arial'; c.textBaseline='top';
   const sombra=(t,x,y,al)=>{ c.textAlign=al; c.fillStyle='rgba(0,0,0,.85)'; c.fillText(t,x+1,y+1); c.fillStyle='#f2f5f8'; c.fillText(t,x,y); };
-  [I.paciente, (I.pid?'ID '+I.pid+'  ':'')+(I.sexo||'')+(I.edad?' '+I.edad:''), fechaDicom(I.fecha)].filter(Boolean).forEach((t,i)=>sombra(t,8*k,6*k+i*fs*1.25,'left'));
+  [pac(I).paciente, (pac(I).pid?'ID '+pac(I).pid+'  ':'')+(I.sexo||'')+(I.edad?' '+I.edad:''), fechaDicom(I.fecha)].filter(Boolean).forEach((t,i)=>sombra(t,8*k,6*k+i*fs*1.25,'left'));
   c.textBaseline='bottom';
   ['3D · '+v3d.preset.nombre, 'Serie '+(v3d.serie.num||'')+' '+(v3d.serie.desc||'')].forEach((t,i,a)=>sombra(t,8*k,ch-6*k-(a.length-1-i)*fs*1.25,'left'));
   // orientación del paciente
@@ -1733,7 +1919,7 @@ async function componer3D(){
   x.drawImage(v3d.cv,0,0,v3d.cw,v3d.ch); x.drawImage(v3d.cv2,0,0);
   return await new Promise(r=>c.toBlob(r,'image/png'));
 }
-async function guardar3D(){ if(!v3d) return; descargar(await componer3D(), nombreArchivo((v3d.serie.info.paciente||'paciente')+'_3D_'+v3d.preset.id)+'.png'); aviso('Imagen 3D guardada en Descargas.'); }
+async function guardar3D(){ if(!v3d) return; descargar(await componer3D(), nombreArchivo((pac(v3d.serie.info).paciente||'paciente')+'_3D_'+v3d.preset.id)+'.png'); aviso('Imagen 3D guardada en Descargas.'); }
 async function video3D(){
   if(!v3d) return; const tipo=tipoVideo(); if(!tipo) return aviso('Este navegador no permite crear videos. Use Google Chrome actualizado.',5000);
   v3d.giro=false; actualizarPanel3D(); v3d.vivo=false; cancelAnimationFrame(v3d.raf);
@@ -1747,9 +1933,170 @@ async function video3D(){
     if(track.requestFrame) track.requestFrame(); progreso('Grabando video 3D '+Math.round(i/cuadros*100)+'%',i/cuadros);
     await new Promise(r=>setTimeout(r,Math.max(0,1000/fps-(performance.now()-t0)))); }
   rec.stop(); await listo; progreso(null); v3d.rot=rot0; v3d.vivo=true; v3d.sucio=true; bucle3D();
-  descargar(new Blob(trozos,{type:tipo.split(';')[0]}), nombreArchivo((v3d.serie.info.paciente||'paciente')+'_3D_360_'+v3d.preset.id)+'.'+(tipo.includes('mp4')?'mp4':'webm'));
+  descargar(new Blob(trozos,{type:tipo.split(';')[0]}), nombreArchivo((pac(v3d.serie.info).paciente||'paciente')+'_3D_360_'+v3d.preset.id)+'.'+(tipo.includes('mp4')?'mp4':'webm'));
   aviso('Video 3D guardado en Descargas.',3500);
 }
+
+/* ====================== perfil de densidades ====================== */
+let perfilActual=null;
+function mostrarPerfil(a){
+  perfilActual=a; const cv=$('#cvPerfil'), c=cv.getContext('2d'), W=cv.width, H=cv.height, vals=a.perfil||[];
+  c.fillStyle='#0d131a'; c.fillRect(0,0,W,H);
+  const ok=vals.filter(x=>!isNaN(x)); if(!ok.length){ abrirModal('#mPerfil'); return; }
+  let mn=Math.min(...ok), mx=Math.max(...ok); if(mx-mn<20){ mn-=10; mx+=10; } const padY=(mx-mn)*.08; mn-=padY; mx+=padY;
+  const L={x:110,y:30,w:W-140,h:H-110}, X=i=>L.x+i/(vals.length-1)*L.w, Y=z=>L.y+(1-(z-mn)/(mx-mn))*L.h;
+  c.font='24px Arial'; c.fillStyle='#8fa1b5'; c.strokeStyle='#2a3646'; c.lineWidth=1.5; c.textAlign='right'; c.textBaseline='middle';
+  const pasoY=[10,20,50,100,200,250,500,1000].find(s=>(mx-mn)/s<=7)||1000;
+  for(let z=Math.ceil(mn/pasoY)*pasoY; z<=mx; z+=pasoY){ c.beginPath(); c.moveTo(L.x,Y(z)); c.lineTo(L.x+L.w,Y(z)); c.stroke(); c.fillText(String(z),L.x-12,Y(z)); }
+  c.textAlign='center'; c.textBaseline='top';
+  const Lmm=a.largo||0, pasoX=[1,2,5,10,20,50,100].find(s=>Lmm/s<=10)||100;
+  for(let d=0; d<=Lmm+1e-6; d+=pasoX){ const x=L.x+d/Lmm*L.w; c.beginPath(); c.moveTo(x,L.y); c.lineTo(x,L.y+L.h); c.stroke(); c.fillText(String(d),x,L.y+L.h+10); }
+  c.fillText('Distancia ('+(a.unidadL||'mm')+')',L.x+L.w/2,H-40);
+  c.save(); c.translate(30,L.y+L.h/2); c.rotate(-Math.PI/2); c.fillText(a.unidadV||'Valor',0,0); c.restore();
+  if(mn<0&&mx>0){ c.strokeStyle='#5d6b7c'; c.setLineDash([8,6]); c.beginPath(); c.moveTo(L.x,Y(0)); c.lineTo(L.x+L.w,Y(0)); c.stroke(); c.setLineDash([]); }
+  c.strokeStyle='#ffd34d'; c.lineWidth=3.5; c.beginPath(); let ini=false;
+  vals.forEach((z,i)=>{ if(isNaN(z)){ ini=false; return; } if(!ini){ c.moveTo(X(i),Y(z)); ini=true; } else c.lineTo(X(i),Y(z)); }); c.stroke();
+  $('#mPerfilTit').textContent='#'+a.n+' Perfil de densidades — '+a.res.split('\n').slice(1).join(' ');
+  abrirModal('#mPerfil');
+}
+$('#bPerfilPng').onclick=()=>$('#cvPerfil').toBlob(b=>descargar(b,nombreBase(vpAct)+'_perfil'+(perfilActual?perfilActual.n:'')+'.png'));
+
+/* ====================== MPR curvo ====================== */
+let curvoActual=null;
+function terminarCurvo(v){
+  const t=v.temp; v.temp=null; dibujar(v); volverANavegar();
+  if(!t||t.pts.length<2||!mpr){ aviso('Toque al menos dos puntos a lo largo de la estructura.'); return; }
+  const {sx,sy}=espaciado(v), pl=v.plano, [W,H,N]=mpr.dims, vol=mpr.vol;
+  const paso=Math.min(sx,sy), mu=[]; let largo=0;
+  for(let i=0;i<t.pts.length-1;i++){ const [u0,w0]=t.pts[i],[u1,w1]=t.pts[i+1], Lmm=Math.hypot((u1-u0)*sx,(w1-w0)*sy); largo+=Lmm;
+    const n=Math.max(1,Math.ceil(Lmm/paso)); for(let k=0;k<n;k++){ const f=k/n; mu.push([u0+(u1-u0)*f, w0+(w1-w0)*f]); } }
+  mu.push(t.pts[t.pts.length-1]);
+  const D= pl==='ax'?N: pl==='co'?H:W, espD= pl==='ax'?mpr.esp[2]: pl==='co'?mpr.esp[1]:mpr.esp[0];
+  const U= pl==='sa'?H:W, V= pl==='ax'?H:N, w=mu.length, h=D, out=new Float32Array(w*h);
+  const off=(u,q,d)=>{ let i,j,k; if(pl==='ax'){i=u;j=q;k=d;} else if(pl==='co'){i=u;k=q;j=d;} else {j=u;k=q;i=d;} return k*W*H+j*W+i; };
+  let mn=Infinity,mx=-Infinity;
+  for(let x=0;x<w;x++){ const [u,q]=mu[x]; const u0=Math.max(0,Math.min(U-1,Math.floor(u))), q0=Math.max(0,Math.min(V-1,Math.floor(q))), u1=Math.min(U-1,u0+1), q1=Math.min(V-1,q0+1), fu=Math.min(1,Math.max(0,u-u0)), fq=Math.min(1,Math.max(0,q-q0));
+    for(let d=0; d<D; d++){ const z=(vol[off(u0,q0,d)]*(1-fu)+vol[off(u1,q0,d)]*fu)*(1-fq)+(vol[off(u0,q1,d)]*(1-fu)+vol[off(u1,q1,d)]*fu)*fq; out[d*w+x]=z; if(z<mn)mn=z; if(z>mx)mx=z; } }
+  curvoActual={dec:{w,h,v:out,min:mn,max:mx}, sx:paso, sy:espD, ww:v.ww, wc:v.wc, invert:v.invert, largo, plano:pl, serie:v.serie};
+  abrirModal('#mCurvo'); requestAnimationFrame(pintarCurvo);
+}
+function pintarCurvo(){
+  const C=curvoActual; if(!C) return; const cv=$('#cvCurvo'), r=cv.getBoundingClientRect(), dpr=Math.min(2,window.devicePixelRatio||1);
+  cv.width=Math.max(300,Math.round(r.width*dpr)); cv.height=Math.round(cv.width*0.62);
+  const tmp={dec:C.dec, ww:C.ww, wc:C.wc, invert:C.invert}; const b=renderBase(tmp), c=cv.getContext('2d');
+  c.fillStyle='#000'; c.fillRect(0,0,cv.width,cv.height);
+  const wmm=C.dec.w*C.sx, hmm=C.dec.h*C.sy, k=Math.min(cv.width/wmm, cv.height/hmm)*0.96, dw=wmm*k, dh=hmm*k;
+  c.imageSmoothingEnabled=true; c.drawImage(b,(cv.width-dw)/2,(cv.height-dh)/2,dw,dh);
+  const fs=Math.round(13*dpr); c.font=fs+'px Arial'; c.fillStyle='#f2f5f8'; c.textBaseline='top';
+  const I=C.serie.info, Pc=pac(I);
+  [Pc.paciente, fechaDicom(I.fecha), 'MPR curvo sobre '+planoNombre(C.plano)+' · longitud '+fmt(C.largo,1)+' mm', 'V '+Math.round(C.ww)+'  N '+Math.round(C.wc)].filter(Boolean).forEach((t,i)=>c.fillText(t,8*dpr,6*dpr+i*fs*1.3));
+  $('#mCurvoTit').textContent='MPR curvo — '+fmt(C.largo,1)+' mm';
+}
+(()=>{ const cv=$('#cvCurvo'); let g=null;
+  cv.addEventListener('pointerdown',e=>{ if(!curvoActual) return; cv.setPointerCapture(e.pointerId); g={x:e.clientX,y:e.clientY,ww:curvoActual.ww,wc:curvoActual.wc}; });
+  cv.addEventListener('pointermove',e=>{ if(!g) return; const f=Math.max(1,g.ww)/300; curvoActual.ww=Math.max(1,g.ww+(e.clientX-g.x)*f*1.5); curvoActual.wc=g.wc+(e.clientY-g.y)*f; pintarCurvo(); });
+  const f=()=>{ g=null; }; cv.addEventListener('pointerup',f); cv.addEventListener('pointercancel',f); })();
+$('#bCurvoPng').onclick=()=>$('#cvCurvo').toBlob(b=>{ descargar(b,nombreBase(vpAct)+'_MPR_curvo.png'); aviso('Imagen guardada en Descargas.'); });
+$('#bCurvoMarcar').onclick=()=>$('#cvCurvo').toBlob(b=>{ marcadas.push({clave:'curvo'+Date.now(), blob:b, url:URL.createObjectURL(b), desc:'MPR curvo '+fmt(curvoActual.largo,1)+' mm'}); pintarMarcadas(); aviso('★ MPR curvo marcado.'); });
+
+/* ====================== ASPECTS ====================== */
+const REG_ASPECTS=[['C','Caudado'],['L','Lenticular'],['IC','Cápsula interna'],['I','Ínsula'],['M1','M1 (frontal operc.)'],['M2','M2 (temporal ant.)'],['M3','M3 (temporal post.)'],['M4','M4 (sobre M1)'],['M5','M5 (sobre M2)'],['M6','M6 (sobre M3)']];
+$('#aspLista').innerHTML=REG_ASPECTS.map(r=>'<label style="margin:4px 0"><input type="checkbox" data-asp="'+r[0]+'"> <b>'+r[0]+'</b>&nbsp;'+r[1]+'</label>').join('');
+const puntajeAspects=()=>10-$$('#aspLista input:checked').length;
+$$('#aspLista input').forEach(i=>i.onchange=()=>{ $('#aspPuntaje').textContent='ASPECTS '+puntajeAspects()+' / 10'; });
+$('#bAspects').onclick=()=>{ if(!vpAct||!vpAct.dec) return aviso('Abra primero la TC de cráneo.'); $$('#aspLista input').forEach(i=>i.checked=false); $('#aspPuntaje').textContent='ASPECTS 10 / 10'; abrirModal('#mAspects'); };
+$('#aspOk').onclick=()=>{ const v=vpAct; if(!v||!v.dec) return; const afect=$$('#aspLista input:checked').map(i=>i.dataset.asp);
+  const a={id:idAnot++, tipo:'aspects', pts:[[v.dec.w*0.06,v.dec.h*0.16]], nota: afect.length?'Regiones afectadas: '+afect.join(', '):'Sin regiones afectadas', puntaje:10-afect.length, hemi:$('#aspHemi').value};
+  calcular(v,a); agregarAnot(v,a); cerrarModales(); dibujar(v); };
+
+/* ====================== hoja de imágenes clave ====================== */
+$('#gHoja').onclick=async()=>{
+  if(!marcadas.length) return aviso('Primero marque imágenes con ★ Marcar.',3500);
+  let [cols,filas]=($('#sHoja').value==='auto'? (marcadas.length<=1?'1x1':marcadas.length<=2?'1x2':marcadas.length<=4?'2x2':marcadas.length<=6?'2x3':'3x3') : $('#sHoja').value).split('x').map(Number);
+  if($('#sHoja').value==='1x2'||(marcadas.length===2&&$('#sHoja').value==='auto')){ cols=2; filas=1; }
+  const porHoja=cols*filas, hojas=[], I=(vpAct&&vpAct.serie?vpAct.serie.info:series[0]&&series[0].info)||{}, Pc=pac(I);
+  progreso('Creando hoja de imágenes…',.3); await espera();
+  for(let h=0; h*porHoja<marcadas.length; h++){
+    const W=2000, cab=150, pie=60, celW=W/cols, celH=Math.round(celW*0.85)+50, H=cab+celH*filas+pie;
+    const c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d');
+    x.fillStyle='#000'; x.fillRect(0,0,W,H); x.fillStyle='#123A78'; x.fillRect(0,0,W,cab);
+    x.fillStyle='#fff'; x.font='bold 44px Arial'; x.textBaseline='top'; x.fillText(Pc.paciente||'Paciente',30,22);
+    x.font='30px Arial'; x.fillText([Pc.pid&&'ID '+Pc.pid, I.sexo, I.edad, fechaDicom(I.fecha), I.estudioDesc].filter(Boolean).join('   ·   '),30,82);
+    x.textAlign='right'; x.font='bold 30px Arial'; x.fillText('IMÁGENES CLAVE'+(marcadas.length>porHoja?'  '+(h+1)+'/'+Math.ceil(marcadas.length/porHoja):''),W-30,22); x.textAlign='left';
+    const grupo=marcadas.slice(h*porHoja,(h+1)*porHoja);
+    for(let i=0;i<grupo.length;i++){ const m=grupo[i], cx=(i%cols)*celW, cy=cab+Math.floor(i/cols)*celH;
+      const bmp=await createImageBitmap(m.blob), aw=celW-24, ah=celH-70, k=Math.min(aw/bmp.width,ah/bmp.height);
+      x.drawImage(bmp,cx+12+(aw-bmp.width*k)/2,cy+12+(ah-bmp.height*k)/2,bmp.width*k,bmp.height*k);
+      x.fillStyle='#C9A227'; x.font='bold 28px Arial'; x.fillText((h*porHoja+i+1)+'. ',cx+16,cy+celH-50);
+      x.fillStyle='#e6edf5'; x.font='26px Arial'; x.fillText(String(m.desc).slice(0,Math.floor(celW/15)),cx+56,cy+celH-49);
+      x.strokeStyle='#2a3646'; x.lineWidth=2; x.strokeRect(cx+6,cy+6,celW-12,celH-12); }
+    x.fillStyle='#8fa1b5'; x.font='24px Arial'; x.fillText('Visor DICOM · '+new Date().toLocaleString('es-NI',{dateStyle:'short',timeStyle:'short'}),30,H-44);
+    hojas.push({nombre:nombreBase(vpAct)+'_imagenes_clave'+(h?'_'+(h+1):'')+'.png', blob:await new Promise(r=>c.toBlob(r,'image/png'))}); }
+  progreso(null);
+  if(hojas.length===1) descargar(hojas[0].blob,hojas[0].nombre); else descargar(await crearZip(hojas), nombreBase(vpAct)+'_imagenes_clave.zip');
+  aviso('Hoja de imágenes clave guardada en Descargas.',3500);
+};
+
+/* ====================== lesiones para volumen ====================== */
+$('#bNuevaLesion').onclick=()=>{ lesionActual=Math.max(0,...todasAnot().filter(a=>a.tipo==='contorno').map(a=>a.lesion||0))+1; $('#bNuevaLesion').textContent='Nueva lesión para volumen (actual: L'+lesionActual+')';
+  elegirHerr('contorno'); aviso('Ahora los contornos son de la lesión L'+lesionActual+'.',3000); };
+
+/* ====================== botones: sincronizar, lupa, anónimo ====================== */
+$('#bSincro').onclick=()=>ponerSincro(!sincroCortes);
+function pintarLupaAnon(){ $('#bLupa').classList.toggle('act',lupaActiva); $('#bAnonimo').classList.toggle('act',anonimo); $('#chAnon').checked=anonimo; }
+$('#bLupa').onclick=()=>{ lupaActiva=!lupaActiva; prefs.lupa=lupaActiva; guardarPrefs(); pintarLupaAnon(); aviso(lupaActiva?'Lupa activada: aparece al medir con el dedo.':'Lupa desactivada.'); };
+function ponerAnonimo(on){ anonimo=on; prefs.anonimo=on; guardarPrefs(); pintarLupaAnon(); vps.forEach(v=>dibujar(v)); if(v3d) v3d.sucio=true; pintarSeries(); aviso(on?'Modo anónimo: no se muestran nombre, ID ni institución.':'Datos del paciente visibles.'); }
+$('#bAnonimo').onclick=()=>ponerAnonimo(!anonimo);
+$('#chAnon').onchange=e=>ponerAnonimo(e.target.checked);
+
+/* ====================== atajos de teclado ====================== */
+const ACCIONES=[['wl','Ventana','w'],['pan','Mover','p'],['zoom','Zoom','z'],['scroll','Cortes','c'],['dist','Distancia','m'],['angulo','Ángulo','a'],['elipse','ROI elipse','e'],['rect','ROI rectángulo','r'],['punto','Densidad','d'],['texto','Flecha / nota','f'],['contorno','Volumen (contorno)','v'],['nodulo','Nódulo','n'],['cobb','Cobb','b'],['altura','Altura vertebral','h'],['ict','ICT','i'],['perfil','Perfil','l'],['curvo','MPR curvo','k'],['invertir','Invertir','x'],['cine','Cine (reproducir)',' '],['marcar','★ Marcar','s'],['guardar','Guardar imagen','g'],['restaurar','Restaurar','0'],['sincro','Sincronizar','y'],['lupa','Lupa','u'],['anonimo','Anónimo','o'],['panel','Mostrar/ocultar panel','t']];
+let atajos=Object.assign(Object.fromEntries(ACCIONES.map(a=>[a[0],a[2]])), prefs.atajos||{});
+let esperandoTecla=null;
+const nombreTecla=k=>k===' '?'Espacio':k.length===1?k.toUpperCase():k;
+function pintarAtajos(){ $('#atajosLista').innerHTML='<table>'+ACCIONES.map(a=>'<tr><td>'+esc(a[1])+'</td><td><b>'+esc(esperandoTecla===a[0]?'… presione una tecla':nombreTecla(atajos[a[0]]||''))+'</b></td><td><button class="chico" data-cambia="'+a[0]+'">Cambiar</button></td></tr>').join('')+'</table>';
+  $$('#atajosLista [data-cambia]').forEach(b=>b.onclick=()=>{ esperandoTecla=b.dataset.cambia; pintarAtajos(); }); }
+$('#bAtajos').onclick=()=>{ esperandoTecla=null; pintarAtajos(); abrirModal('#mAtajos'); };
+$('#atajosDef').onclick=()=>{ atajos=Object.fromEntries(ACCIONES.map(a=>[a[0],a[2]])); prefs.atajos=atajos; guardarPrefs(); pintarAtajos(); };
+function ejecutarAccion(id){
+  const b=$('#herr [data-h="'+id+'"]'); if(b){ b.click(); return; }
+  ({invertir:()=>$('#bInvertir').click(), cine:()=>$('#bPlay').click(), marcar:()=>$('#bMarcar').click(), guardar:()=>$('#gActual').click(), restaurar:()=>$('#bReset').click(),
+    sincro:()=>$('#bSincro').click(), lupa:()=>$('#bLupa').click(), anonimo:()=>$('#bAnonimo').click(), panel:()=>$('#bLado').click()}[id]||(()=>{}))();
+}
+window.addEventListener('keydown',e=>{
+  const ae=document.activeElement; if(ae && (ae.tagName==='TEXTAREA' || (ae.tagName==='INPUT' && !['range','checkbox'].includes(ae.type)))) return;
+  if(esperandoTecla){ e.preventDefault(); e.stopImmediatePropagation(); if(e.key!=='Escape' && e.key.length===1){ for(const k in atajos) if(atajos[k]===e.key.toLowerCase()) atajos[k]=''; atajos[esperandoTecla]=e.key.toLowerCase(); prefs.atajos=atajos; guardarPrefs(); } esperandoTecla=null; pintarAtajos(); return; }
+  if(e.ctrlKey||e.metaKey||e.altKey) return;
+  if(e.key==='Enter'){ const v=vps.find(x=>x.temp&&x.temp.tipo==='curvo'); if(v){ e.preventDefault(); terminarCurvo(v); return; } }
+  if(/^[1-9]$/.test(e.key) && vpAct && vpAct.dec){ const ops=$$('#sPreset option').filter(o=>/^-?\d+,-?\d+$/.test(o.value)); const o=ops[+e.key-1]; if(o){ e.preventDefault(); e.stopImmediatePropagation(); const [w,c]=o.value.split(',').map(Number); vpAct.ww=w; vpAct.wc=c; dibujar(vpAct); sincronizarWL(vpAct); aviso(o.textContent,1200); } return; }
+  const k=e.key.length===1?e.key.toLowerCase():e.key;
+  const id=Object.keys(atajos).find(x=>atajos[x]&&atajos[x]===k);
+  if(id){ e.preventDefault(); e.stopImmediatePropagation(); ejecutarAccion(id); }
+},true);
+
+/* ====================== ventanas favoritas ====================== */
+function pintarFavoritas(){
+  const sel=$('#sPreset'); sel.querySelectorAll('[data-fav]').forEach(o=>o.remove());
+  for(const f of (prefs.favoritas||[])){ const o=document.createElement('option'); o.value=f.ww+','+f.wc; o.textContent='★ '+f.n; o.dataset.fav=1; sel.appendChild(o); }
+  const a=document.createElement('option'); a.value='fav+'; a.textContent='★ Guardar ventana actual como favorita…'; a.dataset.fav=1; sel.appendChild(a);
+  if((prefs.favoritas||[]).length){ const b=document.createElement('option'); b.value='fav-'; b.textContent='Borrar ventanas favoritas'; b.dataset.fav=1; sel.appendChild(b); }
+}
+pintarFavoritas();
+$('#sPreset').addEventListener('change',e=>{ const val=e.target.value; if(val!=='fav+'&&val!=='fav-') return; e.stopImmediatePropagation(); e.target.value='';
+  if(val==='fav-'){ prefs.favoritas=[]; guardarPrefs(); pintarFavoritas(); return aviso('Ventanas favoritas borradas.'); }
+  const v=vpAct; if(!v||!v.dec) return aviso('Abra una imagen y ajuste la ventana primero.');
+  $('#mTextoTit').textContent='Nombre de la ventana favorita (V '+Math.round(v.ww)+' / N '+Math.round(v.wc)+')'; $('#mTextoVal').value=''; abrirModal('#mTexto'); setTimeout(()=>$('#mTextoVal').focus(),50);
+  $('#mTextoOk').onclick=()=>{ const n=$('#mTextoVal').value.trim()||('V'+Math.round(v.ww)+' N'+Math.round(v.wc)); prefs.favoritas=(prefs.favoritas||[]).concat([{n,ww:Math.round(v.ww),wc:Math.round(v.wc)}]); guardarPrefs(); pintarFavoritas(); cerrarModales(); aviso('Ventana "'+n+'" guardada.'); };
+},true);
+
+/* ====================== recordar preferencias ====================== */
+if(prefs.fps) $('#fps').value=prefs.fps; if(prefs.vFps) $('#vFps').value=prefs.vFps;
+$('#fps').addEventListener('change',e=>{ prefs.fps=e.target.value; guardarPrefs(); });
+$('#vFps').addEventListener('change',e=>{ prefs.vFps=e.target.value; guardarPrefs(); });
+if(prefs.textoVisible===false) textoVisible=false;
+document.addEventListener('change',e=>{ if(e.target&&e.target.id==='chTxt'){ prefs.textoVisible=e.target.checked; guardarPrefs(); } if(e.target&&e.target.id==='p3cal'){ prefs.calidad3d=+e.target.value; guardarPrefs(); } });
+if(prefs.herrNav && ['wl','pan','zoom','scroll'].includes(prefs.herrNav)){ herrNav=prefs.herrNav; elegirHerr(herrNav); }
+pintarLupaAnon();
 
 cambiarLayout('1', true);
 if(window.innerWidth<=700) $('#lado').classList.add('oculto');
