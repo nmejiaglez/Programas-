@@ -82,6 +82,17 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
 #progreso .barraP{width:260px;height:10px;background:#222;border-radius:5px;overflow:hidden}
 #progreso .barraP div{height:100%;width:0;background:var(--acento)}
 #grabCanvas{position:fixed;left:-99999px;top:0}
+.vp3d{position:absolute;inset:3px;background:#000;overflow:hidden;touch-action:none}
+.vp3d canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.p3d{position:absolute;top:8px;right:8px;width:250px;max-height:calc(100% - 16px);overflow-y:auto;background:rgba(20,27,36,.92);border:1px solid var(--borde);border-radius:10px;padding:8px;z-index:5;font-size:12px}
+.p3d.min .cuerpo3d{display:none}
+.p3d .fila3d{display:flex;gap:4px;flex-wrap:wrap;margin:5px 0}
+.p3d button{background:var(--panel2);border:1px solid var(--borde);border-radius:6px;padding:7px 8px;cursor:pointer;font-size:12px;color:var(--texto)}
+.p3d button.act{background:var(--acento2);border-color:var(--acento)}
+.p3d select{width:100%;background:#0d131a;border:1px solid var(--borde);border-radius:6px;padding:7px;color:var(--texto)}
+.p3d label{display:block;color:var(--suave);margin-top:6px}
+.p3d input[type=range]{width:100%;accent-color:var(--acento)}
+.p3d .cab3d{display:flex;justify-content:space-between;align-items:center;font-weight:bold;font-size:13px}
 @media (max-width:700px){#lado{position:absolute;z-index:20;height:calc(100% - 120px);width:86%}}
 @media (prefers-reduced-motion:reduce){.b:active{transform:none}}
 </style>
@@ -134,6 +145,7 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
       <option value="2">2 visores</option>
       <option value="4">4 visores</option>
       <option value="mpr">MPR 3 planos</option>
+      <option value="3d">3D volumen</option>
     </select>
     <select class="b" id="sGrosor" title="MIP / MinIP / grosor de corte" style="min-width:150px">
       <option value="0">Corte normal</option>
@@ -715,7 +727,7 @@ async function cargarArchivos(lista, agregar){
   pintarSeries();
   if(!series.length){ aviso(errores?'No se pudo leer ningún DICOM. '+ultimoError:'No se encontraron imágenes DICOM en lo elegido.',5000); return; }
   aviso(ok+' archivos abiertos en '+series.length+' series ('+fmt((performance.now()-t0)/1000,1)+' s)'+(errores?' — '+errores+' no se pudieron leer':''),3500);
-  if(!agregar || !vps.some(v=>v.serie)){ cambiarLayout($('#sLayout').value==='mpr'?'1':$('#sLayout').value, true); vps.forEach((v,i)=>{ const s=series[Math.min(i,series.length-1)]; asignarSerie(v,s); }); }
+  if(!agregar || !vps.some(v=>v.serie)){ cambiarLayout(/mpr|3d/.test($('#sLayout').value)?'1':$('#sLayout').value, true); if(/mpr|3d/.test($('#sLayout').value)) $('#sLayout').value='1'; vps.forEach((v,i)=>{ const s=series[Math.min(i,series.length-1)]; asignarSerie(v,s); }); }
 }
 function ordenarSerie(s){
   const I=s.imgs[0].info;
@@ -752,6 +764,8 @@ function crearVisor(){
 function activar(v){ if(vpAct===v) return; vpAct=v; if(v.serie && !v.plano){ v._preSerie=v.serie; precargarSerie(v.serie,v.idx); } vps.forEach(x=>x.el.classList.toggle('act',x===v)); actualizarPie(); pintarSeries(); pintarMedidas(); }
 function cambiarLayout(val, sinAsignar){
   const zona=$('#zona'); detenerCine();
+  if(val==='3d'){ const previa=(vpAct&&vpAct.serie)||vps.map(v=>v.serie).find(Boolean); zona.innerHTML=''; vps.length=0; vpAct=null; actualizarPie(); iniciar3D(previa); return; }
+  cerrar3D();
   const n = val==='mpr'?3:parseInt(val);
   const previas=vps.map(v=>v.serie);
   zona.innerHTML=''; vps.length=0;
@@ -769,6 +783,7 @@ function cambiarLayout(val, sinAsignar){
   });
 }
 function redimensionar(){
+  if(v3d) redimensionar3D();
   const dpr=Math.min(window.devicePixelRatio||1,2);
   for(const v of vps){ const r=v.el.getBoundingClientRect(); v.cv.width=Math.max(1,Math.round(r.width*dpr)); v.cv.height=Math.max(1,Math.round(r.height*dpr)); v.dpr=dpr; dibujar(v); }
 }
@@ -1250,6 +1265,7 @@ function pintarSeries(){
   $$('#listaSeries .serie').forEach(el=>{ const s=series[+el.dataset.i];
     el.addEventListener('click',e=>{ if(e.target.tagName==='INPUT') return; if(!vpAct) return;
       if($('#sLayout').value==='mpr'){ mpr=null; iniciarMPR(s); return; }
+      if($('#sLayout').value==='3d'){ iniciar3D(s); return; }
       asignarSerie(vpAct,s); if(window.innerWidth<=700) $('#lado').classList.add('oculto'); });
     miniatura(s, el.querySelector('canvas')); });
   $$('#listaSeries input[data-el]').forEach(ch=>ch.onchange=()=>{ series[+ch.dataset.el].elegida=ch.checked; });
@@ -1330,9 +1346,10 @@ async function exportarSerieImgs(origen, s, prefijo, archivos){
     archivos.push({nombre:prefijo+String(i+1).padStart(4,'0')+'.png', blob:await canvasBlob(v.cv)});
   }
 }
-$('#gActual').onclick=async()=>{ const v=vpAct; if(!v||!v.dec) return aviso('No hay imagen en pantalla.'); descargar(await capturaVisor(v), nombreBase(v)+'_img'+(v.idx+1)+'.png'); aviso('Imagen guardada en Descargas.'); };
+$('#gActual').onclick=async()=>{ if(v3d) return guardar3D(); const v=vpAct; if(!v||!v.dec) return aviso('No hay imagen en pantalla.'); descargar(await capturaVisor(v), nombreBase(v)+'_img'+(v.idx+1)+'.png'); aviso('Imagen guardada en Descargas.'); };
 $('#bGuardar').onclick=()=>{ $('#lado').classList.remove('oculto'); mostrarPest('vGuardar'); };
-$('#bMarcar').onclick=async()=>{ const v=vpAct; if(!v||!v.dec) return;
+$('#bMarcar').onclick=async()=>{ if(v3d){ const blob=await componer3D(); marcadas.push({clave:'3D'+Date.now(), blob, url:URL.createObjectURL(blob), desc:'3D '+v3d.preset.nombre}); pintarMarcadas(); return aviso('★ Vista 3D marcada ('+marcadas.length+').'); }
+  const v=vpAct; if(!v||!v.dec) return;
   const i=marcadas.findIndex(m=>m.clave===v.clave);
   if(i>=0){ URL.revokeObjectURL(marcadas[i].url); marcadas.splice(i,1); pintarMarcadas(); dibujar(v); return aviso('Imagen desmarcada.'); }
   const blob=await capturaVisor(v); marcadas.push({clave:v.clave, blob, url:URL.createObjectURL(blob), desc:descImagen(v)}); pintarMarcadas(); dibujar(v); aviso('★ Imagen marcada ('+marcadas.length+'). Guárdelas en Guardar → Imágenes marcadas.'); };
@@ -1386,7 +1403,7 @@ async function videosDe(lista){
   else { progreso('Creando ZIP…',1); const z=await crearZip(res); progreso(null); descargar(z, nombreBase(vpAct)+'_videos.zip'); }
   aviso(res.length===1?'Video guardado en Descargas.':res.length+' videos guardados en un ZIP.',4000);
 }
-$('#vActual').onclick=()=>{ const v=vpAct; if(!v||!v.serie) return aviso('Abra una serie primero.'); videosDe([{origen:v, s:v.serie, plano:v.plano}]); };
+$('#vActual').onclick=()=>{ if(v3d) return video3D(); const v=vpAct; if(!v||!v.serie) return aviso('Abra una serie primero.'); videosDe([{origen:v, s:v.serie, plano:v.plano}]); };
 $('#vElegidas').onclick=()=>{ const l=series.filter(s=>s.elegida); if(!l.length) return aviso('Marque las casillas ☑ de las series en la pestaña Series.',4000); videosDe(l.map(s=>({origen:vpAct,s}))); };
 $('#vTodas').onclick=()=>{ const l=series.filter(s=>s.imgs.length>1); if(!l.length) return aviso('No hay series con varias imágenes.'); videosDe(l.map(s=>({origen:vpAct,s}))); };
 
@@ -1452,6 +1469,287 @@ window.addEventListener('keydown',e=>{ const ae=document.activeElement; if(ae &&
   else if(e.key==='Home') irA(v,0); else if(e.key==='End') irA(v,totalImgs(v)-1);
   else if(e.key==='Escape'){ vps.forEach(x=>{x.temp=null;dibujar(x);}); cerrarModales(); }
   else if(e.key==='Delete'){ const a=todasAnot().find(x=>x.sel); if(a){ const arr=anotaciones.get(a.clave); arr.splice(arr.indexOf(a),1); pintarMedidas(); vps.forEach(x=>dibujar(x)); } } });
+
+
+/* ====================== 3D: volumen (VR) y MIP con WebGL2 ====================== */
+let v3d=null;
+const PRESETS3D=[
+  {id:'hueso', nombre:'Hueso', tipo:'vr', puntos:[[-1024,0,0,0,0],[150,.9,.8,.6,0],[220,.95,.82,.62,.12],[450,1,.95,.85,.55],[1500,1,1,.97,.85],[3071,1,1,1,.9]]},
+  {id:'angio', nombre:'Vasos con contraste (angio-TC)', tipo:'vr', puntos:[[-1024,0,0,0,0],[110,.7,.05,.05,0],[170,.8,.12,.1,.18],[280,.95,.25,.2,.55],[450,1,.85,.8,.6],[900,1,.97,.92,.8],[3071,1,1,1,.9]]},
+  {id:'hueso_vasos', nombre:'Hueso + vasos (fino)', tipo:'vr', puntos:[[-1024,0,0,0,0],[140,.8,.1,.08,0],[200,.85,.15,.12,.2],[320,.95,.6,.5,.3],[500,1,.95,.88,.6],[3071,1,1,1,.9]]},
+  {id:'piel', nombre:'Piel / superficie', tipo:'vr', puntos:[[-1024,0,0,0,0],[-450,.9,.7,.6,0],[-250,.93,.74,.63,.5],[100,.95,.78,.68,.7],[400,1,.95,.9,.8],[3071,1,1,1,.9]]},
+  {id:'musculo', nombre:'Músculo y hueso', tipo:'vr', puntos:[[-1024,0,0,0,0],[-100,.6,.2,.15,0],[20,.75,.25,.2,.03],[90,.85,.35,.3,.06],[180,.9,.8,.7,.1],[400,1,.95,.85,.6],[3071,1,1,1,.9]]},
+  {id:'pulmon', nombre:'Pulmón: vasos y bronquios', tipo:'vr', puntos:[[-1024,0,0,0,0],[-930,.5,.6,.85,0],[-850,.6,.7,.9,.015],[-650,.9,.55,.5,.12],[-400,.95,.45,.4,.25],[-200,.9,.4,.35,0],[3071,1,1,1,0]]},
+  {id:'mip_angio', nombre:'MIP 3D vasos (angio)', tipo:'mip', ww:600, wc:300},
+  {id:'mip_pulmon', nombre:'MIP 3D pulmón (nódulos)', tipo:'mip', ww:1000, wc:-650},
+  {id:'mip_hueso', nombre:'MIP 3D hueso', tipo:'mip', ww:2000, wc:700},
+  {id:'ventana', nombre:'Según ventana actual (RM / otros)', tipo:'vr', ventana:true},
+];
+const VS3D=`#version 300 es
+in vec2 p; void main(){ gl_Position=vec4(p,0.,1.); }`;
+const FS3D=`#version 300 es
+precision highp float; precision highp sampler3D;
+uniform sampler3D vol; uniform sampler2D tf;
+uniform mat3 rot; uniform vec3 semi; uniform vec3 cmin; uniform vec3 cmax;
+uniform vec2 res; uniform float mmpx; uniform vec2 pan; uniform int modo; uniform float paso;
+uniform vec2 rango; uniform vec2 wl; uniform int sombra; uniform float desp; uniform float opac; uniform vec3 vox;
+out vec4 color;
+float val(vec3 q){ vec3 t=vec3(q.x/(2.*semi.x)+.5, .5-q.z/(2.*semi.z), .5-q.y/(2.*semi.y)); return texture(vol,t).r; }
+void main(){
+  vec2 px=(gl_FragCoord.xy-res*.5)*mmpx-pan;
+  vec3 o=rot*vec3(px,1e5), d=normalize(rot*vec3(0.,0.,-1.));
+  vec3 dd=d; if(abs(dd.x)<1e-6) dd.x=1e-6; if(abs(dd.y)<1e-6) dd.y=1e-6; if(abs(dd.z)<1e-6) dd.z=1e-6;
+  vec3 t0=(cmin-o)/dd, t1=(cmax-o)/dd, tn3=min(t0,t1), tf3=max(t0,t1);
+  float tn=max(max(tn3.x,tn3.y),tn3.z), tl=min(min(tf3.x,tf3.y),tf3.z);
+  if(tn>=tl){ color=vec4(0.,0.,0.,1.); return; }
+  float jit=fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453);
+  float t=tn+paso*jit;
+  if(modo==1){ // MIP
+    float m=-1e9;
+    for(int i=0;i<4096;i++){ if(t>tl) break; m=max(m,val(o+d*t)); t+=paso; }
+    float g=clamp((m-(wl.y-desp-wl.x*.5/opac))/(wl.x/opac),0.,1.);
+    color=vec4(vec3(g),1.); return; }
+  vec4 acc=vec4(0.);
+  for(int i=0;i<4096;i++){
+    if(t>tl || acc.a>.97) break;
+    vec3 q=o+d*t; float v=val(q);
+    vec4 c=texture(tf,vec2(clamp((v-desp-rango.x)/(rango.y-rango.x),0.,1.),.5));
+    if(c.a>.002){
+      float a=1.-pow(1.-min(c.a*opac,1.),paso/1.2);
+      vec3 col=c.rgb;
+      if(sombra==1){
+        vec3 g=vec3(val(q+vec3(vox.x,0,0))-val(q-vec3(vox.x,0,0)), val(q+vec3(0,vox.y,0))-val(q-vec3(0,vox.y,0)), val(q+vec3(0,0,vox.z))-val(q-vec3(0,0,vox.z)));
+        float gl=length(g);
+        if(gl>1e-3){ vec3 n=-g/gl; float dif=abs(dot(n,-d)); vec3 h=normalize(-d-d); float esp=pow(max(dot(n,-d),0.),24.);
+          col=col*(.28+.72*dif)+vec3(.22*esp); } }
+      acc.rgb+=(1.-acc.a)*a*col; acc.a+=(1.-acc.a)*a; }
+    t+=paso; }
+  color=vec4(acc.rgb,1.);
+}`;
+function crearPrograma3D(gl){
+  const sh=(t,src)=>{ const x=gl.createShader(t); gl.shaderSource(x,src); gl.compileShader(x); if(!gl.getShaderParameter(x,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(x)); return x; };
+  const pr=gl.createProgram(); gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS3D)); gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS3D)); gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(pr));
+  const u={}; for(const n of ['vol','tf','rot','semi','cmin','cmax','res','mmpx','pan','modo','paso','rango','wl','sombra','desp','opac','vox']) u[n]=gl.getUniformLocation(pr,n);
+  const b=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const loc=gl.getAttribLocation(pr,'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  return {pr,u};
+}
+function calidadInicial(){ const mem=navigator.deviceMemory||4, movil=/Android|iPad|iPhone|CrOS/i.test(navigator.userAgent); return (mem>=8 && !movil)?384:256; }
+function cerrar3D(){ if(!v3d) return; cancelAnimationFrame(v3d.raf); v3d.vivo=false; const gl=v3d.gl; try{ gl.getExtension('WEBGL_lose_context')?.loseContext(); }catch(e){} v3d=null; }
+async function iniciar3D(sPref){
+  cerrar3D();
+  const zona=$('#zona'); zona.innerHTML=''; zona.style.gridTemplateColumns='1fr'; zona.style.gridTemplateRows='1fr';
+  const s=(sPref&&esVolumen(sPref))?sPref:series.find(esVolumen);
+  const caja=document.createElement('div'); caja.className='vp3d'; zona.appendChild(caja);
+  if(!s){ caja.innerHTML='<div class="vacio" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--suave);padding:20px;text-align:center">El 3D necesita una serie de cortes de TC o RM (10 imágenes o más). Abra un estudio y elija la serie en el panel.</div>'; return; }
+  const cv=document.createElement('canvas'), cv2=document.createElement('canvas'); caja.append(cv,cv2);
+  const gl=cv.getContext('webgl2',{preserveDrawingBuffer:true,antialias:false,powerPreference:'high-performance'});
+  if(!gl){ caja.innerHTML='<div class="vacio" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--suave);padding:20px;text-align:center">Este navegador no tiene WebGL2. Actualice Google Chrome o active la aceleración por hardware (Configuración → Sistema).</div>'; return; }
+  let prog; try{ prog=crearPrograma3D(gl); }catch(e){ aviso('Error de 3D: '+e.message,6000); return; }
+  await construirVolumen(s); if(!mpr||mpr.serie!==s) return;
+  v3d={gl,prog,cv,cv2,ctx2:cv2.getContext('2d'),caja,serie:s,rot:[1,0,0,0,1,0,0,0,1],zoom:1,pan:[0,0],preset:PRESETS3D[0],desp:0,opac:1,
+    sombra:true,calidad:calidadInicial(),recorte:[0,100,0,100,0,100],vivo:true,interactuando:false,giro:false,sucio:true,ww:400,wc:40};
+  const vpPrev=vps[0]; if(vpPrev){ v3d.ww=vpPrev.ww; v3d.wc=vpPrev.wc; }
+  if(s.modalidad!=='CT') v3d.preset=PRESETS3D.find(p=>p.id==='ventana');
+  crearPanel3D();
+  await subirVolumen3D();
+  redimensionar3D(); configurarGestos3D(); bucle3D();
+  pintarSeries();
+}
+async function subirVolumen3D(){
+  const {gl}=v3d, [W,H,N]=mpr.dims, vol=mpr.vol, q=v3d.calidad;
+  const w=Math.min(W,q), h=Math.min(H,q), ezmm=N*mpr.esp[2], exmm=W*mpr.esp[0];
+  // en Z no más resolución que en XY (en mm)
+  const n=Math.max(2,Math.min(N, Math.round(Math.min(N, q*1.6, ezmm/(exmm/w)*1.0+1))));
+  progreso('Preparando 3D…',0); await espera();
+  const out=new Float32Array(w*h*n); let mn=Infinity,mx=-Infinity;
+  const fx=W/w, fy=H/h, fz=N/n;
+  for(let k=0;k<n;k++){
+    if(k%16===0){ progreso('Preparando 3D '+Math.round(k/n*100)+'%',k/n); await espera(); }
+    const zc=(k+.5)*fz-.5, z0=Math.max(0,Math.floor(zc)), z1=Math.min(N-1,z0+1), az=Math.min(1,Math.max(0,zc-z0));
+    for(let y=0;y<h;y++){
+      const yc=(y+.5)*fy-.5, y0=Math.max(0,Math.floor(yc)), y1=Math.min(H-1,y0+1), ay=Math.min(1,Math.max(0,yc-y0));
+      for(let x=0;x<w;x++){
+        const xc=(x+.5)*fx-.5, x0=Math.max(0,Math.floor(xc)), x1=Math.min(W-1,x0+1), ax=Math.min(1,Math.max(0,xc-x0));
+        let val;
+        if(fx>=1.5){ // reducir promediando un bloque pequeño (evita escalones)
+          const a=z0*W*H, b=z1*W*H, r0=y0*W, r1=y1*W;
+          val=((vol[a+r0+x0]+vol[a+r0+x1]+vol[a+r1+x0]+vol[a+r1+x1])*(1-az)+(vol[b+r0+x0]+vol[b+r0+x1]+vol[b+r1+x0]+vol[b+r1+x1])*az)/4;
+        } else {
+          const a=z0*W*H, b=z1*W*H, r0=y0*W, r1=y1*W;
+          const c0=(vol[a+r0+x0]*(1-ax)+vol[a+r0+x1]*ax)*(1-ay)+(vol[a+r1+x0]*(1-ax)+vol[a+r1+x1]*ax)*ay;
+          const c1=(vol[b+r0+x0]*(1-ax)+vol[b+r0+x1]*ax)*(1-ay)+(vol[b+r1+x0]*(1-ax)+vol[b+r1+x1]*ax)*ay;
+          val=c0*(1-az)+c1*az; }
+        out[(k*h+y)*w+x]=val; if(val<mn)mn=val; if(val>mx)mx=val; } } }
+  progreso('Enviando a la tarjeta de video…',1); await espera();
+  if(v3d.tex) gl.deleteTexture(v3d.tex);
+  const tex=gl.createTexture(); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_3D,tex);
+  gl.pixelStorei(gl.UNPACK_ALIGNMENT,1);
+  try{ gl.texImage3D(gl.TEXTURE_3D,0,gl.R16F,w,h,n,0,gl.RED,gl.FLOAT,out); }catch(e){}
+  if(gl.getError()!==gl.NO_ERROR){ progreso(null); if(v3d.calidad>192){ v3d.calidad=Math.max(128,v3d.calidad-128); aviso('Poca memoria de video: bajando la calidad del 3D.',3000); return subirVolumen3D(); } aviso('La tarjeta de video no pudo cargar este volumen.',5000); return; }
+  for(const [k,v] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_R,gl.CLAMP_TO_EDGE]]) gl.texParameteri(gl.TEXTURE_3D,k,v);
+  v3d.tex=tex; v3d.dims=[w,h,n]; v3d.vmin=mn; v3d.vmax=mx;
+  v3d.ext=[W*mpr.esp[0], N*mpr.esp[2], H*mpr.esp[1]]; // x: izq-der, y: cráneo-caudal, z: ant-post (mm)
+  progreso(null); actualizarTF3D(); v3d.sucio=true;
+}
+function actualizarTF3D(){
+  const {gl}=v3d, P=v3d.preset, N=512, d=new Uint8Array(N*4);
+  let lo=-1024, hi=3071, puntos=P.puntos||[[-1024,0,0,0,0],[3071,0,0,0,0]];
+  if(P.ventana || (v3d.serie.modalidad!=='CT' && P.tipo==='vr')){
+    lo=v3d.vmin; hi=v3d.vmax; const a=v3d.wc-v3d.ww/2, b=v3d.wc+v3d.ww/2;
+    puntos=[[lo,1,1,1,0],[a,1,1,1,0],[a+(b-a)*.35,.95,.9,.85,.25],[b,1,1,1,.85],[hi,1,1,1,.9]]; }
+  for(let i=0;i<N;i++){ const x=lo+(hi-lo)*i/(N-1); let j=0; while(j<puntos.length-2 && puntos[j+1][0]<x) j++;
+    const A=puntos[j], B=puntos[Math.min(j+1,puntos.length-1)], f=B[0]>A[0]?Math.min(1,Math.max(0,(x-A[0])/(B[0]-A[0]))):0;
+    for(let c=0;c<4;c++) d[i*4+c]=Math.round(255*(A[c+1]+(B[c+1]-A[c+1])*f)); }
+  if(!v3d.tf) v3d.tf=gl.createTexture();
+  gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D,v3d.tf);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,N,1,0,gl.RGBA,gl.UNSIGNED_BYTE,d);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  v3d.rango=[lo,hi]; v3d.sucio=true;
+}
+function redimensionar3D(){
+  if(!v3d) return; const r=v3d.caja.getBoundingClientRect(), dpr=Math.min(window.devicePixelRatio||1,1.5);
+  v3d.dpr=dpr; v3d.cw=Math.max(1,Math.round(r.width*dpr)); v3d.ch=Math.max(1,Math.round(r.height*dpr));
+  v3d.cv2.width=v3d.cw; v3d.cv2.height=v3d.ch; v3d.sucio=true;
+}
+function bucle3D(){
+  if(!v3d||!v3d.vivo) return;
+  if(v3d.giro){ v3d.rot=mult3(rotY(1.2*Math.PI/180),v3d.rot); v3d.sucio=true; v3d.interactuando=true; clearTimeout(v3d.tInt); v3d.tInt=setTimeout(()=>{ if(v3d){v3d.interactuando=false; v3d.sucio=true;} },200); }
+  if(v3d.sucio){ v3d.sucio=false; render3D(v3d.interactuando?0.5:1); }
+  v3d.raf=requestAnimationFrame(bucle3D);
+}
+function render3D(escala){
+  const {gl,prog,cv}=v3d; if(!v3d.tex) return;
+  const w=Math.max(1,Math.round(v3d.cw*escala)), h=Math.max(1,Math.round(v3d.ch*escala));
+  if(cv.width!==w||cv.height!==h){ cv.width=w; cv.height=h; }
+  gl.viewport(0,0,w,h); gl.useProgram(prog.pr); const u=prog.u;
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_3D,v3d.tex); gl.uniform1i(u.vol,0);
+  gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D,v3d.tf); gl.uniform1i(u.tf,1);
+  // rot (fila mayor) pasado como columna mayor = transpuesta: cámara → objeto
+  gl.uniformMatrix3fv(u.rot,false,new Float32Array(v3d.rot));
+  const e=v3d.ext, semi=[e[0]/2,e[1]/2,e[2]/2]; gl.uniform3fv(u.semi,semi);
+  const R=v3d.recorte, lim=(i,a,b,inv)=>{ const L=e[i]; let lo=-L/2+L*a/100, hi=-L/2+L*b/100; return inv?[-hi,-lo]:[lo,hi]; };
+  const X=lim(0,R[0],R[1],false), Y=lim(1,R[4],R[5],true), Z=lim(2,R[2],R[3],true);
+  gl.uniform3f(u.cmin,X[0],Y[0],Z[0]); gl.uniform3f(u.cmax,X[1],Y[1],Z[1]);
+  gl.uniform2f(u.res,w,h);
+  const diag=Math.max(e[0],e[1],e[2])*1.15, mmpx=diag/Math.min(w,h)/v3d.zoom; gl.uniform1f(u.mmpx,mmpx);
+  gl.uniform2f(u.pan,v3d.pan[0]*mmpx*escala*v3d.dpr,-v3d.pan[1]*mmpx*escala*v3d.dpr);
+  const vx=Math.min(e[0]/v3d.dims[0],e[2]/v3d.dims[1],e[1]/v3d.dims[2]);
+  gl.uniform1f(u.paso, Math.max(0.25,vx*(escala<1?1.3:0.6)));
+  gl.uniform3f(u.vox, e[0]/v3d.dims[0], e[1]/v3d.dims[2], e[2]/v3d.dims[1]);
+  gl.uniform1i(u.modo, v3d.preset.tipo==='mip'?1:0);
+  gl.uniform2f(u.rango,v3d.rango[0],v3d.rango[1]);
+  gl.uniform2f(u.wl, v3d.preset.tipo==='mip'?(v3d.preset.ww||v3d.ww):v3d.ww, v3d.preset.tipo==='mip'?(v3d.preset.wc??v3d.wc):v3d.wc);
+  gl.uniform1i(u.sombra, v3d.sombra && escala>=1 ?1:0);
+  gl.uniform1f(u.desp,v3d.desp); gl.uniform1f(u.opac,v3d.opac);
+  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  textos3D(v3d.ctx2, v3d.cw, v3d.ch, v3d.dpr);
+}
+function textos3D(c,cw,ch,k){
+  c.clearRect(0,0,cw,ch);
+  const I=v3d.serie.info, fs=Math.round(13*k); c.font=fs+'px Arial'; c.textBaseline='top';
+  const sombra=(t,x,y,al)=>{ c.textAlign=al; c.fillStyle='rgba(0,0,0,.85)'; c.fillText(t,x+1,y+1); c.fillStyle='#f2f5f8'; c.fillText(t,x,y); };
+  [I.paciente, (I.pid?'ID '+I.pid+'  ':'')+(I.sexo||'')+(I.edad?' '+I.edad:''), fechaDicom(I.fecha)].filter(Boolean).forEach((t,i)=>sombra(t,8*k,6*k+i*fs*1.25,'left'));
+  c.textBaseline='bottom';
+  ['3D · '+v3d.preset.nombre, 'Serie '+(v3d.serie.num||'')+' '+(v3d.serie.desc||'')].forEach((t,i,a)=>sombra(t,8*k,ch-6*k-(a.length-1-i)*fs*1.25,'left'));
+  // orientación del paciente
+  const r=v3d.serie.info.iop?v3d.serie.info.iop.slice(0,3):[1,0,0], cc=v3d.serie.info.iop?v3d.serie.info.iop.slice(3,6):[0,1,0], n=v3d.serie.normal||[0,0,1];
+  const aLPS=o=>[0,1,2].map(i=>o[0]*r[i]+o[1]*n[i]-o[2]*cc[i]);
+  const R=v3d.rot, haciaObj=sv=>[R[0]*sv[0]+R[3]*sv[1]+R[6]*sv[2], R[1]*sv[0]+R[4]*sv[1]+R[7]*sv[2], R[2]*sv[0]+R[5]*sv[1]+R[8]*sv[2]];
+  const der=letra(aLPS(haciaObj([1,0,0]))), arr=letra(aLPS(haciaObj([0,1,0])));
+  const inv=t=>t.split('').map(x=>({L:'R',R:'L',A:'P',P:'A',S:'I',I:'S'})[x]).join('');
+  c.font='bold '+Math.round(fs*1.1)+'px Arial'; c.textBaseline='middle';
+  sombra(der,cw-12*k,ch/2,'right'); sombra(inv(der),12*k,ch/2,'left');
+  c.textBaseline='top'; sombra(arr,cw/2,6*k,'center'); c.textBaseline='bottom'; sombra(inv(arr),cw/2,ch-6*k,'center');
+}
+function mult3(a,b){ const r=new Array(9); for(let i=0;i<3;i++) for(let j=0;j<3;j++) r[i*3+j]=a[i*3]*b[j]+a[i*3+1]*b[3+j]+a[i*3+2]*b[6+j]; return r; }
+function rotX(t){ const c=Math.cos(t),s=Math.sin(t); return [1,0,0,0,c,-s,0,s,c]; }
+function rotY(t){ const c=Math.cos(t),s=Math.sin(t); return [c,0,s,0,1,0,-s,0,c]; }
+function vista3D(nombre){
+  const g=Math.PI/180, V={frontal:[1,0,0,0,1,0,0,0,1], posterior:rotY(180*g), izquierda:rotY(-90*g), derecha:rotY(90*g), superior:rotX(90*g), inferior:rotX(-90*g)};
+  v3d.rot=V[nombre]; v3d.zoom=1; v3d.pan=[0,0]; v3d.sucio=true;
+}
+function configurarGestos3D(){
+  const el=v3d.cv2, ptrs=new Map(); let g=null;
+  el.style.touchAction='none';
+  const marcar=()=>{ v3d.interactuando=true; v3d.sucio=true; clearTimeout(v3d.tInt); v3d.tInt=setTimeout(()=>{ if(v3d){ v3d.interactuando=false; v3d.sucio=true; } },180); };
+  el.addEventListener('pointerdown',e=>{ el.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY}); v3d.giro=false; actualizarPanel3D();
+    if(ptrs.size===2){ const [a,b]=[...ptrs.values()]; g={tipo:'pinch',d0:Math.hypot(a.x-b.x,a.y-b.y),z0:v3d.zoom,cx:(a.x+b.x)/2,cy:(a.y+b.y)/2,p0:v3d.pan.slice()}; return; }
+    g={tipo: e.button===2||e.shiftKey?'pan':'rot', x:e.clientX, y:e.clientY, p0:v3d.pan.slice()}; });
+  el.addEventListener('pointermove',e=>{ if(!ptrs.has(e.pointerId)||!g) return; ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(g.tipo==='pinch'&&ptrs.size>=2){ const [a,b]=[...ptrs.values()]; v3d.zoom=Math.max(.3,Math.min(12,g.z0*Math.hypot(a.x-b.x,a.y-b.y)/g.d0)); v3d.pan=[g.p0[0]+(a.x+b.x)/2-g.cx, g.p0[1]+(a.y+b.y)/2-g.cy]; marcar(); return; }
+    const dx=e.clientX-g.x, dy=e.clientY-g.y;
+    if(g.tipo==='pan'){ v3d.pan=[g.p0[0]+dx,g.p0[1]+dy]; }
+    else { g.x=e.clientX; g.y=e.clientY; v3d.rot=mult3(mult3(rotX(-dy*0.008),rotY(dx*0.008)),v3d.rot); }
+    marcar(); });
+  const fin=e=>{ ptrs.delete(e.pointerId); if(ptrs.size===0) g=null; else if(g&&g.tipo==='pinch'){ const [q]=[...ptrs.values()]; g={tipo:'rot',x:q.x,y:q.y,p0:v3d.pan.slice()}; } };
+  el.addEventListener('pointerup',fin); el.addEventListener('pointercancel',fin); el.addEventListener('contextmenu',e=>e.preventDefault());
+  el.addEventListener('wheel',e=>{ e.preventDefault(); v3d.zoom=Math.max(.3,Math.min(12,v3d.zoom*Math.exp(-e.deltaY/400))); marcar(); },{passive:false});
+  el.addEventListener('dblclick',()=>vista3D('frontal'));
+}
+function crearPanel3D(){
+  const p=document.createElement('div'); p.className='p3d'; v3d.panel=p;
+  p.innerHTML=`<div class="cab3d"><span>3D</span><button id="p3min" title="Ocultar controles">Ocultar ▲</button></div>
+  <div class="cuerpo3d">
+   <label>Tipo de 3D</label><select id="p3preset">${PRESETS3D.map(x=>`<option value="${x.id}">${x.nombre}</option>`).join('')}</select>
+   <label>Umbral (mueve lo que se ve): <b id="p3dv">0</b> UH</label><input type="range" id="p3desp" min="-400" max="400" value="0" step="5">
+   <label>Opacidad / brillo</label><input type="range" id="p3opac" min="20" max="300" value="100">
+   <div class="fila3d"><button id="p3sombra" class="act">Sombras</button><button id="p3giro">Girar ⟳</button><button id="p3reset">Restaurar</button></div>
+   <label>Vistas</label>
+   <div class="fila3d"><button data-vista="frontal">Frontal</button><button data-vista="posterior">Posterior</button><button data-vista="derecha">Lat. der.</button><button data-vista="izquierda">Lat. izq.</button><button data-vista="superior">Superior</button><button data-vista="inferior">Inferior</button></div>
+   <label>Recorte (quitar camilla, abrir el volumen)</label>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 8px">
+     <span>Derecha ↔</span><span>↔ Izquierda</span><input type="range" data-r="0" min="0" max="100" value="0"><input type="range" data-r="1" min="0" max="100" value="100">
+     <span>Anterior ↔</span><span>↔ Posterior</span><input type="range" data-r="2" min="0" max="100" value="0"><input type="range" data-r="3" min="0" max="100" value="100">
+     <span>Superior ↔</span><span>↔ Inferior</span><input type="range" data-r="4" min="0" max="100" value="0"><input type="range" data-r="5" min="0" max="100" value="100">
+   </div>
+   <label>Calidad</label><select id="p3cal"><option value="192">Rápida (tablet sencilla)</option><option value="256">Normal</option><option value="384">Alta</option><option value="512">Máxima (PC potente)</option></select>
+   <div class="fila3d"><button id="p3img">Guardar imagen</button><button id="p3vid">Video 360°</button></div>
+   <p style="color:var(--suave);margin:6px 0 0">Un dedo o clic: girar. Dos dedos o rueda: zoom. Clic derecho o Mayús + arrastrar: mover. Doble clic: frontal.</p>
+  </div>`;
+  v3d.caja.appendChild(p);
+  const q=s=>p.querySelector(s);
+  q('#p3preset').value=v3d.preset.id; q('#p3cal').value=String(v3d.calidad);
+  q('#p3min').onclick=()=>{ p.classList.toggle('min'); q('#p3min').textContent=p.classList.contains('min')?'Controles ▼':'Ocultar ▲'; };
+  q('#p3preset').onchange=e=>{ v3d.preset=PRESETS3D.find(x=>x.id===e.target.value); v3d.desp=0; v3d.opac=1; q('#p3desp').value=0; q('#p3opac').value=100; q('#p3dv').textContent='0'; actualizarTF3D(); };
+  q('#p3desp').oninput=e=>{ v3d.desp=+e.target.value; q('#p3dv').textContent=e.target.value; v3d.interactuando=true; v3d.sucio=true; clearTimeout(v3d.tInt); v3d.tInt=setTimeout(()=>{v3d.interactuando=false;v3d.sucio=true;},200); };
+  q('#p3opac').oninput=e=>{ v3d.opac=e.target.value/100; v3d.sucio=true; };
+  q('#p3sombra').onclick=()=>{ v3d.sombra=!v3d.sombra; actualizarPanel3D(); v3d.sucio=true; };
+  q('#p3giro').onclick=()=>{ v3d.giro=!v3d.giro; actualizarPanel3D(); };
+  q('#p3reset').onclick=()=>{ vista3D('frontal'); v3d.recorte=[0,100,0,100,0,100]; p.querySelectorAll('[data-r]').forEach(r=>r.value=(+r.dataset.r)%2?100:0); };
+  p.querySelectorAll('[data-vista]').forEach(b=>b.onclick=()=>vista3D(b.dataset.vista));
+  p.querySelectorAll('[data-r]').forEach(r=>r.oninput=()=>{ const i=+r.dataset.r; let v=+r.value; if(i%2===0) v=Math.min(v,v3d.recorte[i+1]-2); else v=Math.max(v,v3d.recorte[i-1]+2); r.value=v; v3d.recorte[i]=v; v3d.sucio=true; });
+  q('#p3cal').onchange=async e=>{ v3d.calidad=+e.target.value; await subirVolumen3D(); };
+  q('#p3img').onclick=()=>guardar3D(); q('#p3vid').onclick=()=>video3D();
+  p.addEventListener('pointerdown',e=>e.stopPropagation()); p.addEventListener('wheel',e=>e.stopPropagation());
+  if(window.innerWidth<700){ p.classList.add('min'); q('#p3min').textContent='Controles ▼'; }
+}
+function actualizarPanel3D(){ if(!v3d||!v3d.panel) return; v3d.panel.querySelector('#p3sombra').classList.toggle('act',v3d.sombra); v3d.panel.querySelector('#p3giro').classList.toggle('act',v3d.giro); }
+async function componer3D(){
+  render3D(1);
+  const c=document.createElement('canvas'); c.width=v3d.cw; c.height=v3d.ch; const x=c.getContext('2d');
+  x.drawImage(v3d.cv,0,0,v3d.cw,v3d.ch); x.drawImage(v3d.cv2,0,0);
+  return await new Promise(r=>c.toBlob(r,'image/png'));
+}
+async function guardar3D(){ if(!v3d) return; descargar(await componer3D(), nombreArchivo((v3d.serie.info.paciente||'paciente')+'_3D_'+v3d.preset.id)+'.png'); aviso('Imagen 3D guardada en Descargas.'); }
+async function video3D(){
+  if(!v3d) return; const tipo=tipoVideo(); if(!tipo) return aviso('Este navegador no permite crear videos. Use Google Chrome actualizado.',5000);
+  v3d.giro=false; actualizarPanel3D(); v3d.vivo=false; cancelAnimationFrame(v3d.raf);
+  const c=$('#grabCanvas'); c.width=Math.round(v3d.cw/2)*2; c.height=Math.round(v3d.ch/2)*2; const x=c.getContext('2d');
+  const stream=c.captureStream(0), track=stream.getVideoTracks()[0], rec=new MediaRecorder(stream,{mimeType:tipo,videoBitsPerSecond:8e6}), trozos=[];
+  rec.ondataavailable=e=>{ if(e.data.size) trozos.push(e.data); }; const listo=new Promise(r=>rec.onstop=r); rec.start();
+  const rot0=v3d.rot, cuadros=120, fps=25;
+  for(let i=0;i<cuadros;i++){ const t0=performance.now();
+    v3d.rot=mult3(rotY(2*Math.PI*i/cuadros),rot0); render3D(1);
+    x.drawImage(v3d.cv,0,0,c.width,c.height); x.drawImage(v3d.cv2,0,0,c.width,c.height);
+    if(track.requestFrame) track.requestFrame(); progreso('Grabando video 3D '+Math.round(i/cuadros*100)+'%',i/cuadros);
+    await new Promise(r=>setTimeout(r,Math.max(0,1000/fps-(performance.now()-t0)))); }
+  rec.stop(); await listo; progreso(null); v3d.rot=rot0; v3d.vivo=true; v3d.sucio=true; bucle3D();
+  descargar(new Blob(trozos,{type:tipo.split(';')[0]}), nombreArchivo((v3d.serie.info.paciente||'paciente')+'_3D_360_'+v3d.preset.id)+'.'+(tipo.includes('mp4')?'mp4':'webm'));
+  aviso('Video 3D guardado en Descargas.',3500);
+}
 
 cambiarLayout('1', true);
 if(window.innerWidth<=700) $('#lado').classList.add('oculto');

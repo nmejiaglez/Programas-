@@ -76,3 +76,33 @@ GUARDAR (se guardan en Descargas)
 
 El visor ayuda a revisar y documentar imagenes; no reemplaza la estacion
 de diagnostico oficial del hospital.
+
+3D VOLUMEN
+- En la lista de distribucion elija "3D volumen". Usa la serie de cortes
+  (TC o RM) que este viendo; para cambiarla toque otra serie del panel.
+- Tipo de 3D:
+  * Hueso: fracturas complejas (pelvis, cara, columna, calcaneo).
+  * Vasos con contraste (angio-TC): aorta, carotidas, poligono, renales.
+  * Hueso + vasos (fino), Piel / superficie, Musculo y hueso.
+  * Pulmon: vasos y bronquios (arbol vascular y bronquial).
+  * MIP 3D vasos, MIP 3D pulmon (nodulos) y MIP 3D hueso.
+  * Segun ventana actual: para RM u otros estudios sin UH.
+- Umbral: mueve lo que se ve (mas o menos hueso / vasos).
+  Opacidad: mas transparente o mas solido. Sombras: relieve.
+- Girar: un dedo o clic y arrastrar. Zoom: dos dedos o rueda.
+  Mover: clic derecho o Mayus + arrastrar. Doble clic: vista frontal.
+- Vistas rapidas: frontal, posterior, laterales, superior, inferior.
+  "Girar" hace que el volumen de vueltas solo.
+- Recorte: barras para quitar la camilla o "abrir" el volumen por
+  delante, detras, arriba, abajo o a los lados.
+- Calidad: Rapida (tablet sencilla), Normal, Alta, Maxima (PC potente).
+  Si la tarjeta de video no alcanza, baja la calidad sola.
+- Guardar imagen (PNG) y Video 360 (da una vuelta completa).
+  La estrella "Marcar" tambien guarda la vista 3D en las marcadas.
+- "Ocultar" esconde el panel de controles para ver mas grande.
+
+EN QUE EQUIPOS FUNCIONA
+- Windows, Linux, ChromeOS Flex, tablets Android: con Google Chrome o
+  Microsoft Edge actualizados. iPad: Safari o Chrome recientes.
+- El 3D necesita aceleracion por hardware (WebGL2). Si no aparece:
+  Chrome > Configuracion > Sistema > "Usar aceleracion de graficos".
