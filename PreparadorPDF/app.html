@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Preparador V2 Dr. Mejía</title>
+<style>
+/* Una columna: encabezado azul, pasos numerados, lista de archivos, botón grande de conversión */
+:root{--azul:#123A78;--azul2:#1f5fae;--claro:#EAF1FA;--borde:#c9d6e6;--texto:#1d2733;--suave:#5b6b7e;--dorado:#C9A227;--rojo:#C00028;--fondo:#f4f7fb;--verde:#1e8449}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font:16px/1.4 Arial,Helvetica,sans-serif;color:var(--texto);background:var(--fondo);padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0)}
+header{background:var(--azul);color:#fff;padding:14px max(16px,env(safe-area-inset-left,0px));border-bottom:4px solid var(--dorado)}
+header h1{margin:0;font-size:20px;letter-spacing:.02em}
+header p{margin:4px 0 0;font-size:13px;opacity:.85}
+main{max-width:980px;margin:0 auto;padding:14px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:14px}
+.tarjeta{background:#fff;border:1px solid var(--borde);border-radius:10px;padding:14px}
+h2{margin:0 0 8px;font-size:16px;color:var(--azul)}
+.nota{color:var(--suave);font-size:13px;margin:6px 0}
+.fila{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button,select,input{font:inherit}
+.btn{background:var(--azul2);color:#fff;border:0;border-radius:8px;padding:12px 16px;cursor:pointer;font-weight:bold;min-height:48px}
+.btn.sec{background:#fff;color:var(--azul);border:1px solid var(--borde);font-weight:normal}
+.btn.grande{width:100%;background:var(--azul);font-size:17px;padding:16px}
+.btn:disabled{opacity:.5;cursor:default}
+.btn:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--dorado);outline-offset:2px}
+.lista{border:1px solid var(--borde);border-radius:8px;max-height:340px;overflow:auto;background:#fff}
+.item{display:grid;grid-template-columns:34px 46px 78px 1fr;gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid #eef2f7;cursor:pointer;min-width:0}
+.item:last-child{border-bottom:0}
+.item.sel{background:var(--claro)}
+.item input{width:22px;height:22px}
+.item .n{color:var(--suave);font-variant-numeric:tabular-nums}
+.item .tipo{font-size:12px;font-weight:bold;border-radius:20px;padding:3px 8px;text-align:center}
+.t-video{background:#e8f0fd;color:#1f5fae}.t-imagen{background:#e9f7ee;color:#1e8449}.t-dicom{background:#fdf3e1;color:#9a6a00}
+.item .nom{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .nom small{display:block;color:var(--suave)}
+.vacio{padding:24px;text-align:center;color:var(--suave)}
+.contador{font-weight:bold;margin-top:8px}
+label{font-weight:bold}
+input[type=text],input[type=number],select{border:1px solid var(--borde);border-radius:8px;padding:11px;background:#fff;min-height:46px}
+input[type=text]{width:100%}
+#log{background:#0f1720;color:#d6e2ef;border-radius:8px;padding:10px;font:13px/1.45 Consolas,monospace;white-space:pre-wrap;max-height:260px;overflow:auto;margin:0}
+.barra{height:10px;background:#e1e8f1;border-radius:6px;overflow:hidden;margin:10px 0}
+.barra div{height:100%;width:0;background:var(--azul2);transition:width .2s}
+.resultado{display:flex;flex-direction:column;gap:8px}
+.res{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border:1px solid var(--borde);border-radius:8px;padding:10px}
+.res b{flex:1;min-width:180px;word-break:break-all}
+@media (max-width:560px){.item{grid-template-columns:30px 36px 68px 1fr}}
+@media (prefers-reduced-motion:reduce){.barra div{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>PREPARADOR V2 · VARIOS VIDEOS Y JPG</h1>
+  <p>Dr. Néstor José Mejía González · Radiología e Imagen · Funciona sin internet: nada se sube a ningún sitio</p>
+</header>
+<main>
+  <section class="tarjeta">
+    <h2>1. Agregue todos los archivos del mismo paciente</h2>
+    <div class="fila">
+      <button class="btn" id="bVideos">+ Videos</button>
+      <button class="btn" id="bFotos">+ Fotos JPG / PNG</button>
+      <button class="btn sec" id="bDicom">+ DICOM / ZIP / otros</button>
+      <button class="btn sec" id="bCarpeta">+ Carpeta</button>
+    </div>
+    <p class="nota">Puede usar cada botón varias veces, incluso desde otras carpetas. En la ventana de selección puede marcar varios archivos a la vez (en computadora: Ctrl + A o Ctrl + clic).</p>
+    <div class="lista" id="lista"></div>
+    <div class="fila" style="margin-top:8px">
+      <button class="btn sec" id="bSubir">▲ Subir</button>
+      <button class="btn sec" id="bBajar">▼ Bajar</button>
+      <button class="btn sec" id="bQuitar">Quitar seleccionados</button>
+      <button class="btn sec" id="bVaciar">Vaciar lista</button>
+    </div>
+    <div class="contador" id="contador">0 videos · 0 imágenes · 0 DICOM</div>
+  </section>
+
+  <section class="tarjeta">
+    <h2>2. Nombre del paciente</h2>
+    <input type="text" id="paciente" placeholder="Ej.: María López" autocomplete="off">
+    <div class="fila" style="margin-top:12px">
+      <label for="mosaico">Mosaico (solo videos / DICOM)</label>
+      <select id="mosaico"><option value="3">9 cortes</option><option value="4" selected>16 cortes</option><option value="5">25 cortes</option></select>
+      <label for="limite">Máximo de mosaicos</label>
+      <input type="number" id="limite" value="100" min="1" max="100" style="width:90px">
+    </div>
+    <p class="nota">Cada foto ocupa una página completa a color. Los cortes de videos y DICOM se agrupan en mosaicos numerados. Todo va en el orden de la lista.</p>
+  </section>
+
+  <section class="tarjeta">
+    <button class="btn grande" id="bConvertir">3. CONVERTIR TODOS LOS ARCHIVOS A PDF</button>
+    <div class="barra"><div id="progreso"></div></div>
+    <pre id="log">Listo. Agregue los archivos y pulse CONVERTIR.</pre>
+    <div class="resultado" id="resultado"></div>
+  </section>
+  <p class="nota">Este programa prepara imágenes; no realiza interpretación diagnóstica.</p>
+</main>
+<input type="file" id="fVideos" accept="video/*,.mp4,.mov,.avi,.mkv,.wmv,.m4v,.webm" multiple hidden>
+<input type="file" id="fFotos" accept="image/*,.jpg,.jpeg,.png,.bmp,.tif,.tiff" multiple hidden>
+<input type="file" id="fDicom" multiple hidden>
+<input type="file" id="fCarpeta" webkitdirectory multiple hidden>
+<!--CODECS-->
+<script>
+'use strict';
+const espera = () => new Promise(r=>setTimeout(r,0));
+function fmt(n,d=1){ return (Math.round(n*10**d)/10**d).toFixed(d); }
+function limpiaNombre(s){ return (s||'').replace(/\^+/g,' ').trim(); }
+/*DICOM*/
+</script>
+<script>
+'use strict';
+/* ====================== Preparador ====================== */
+const $=s=>document.querySelector(s);
+const EXT_VIDEO=['mp4','mov','avi','mkv','wmv','m4v','webm'], EXT_IMG=['jpg','jpeg','png','bmp','tif','tiff','webp','gif'];
+const LADO_MAX=1568, CALIDAD=0.88, UMBRAL_VIDEO=6, FPS_VIDEO=2;
+let archivos=[]; const selec=new Set(); let ocupado=false;
+const ext=f=>(f.name.split('.').pop()||'').toLowerCase();
+function tipo(f){ const e=ext(f); if(EXT_VIDEO.includes(e)||/^video\//.test(f.type)) return 'video'; if(EXT_IMG.includes(e)||/^image\//.test(f.type)) return 'imagen'; return 'dicom'; }
+function agregar(lista){
+  const vistos=new Set(archivos.map(f=>(f.webkitRelativePath||f.name)+'|'+f.size+'|'+f.lastModified)); let nuevos=0;
+  for(const f of lista){ const k=(f.webkitRelativePath||f.name)+'|'+f.size+'|'+f.lastModified; if(vistos.has(k)) continue;
+    if(/(^|\/)DICOMDIR$/i.test(f.webkitRelativePath||f.name) || /\.(exe|dll|inf|ini|txt|html?|xml|pdf|js|css|ico|cab|msi|sys|bat|cmd|lnk|json|db)$/i.test(f.name)) continue;
+    vistos.add(k); archivos.push(f); nuevos++; }
+  pintar(); if(nuevos) log('Agregados '+nuevos+' archivos.');
+}
+function pintar(){
+  const L=$('#lista');
+  if(!archivos.length){ L.innerHTML='<div class="vacio">La lista está vacía. Use los botones de arriba para agregar videos, fotos o DICOM.</div>'; }
+  else L.innerHTML=archivos.map((f,i)=>{ const t=tipo(f); return '<div class="item'+(selec.has(i)?' sel':'')+'" data-i="'+i+'"><input type="checkbox" '+(selec.has(i)?'checked':'')+' aria-label="Seleccionar"><span class="n">'+(i+1)+'</span><span class="tipo t-'+t+'">'+({video:'Video',imagen:'Foto',dicom:'DICOM'})[t]+'</span><span class="nom">'+esc(f.name)+'<small>'+esc((f.webkitRelativePath||'').split('/').slice(0,-1).join('/')||fmt(f.size/1e6,1)+' MB')+'</small></span></div>'; }).join('');
+  L.querySelectorAll('.item').forEach(el=>el.onclick=()=>{ const i=+el.dataset.i; selec.has(i)?selec.delete(i):selec.add(i); pintar(); });
+  const c={video:0,imagen:0,dicom:0}; archivos.forEach(f=>c[tipo(f)]++);
+  $('#contador').textContent=archivos.length+' archivos: '+c.video+' videos · '+c.imagen+' fotos · '+c.dicom+' DICOM / otros';
+}
+function esc(t){ return String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function log(t,nuevo){ const l=$('#log'); if(nuevo) l.textContent=''; l.textContent+=(l.textContent?'\n':'')+t; l.scrollTop=l.scrollHeight; }
+function barra(f){ $('#progreso').style.width=Math.round(Math.max(0,Math.min(1,f))*100)+'%'; }
+function mover(d){ const idx=[...selec].sort((a,b)=>a-b); if(!idx.length||ocupado) return;
+  if((d<0&&idx[0]===0)||(d>0&&idx[idx.length-1]===archivos.length-1)) return;
+  for(const i of (d<0?idx:idx.slice().reverse())){ [archivos[i],archivos[i+d]]=[archivos[i+d],archivos[i]]; }
+  selec.clear(); idx.forEach(i=>selec.add(i+d)); pintar(); }
+for(const [b,f] of [['#bVideos','#fVideos'],['#bFotos','#fFotos'],['#bDicom','#fDicom'],['#bCarpeta','#fCarpeta']]){
+  $(b).onclick=()=>{ if(ocupado) return; $(f).value=''; $(f).click(); };
+  $(f).onchange=e=>agregar([...e.target.files]); }
+$('#bSubir').onclick=()=>mover(-1); $('#bBajar').onclick=()=>mover(1);
+$('#bQuitar').onclick=()=>{ if(ocupado) return; archivos=archivos.filter((_,i)=>!selec.has(i)); selec.clear(); pintar(); };
+$('#bVaciar').onclick=()=>{ if(ocupado) return; archivos=[]; selec.clear(); pintar(); $('#resultado').innerHTML=''; log('Lista vacía. Puede empezar otro paciente.',true); barra(0); };
+document.addEventListener('dragover',e=>e.preventDefault());
+document.addEventListener('drop',e=>{ e.preventDefault(); agregar([...e.dataTransfer.files]); });
+
+/* ---------- utilidades de imagen ---------- */
+function lienzo(w,h){ const c=document.createElement('canvas'); c.width=Math.max(1,Math.round(w)); c.height=Math.max(1,Math.round(h)); return c; }
+function reducido(src,w,h,maxLado){ const f=Math.min(1,maxLado/Math.max(w,h)); const c=lienzo(w*f,h*f), x=c.getContext('2d'); x.imageSmoothingQuality='high'; x.drawImage(src,0,0,c.width,c.height); return c; }
+const aJpg=(c,q)=>new Promise(r=>c.toBlob(b=>r(b),'image/jpeg',q||CALIDAD));
+function miniatura(c){ const m=lienzo(96,96), x=m.getContext('2d',{willReadFrequently:true}); x.drawImage(c,0,0,96,96); const d=x.getImageData(0,0,96,96).data, g=new Uint8Array(96*96); for(let i=0;i<g.length;i++) g[i]=(d[i*4]*.299+d[i*4+1]*.587+d[i*4+2]*.114)|0; return g; }
+function diferencia(a,b){ if(!a||!b) return 255; let s=0; for(let i=0;i<a.length;i++) s+=Math.abs(a[i]-b[i]); return s/a.length; }
+
+/* ---------- fotogramas de video ---------- */
+async function framesVideo(f, alFrame){
+  const url=URL.createObjectURL(f), v=document.createElement('video'); v.muted=true; v.playsInline=true; v.preload='auto'; v.src=url;
+  try{
+    await new Promise((ok,mal)=>{ v.onloadeddata=ok; v.onerror=()=>mal(new Error('formato de video no compatible con este navegador')); setTimeout(()=>mal(new Error('el video no abrió')),20000); });
+    const dur=v.duration; if(!isFinite(dur)||!dur) throw new Error('duración desconocida');
+    const n=Math.max(1,Math.floor(dur*FPS_VIDEO)); log('  Video: '+f.name+' | '+fmt(dur,1)+' s | '+n+' fotogramas a revisar');
+    let previa=null, guardados=0;
+    for(let i=0;i<n;i++){
+      const t=Math.min(dur-0.05,i/FPS_VIDEO+0.001);
+      await new Promise(ok=>{ const h=()=>{ v.removeEventListener('seeked',h); ok(); }; v.addEventListener('seeked',h); v.currentTime=t; setTimeout(ok,4000); });
+      const c=reducido(v,v.videoWidth,v.videoHeight,LADO_MAX), m=miniatura(c);
+      if(diferencia(m,previa)>=UMBRAL_VIDEO){ previa=m; guardados++; await alFrame(c, f.name.replace(/\.[^.]+$/,'')+'_t'+fmt(t,2)+'s'); }
+      if(i%5===0) barraEtapa(i/n);
+    }
+    log('    '+guardados+' fotogramas útiles (sin repetidos)');
+  } finally { URL.revokeObjectURL(url); v.removeAttribute('src'); v.load(); }
+}
+/* ---------- DICOM a imagen con su ventana ---------- */
+async function dicomsDe(lista){
+  const res=[];
+  for(let i=0;i<lista.length;i++){ const f=lista[i];
+    if(i%10===0){ barraEtapa(i/lista.length); await espera(); }
+    try{
+      let bufs=[]; const buf=await f.arrayBuffer(), u=new Uint8Array(buf,0,4);
+      if(u[0]===0x50&&u[1]===0x4B&&u[2]===3&&u[3]===4){ for(const e of await leerZip(buf)){ const b=await descomprimir(e); if(b) bufs.push({b,n:e.nombre}); } }
+      else bufs.push({b:buf,n:f.name});
+      for(const {b,n} of bufs){ try{
+        const ds=parseDicom(b), imgs=crearImagenes(ds,new Uint8Array(b),n); if(!imgs.length) continue;
+        const img=imgs[Math.floor(imgs.length/2)], d=await decodificar(img), I=img.info;
+        res.push({serie:I.serieNum||0, inst:I.inst||0, c:dicomALienzo(d,I)}); delete img.dec; }catch(e){} }
+    }catch(e){}
+  }
+  res.sort((a,b)=>a.serie-b.serie||a.inst-b.inst);
+  return res;
+}
+function dicomALienzo(d,I){
+  const c=lienzo(d.w,d.h), x=c.getContext('2d'), im=x.createImageData(d.w,d.h), o=im.data, n=d.w*d.h;
+  if(d.rgb){ o.set(d.rgb); }
+  else{ let lo,hi; if(I.ww>0&&!isNaN(I.wc)){ lo=I.wc-I.ww/2; hi=I.wc+I.ww/2; }
+    else{ const m=[]; for(let i=0;i<n;i+=Math.max(1,(n/20000)|0)) m.push(d.v[i]); m.sort((a,b)=>a-b); lo=m[Math.floor(m.length*.005)]; hi=m[Math.floor(m.length*.995)]; }
+    const k=255/Math.max(1,hi-lo), inv=!!d.mono1;
+    for(let i=0;i<n;i++){ let g=(d.v[i]-lo)*k; g=g<0?0:g>255?255:g; if(inv) g=255-g; o[i*4]=o[i*4+1]=o[i*4+2]=g; o[i*4+3]=255; } }
+  x.putImageData(im,0,0);
+  // píxel no cuadrado
+  if(I.sx&&I.sy&&Math.abs(I.sx-I.sy)>1e-3){ const r=lienzo(d.w*I.sx/Math.min(I.sx,I.sy), d.h*I.sy/Math.min(I.sx,I.sy)); r.getContext('2d').drawImage(c,0,0,r.width,r.height); return r; }
+  return c;
+}
+/* ---------- mosaicos ---------- */
+async function mosaicos(cortes, lado, maxM, salida){
+  if(!cortes.length) return;
+  const cupo=lado*lado*maxM;
+  if(cortes.length>cupo){ cortes=Array.from({length:cupo},(_,i)=>cortes[Math.round(i*(cortes.length-1)/(cupo-1))]); }
+  log('  Cortes elegidos: '+cortes.length+' (equidistantes) → mosaicos de '+lado+'×'+lado);
+  const celda=Math.floor(LADO_MAX/lado);
+  for(let k=0;k<cortes.length;k+=lado*lado){
+    const g=cortes.slice(k,k+lado*lado), h=lienzo(celda*lado,celda*lado), x=h.getContext('2d');
+    x.fillStyle='#000'; x.fillRect(0,0,h.width,h.height); x.font='bold '+Math.max(16,Math.floor(celda/14))+'px Arial'; x.textBaseline='top';
+    for(let j=0;j<g.length;j++){ const bmp=await createImageBitmap(g[j]); const f=Math.min(celda/bmp.width,celda/bmp.height), w=bmp.width*f, hh=bmp.height*f, cx=(j%lado)*celda, cy=Math.floor(j/lado)*celda;
+      x.drawImage(bmp,cx+(celda-w)/2,cy+(celda-hh)/2,w,hh); bmp.close&&bmp.close();
+      x.strokeStyle='#5a5a5a'; x.lineWidth=1; x.strokeRect(cx+.5,cy+.5,celda-1,celda-1);
+      x.fillStyle='rgba(0,0,0,.6)'; x.fillRect(cx+3,cy+3,celda/5.5,celda/12+6); x.fillStyle='#fff'; x.fillText(String(k+j+1),cx+7,cy+5); }
+    // a escala de grises, como el original
+    const im=x.getImageData(0,0,h.width,h.height), o=im.data; for(let i=0;i<o.length;i+=4){ const y=(o[i]*.299+o[i+1]*.587+o[i+2]*.114)|0; o[i]=o[i+1]=o[i+2]=y; } x.putImageData(im,0,0);
+    await salida(h,'mosaico_cortes_'+String(k+1).padStart(4,'0')+'-'+String(k+g.length).padStart(4,'0'));
+  }
+}
+let etapaIni=0, etapaTam=1; function barraEtapa(f){ barra(etapaIni+etapaTam*f); }
+
+/* ---------- PDF con imágenes JPEG (una por página) ---------- */
+async function crearPDF(paginas){ // [{blob,w,h}]
+  const enc=new TextEncoder(), partes=[]; let off=0; const ofs=[];
+  const put=x=>{ const u=typeof x==='string'?enc.encode(x):x; partes.push(u); off+=u.length; };
+  const n=paginas.length, obj=i=>{ ofs[i]=off; };
+  put('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+  obj(1); put('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+  const kids=paginas.map((_,i)=>(3+i*3)+' 0 R').join(' ');
+  obj(2); put('2 0 obj\n<< /Type /Pages /Count '+n+' /Kids ['+kids+'] >>\nendobj\n');
+  for(let i=0;i<n;i++){ const p=paginas[i], a=3+i*3, W=+(p.w*72/150).toFixed(2), H=+(p.h*72/150).toFixed(2);
+    const jpg=new Uint8Array(await p.blob.arrayBuffer());
+    obj(a); put(a+' 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+W+' '+H+'] /Resources << /XObject << /Im0 '+(a+1)+' 0 R >> >> /Contents '+(a+2)+' 0 R >>\nendobj\n');
+    obj(a+1); put((a+1)+' 0 obj\n<< /Type /XObject /Subtype /Image /Width '+p.w+' /Height '+p.h+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+jpg.length+' >>\nstream\n'); put(jpg); put('\nendstream\nendobj\n');
+    const cs='q '+W+' 0 0 '+H+' 0 0 cm /Im0 Do Q'; obj(a+2); put((a+2)+' 0 obj\n<< /Length '+cs.length+' >>\nstream\n'+cs+'\nendstream\nendobj\n'); }
+  const total=3+n*3, xref=off;
+  let t='xref\n0 '+total+'\n0000000000 65535 f \n'; for(let i=1;i<total;i++) t+=String(ofs[i]).padStart(10,'0')+' 00000 n \n';
+  put(t+'trailer\n<< /Size '+total+' /Root 1 0 R >>\nstartxref\n'+xref+'\n%%EOF');
+  return new Blob(partes,{type:'application/pdf'});
+}
+function nombreLimpio(s){ return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().replace(/\s+/g,'_').replace(/[<>:"/\\|?*\x00-\x1f]/g,'_').replace(/^[._]+|[._]+$/g,'')||''; }
+function descargar(blob,nombre){ const u=URL.createObjectURL(blob), a=document.createElement('a'); a.href=u; a.download=nombre; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),120000); }
+
+/* ---------- proceso principal (mismo orden que el original) ---------- */
+$('#bConvertir').onclick=async()=>{
+  if(ocupado) return;
+  if(!archivos.length){ log('Agregue los videos, fotos o DICOM antes de convertir.',true); return; }
+  const lado=+$('#mosaico').value, maxM=Math.max(1,Math.min(100,parseInt($('#limite').value)||100));
+  ocupado=true; document.querySelectorAll('button,input,select').forEach(b=>b.disabled=true); $('#resultado').innerHTML=''; barra(0);
+  const t0=performance.now(); log('Procesando '+archivos.length+' elementos de la lista…',true);
+  const paginas=[]; const agregarPagina=async(c)=>{ const r=reducido(c,c.width,c.height,LADO_MAX); paginas.push({blob:await aJpg(r), w:r.width, h:r.height}); };
+  // bloques: las fotos van solas; videos y DICOM seguidos forman un bloque de mosaicos
+  const bloques=[]; let pend=[];
+  for(const f of archivos){ if(tipo(f)==='imagen'){ if(pend.length){ bloques.push({t:'m',l:pend}); pend=[]; } bloques.push({t:'f',f}); } else pend.push(f); }
+  if(pend.length) bloques.push({t:'m',l:pend});
+  try{
+    for(let b=0;b<bloques.length;b++){ etapaIni=b/bloques.length; etapaTam=1/bloques.length; const B=bloques[b];
+      if(B.t==='f'){ try{ const bmp=await createImageBitmap(B.f,{imageOrientation:'from-image'}); const c=reducido(bmp,bmp.width,bmp.height,LADO_MAX); bmp.close&&bmp.close(); await agregarPagina(c); log('  Foto: '+B.f.name); }
+        catch(e){ log('  [!] No se pudo abrir la foto '+B.f.name+' (formato no compatible, por ejemplo HEIC).'); } continue; }
+      const cortes=[]; const celda=Math.floor(LADO_MAX/lado);
+      const guardarCorte=async(c)=>{ cortes.push(await aJpg(reducido(c,c.width,c.height,celda),0.92)); };
+      const dic=[];
+      for(const f of B.l){ if(tipo(f)==='video'){ try{ await framesVideo(f,async c=>{ if(lado>1) await guardarCorte(c); else await agregarPagina(c); }); }catch(e){ log('  [!] '+f.name+': '+e.message); } } else dic.push(f); }
+      if(dic.length){ const ds=await dicomsDe(dic); log('  DICOM: '+ds.length+' cortes'+(dic.length>ds.length?' ('+(dic.length-ds.length)+' archivos sin imagen o no compatibles)':''));
+        for(const x of ds){ if(lado>1) await guardarCorte(x.c); else await agregarPagina(x.c); } }
+      if(lado>1) await mosaicos(cortes,lado,maxM,async c=>{ await agregarPagina(c); });
+    }
+    if(!paginas.length) throw new Error('No se encontraron videos, imágenes ni DICOM válidos.');
+    let partesPDF=[paginas]; const totalMB=paginas.reduce((s,p)=>s+p.blob.size,0)/1e6;
+    if(totalMB>28) partesPDF=[paginas.slice(0,Math.floor(paginas.length/2)), paginas.slice(Math.floor(paginas.length/2))];
+    const base=nombreLimpio($('#paciente').value)||nombreLimpio((archivos[0].name||'').replace(/\.[^.]+$/,''))||'Estudio';
+    const salidas=[];
+    for(let i=0;i<partesPDF.length;i++){ const nom= partesPDF.length===1? base+'_Estudio.pdf' : base+'_parte'+(i+1)+'.pdf'; const blob=await crearPDF(partesPDF[i]); salidas.push({nom,blob,pags:partesPDF[i].length}); }
+    barra(1);
+    const orig=archivos.reduce((s,f)=>s+f.size,0)/1e6, ahora=new Date().toLocaleString('es-NI',{dateStyle:'short',timeStyle:'short'});
+    log(['','='.repeat(52),' RESUMEN - '+base.replace(/_/g,' ')+'   ('+ahora+')','='.repeat(52),
+      '  Tamaño original del estudio : '+fmt(orig,2)+' MB','  Páginas generadas           : '+paginas.length,'  Tamaño total para enviar    : '+fmt(totalMB,2)+' MB',
+      '  ENVÍE EL/LOS ARCHIVO(S) PDF:',...salidas.map(s=>'  '+s.nom+': '+s.pags+' páginas | '+fmt(s.blob.size/1e6,2)+' MB'),
+      '  Fotos: una página por imagen, a color. Video/DICOM: mosaicos numerados.','  Tiempo: '+fmt((performance.now()-t0)/1000,1)+' s','='.repeat(52)].join('\n'));
+    const R=$('#resultado');
+    for(const s of salidas){ const d=document.createElement('div'); d.className='res';
+      d.innerHTML='<b>'+esc(s.nom)+' · '+s.pags+' páginas · '+fmt(s.blob.size/1e6,1)+' MB</b>';
+      const bd=document.createElement('button'); bd.className='btn'; bd.textContent='Descargar PDF'; bd.onclick=()=>descargar(s.blob,s.nom); d.appendChild(bd);
+      const file=new File([s.blob],s.nom,{type:'application/pdf'});
+      if(navigator.canShare && navigator.canShare({files:[file]})){ const bc=document.createElement('button'); bc.className='btn sec'; bc.textContent='Compartir (WhatsApp, Claude…)'; bc.onclick=()=>navigator.share({files:[file],title:s.nom}).catch(()=>{}); d.appendChild(bc); }
+      R.appendChild(d); }
+    descargar(salidas[0].blob,salidas[0].nom);
+    if(salidas.length>1) log('El PDF se dividió en '+salidas.length+' partes: descargue y envíe TODAS.');
+  }catch(e){ log('No se completó: '+e.message); }
+  finally{ ocupado=false; document.querySelectorAll('button,input,select').forEach(b=>b.disabled=false); }
+};
+pintar();
+</script>
+</body>
+</html>

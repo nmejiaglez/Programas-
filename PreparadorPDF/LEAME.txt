@@ -1,0 +1,48 @@
+PREPARADOR V2 PARA TABLET Y CHROMEOS FLEX
+=========================================
+Es el mismo Preparador V2 (videos + JPG + DICOM -> un PDF), pero en UN
+SOLO ARCHIVO que se abre en Google Chrome. No necesita Python, ni
+instalar nada, ni internet. Nada se sube a ningun sitio.
+
+ARCHIVO QUE SE USA: PreparadorPDF.html
+(app.html y construir.py son solo para modificarlo; no los necesita.)
+
+COMO ABRIRLO
+- ChromeOS Flex: copielo a Mis archivos > Descargas y haga doble clic.
+  Para tenerlo como aplicacion: Chrome > menu (tres puntos) > Transmitir,
+  guardar y compartir > Crear acceso directo > marque "Abrir como ventana".
+- Tablet Android: copielo a la tablet y abralo con Chrome
+  (o escriba en Chrome: file:///sdcard/Download/PreparadorPDF.html).
+  Menu de Chrome > "Agregar a la pantalla principal".
+- Windows: doble clic, se abre en Chrome o Edge.
+
+USO (igual que el Preparador V2)
+1. "+ Videos", "+ Fotos JPG / PNG", "+ DICOM / ZIP / otros" o "+ Carpeta".
+   Puede usar cada boton varias veces; los archivos se suman a la lista.
+   Los repetidos se agregan una sola vez.
+2. Toque los archivos para seleccionarlos y use Subir / Bajar / Quitar.
+   "Vaciar lista" para empezar otro paciente.
+3. Escriba el nombre del paciente, elija el mosaico (9, 16 o 25 cortes)
+   y el maximo de mosaicos.
+4. Pulse CONVERTIR TODOS LOS ARCHIVOS A PDF.
+   El PDF se descarga solo (carpeta Descargas). En tablet tambien aparece
+   el boton "Compartir" para mandarlo directo a WhatsApp, Claude, correo...
+
+QUE HACE
+- Fotos: una pagina completa a color cada una.
+- Videos: toma 2 fotogramas por segundo y quita los repetidos (cuando el
+  video se queda quieto en el mismo corte).
+- DICOM: los ordena por serie e instancia, con su ventana original.
+  Lee DICOM sin compresion, JPEG, JPEG sin perdida, RLE, JPEG 2000 y
+  JPEG-LS, y tambien archivos .ZIP con DICOM adentro.
+- Videos y DICOM seguidos en la lista se juntan en mosaicos numerados;
+  si hay demasiados cortes se eligen de forma equidistante.
+- Todo se redimensiona a 1568 px como maximo (lo util para Claude).
+- Si el PDF pasa de 28 MB se divide en 2 partes: envie TODAS las partes.
+
+LIMITACIONES
+- Videos: el navegador abre MP4, WEBM y MOV (H.264). Algunos AVI, WMV o
+  MKV no abren en Chrome; si sale un aviso, conviertalos a MP4.
+- Fotos HEIC del iPhone: conviertalas a JPG primero.
+
+Este programa prepara imagenes; no realiza interpretacion diagnostica.
