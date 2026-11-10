@@ -37,8 +37,10 @@ HERRAMIENTAS (barra superior)
 - Toque y arrastre los puntos amarillos de una medida para corregirla.
 - Los NUMEROS de la medida y el TEXTO de la nota se pueden arrastrar
   por separado a donde quiera; queda una linea guia hacia la medida.
-- Pasar imagenes: flechas del teclado, rueda o trackball del raton,
-  Re Pag / Av Pag (de 10 en 10), Inicio y Fin.
+- Flecha DERECHA / IZQUIERDA = imagen siguiente / anterior.
+- Flecha ABAJO / ARRIBA = serie siguiente / anterior (en MPR: cortes).
+- Rueda o trackball del raton = pasar imagenes (una por cada clic).
+- Re Pag / Av Pag (de 10 en 10), Inicio y Fin.
   Ctrl + rueda = zoom. Clic derecho y arrastrar = mover la imagen.
   Clic derecho mientras dibuja un angulo = cancelar.
 - Invertir, Rotar, Voltear, Restaurar y Datos (datos del estudio y
