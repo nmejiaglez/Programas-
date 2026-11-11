@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#123A78">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icono192.png">
+<link rel="apple-touch-icon" href="icono192.png">
 <title>Preparador V2 Dr. Mejía</title>
 <style>
 /* Una columna: encabezado azul, pasos numerados, lista de archivos, botón grande de conversión */
@@ -482,7 +486,7 @@ function crearImagenes(ds,u8,archivo){
     grosor:parseFloat(g('00180050'))||0, inst:parseInt(g('00200013'))||0, loc:g('00201041'),
     modalidad:g('00080060'), serieUID:g('0020000E')||'sin-serie', serieNum:parseInt(g('00200011'))||0, serieDesc:g('0008103E'),
     estudioDesc:g('00081030'), paciente:limpiaNombre(g('00100010')), pid:g('00100020'), sexo:g('00100040'), edad:g('00101010'),
-    nac:g('00100030'), fecha:g('00080020'), hora:g('00080030'), institucion:g('00080080'), equipo:g('00081090')||g('00080070'), estudioUID:g('0020000D'),
+    nac:g('00100030'), fecha:g('00080020'), hora:g('00080030'), institucion:g('00080080'), equipo:g('00081090')||g('00080070'), estudioUID:g('0020000D'), tipoImagen:g('00080008'), sopClase:g('00080016'),
     tiempoCuadro:vNum(ds,'00181063',u8,0), fpsRec:vNum(ds,'00082144',u8,0), pix
   };
   const r=[]; for(let f=0;f<nf;f++) r.push({info, frame:f, key:archivo+'#'+f});
@@ -801,5 +805,6 @@ $('#bConvertir').onclick=async()=>{
 };
 pintar();
 </script>
+<script>if(location.protocol==='https:'&&'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
 </body>
 </html>

@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#123A78">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icono192.png">
+<link rel="apple-touch-icon" href="icono192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Visor DICOM Dr. Mejía</title>
 <style>
@@ -2478,5 +2482,6 @@ $('#bEditarNota').onclick=()=>{ const a=todasAnot().find(x=>x.sel); if(!a) retur
 cambiarLayout('1', true);
 if(window.innerWidth<=700) $('#lado').classList.add('oculto');
 </script>
+<script>if(location.protocol==='https:'&&'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
 </body>
 </html>

@@ -1,0 +1,2 @@
+{"name":"Visor DICOM Dr. Mejía","short_name":"Visor DICOM","start_url":"./VisorDICOM.html","scope":"./","display":"standalone","orientation":"any","background_color":"#0b0f14","theme_color":"#123A78","lang":"es",
+ "icons":[{"src":"icono192.png","sizes":"192x192","type":"image/png"},{"src":"icono512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}

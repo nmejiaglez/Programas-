@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#123A78">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icono192.png">
+<link rel="apple-touch-icon" href="icono192.png">
 <title>Preparador V2 Dr. Mejía</title>
 <style>
 /* Una columna: encabezado azul, pasos numerados, lista de archivos, botón grande de conversión */
@@ -295,5 +299,6 @@ $('#bConvertir').onclick=async()=>{
 };
 pintar();
 </script>
+<script>if(location.protocol==='https:'&&'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
 </body>
 </html>
