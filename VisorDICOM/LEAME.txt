@@ -185,3 +185,21 @@ NOTAS EN LA IMAGEN
 - Para la nota de una MEDIDA: toque DOS VECES sus numeros, o seleccionela
   y pulse "Editar nota". Tambien en la pestana Medidas del panel.
 - Las notas y los numeros se pueden arrastrar a donde quiera.
+
+SOLO IMAGENES DEL ESTUDIO
+- Al abrir un CD o una carpeta, el visor muestra solo las series de
+  imagenes. Esconde localizadores (scout/topograma), reportes de dosis,
+  capturas de protocolo y archivos que no son imagenes (programas del CD).
+- Si las necesita: pestana Series > "Mostrar tambien ... series que no
+  son imagenes".
+
+GUARDAR POR SEPARADO O TODO JUNTO (pestana Guardar del panel)
+- "Como guardar varias series":
+  * Cada serie por separado: un ZIP de imagenes por serie y un video por
+    serie (ideal para TC: cada serie con su propio video).
+  * Todo junto en un solo archivo ZIP.
+- Imagenes de la serie actual / de las series elegidas / de todas.
+- Video de la serie actual / de las series elegidas / de todas.
+- Los archivos llevan el nombre del paciente, la fecha y la serie, y las
+  imagenes llevan los datos del paciente encima (salvo modo anonimo).
+- Chrome puede preguntar una vez "descargar varios archivos": Permitir.

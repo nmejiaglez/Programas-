@@ -244,14 +244,21 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
       <div style="display:flex;gap:6px;margin-bottom:7px"><button class="btnAncho" id="gHoja" style="margin:0;flex:1">Hoja de imágenes clave</button>
         <select id="sHoja" style="background:#0d131a;border:1px solid var(--borde);border-radius:8px;padding:6px"><option value="auto">Auto</option><option value="1x2">1 × 2</option><option value="2x2">2 × 2</option><option value="2x3">2 × 3</option><option value="3x3">3 × 3</option></select></div>
       <label class="nota" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="chAnon"> Ocultar datos del paciente (anónimo) en imágenes, videos y hojas</label>
-      <button class="btnAncho sec" id="gSerie">Guardar todas las imágenes de la serie</button>
-      <button class="btnAncho sec" id="gTodasImg">Guardar todas las imágenes de todas las series</button>
+      <div class="tit">Cómo guardar varias series</div>
+      <select id="modoGuardar" style="width:100%;background:#0d131a;border:1px solid var(--borde);border-radius:8px;padding:10px;margin-bottom:8px">
+        <option value="separado">Cada serie por separado (un archivo por serie)</option>
+        <option value="junto">Todo junto en un solo archivo ZIP</option>
+      </select>
+      <div class="tit">Imágenes de series completas</div>
+      <button class="btnAncho sec" id="gSerie">Imágenes de la serie actual</button>
+      <button class="btnAncho sec" id="gElegidasImg">Imágenes de las series elegidas ☑</button>
+      <button class="btnAncho sec" id="gTodasImg">Imágenes de todas las series</button>
       <div class="tit">Videos (cine)</div>
       <button class="btnAncho" id="vActual">Video de la serie actual</button>
       <button class="btnAncho sec" id="vElegidas">Videos de las series elegidas ☑</button>
       <button class="btnAncho sec" id="vTodas">Videos de todas las series</button>
       <label class="nota" style="display:flex;gap:6px;align-items:center">Velocidad del video <input type="number" id="vFps" value="10" min="1" max="60" style="width:64px;background:#0d131a;border:1px solid var(--borde);border-radius:6px;padding:6px"> imágenes/seg</label>
-      <p class="nota">Para elegir series, marque la casilla ☑ de cada serie en la pestaña Series. Varias imágenes o videos se guardan juntos en un archivo .ZIP.</p>
+      <p class="nota">Para elegir series, marque la casilla ☑ de cada serie en la pestaña Series. Solo se guardan imágenes del estudio (sin localizadores ni reportes), con los datos del paciente sobre la imagen (salvo en modo anónimo). "Por separado": cada serie sale en su propio archivo; Chrome puede preguntar una vez si permite descargar varios archivos: toque Permitir.</p>
       <div class="tit">Imágenes marcadas</div>
       <div id="listaMarcadas"><p class="nota">Aún no hay imágenes marcadas. Toque ★ Marcar para agregar la imagen que está viendo.</p></div>
     </div>
@@ -746,7 +753,7 @@ function crearImagenes(ds,u8,archivo){
     grosor:parseFloat(g('00180050'))||0, inst:parseInt(g('00200013'))||0, loc:g('00201041'),
     modalidad:g('00080060'), serieUID:g('0020000E')||'sin-serie', serieNum:parseInt(g('00200011'))||0, serieDesc:g('0008103E'),
     estudioDesc:g('00081030'), paciente:limpiaNombre(g('00100010')), pid:g('00100020'), sexo:g('00100040'), edad:g('00101010'),
-    nac:g('00100030'), fecha:g('00080020'), hora:g('00080030'), institucion:g('00080080'), equipo:g('00081090')||g('00080070'), estudioUID:g('0020000D'),
+    nac:g('00100030'), fecha:g('00080020'), hora:g('00080030'), institucion:g('00080080'), equipo:g('00081090')||g('00080070'), estudioUID:g('0020000D'), tipoImagen:g('00080008'), sopClase:g('00080016'),
     tiempoCuadro:vNum(ds,'00181063',u8,0), fpsRec:vNum(ds,'00082144',u8,0), pix
   };
   const r=[]; for(let f=0;f<nf;f++) r.push({info, frame:f, key:archivo+'#'+f});
@@ -886,6 +893,7 @@ async function cargarArchivos(lista, agregar){
   const t0=performance.now();
   const pendientes=[];
   for(const f of lista) pendientes.push({nombre:f.webkitRelativePath||f.name, file:f});
+  if(agregar) series=todasSeries.slice();
   if(!agregar){ series=[]; marcadas.length=0; anotaciones.clear(); pintarMarcadas(); precargaTok++;
     for(const m of ORDEN_CACHE) delete m.dec; ORDEN_CACHE.length=0; bytesCache=0; mpr=null; }
   const mapa=new Map(series.map(s=>[s.id,s]));
@@ -932,11 +940,24 @@ async function cargarArchivos(lista, agregar){
   progreso(null);
   for(const s of series) ordenarSerie(s);
   series.sort((a,b)=>(a.info.estudioUID>b.info.estudioUID?1:a.info.estudioUID<b.info.estudioUID?-1:0)||a.num-b.num);
+  todasSeries=series.slice(); for(const s of todasSeries) s.oculta=noEsImagenDiagnostica(s);
+  aplicarFiltroSeries();
   pintarSeries();
   if(!series.length){ aviso(errores?'No se pudo leer ningún DICOM. '+ultimoError:'No se encontraron imágenes DICOM en lo elegido.',5000); return; }
   aviso(ok+' archivos abiertos en '+series.length+' series ('+fmt((performance.now()-t0)/1000,1)+' s)'+(errores?' — '+errores+' no se pudieron leer':''),3500);
   if(!agregar || !vps.some(v=>v.serie)){ cambiarLayout(/mpr|3d/.test($('#sLayout').value)?'1':$('#sLayout').value, true); if(/mpr|3d/.test($('#sLayout').value)) $('#sLayout').value='1'; vps.forEach((v,i)=>{ const s=series[Math.min(i,series.length-1)]; asignarSerie(v,s); }); }
 }
+// series que NO son imágenes del estudio: localizadores/scout, reportes de dosis, capturas de protocolo, etc.
+let todasSeries=[], mostrarOcultas=false;
+function noEsImagenDiagnostica(s){
+  const I=s.info, d=(s.desc||'')+' '+(I.serieDesc||''), t=(I.tipoImagen||'').toUpperCase();
+  if(/LOCALIZER/.test(t)) return true;
+  if(/scout|topogra|localiz|surview|scanogra|survey|pilot|dose|dosis|report|reporte|protocol|screen ?save|exam summary|resumen|patient info|ctdi|dlp/i.test(d)) return true;
+  if(/^1\.2\.840\.10008\.5\.1\.4\.1\.1\.(88|11|104)/.test(I.sopClase||'')) return true; // SR, estados de presentación, PDF
+  if(I.modalidad==='CT' && s.imgs.length<=3 && I.muestras===3) return true; // capturas a color de la consola (dosis)
+  return false;
+}
+function aplicarFiltroSeries(){ const vis=todasSeries.filter(x=>mostrarOcultas||!x.oculta); series= vis.length? vis : todasSeries.slice(); }
 function ordenarSerie(s){
   const I=s.imgs[0].info;
   if(I.nf>1 && s.imgs.every(m=>m.info===I)) return;
@@ -1595,7 +1616,9 @@ $('#bPlay').onclick=()=>{
 /* ====================== panel lateral ====================== */
 function pintarSeries(){
   const cont=$('#listaSeries'); if(!series.length) return;
-  let html='<label class="nota" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="chTodas"> Elegir todas las series</label>';
+  const nOcul=todasSeries.filter(x=>x.oculta).length;
+  let html=(nOcul?'<label class="nota" style="display:flex;gap:6px;align-items:center;color:var(--amarillo)"><input type="checkbox" id="chOcultas" '+(mostrarOcultas?'checked':'')+'> Mostrar también '+nOcul+' serie'+(nOcul>1?'s':'')+' que no son imágenes (localizadores, reportes de dosis)</label>':'')
+    +'<label class="nota" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="chTodas"> Elegir todas las series</label>';
   let estudioPrev=null; const nEst=new Set(series.map(x=>x.info.estudioUID)).size;
   series.forEach((s,i)=>{ const act=vpAct&&vpAct.serie===s;
     if(s.info.estudioUID!==estudioPrev){ estudioPrev=s.info.estudioUID; const I=s.info, Pc=pac(I);
@@ -1609,6 +1632,7 @@ function pintarSeries(){
       asignarSerie(vpAct,s); if(window.innerWidth<=700) $('#lado').classList.add('oculto'); });
     miniatura(s, el.querySelector('canvas')); });
   $$('#listaSeries input[data-el]').forEach(ch=>ch.onchange=()=>{ series[+ch.dataset.el].elegida=ch.checked; });
+  const co=$('#chOcultas'); if(co) co.onchange=()=>{ mostrarOcultas=co.checked; aplicarFiltroSeries(); pintarSeries(); };
   const t=$('#chTodas'); if(t){ t.checked=series.every(s=>s.elegida); t.onchange=()=>{ series.forEach(s=>s.elegida=t.checked); pintarSeries(); }; }
 }
 async function miniatura(s,cv){
@@ -1710,11 +1734,24 @@ $('#gMarcadas').onclick=async()=>{
 $('#gSerie').onclick=async()=>{ const v=vpAct; if(!v||!v.serie) return;
   const arch=[];
   if(v.plano){ const tot=totalImgs(v), idx0=v.idx; for(let i=0;i<tot;i++){ if(i%5===0){progreso('Guardando MPR '+(i+1)+'/'+tot,i/tot); await espera();} v.idx=i; await cargarImagen(v); arch.push({nombre:'MPR_'+planoNombre(v.plano)+'_'+String(i+1).padStart(4,'0')+'.png', blob:await capturaVisor(v)}); } v.idx=idx0; await cargarImagen(v); }
-  else await exportarSerieImgs(v, v.serie, 'S'+(v.serie.num||'')+'_', arch);
-  progreso('Creando ZIP…',1); const zip=await crearZip(arch); progreso(null); descargar(zip, nombreBase(v)+'_serie'+(v.serie.num||'')+'.zip'); aviso(arch.length+' imágenes guardadas.'); };
-$('#gTodasImg').onclick=async()=>{ if(!series.length) return; const arch=[];
-  for(const s of series) await exportarSerieImgs(vpAct, s, nombreArchivo('S'+(s.num||'')+'_'+(s.desc||''))+'/', arch);
-  progreso('Creando ZIP…',1); const zip=await crearZip(arch); progreso(null); descargar(zip, nombreBase(vpAct)+'_todas.zip'); aviso(arch.length+' imágenes guardadas.'); };
+  else await exportarSerieImgs(v, v.serie, nombreBase(v)+'_'+nombreSerie(v.serie)+'_', arch);
+  progreso('Creando ZIP…',1); const zip=await crearZip(arch); progreso(null); descargar(zip, nombreBase(v)+'_'+(v.plano?'MPR_'+planoNombre(v.plano):nombreSerie(v.serie))+'.zip'); aviso(arch.length+' imágenes guardadas.'); };
+const pausa=ms=>new Promise(r=>setTimeout(r,ms));
+const nombreSerie=s=>nombreArchivo('S'+(s.num||'')+'_'+(s.desc||'serie'));
+async function guardarImagenesDe(lista){
+  if(!lista.length) return;
+  const separado=$('#modoGuardar').value==='separado', base=nombreBase(vpAct); let total=0;
+  if(separado){
+    for(const s of lista){ const arch=[]; await exportarSerieImgs(vpAct, s, base+'_'+nombreSerie(s)+'_', arch); total+=arch.length;
+      if(arch.length===1) descargar(arch[0].blob, arch[0].nombre); else if(arch.length){ progreso('Creando ZIP…',1); descargar(await crearZip(arch), base+'_'+nombreSerie(s)+'.zip'); }
+      await pausa(700); }
+    progreso(null); aviso(lista.length+' series guardadas por separado ('+total+' imágenes).',4000);
+  } else {
+    const arch=[]; for(const s of lista) await exportarSerieImgs(vpAct, s, nombreSerie(s)+'/'+base+'_'+nombreSerie(s)+'_', arch);
+    progreso('Creando ZIP…',1); const zip=await crearZip(arch); progreso(null); descargar(zip, base+'_imagenes.zip'); aviso(arch.length+' imágenes guardadas en un ZIP.',4000); }
+}
+$('#gTodasImg').onclick=()=>{ if(!series.length) return aviso('Abra un estudio primero.'); guardarImagenesDe(series.slice()); };
+$('#gElegidasImg').onclick=()=>{ const l=series.filter(s=>s.elegida); if(!l.length) return aviso('Marque las casillas ☑ de las series en la pestaña Series.',4000); guardarImagenesDe(l); };
 
 function tipoVideo(){ const t=['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm']; for(const x of t) if(window.MediaRecorder && MediaRecorder.isTypeSupported(x)) return x; return null; }
 async function grabarSerie(origen, s, plano){
@@ -1749,8 +1786,9 @@ async function videosDe(lista){
   progreso(null);
   if(!res.length) return;
   if(res.length===1) descargar(res[0].blob, nombreBase(vpAct)+'_'+res[0].nombre);
-  else { progreso('Creando ZIP…',1); const z=await crearZip(res); progreso(null); descargar(z, nombreBase(vpAct)+'_videos.zip'); }
-  aviso(res.length===1?'Video guardado en Descargas.':res.length+' videos guardados en un ZIP.',4000);
+  else if($('#modoGuardar').value==='separado'){ for(const r of res){ descargar(r.blob, nombreBase(vpAct)+'_'+r.nombre); await new Promise(z=>setTimeout(z,700)); } }
+  else { progreso('Creando ZIP…',1); const z=await crearZip(res.map(r=>({nombre:nombreBase(vpAct)+'_'+r.nombre, blob:r.blob}))); progreso(null); descargar(z, nombreBase(vpAct)+'_videos.zip'); }
+  aviso(res.length===1?'Video guardado en Descargas.': $('#modoGuardar').value==='separado'? res.length+' videos guardados por separado (uno por serie).' : res.length+' videos guardados en un ZIP.',4000);
 }
 $('#vActual').onclick=()=>{ if(v3d) return video3D(); const v=vpAct; if(!v||!v.serie) return aviso('Abra una serie primero.'); videosDe([{origen:v, s:v.serie, plano:v.plano}]); };
 $('#vElegidas').onclick=()=>{ const l=series.filter(s=>s.elegida); if(!l.length) return aviso('Marque las casillas ☑ de las series en la pestaña Series.',4000); videosDe(l.map(s=>({origen:vpAct,s}))); };
@@ -2270,6 +2308,8 @@ $('#sPreset').addEventListener('change',e=>{ const val=e.target.value; if(val!==
 },true);
 
 /* ====================== recordar preferencias ====================== */
+if(prefs.modoGuardar) $('#modoGuardar').value=prefs.modoGuardar;
+$('#modoGuardar').addEventListener('change',e=>{ prefs.modoGuardar=e.target.value; guardarPrefs(); });
 if(prefs.fps) $('#fps').value=prefs.fps; if(prefs.vFps) $('#vFps').value=prefs.vFps;
 $('#fps').addEventListener('change',e=>{ prefs.fps=e.target.value; guardarPrefs(); });
 $('#vFps').addEventListener('change',e=>{ prefs.vFps=e.target.value; guardarPrefs(); });
