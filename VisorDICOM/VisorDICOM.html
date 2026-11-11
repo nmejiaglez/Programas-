@@ -247,7 +247,7 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
       <div class="tit">Cómo guardar varias series</div>
       <select id="modoGuardar" style="width:100%;background:#0d131a;border:1px solid var(--borde);border-radius:8px;padding:10px;margin-bottom:8px">
         <option value="separado">Cada serie por separado (un archivo por serie)</option>
-        <option value="junto">Todo junto en un solo archivo ZIP</option>
+        <option value="junto">Todo junto en un solo archivo ZIP (sin carpetas)</option>
       </select>
       <div class="tit">Imágenes de series completas</div>
       <button class="btnAncho sec" id="gSerie">Imágenes de la serie actual</button>
@@ -1696,7 +1696,7 @@ function pintarMarcadas(){
 
 /* ====================== guardar imágenes y videos ====================== */
 function canvasBlob(cv){ return new Promise(r=>cv.toBlob(r,'image/png')); }
-function nombreBase(v){ const I=(v&&v.serie?v.serie.info:series[0]&&series[0].info)||{}; return nombreArchivo((pac(I).paciente||'paciente')+'_'+(I.fecha||'')); }
+function nombreBase(v){ const I=(v&&v.serie?v.serie.info:series[0]&&series[0].info)||{}; return nombreArchivo((pac(I).paciente||'paciente')+(I.fecha?'_'+I.fecha:'')); }
 async function capturaVisor(v){ // imagen a resolución del visor, con textos y medidas
   const prevSel=todasAnot().filter(a=>a.sel); prevSel.forEach(a=>a.sel=false);
   dibujar(v); const b=await canvasBlob(v.cv); prevSel.forEach(a=>a.sel=true); dibujar(v); return b;
@@ -1741,15 +1741,18 @@ const pausa=ms=>new Promise(r=>setTimeout(r,ms));
 const nombreSerie=s=>nombreArchivo('S'+(s.num||'')+'_'+(s.desc||'serie'));
 async function guardarImagenesDe(lista){
   if(!lista.length) return;
-  const separado=$('#modoGuardar').value==='separado', base=nombreBase(vpAct); let total=0;
+  // mamografía / radiografías (series de 1 imagen): siempre todas juntas en un solo ZIP, sin carpetas
+  const unaPorSerie=lista.every(x=>x.imgs.length===1);
+  const separado=$('#modoGuardar').value==='separado' && !unaPorSerie && lista.length>1, base=nombreBase(vpAct); let total=0;
   if(separado){
     for(const s of lista){ const arch=[]; await exportarSerieImgs(vpAct, s, base+'_'+nombreSerie(s)+'_', arch); total+=arch.length;
       if(arch.length===1) descargar(arch[0].blob, arch[0].nombre); else if(arch.length){ progreso('Creando ZIP…',1); descargar(await crearZip(arch), base+'_'+nombreSerie(s)+'.zip'); }
       await pausa(700); }
     progreso(null); aviso(lista.length+' series guardadas por separado ('+total+' imágenes).',4000);
   } else {
-    const arch=[]; for(const s of lista) await exportarSerieImgs(vpAct, s, nombreSerie(s)+'/'+base+'_'+nombreSerie(s)+'_', arch);
-    progreso('Creando ZIP…',1); const zip=await crearZip(arch); progreso(null); descargar(zip, base+'_imagenes.zip'); aviso(arch.length+' imágenes guardadas en un ZIP.',4000); }
+    const arch=[]; for(const s of lista) await exportarSerieImgs(vpAct, s, base+'_'+nombreSerie(s)+'_', arch);
+    if(arch.length===1){ progreso(null); descargar(arch[0].blob, arch[0].nombre); aviso('Imagen guardada en Descargas.'); return; }
+    progreso('Creando ZIP…',1); const zip=await crearZip(arch); progreso(null); descargar(zip, base+'_imagenes.zip'); aviso(arch.length+' imágenes guardadas juntas en un solo ZIP (sin carpetas).',4000); }
 }
 $('#gTodasImg').onclick=()=>{ if(!series.length) return aviso('Abra un estudio primero.'); guardarImagenesDe(series.slice()); };
 $('#gElegidasImg').onclick=()=>{ const l=series.filter(s=>s.elegida); if(!l.length) return aviso('Marque las casillas ☑ de las series en la pestaña Series.',4000); guardarImagenesDe(l); };
