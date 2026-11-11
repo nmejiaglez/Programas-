@@ -483,7 +483,11 @@ async function crearZip(archivos){ // [{nombre, blob}]
   e.setUint32(0,0x06054b50,true);e.setUint16(8,archivos.length,true);e.setUint16(10,archivos.length,true);e.setUint32(12,tam,true);e.setUint32(16,off,true);
   return new Blob([...partes,...central,e.buffer],{type:'application/zip'});
 }
+// dentro de claude.ai se guarda con el permiso de descargas (uno a la vez); fuera, como descarga normal
+let _dl=null, _colaDl=Promise.resolve();
+try{ if(window.claude&&window.claude.use) window.claude.use('downloads').then(d=>{ _dl=d; }).catch(()=>{}); }catch(e){}
 function descargar(blob, nombre){
+  if(_dl){ _colaDl=_colaDl.then(()=>_dl.save({filename:nombre, data:blob}).then(()=>aviso('Guardado: '+nombre,2500)).catch(e=>{ if(e&&e.code!=='declined') aviso('No se pudo guardar '+nombre+(e&&e.code?' ('+e.code+')':''),5000); })); return; }
   const url=URL.createObjectURL(blob), a=document.createElement('a');
   a.href=url; a.download=nombre; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),60000);
