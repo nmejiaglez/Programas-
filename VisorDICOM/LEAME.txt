@@ -215,3 +215,27 @@ ABRIR UNA CARPETA O UN CD
 - En tablet Android sigue apareciendo la pregunta de Chrome con el total
   de archivos de la carpeta: es normal, toque Cargar; el visor igual solo
   muestra las imagenes.
+
+ORGANO Y LESION EN 3D (segmentacion semiautomatica)
+1. Abra la TC y elija "MPR 3 planos" (pestana MPR · 3D · Comparar).
+2. Pulse "Organo" y toque el organo (ej. el rinon) en cualquier vista.
+   Se colorea en VERDE en las 3 vistas.
+3. Pulse "Lesion" y toque el tumor / quiste. Se colorea en ROJO.
+   - "± UH" (tolerancia) y "Hasta X cm" (tamano maximo) controlan cuanto
+     se extiende. Si se escapa a otro organo, baje la tolerancia o el
+     tamano y vuelva a tocar. "Borrar seg." empieza de nuevo.
+4. Panel > Medidas: aparecen las CARACTERISTICAS: volumen del organo y de
+   la lesion (cm3), 3 diametros (T, AP, L), densidad media, DE y rango (UH),
+   homogenea/heterogenea, tercio del organo donde esta, % del organo que
+   ocupa y si es exofitica (sobresale) o intraparenquimatosa.
+   "Ver en 3D" abre el 3D: organo transparente y lesion en rojo, centrado.
+   Todo pasa al informe con "Pasar al informe".
+Es una ayuda semiautomatica: revise siempre que el color cubra bien la
+lesion en los cortes.
+
+MPR: AGRANDAR UNA VISTA Y QUITAR LA CRUZ
+- Doble clic (computadora) o doble toque (tablet) sobre axial, coronal o
+  sagital: esa vista ocupa toda la pantalla. Otra vez: vuelven las 3.
+- "Ocultar cruz": quita las lineas de la cruz; los planos se siguen
+  moviendo juntos. El visor recuerda la eleccion.
+Todo funciona igual en tablet, ChromeOS Flex y Windows.

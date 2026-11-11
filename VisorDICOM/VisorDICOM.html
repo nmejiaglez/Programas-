@@ -133,6 +133,12 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
     <button class="b" data-h="ict"><svg viewBox="0 0 24 24"><path d="M12 20c-5-3-8-6-8-10a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 4-3 7-8 10z"/><path d="M2 13h20"/></svg>ICT</button>
     <button class="b" data-h="perfil"><svg viewBox="0 0 24 24"><path d="M3 20h18M3 20V4"/><path d="M5 16l4-6 3 4 4-8 4 6"/></svg>Perfil</button>
     <button class="b" data-h="curvo"><svg viewBox="0 0 24 24"><path d="M4 19c4-1 3-7 7-8s4-6 9-7"/><circle cx="4" cy="19" r="1.5"/><circle cx="20" cy="4" r="1.5"/></svg>MPR curvo</button>
+    <button class="b" data-h="segOrg" title="Toque el órgano en el MPR para separarlo"><svg viewBox="0 0 24 24"><path d="M9 3c-4 1-6 6-4 11s7 7 10 5 4-7 2-10-5-7-8-6z"/></svg>Órgano</button>
+    <button class="b" data-h="segLes" title="Toque la lesión / tumor en el MPR para separarla"><svg viewBox="0 0 24 24"><path d="M9 3c-4 1-6 6-4 11s7 7 10 5 4-7 2-10-5-7-8-6z"/><circle cx="13" cy="11" r="3" fill="currentColor"/></svg>Lesión</button>
+    <select class="b" id="sSegTol" title="Tolerancia de densidad" style="min-width:110px"><option value="15">± 15 UH</option><option value="25">± 25 UH</option><option value="40" selected>± 40 UH</option><option value="60">± 60 UH</option><option value="90">± 90 UH</option></select>
+    <select class="b" id="sSegRad" title="Tamaño máximo a separar" style="min-width:110px"><option value="30">Hasta 3 cm</option><option value="50">Hasta 5 cm</option><option value="80">Hasta 8 cm</option><option value="110" selected>Hasta 11 cm</option><option value="160">Hasta 16 cm</option></select>
+    <button class="b" id="bSegBorrar" title="Borrar la segmentación"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>Borrar seg.</button>
+    <button class="b" id="bCruzVis" title="Mostrar u ocultar las líneas de la cruz"><svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/><path d="M4 4l16 16"/></svg>Ocultar cruz</button>
     <button class="b" data-h="cruz"><svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="3"/></svg>Cruz MPR</button>
   </div>
   <div class="grupo">
@@ -386,7 +392,7 @@ const WASM_JLS="AGFzbQEAAAABoQEVYAF/AGAEf39/fwBgAX8Bf2ADf39/AGADf39/AX9gBH9/f38B
   const CATS=[
     ['ver','Ver',[['[data-h=wl]','[data-h=pan]','[data-h=zoom]','[data-h=scroll]'],['#sPreset','#bInvertir','#bRotar','#bVoltear','#bReset'],['#bPlay']]],
     ['medir','Medir y notas',[['[data-h=dist]','[data-h=angulo]','[data-h=elipse]','[data-h=rect]','[data-h=punto]'],['[data-h=nota]','#bEditarNota','[data-h=texto]'],['[data-h=contorno]','[data-h=nodulo]','[data-h=cobb]','[data-h=altura]','[data-h=ict]','[data-h=perfil]','#bAspects']]],
-    ['mpr','MPR · 3D · Comparar',[['#sLayout','#sGrosor'],['[data-h=cruz]','[data-h=curvo]'],['#bSincro']]],
+    ['mpr','MPR · 3D · Comparar',[['#sLayout','#sGrosor'],['[data-h=cruz]','#bCruzVis','[data-h=curvo]'],['[data-h=segOrg]','[data-h=segLes]','#sSegTol','#sSegRad','#bSegBorrar'],['#bSincro']]],
     ['guardar','Guardar',[['#bMarcar','#bGuardar']]],
     ['opc','Opciones',[['#bTexto','#bLupa','#bAnonimo','#bAtajos']]]];
   const fijos=[q('#bAbrir'),q('#bLado')];
@@ -993,7 +999,7 @@ function crearVisor(){
 }
 function activar(v){ if(vpAct===v) return; vpAct=v; if(v.serie && !v.plano){ v._preSerie=v.serie; precargarSerie(v.serie,v.idx); } vps.forEach(x=>x.el.classList.toggle('act',x===v)); actualizarPie(); pintarSeries(); pintarMedidas(); }
 function cambiarLayout(val, sinAsignar){
-  const zona=$('#zona'); detenerCine();
+  const zona=$('#zona'); detenerCine(); delete zona.dataset.max;
   if(val==='3d'){ const previa=(vpAct&&vpAct.serie)||vps.map(v=>v.serie).find(Boolean); zona.innerHTML=''; vps.length=0; vpAct=null; actualizarPie(); iniciar3D(previa); return; }
   cerrar3D();
   const comparar = val==='comp'; if(comparar) val='2';
@@ -1111,6 +1117,7 @@ function dibujar(v, opciones={}){
   c.setTransform(m); c.imageSmoothingEnabled=v.zoom<4; c.imageSmoothingQuality='high';
   c.drawImage(base,0,0);
   c.setTransform(1,0,0,1,0,0);
+  if(mpr && v.plano && seg && seg.serie===mpr.serie) dibujarSeg(v,m);
   if(mpr && v.plano) dibujarCruz(v,m);
   dibujarAnotaciones(v,m);
   if(!opciones.sinTexto && textoVisible) dibujarTexto(v);
@@ -1397,8 +1404,10 @@ async function losaPila(s,idx,g){
 }
 function textoLosa(){ const g=mprGrosor(); return g.mm? g.modo+' '+g.mm+' mm' : ''; }
 function mprClave(v){ const g=$('#sGrosor').value; return 'MPR|'+mpr.serie.id+'|'+v.plano+'|'+v.idx+'|'+g; }
+let mostrarCruz=true;
 function dibujarCruz(v,m){
   const [i,j,k]=mpr.punto, c=v.ctx, d=v.dec, kk=v.dpr||1;
+  if(!mostrarCruz){ const colB={ax:'#ff5c5c',co:'#4cd97b',sa:'#3d9be9'}; c.save(); c.fillStyle=colB[v.plano]; c.fillRect(0,0,6*kk,v.cv.height); c.restore(); return; }
   let vx,hy; if(v.plano==='ax'){vx=i;hy=j;} else if(v.plano==='co'){vx=i;hy=k;} else {vx=j;hy=k;}
   const col={ax:'#ff5c5c',co:'#4cd97b',sa:'#3d9be9'};
   const lineaV = v.plano==='sa'?'co':'sa', lineaH = v.plano==='ax'?'co':'ax';
@@ -1407,6 +1416,13 @@ function dibujarCruz(v,m){
   c.strokeStyle=col[lineaH]; c.beginPath(); c.moveTo(...aPantalla(m,0,hy+.5)); c.lineTo(...aPantalla(m,d.w,hy+.5)); c.stroke();
   c.restore();
   c.save(); c.fillStyle=col[v.plano]; c.fillRect(0,0,6*kk,v.cv.height); c.restore();
+}
+function alternarMaxMPR(v){
+  const zona=$('#zona'); if(!mpr || $('#sLayout').value!=='mpr') return;
+  if(zona.dataset.max){ delete zona.dataset.max; vps.forEach(o=>o.el.style.display=''); zona.style.gridTemplateColumns='2fr 1fr'; zona.style.gridTemplateRows='1fr 1fr'; vps[0].el.style.gridRow='1 / span 2'; }
+  else { zona.dataset.max='1'; vps.forEach(o=>o.el.style.display= o===v?'':'none'); zona.style.gridTemplateColumns='1fr'; zona.style.gridTemplateRows='1fr'; vps[0].el.style.gridRow=''; activar(v);
+    aviso('Vista '+planoNombre(v.plano)+' agrandada. Doble clic (o doble toque) para volver a las 3 vistas.',2500); }
+  requestAnimationFrame(redimensionar);
 }
 function moverCruz(v,x,y){
   if(!mpr||!v.plano) return; const [W,H,N]=mpr.dims; const cl=(a,b)=>Math.max(0,Math.min(b-1,Math.floor(a)));
@@ -1461,6 +1477,7 @@ function configurarPuntero(v){
       if(v.temp && v.temp.tipo==='angulo'){ v.temp.pts.push(pi); gesto={tipo:'angPt'}; }
       else { v.temp={tipo:'angulo',pts:[pi,pi.slice()],nota:''}; gesto={tipo:'angPt'}; } }
     else if(h==='cruz') moverCruz(v,pi[0],pi[1]);
+    else if(h==='segOrg'||h==='segLes'){ gesto=null; if(!v.plano||!mpr){ aviso('Use "MPR 3 planos" y toque el órgano o la lesión en cualquiera de las 3 vistas.',4500); return; } segmentarDesde(v,pi,h==='segOrg'?1:2); return; }
     if(!HERR_NAV.includes(h)) ponerLupa(ev);
     dibujar(v);
   });
@@ -1522,6 +1539,8 @@ function configurarPuntero(v){
     else if(t && t.tipo==='angulo' && g.tipo==='angPt'){
       if(t.pts.length>=3){ const a={id:idAnot++, tipo:'angulo', pts:t.pts, nota:''}; v.temp=null; calcular(v,a); agregarAnot(v,a); volverANavegar(); } }
     else if(g.tipo==='asa'){ if(g.a.tipo==='contorno') actualizarVolumenes(); pintarMedidas(); if(g.nueva){ volverANavegar(); if(g.a.tipo==='nota') pedirNota(g.a,v); } }
+    else if(['wl','zoom','pan','scroll','cruz'].includes(g.tipo) && ev.pointerType==='touch' && v.plano && Date.now()-g.t0<280 && Math.hypot(ev.clientX-g.x0,ev.clientY-g.y0)<10){
+      const ahora=Date.now(); if(ahora-(v._toque1||0)<380){ v._toque1=0; v._dobleTactil=true; setTimeout(()=>v._dobleTactil=false,600); alternarMaxMPR(v); } else v._toque1=ahora; }
     else if(g.tipo==='wl'||g.tipo==='zoom'||g.tipo==='pan'){ if(Date.now()-g.t0<250 && Math.hypot(ev.clientX-g.x0,ev.clientY-g.y0)<6){ const asa=buscarAsa(v,ev.clientX,ev.clientY,20); if(asa) seleccionar(asa.a);} }
     dibujar(v);
   };
@@ -1538,11 +1557,87 @@ function configurarPuntero(v){
       if(ahora-(v._ruedaT||0)>250) v._rueda=0;
       v._rueda=(v._rueda||0)+d; v._ruedaT=ahora;
       if(Math.abs(v._rueda)>=12){ irA(v, v.idx+(v._rueda>0?1:-1)); v._rueda=0; } } },{passive:false});
-  cv.addEventListener('dblclick',()=>{ if(v.temp&&v.temp.tipo==='curvo'){ terminarCurvo(v); return; } v.zoom=1; v.panX=v.panY=0; dibujar(v); });
+  cv.addEventListener('dblclick',e=>{ if(v.temp&&v.temp.tipo==='curvo'){ terminarCurvo(v); return; } if(e.pointerType==='touch'||v._dobleTactil) return;
+    if(v.plano){ alternarMaxMPR(v); return; } v.zoom=1; v.panX=v.panY=0; dibujar(v); });
 }
 function buscarCaja(v,cx,cy){
   if(!v.cajas) return null; const r=v.cv.getBoundingClientRect(), x=(cx-r.left)*v.dpr, y=(cy-r.top)*v.dpr;
   for(let i=v.cajas.length-1;i>=0;i--){ const c=v.cajas[i]; if(x>=c.x&&x<=c.x+c.w&&y>=c.y&&y<=c.y+c.h) return c; } return null;
+}
+/* ====================== segmentación de órgano y lesión ====================== */
+let seg=null; // {serie, mask, ver, organo:{...}, lesion:{...}}
+function vozDesdePlano(v,pi){ const x=Math.floor(pi[0]), y=Math.floor(pi[1]), k=v.idx;
+  return v.plano==='ax'?[x,y,k]: v.plano==='co'?[x,k,y]:[k,x,y]; }
+function segmentarDesde(v,pi,etq){
+  const [W,H,N]=mpr.dims, vol=mpr.vol, [sx,sy,sz]=mpr.esp, [i0,j0,k0]=vozDesdePlano(v,pi);
+  if(i0<0||j0<0||k0<0||i0>=W||j0>=H||k0>=N) return;
+  if(!seg||seg.serie!==mpr.serie){ try{ seg={serie:mpr.serie, mask:new Uint8Array(W*H*N), ver:0}; }catch(e){ return aviso('No hay memoria suficiente para separar el órgano.',4000); } }
+  const M=seg.mask, tol=+$('#sSegTol').value, R=+$('#sSegRad').value, R2=R*R, WH=W*H;
+  // densidad de referencia: mediana alrededor del punto tocado
+  const mu=[]; for(let dk=-1;dk<=1;dk++) for(let dj=-2;dj<=2;dj++) for(let di=-2;di<=2;di++){ const a=i0+di,b=j0+dj,c=k0+dk; if(a>=0&&b>=0&&c>=0&&a<W&&b<H&&c<N) mu.push(vol[c*WH+b*W+a]); }
+  mu.sort((a,b)=>a-b); const ref=mu[mu.length>>1], lo=ref-tol, hi=ref+tol;
+  progreso('Separando '+(etq===1?'el órgano':'la lesión')+'…',.4);
+  setTimeout(()=>{
+    for(let i=0;i<M.length;i++) if(M[i]===etq) M[i]= etq===2? (seg.organo?1:0) : 0;
+    let cola=new Int32Array(1<<20), ini=0, fin=0, n=0; const MAXV=12e6;
+    const empuja=o=>{ if(fin-ini>=cola.length-1){ const c2=new Int32Array(cola.length*2); c2.set(cola.subarray(ini,fin)); fin-=ini; ini=0; cola=c2; } else if(fin>=cola.length){ cola.copyWithin(0,ini,fin); fin-=ini; ini=0; } cola[fin++]=o; };
+    const o0=k0*WH+j0*W+i0; M[o0]=etq; empuja(o0); n=1;
+    while(ini<fin && n<MAXV){ const o=cola[ini++], k=(o/WH)|0, r=o-k*WH, j=(r/W)|0, i=r-j*W;
+      for(let t=0;t<6;t++){ let a=i,b=j,c=k; if(t===0)a--; else if(t===1)a++; else if(t===2)b--; else if(t===3)b++; else if(t===4)c--; else c++;
+        if(a<0||b<0||c<0||a>=W||b>=H||c>=N) continue; const q=c*WH+b*W+a; const m=M[q];
+        if(m===etq || (etq===1 && m===2)) continue; const z=vol[q]; if(z<lo||z>hi) continue;
+        const dx=(a-i0)*sx, dy=(b-j0)*sy, dz=(c-k0)*sz; if(dx*dx+dy*dy+dz*dz>R2) continue;
+        M[q]=etq; empuja(q); n++; } }
+    rellenarHuecos(M,W,H,N,etq);
+    seg[etq===1?'organo':'lesion']=estadisticaSeg(etq);
+    if(etq===2 && seg.organo) seg.organo=estadisticaSeg(1);
+    seg.ver++; progreso(null); vps.forEach(o=>o.plano&&dibujar(o)); pintarMedidas(); volverANavegar();
+    const r=seg[etq===1?'organo':'lesion'];
+    aviso((etq===1?'Órgano separado: ':'Lesión separada: ')+fmt(r.vol,1)+' cm³, '+fmt(r.dims[0],0)+' × '+fmt(r.dims[1],0)+' × '+fmt(r.dims[2],0)+' mm. Véalo en "3D volumen" → "Órgano y lesión".',6000);
+  },30);
+}
+function rellenarHuecos(M,W,H,N,etq){ // rellena huecos internos corte por corte (vasos del hilio, calcificaciones)
+  const WH=W*H, fuera=new Uint8Array(WH), pila=new Int32Array(WH);
+  for(let k=0;k<N;k++){ const o=k*WH; let tiene=false; for(let i=0;i<WH;i++) if(M[o+i]===etq){ tiene=true; break; } if(!tiene) continue;
+    fuera.fill(0); let sp=0; const es=i=>M[o+i]===etq||(etq===1&&M[o+i]===2);
+    const sem=i=>{ if(!fuera[i]&&!es(i)){ fuera[i]=1; pila[sp++]=i; } };
+    for(let x=0;x<W;x++){ sem(x); sem((H-1)*W+x); } for(let y=0;y<H;y++){ sem(y*W); sem(y*W+W-1); }
+    while(sp){ const i=pila[--sp], x=i%W; if(x>0) sem(i-1); if(x<W-1) sem(i+1); if(i>=W) sem(i-W); if(i<WH-W) sem(i+W); }
+    for(let i=0;i<WH;i++) if(!fuera[i]&&!es(i)) M[o+i]=etq; }
+}
+function estadisticaSeg(etq){
+  const [W,H,N]=mpr.dims, vol=mpr.vol, [sx,sy,sz]=mpr.esp, M=seg.mask, WH=W*H;
+  let n=0,sm=0,s2=0,mn=Infinity,mx=-Infinity,i0=W,i1=-1,j0=H,j1=-1,k0=N,k1=-1,borde=0,bordeFuera=0,sk=0;
+  for(let k=0;k<N;k++) for(let j=0;j<H;j++){ const o=k*WH+j*W; for(let i=0;i<W;i++){ const m=M[o+i]; if(!(m===etq||(etq===1&&m===2))) continue;
+    const z=vol[o+i]; n++; sm+=z; s2+=z*z; if(z<mn)mn=z; if(z>mx)mx=z; if(i<i0)i0=i; if(i>i1)i1=i; if(j<j0)j0=j; if(j>j1)j1=j; if(k<k0)k0=k; if(k>k1)k1=k; sk+=k;
+    if(etq===2){ for(const q of [o+i-1,o+i+1,o+i-W,o+i+W,o+i-WH,o+i+WH]){ if(q<0||q>=M.length) continue; if(M[q]!==2){ borde++; if(M[q]===0) bordeFuera++; } } } } }
+  if(!n) return null;
+  const md=sm/n, de=Math.sqrt(Math.max(0,s2/n-md*md));
+  const r={n, vol:n*sx*sy*sz/1000, media:md, de, min:mn, max:mx, dims:[(i1-i0+1)*sx,(j1-j0+1)*sy,(k1-k0+1)*sz], kc:sk/n, k0, k1};
+  if(etq===2){ r.exofitica = seg.organo && borde ? bordeFuera/borde : null; }
+  return r;
+}
+function textoSeg(){
+  if(!seg||(!seg.organo&&!seg.lesion)) return '';
+  const O=seg.organo, L=seg.lesion, d3=x=>fmt(x.dims[0],0)+' (T) × '+fmt(x.dims[1],0)+' (AP) × '+fmt(x.dims[2],0)+' (L) mm';
+  let t='';
+  if(O) t+='Órgano: volumen '+fmt(O.vol,1)+' cm³; dimensiones '+d3(O)+'; densidad media '+fmt(O.media,0)+' UH (DE '+fmt(O.de,0)+').\n';
+  if(L){ t+='Lesión: volumen '+fmt(L.vol,2)+' cm³; diámetros '+d3(L)+'; densidad media '+fmt(L.media,0)+' UH (DE '+fmt(L.de,0)+', rango '+fmt(L.min,0)+' a '+fmt(L.max,0)+' UH); '+(L.de<15?'atenuación homogénea':'atenuación heterogénea');
+    if(O){ const f=(L.kc-O.k0)/Math.max(1,O.k1-O.k0); t+='; ubicada en el tercio '+(f<1/3?'superior':f<2/3?'medio':'inferior')+' del órgano'; t+='; ocupa el '+fmt(L.vol/O.vol*100,0)+' % del volumen del órgano';
+      if(L.exofitica!=null) t+='; '+(L.exofitica>0.3?'componente exofítico (sobresale del contorno, '+fmt(L.exofitica*100,0)+' % de su superficie)':'predominio intraparenquimatoso (endofítica)'); }
+    t+='.\n'; }
+  return t;
+}
+function dibujarSeg(v,m){
+  const d=v.dec, clave=v.plano+'|'+v.idx+'|'+seg.ver+'|'+d.w+'x'+d.h;
+  if(v._segClave!==clave){
+    const [W,H,N]=mpr.dims, M=seg.mask, WH=W*H, c=v._segCv&&v._segCv.width===d.w&&v._segCv.height===d.h? v._segCv : Object.assign(document.createElement('canvas'),{width:d.w,height:d.h});
+    const x=c.getContext('2d'), im=x.createImageData(d.w,d.h), o32=new Uint32Array(im.data.buffer); let alguno=false;
+    for(let y=0;y<d.h;y++) for(let xx=0;xx<d.w;xx++){ let q; if(v.plano==='ax') q=v.idx*WH+y*W+xx; else if(v.plano==='co') q=y*WH+v.idx*W+xx; else q=y*WH+xx*W+v.idx;
+      const e=M[q]; if(e===1){ o32[y*d.w+xx]=0x5a3cdc50; alguno=true; } else if(e===2){ o32[y*d.w+xx]=0xa02828ff; alguno=true; } }
+    x.putImageData(im,0,0); v._segCv=c; v._segClave=clave; v._segAlguno=alguno; }
+  if(!v._segAlguno) return;
+  const c=v.ctx; c.save(); c.setTransform(m); c.imageSmoothingEnabled=false; c.drawImage(v._segCv,0,0); c.restore();
 }
 // después de una medida se vuelve a la herramienta de navegación (no se queda pegada)
 let herrNav='wl', fijarHerr=false;
@@ -1650,10 +1745,12 @@ function borrarAnot(a){ const arr=anotaciones.get(a.clave); if(!arr) return; con
 function todasAnot(){ const l=[]; for(const a of anotaciones.values()) l.push(...a); return l.sort((a,b)=>a.n-b.n); }
 function pintarMedidas(){
   const cont=$('#listaMed'), lista=todasAnot();
-  if(!lista.length){ cont.innerHTML='<p class="nota">Aún no hay medidas. Elija Distancia, Ángulo, ROI o Densidad y toque la imagen.</p>'; return; }
+  const ts=textoSeg(), cajaSeg= ts? '<div class="med" style="border-color:#ff5c5c"><div class="cab"><b>Segmentación (órgano / lesión)</b><button class="chico" id="bSeg3D">Ver en 3D</button></div><div class="val" style="color:var(--texto)">'+esc(ts)+'</div></div>' : '';
+  if(!lista.length){ cont.innerHTML=cajaSeg+'<p class="nota">Aún no hay medidas. Elija Distancia, Ángulo, ROI o Densidad y toque la imagen.</p>'; enlazarSeg(); return; }
   cont.innerHTML=lista.map(a=>'<div class="med" data-id="'+a.id+'" style="'+(a.sel?'border-color:var(--cian)':'')+'"><div class="cab"><b>#'+a.n+' '+NOMBRES[a.tipo]+'</b>'+(a.tipo==='perfil'?'<button class="chico" data-graf>Gráfica</button>':'')+'<button class="chico" data-ir>Ver</button><button class="chico rojo" data-borrar>Borrar</button></div>'
     +'<div class="nota" style="margin:0 0 4px">'+esc(a.desc)+'</div>'+(a.res?'<div class="val">'+esc(a.res)+'</div>':'')
     +'<textarea placeholder="Escriba lo que se observa (ej.: quiste simple en polo superior)…">'+esc(a.nota)+'</textarea></div>').join('');
+  if(cajaSeg) cont.insertAdjacentHTML('afterbegin',cajaSeg); enlazarSeg();
   $$('#listaMed .med').forEach(el=>{ const a=lista.find(x=>x.id===+el.dataset.id);
     el.querySelector('textarea').addEventListener('input',e=>{ a.nota=e.target.value; vps.forEach(v=>v.clave===a.clave&&dibujar(v)); });
     el.querySelector('[data-borrar]').onclick=()=>borrarAnot(a);
@@ -1664,11 +1761,12 @@ function pintarMedidas(){
       seleccionar(a); };
   });
 }
+function enlazarSeg(){ const b=$('#bSeg3D'); if(b) b.onclick=()=>{ $('#sLayout').value='3d'; mostrarCat('mpr'); cambiarLayout('3d'); setTimeout(()=>{ if(v3d&&v3d.panel){ const s=v3d.panel.querySelector('#p3preset'); s.value='organo'; s.dispatchEvent(new Event('change')); } },400); }; }
 function pintarMedidasLigero(){ if(!$('#vMedidas').classList.contains('act')) return; const lista=todasAnot(); $$('#listaMed .med').forEach(el=>{ const a=lista.find(x=>x.id===+el.dataset.id); const val=el.querySelector('.val'); if(a&&val) val.textContent=a.res; }); }
 function textoMedidas(){
   const I=series[0]?series[0].info:{}, Pc=pac(I);
   let t='MEDIDAS Y HALLAZGOS DEL VISOR\n'+(Pc.paciente||'')+(Pc.pid?' (ID '+Pc.pid+')':'')+' — '+fechaDicom(I.fecha)+(I.estudioDesc?' — '+I.estudioDesc:'')+'\n';
-  const lista=todasAnot(); if(!lista.length) return t+'\n(Sin medidas)';
+  const lista=todasAnot(); const ts=textoSeg(); if(!lista.length) return t+(ts?'\nSEGMENTACIÓN 3D:\n'+ts:'\n(Sin medidas)');
   const porSerie=new Map(); for(const a of lista){ const k=a.plano?'MPR '+planoNombre(a.plano)+' — serie '+(a.serie.num||'')+' '+(a.serie.desc||''):'Serie '+(a.serie.num||'')+' '+(a.serie.desc||'')+' ('+fechaDicom(a.serie.info.fecha)+')'; if(!porSerie.has(k)) porSerie.set(k,[]); porSerie.get(k).push(a); }
   for(const [k,l] of porSerie){ t+='\n'+k.trim()+':\n';
     for(const a of l){ if(a.tipo==='contorno') continue;
@@ -1676,6 +1774,7 @@ function textoMedidas(){
       t+='• '+(a.res&&/^(Nódulo|Ángulo de Cobb|Altura|Índice|Perfil|ASPECTS)/.test(a.res)?'':NOMBRES[a.tipo]+': ')+(a.res?a.res.replace(/\n/g,'; '):'')+(a.nota?'. '+a.nota:'')+' (imagen '+(a.idx+1)+').\n'; } }
   if(volumenes.length){ t+='\nVOLÚMENES (contornos):\n'; for(const x of volumenes){ const notas=lista.filter(a=>a.tipo==='contorno'&&a.serie===x.serie&&a.lesion===x.lesion&&a.nota).map(a=>a.nota);
       t+='• Lesión L'+x.lesion+' — serie '+(x.serie.num||'')+' '+(x.serie.desc||'')+': '+x.txt.replace(/^Volumen L\d+: /,'')+(notas.length?'. '+notas.join('; '):'')+'.\n'; } }
+  if(ts) t+='\nSEGMENTACIÓN 3D:\n'+ts;
   return t;
 }
 function pedirNota(a,v){
@@ -1805,7 +1904,7 @@ $$('#barra [data-h]').forEach(b=>b.onclick=()=>{ const h=b.dataset.h, medir=!['w
   elegirHerr(h); b.blur(); vps.forEach(v=>{ if(v.temp){v.temp=null; dibujar(v);} });
   const MSG={dist:'Arrastre para medir.',angulo:'Arrastre el primer brazo y toque el final del segundo.',elipse:'Arrastre para dibujar la ROI.',rect:'Arrastre para dibujar la ROI.',punto:'Toque el punto para ver la densidad.',texto:'Arrastre la flecha y escriba la nota.',nota:'Toque donde quiera poner la nota y escríbala. Para la nota de una medida: toque dos veces sus números.',
     contorno:'Dibuje con el dedo el borde de la lesión (L'+lesionActual+'). Repita en otros cortes: el volumen se calcula solo.',nodulo:'Dibuje el EJE LARGO del nódulo y luego el EJE CORTO.',cobb:'Dibuje la línea del platillo superior y luego la del inferior.',
-    altura:'Dibuje la altura de la vértebra afectada y luego la de una vértebra sana.',ict:'Dibuje el diámetro cardíaco máximo y luego el torácico interno máximo.',perfil:'Arrastre una línea: aparece la gráfica de densidades.',curvo:'En MPR: toque puntos siguiendo la estructura. Toque dos veces el último punto (o Enter) para terminar.'};
+    altura:'Dibuje la altura de la vértebra afectada y luego la de una vértebra sana.',ict:'Dibuje el diámetro cardíaco máximo y luego el torácico interno máximo.',perfil:'Arrastre una línea: aparece la gráfica de densidades.',segOrg:'En MPR: toque el ÓRGANO (ej. riñón). Si se escapa a otros órganos, baje la tolerancia o el tamaño.',segLes:'En MPR: toque la LESIÓN / tumor dentro del órgano.',curvo:'En MPR: toque puntos siguiendo la estructura. Toque dos veces el último punto (o Enter) para terminar.'};
   if(medir) aviso((MSG[h]||'')+(fijarHerr?' (Herramienta fija: toque Ventana para salir.)':''),3800);
   if(herramienta==='cruz' && !mpr) aviso('La cruz se usa en el modo MPR 3 planos.');
   if(herramienta==='angulo') aviso('Ángulo: arrastre el primer brazo y luego toque el final del segundo.',3500); });
@@ -1896,6 +1995,7 @@ const PRESETS3D=[
   {id:'piel', nombre:'Piel / superficie', tipo:'vr', puntos:[[-1024,0,0,0,0],[-450,.9,.7,.6,0],[-250,.93,.74,.63,.5],[100,.95,.78,.68,.7],[400,1,.95,.9,.8],[3071,1,1,1,.9]]},
   {id:'musculo', nombre:'Músculo y hueso', tipo:'vr', puntos:[[-1024,0,0,0,0],[-100,.6,.2,.15,0],[20,.75,.25,.2,.03],[90,.85,.35,.3,.06],[180,.9,.8,.7,.1],[400,1,.95,.85,.6],[3071,1,1,1,.9]]},
   {id:'pulmon', nombre:'Pulmón: vasos y bronquios', tipo:'vr', puntos:[[-1024,0,0,0,0],[-930,.5,.6,.85,0],[-850,.6,.7,.9,.015],[-650,.9,.55,.5,.12],[-400,.95,.45,.4,.25],[-200,.9,.4,.35,0],[3071,1,1,1,0]]},
+  {id:'organo', nombre:'Órgano y lesión (segmentación)', tipo:'vr', organo:true, puntos:[[-1024,0,0,0,0],[450,.95,.62,.55,0],[750,.95,.65,.58,.05],[1100,.95,.66,.6,.07],[1350,.95,.5,.45,0],[1600,1,.2,.15,0],[1750,1,.18,.14,.55],[2000,1,.15,.12,.9],[3071,1,.15,.12,.95]]},
   {id:'colon', nombre:'Colon con aire: molde 3D (divertículos, pólipos)', tipo:'vr', molde:true, puntos:[[-1024,0,0,0,0],[380,.85,.5,.45,0],[520,.9,.58,.5,.3],[700,.94,.68,.6,.65],[1024,.97,.78,.72,.85],[3071,1,1,1,.9]]},
   {id:'mip_angio', nombre:'MIP 3D vasos (angio)', tipo:'mip', ww:600, wc:300},
   {id:'mip_pulmon', nombre:'MIP 3D pulmón (nódulos)', tipo:'mip', ww:1000, wc:-650},
@@ -1909,12 +2009,12 @@ precision highp float; precision highp sampler3D;
 uniform sampler3D vol; uniform sampler2D tf;
 uniform mat3 rot; uniform vec3 semi; uniform vec3 cmin; uniform vec3 cmax;
 uniform vec2 res; uniform float mmpx; uniform vec2 pan; uniform int modo; uniform float paso;
-uniform vec2 rango; uniform vec2 wl; uniform int sombra; uniform float desp; uniform float opac; uniform vec3 vox;
+uniform vec2 rango; uniform vec2 wl; uniform int sombra; uniform float desp; uniform float opac; uniform vec3 vox; uniform vec3 cen;
 out vec4 color;
 float val(vec3 q){ vec3 t=vec3(q.x/(2.*semi.x)+.5, .5-q.z/(2.*semi.z), .5-q.y/(2.*semi.y)); return texture(vol,t).r; }
 void main(){
   vec2 px=(gl_FragCoord.xy-res*.5)*mmpx-pan;
-  vec3 o=rot*vec3(px,1e5), d=normalize(rot*vec3(0.,0.,-1.));
+  vec3 o=rot*vec3(px,1e5)+cen, d=normalize(rot*vec3(0.,0.,-1.));
   vec3 dd=d; if(abs(dd.x)<1e-6) dd.x=1e-6; if(abs(dd.y)<1e-6) dd.y=1e-6; if(abs(dd.z)<1e-6) dd.z=1e-6;
   vec3 t0=(cmin-o)/dd, t1=(cmax-o)/dd, tn3=min(t0,t1), tf3=max(t0,t1);
   float tn=max(max(tn3.x,tn3.y),tn3.z), tl=min(min(tf3.x,tf3.y),tf3.z);
@@ -1947,7 +2047,7 @@ function crearPrograma3D(gl){
   const sh=(t,src)=>{ const x=gl.createShader(t); gl.shaderSource(x,src); gl.compileShader(x); if(!gl.getShaderParameter(x,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(x)); return x; };
   const pr=gl.createProgram(); gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS3D)); gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS3D)); gl.linkProgram(pr);
   if(!gl.getProgramParameter(pr,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(pr));
-  const u={}; for(const n of ['vol','tf','rot','semi','cmin','cmax','res','mmpx','pan','modo','paso','rango','wl','sombra','desp','opac','vox']) u[n]=gl.getUniformLocation(pr,n);
+  const u={}; for(const n of ['vol','tf','rot','semi','cmin','cmax','res','mmpx','pan','modo','paso','rango','wl','sombra','desp','opac','vox','cen']) u[n]=gl.getUniformLocation(pr,n);
   const b=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
   const loc=gl.getAttribLocation(pr,'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
   return {pr,u};
@@ -1962,6 +2062,20 @@ function moldeAire(out,w,h,n){
     while(sp){ const i=pila[--sp], x=i%w; if(x>0) sem(i-1); if(x<w-1) sem(i+1); if(i>=w) sem(i-w); if(i<w*(h-1)) sem(i+w); }
     for(let i=0;i<w*h;i++){ const z=out[o+i]; if(!ext[i] && z<-150) res[o+i]=Math.min(1024,-z); } }
   return res;
+}
+// volumen 3D a partir de la segmentación: órgano = 1000, lesión = 2000, suavizado para superficies lisas
+function volumenSeg(w,h,n){
+  const out=new Float32Array(w*h*n).fill(-1024);
+  if(!seg||seg.serie!==v3d.serie) return out;
+  const [W,H,N]=mpr.dims, M=seg.mask, fx=W/w, fy=H/h, fz=N/n;
+  for(let k=0;k<n;k++){ const kz=Math.min(N-1,Math.floor((k+.5)*fz)); for(let y=0;y<h;y++){ const jy=Math.min(H-1,Math.floor((y+.5)*fy)); for(let x=0;x<w;x++){
+    const e=M[kz*W*H+jy*W+Math.min(W-1,Math.floor((x+.5)*fx))]; if(e) out[(k*h+y)*w+x]= e===2?2000:1000; } } }
+  // suavizado 3×3×3 (separable)
+  const tmp=new Float32Array(out.length), pas=(src,dst,st,lim,idx)=>{};
+  const suav=(src,dst,dx,dy,dz)=>{ for(let k=0;k<n;k++) for(let y=0;y<h;y++) for(let x=0;x<w;x++){ const o=(k*h+y)*w+x; let s=src[o],c=1;
+      const a=x-dx, b=y-dy, cc=k-dz; if(a>=0&&b>=0&&cc>=0){ s+=src[o-dx-dy*w-dz*w*h]; c++; } const a2=x+dx, b2=y+dy, c2=k+dz; if(a2<w&&b2<h&&c2<n){ s+=src[o+dx+dy*w+dz*w*h]; c++; } dst[o]=s/c; } };
+  suav(out,tmp,1,0,0); suav(tmp,out,0,1,0); suav(out,tmp,0,0,1); void pas;
+  return tmp;
 }
 function cerrar3D(){ if(!v3d) return; cancelAnimationFrame(v3d.raf); v3d.vivo=false; const gl=v3d.gl; try{ gl.getExtension('WEBGL_lose_context')?.loseContext(); }catch(e){} v3d=null; }
 async function iniciar3D(sPref){
@@ -2010,7 +2124,8 @@ async function subirVolumen3D(){
           val=c0*(1-az)+c1*az; }
         out[(k*h+y)*w+x]=val; if(val<mn)mn=val; if(val>mx)mx=val; } } }
   progreso('Enviando a la tarjeta de video…',1); await espera();
-  const datos = v3d.preset.molde ? moldeAire(out,w,h,n) : out; v3d.moldeHecho=!!v3d.preset.molde;
+  const datos = v3d.preset.molde ? moldeAire(out,w,h,n) : v3d.preset.organo ? volumenSeg(w,h,n) : out;
+  v3d.moldeHecho=!!v3d.preset.molde; v3d.organoHecho= v3d.preset.organo? (seg?seg.ver:-1) : null;
   if(v3d.tex) gl.deleteTexture(v3d.tex);
   const tex=gl.createTexture(); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_3D,tex);
   gl.pixelStorei(gl.UNPACK_ALIGNMENT,1);
@@ -2019,12 +2134,21 @@ async function subirVolumen3D(){
   for(const [k,v] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_R,gl.CLAMP_TO_EDGE]]) gl.texParameteri(gl.TEXTURE_3D,k,v);
   v3d.tex=tex; v3d.dims=[w,h,n]; v3d.vmin=mn; v3d.vmax=mx;
   v3d.ext=[W*mpr.esp[0], N*mpr.esp[2], H*mpr.esp[1]]; // x: izq-der, y: cráneo-caudal, z: ant-post (mm)
+  // órgano: centrar y acercar la vista sobre lo separado
+  v3d.cen=[0,0,0]; v3d.zoomBase=1;
+  if(v3d.preset.organo && seg){ const A=seg.organo||seg.lesion; if(A){ const [W,H,N]=mpr.dims, e=v3d.ext;
+    // el centro se calcula con los extremos de la segmentación
+    let i0=W,i1=0,j0=H,j1=0,k0=N,k1=0; const M=seg.mask, WH=W*H;
+    for(let k=A.k0;k<=A.k1;k++) for(let j=0;j<H;j++){ const o=k*WH+j*W; for(let i=0;i<W;i++) if(M[o+i]){ if(i<i0)i0=i; if(i>i1)i1=i; if(j<j0)j0=j; if(j>j1)j1=j; if(k<k0)k0=k; if(k>k1)k1=k; } }
+    v3d.cen=[((i0+i1+1)/2/W-.5)*e[0], (.5-(k0+k1+1)/2/N)*e[1], (.5-(j0+j1+1)/2/H)*e[2]];
+    const tam=Math.max((i1-i0+1)/W*e[0],(k1-k0+1)/N*e[1],(j1-j0+1)/H*e[2]); v3d.zoomBase=Math.min(8,Math.max(1,Math.max(e[0],e[1],e[2])/tam*0.75)); } }
+  v3d.zoom=v3d.zoomBase; v3d.pan=[0,0];
   progreso(null); actualizarTF3D(); v3d.sucio=true;
 }
 function actualizarTF3D(){
   const {gl}=v3d, P=v3d.preset, N=512, d=new Uint8Array(N*4);
   let lo=-1024, hi=3071, puntos=P.puntos||[[-1024,0,0,0,0],[3071,0,0,0,0]];
-  if(P.ventana || (v3d.serie.modalidad!=='CT' && P.tipo==='vr')){
+  if(P.ventana || (v3d.serie.modalidad!=='CT' && P.tipo==='vr' && !P.organo && !P.molde)){
     lo=v3d.vmin; hi=v3d.vmax; const a=v3d.wc-v3d.ww/2, b=v3d.wc+v3d.ww/2;
     puntos=[[lo,1,1,1,0],[a,1,1,1,0],[a+(b-a)*.35,.95,.9,.85,.25],[b,1,1,1,.85],[hi,1,1,1,.9]]; }
   for(let i=0;i<N;i++){ const x=lo+(hi-lo)*i/(N-1); let j=0; while(j<puntos.length-2 && puntos[j+1][0]<x) j++;
@@ -2071,7 +2195,7 @@ function render3D(escala){
   gl.uniform2f(u.rango,v3d.rango[0],v3d.rango[1]);
   gl.uniform2f(u.wl, v3d.preset.tipo==='mip'?(v3d.preset.ww||v3d.ww):v3d.ww, v3d.preset.tipo==='mip'?(v3d.preset.wc??v3d.wc):v3d.wc);
   gl.uniform1i(u.sombra, v3d.sombra && escala>=1 ?1:0);
-  gl.uniform1f(u.desp,v3d.desp); gl.uniform1f(u.opac,v3d.opac);
+  gl.uniform1f(u.desp,v3d.desp); gl.uniform1f(u.opac,v3d.opac); const C=v3d.cen||[0,0,0]; gl.uniform3f(u.cen,C[0],C[1],C[2]);
   gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
   textos3D(v3d.ctx2, v3d.cw, v3d.ch, v3d.dpr);
 }
@@ -2097,7 +2221,7 @@ function rotX(t){ const c=Math.cos(t),s=Math.sin(t); return [1,0,0,0,c,-s,0,s,c]
 function rotY(t){ const c=Math.cos(t),s=Math.sin(t); return [c,0,s,0,1,0,-s,0,c]; }
 function vista3D(nombre){
   const g=Math.PI/180, V={frontal:[1,0,0,0,1,0,0,0,1], posterior:rotY(180*g), izquierda:rotY(-90*g), derecha:rotY(90*g), superior:rotX(90*g), inferior:rotX(-90*g)};
-  v3d.rot=V[nombre]; v3d.zoom=1; v3d.pan=[0,0]; v3d.sucio=true;
+  v3d.rot=V[nombre]; v3d.zoom=v3d.zoomBase||1; v3d.pan=[0,0]; v3d.sucio=true;
 }
 function configurarGestos3D(){
   const el=v3d.cv2, ptrs=new Map(); let g=null;
@@ -2142,7 +2266,9 @@ function crearPanel3D(){
   q('#p3preset').value=v3d.preset.id; q('#p3cal').value=String(v3d.calidad);
   q('#p3min').onclick=()=>{ p.classList.toggle('min'); q('#p3min').textContent=p.classList.contains('min')?'Controles ▼':'Ocultar ▲'; };
   q('#p3preset').onchange=async e=>{ v3d.preset=PRESETS3D.find(x=>x.id===e.target.value); v3d.desp=0; v3d.opac=1; q('#p3desp').value=0; q('#p3opac').value=100; q('#p3dv').textContent='0';
-    if(!!v3d.preset.molde!==!!v3d.moldeHecho) await subirVolumen3D(); else actualizarTF3D();
+    const quiereOrg= v3d.preset.organo? (seg?seg.ver:-1) : null;
+    if(v3d.preset.organo && (!seg||(!seg.organo&&!seg.lesion))) aviso('Primero separe el órgano: en "MPR 3 planos" use Órgano y Lesión y toque sobre ellos.',6000);
+    if(!!v3d.preset.molde!==!!v3d.moldeHecho || quiereOrg!==v3d.organoHecho) await subirVolumen3D(); else actualizarTF3D();
     if(v3d.preset.molde) aviso('Molde del aire dentro del cuerpo: colon, intestino y estómago (y bases pulmonares). Use Recorte "Superior" para quitar los pulmones.',6000); };
   q('#p3desp').oninput=e=>{ v3d.desp=+e.target.value; q('#p3dv').textContent=e.target.value; v3d.interactuando=true; v3d.sucio=true; clearTimeout(v3d.tInt); v3d.tInt=setTimeout(()=>{v3d.interactuando=false;v3d.sucio=true;},200); };
   q('#p3opac').oninput=e=>{ v3d.opac=e.target.value/100; v3d.sucio=true; };
@@ -2294,7 +2420,7 @@ $('#bAnonimo').onclick=()=>ponerAnonimo(!anonimo);
 $('#chAnon').onchange=e=>ponerAnonimo(e.target.checked);
 
 /* ====================== atajos de teclado ====================== */
-const ACCIONES=[['wl','Ventana','w'],['pan','Mover','p'],['zoom','Zoom','z'],['scroll','Cortes','c'],['dist','Distancia','m'],['angulo','Ángulo','a'],['elipse','ROI elipse','e'],['rect','ROI rectángulo','r'],['punto','Densidad','d'],['texto','Flecha / nota','f'],['nota','Nota en la imagen','q'],['contorno','Volumen (contorno)','v'],['nodulo','Nódulo','n'],['cobb','Cobb','b'],['altura','Altura vertebral','h'],['ict','ICT','i'],['perfil','Perfil','l'],['curvo','MPR curvo','k'],['invertir','Invertir','x'],['cine','Cine (reproducir)',' '],['marcar','★ Marcar','s'],['guardar','Guardar imagen','g'],['restaurar','Restaurar','0'],['sincro','Sincronizar','y'],['lupa','Lupa','u'],['anonimo','Anónimo','o'],['panel','Mostrar/ocultar panel','t']];
+const ACCIONES=[['wl','Ventana','w'],['pan','Mover','p'],['zoom','Zoom','z'],['scroll','Cortes','c'],['dist','Distancia','m'],['angulo','Ángulo','a'],['elipse','ROI elipse','e'],['rect','ROI rectángulo','r'],['punto','Densidad','d'],['texto','Flecha / nota','f'],['nota','Nota en la imagen','q'],['contorno','Volumen (contorno)','v'],['nodulo','Nódulo','n'],['cobb','Cobb','b'],['altura','Altura vertebral','h'],['ict','ICT','i'],['perfil','Perfil','l'],['curvo','MPR curvo','k'],['segOrg','Órgano (separar)','j'],['segLes','Lesión (separar)',''],['invertir','Invertir','x'],['cine','Cine (reproducir)',' '],['marcar','★ Marcar','s'],['guardar','Guardar imagen','g'],['restaurar','Restaurar','0'],['sincro','Sincronizar','y'],['lupa','Lupa','u'],['anonimo','Anónimo','o'],['panel','Mostrar/ocultar panel','t']];
 let atajos=Object.assign(Object.fromEntries(ACCIONES.map(a=>[a[0],a[2]])), prefs.atajos||{});
 let esperandoTecla=null;
 const nombreTecla=k=>k===' '?'Espacio':k.length===1?k.toUpperCase():k;
@@ -2344,6 +2470,9 @@ document.addEventListener('change',e=>{ if(e.target&&e.target.id==='chTxt'){ pre
 if(prefs.herrNav && ['wl','pan','zoom','scroll'].includes(prefs.herrNav)){ herrNav=prefs.herrNav; elegirHerr(herrNav); }
 pintarLupaAnon();
 mostrarCat(prefs.cat||'ver');
+mostrarCruz = prefs.cruz!==false; $('#bCruzVis').classList.toggle('act',!mostrarCruz);
+$('#bCruzVis').onclick=()=>{ mostrarCruz=!mostrarCruz; prefs.cruz=mostrarCruz; guardarPrefs(); $('#bCruzVis').classList.toggle('act',!mostrarCruz); vps.forEach(v=>v.plano&&dibujar(v)); aviso(mostrarCruz?'Cruz visible.':'Cruz oculta (los planos se siguen moviendo juntos).'); };
+$('#bSegBorrar').onclick=()=>{ seg=null; vps.forEach(v=>v.plano&&dibujar(v)); pintarMedidas(); aviso('Segmentación borrada.'); };
 $('#bEditarNota').onclick=()=>{ const a=todasAnot().find(x=>x.sel); if(!a) return aviso('Toque primero una medida para seleccionarla, o use "Nota" para escribir en cualquier lugar de la imagen.',4000); pedirNota(a, vps.find(o=>o.clave===a.clave)||vpAct); };
 
 cambiarLayout('1', true);
