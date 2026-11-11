@@ -203,3 +203,15 @@ GUARDAR POR SEPARADO O TODO JUNTO (pestana Guardar del panel)
 - Los archivos llevan el nombre del paciente, la fecha y la serie, y las
   imagenes llevan los datos del paciente encima (salvo modo anonimo).
 - Chrome puede preguntar una vez "descargar varios archivos": Permitir.
+
+ABRIR UNA CARPETA O UN CD
+- En computadora (Windows / ChromeOS Flex), "Elegir una carpeta completa"
+  ya NO muestra el aviso de Chrome "Quiere cargar 1,169 archivos". Chrome
+  solo pregunta si permite ver la carpeta: toque Permitir / Ver archivos.
+  El visor lee unicamente los archivos que pueden ser imagenes y salta
+  las carpetas de programas del CD (Viewer, bin, plugins, etc.).
+- Al terminar dice cuantas IMAGENES reales hay, en cuantas series, cuantas
+  son de video (cine) y cuantos archivos se ignoraron.
+- En tablet Android sigue apareciendo la pregunta de Chrome con el total
+  de archivos de la carpeta: es normal, toque Cargar; el visor igual solo
+  muestra las imagenes.

@@ -944,7 +944,8 @@ async function cargarArchivos(lista, agregar){
   aplicarFiltroSeries();
   pintarSeries();
   if(!series.length){ aviso(errores?'No se pudo leer ningún DICOM. '+ultimoError:'No se encontraron imágenes DICOM en lo elegido.',5000); return; }
-  aviso(ok+' archivos abiertos en '+series.length+' series ('+fmt((performance.now()-t0)/1000,1)+' s)'+(errores?' — '+errores+' no se pudieron leer':''),3500);
+  const nImg=series.reduce((a,x)=>a+x.imgs.length,0), nCine=series.filter(x=>x.info.nf>1).length, ign=lista.length-ok+ignoradosCarpeta; ignoradosCarpeta=0;
+  aviso(nImg+' imágenes en '+series.length+' serie'+(series.length>1?'s':'')+(nCine?' ('+nCine+' de video / cine)':'')+(ign>0?' · se ignoraron '+ign+' archivos que no son imágenes del estudio':'')+' ('+fmt((performance.now()-t0)/1000,1)+' s)',6000);
   if(!agregar || !vps.some(v=>v.serie)){ cambiarLayout(/mpr|3d/.test($('#sLayout').value)?'1':$('#sLayout').value, true); if(/mpr|3d/.test($('#sLayout').value)) $('#sLayout').value='1'; vps.forEach((v,i)=>{ const s=series[Math.min(i,series.length-1)]; asignarSerie(v,s); }); }
 }
 // series que NO son imágenes del estudio: localizadores/scout, reportes de dosis, capturas de protocolo, etc.
@@ -1810,7 +1811,29 @@ $$('.pest button').forEach(b=>b.onclick=()=>mostrarPest(b.dataset.v));
 function mostrarPest(id){ $$('.pest button').forEach(x=>x.classList.toggle('act',x.dataset.v===id)); $$('.vistaLado').forEach(x=>x.classList.toggle('act',x.id===id)); if(id==='vMedidas') pintarMedidas(); setTimeout(redimensionar,30); }
 $('#bAbrir').onclick=()=>abrirModal('#mAbrir');
 $('#abArch').onclick=()=>{ cerrarModales(); $('#fArchivos').value=''; $('#fArchivos').click(); };
-$('#abCarp').onclick=()=>{ cerrarModales(); $('#fCarpeta').value=''; $('#fCarpeta').click(); };
+// Carpeta: en computadora se usa el selector moderno (no cuenta ni pide subir todos los archivos del CD)
+// y solo se toman los archivos que pueden ser imágenes del estudio.
+const NO_IMAGEN=/(^DICOMDIR$|\.(exe|dll|inf|ini|txt|html?|xml|pdf|js|css|ico|bmp|png|gif|jpe?g|cab|msi|sys|bat|cmd|lnk|url|json|db|mp4|avi|dat|cfg|log|chm|hlp|ocx|manifest|config|jar|class|so|dylib|py|ttf|otf|woff2?|svg|map|lic|sig|cat|ps1|vbs|reg|nfo|md)$)/i;
+const CARPETAS_PROGRAMA=/^(viewer|visor|program|programs|bin|lib|libs|runtime|jre|java|plugins?|resources?|help|docs?|autorun|setup|install|_?system|fonts?|locales?|x64|x86|win32|win64|osx|mac|linux|epp|syngo|radiant|ezdicom|microdicom|efilm|jivex|vxview|kpacs|dcmview)$/i;
+async function recorrerCarpeta(dir, ruta, out, cont){
+  for await (const [nombre, h] of dir.entries()){
+    if(h.kind==='directory'){ if(CARPETAS_PROGRAMA.test(nombre)){ cont.ignorados++; continue; } await recorrerCarpeta(h, ruta+nombre+'/', out, cont); }
+    else if(NO_IMAGEN.test(nombre)) cont.ignorados++;
+    else { try{ const f=await h.getFile(); if(f.size>=132){ Object.defineProperty(f,'webkitRelativePath',{value:ruta+nombre}); out.push(f); } else cont.ignorados++; }catch(e){ cont.ignorados++; } }
+    if(out.length%200===0) progreso('Buscando imágenes en la carpeta… '+out.length,0);
+  }
+}
+$('#abCarp').onclick=async()=>{ cerrarModales();
+  if(window.showDirectoryPicker){
+    try{ const dir=await window.showDirectoryPicker({mode:'read'}); const lista=[], cont={ignorados:0};
+      progreso('Buscando imágenes en la carpeta…',0); await recorrerCarpeta(dir,'',lista,cont); progreso(null);
+      ignoradosCarpeta=cont.ignorados;
+      if(!lista.length) return aviso('En esa carpeta no hay imágenes DICOM.',4000);
+      return cargarArchivos(lista,$('#chAgregar').checked);
+    }catch(e){ progreso(null); if(e&&e.name==='AbortError') return; }
+  }
+  $('#fCarpeta').value=''; $('#fCarpeta').click(); };
+let ignoradosCarpeta=0;
 $('#fArchivos').onchange=e=>e.target.files.length&&cargarArchivos(e.target.files,$('#chAgregar').checked);
 $('#fCarpeta').onchange=e=>e.target.files.length&&cargarArchivos(e.target.files,$('#chAgregar').checked);
 document.addEventListener('dragover',e=>e.preventDefault());
