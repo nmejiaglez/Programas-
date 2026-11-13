@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="490" height="960" viewBox="0 0 490 960">
+<defs>
+ <linearGradient id="gb1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1E4396"/><stop offset="1" stop-color="#B9D0EE"/></linearGradient>
+ <linearGradient id="gb2" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#1E4396"/><stop offset="0.22" stop-color="#5F8ACD"/><stop offset="1" stop-color="#C7DAF2"/></linearGradient>
+ <linearGradient id="gg1" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B7DDB0"/><stop offset="1" stop-color="#3E9B48"/></linearGradient>
+ <linearGradient id="gg2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2F8A3C"/><stop offset="1" stop-color="#B9DFB3"/></linearGradient>
+ <radialGradient id="gh" cx="0.42" cy="0.38" r="0.65"><stop offset="0" stop-color="#5E93DA"/><stop offset="1" stop-color="#22509F"/></radialGradient>
+ <linearGradient id="gr" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#244B9E"/><stop offset="1" stop-color="#5D87C9"/></linearGradient>
+</defs>
+<!-- cinta verde inferior (detrás) -->
+<path d="M140,418 C70,462 28,535 38,615 C48,698 112,760 182,798 C140,748 104,692 80,620 C70,545 98,470 140,418 Z" fill="url(#gg2)"/>
+<!-- peldaños -->
+<path d="M78,570 C130,566 200,572 268,588 L266,600 C200,590 132,586 80,588 Z" fill="url(#gr)"/>
+<path d="M150,655 C195,656 240,660 285,668 L283,680 C240,674 195,671 152,670 Z" fill="url(#gr)"/>
+<path d="M120,488 C150,486 180,490 212,498 L210,508 C180,503 150,501 122,503 Z" fill="url(#gr)" opacity="0.85"/>
+<!-- cinta azul (de arriba izquierda a abajo derecha) -->
+<path d="M96,16 C40,62 18,152 42,250 C66,335 150,395 232,472 C312,550 362,650 356,762 C352,822 338,862 322,888
+         C300,850 270,815 262,770 C254,690 240,610 190,545 C150,492 100,420 82,330 C68,250 80,160 132,100 C122,70 112,40 96,16 Z" fill="url(#gb2)"/>
+<path d="M96,16 C40,62 18,152 42,250 C66,335 150,395 232,472 C312,550 362,650 356,762 C352,822 338,862 322,888" fill="none" stroke="#1C3F90" stroke-width="9" stroke-linecap="round"/>
+<!-- cinta verde superior (delante) -->
+<path d="M378,78 L466,122 C405,232 302,332 190,402 C178,396 182,388 192,380 C270,310 340,210 378,78 Z" fill="url(#gg1)"/>
+<path d="M466,122 C405,232 302,332 190,402" fill="none" stroke="#3B9A46" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+<!-- figura humana: cabeza y hombro -->
+<circle cx="220" cy="205" r="62" fill="url(#gh)"/>
+<path d="M122,292 C160,286 200,288 238,300 C200,306 160,306 124,302 Z" fill="#2A57A6"/>
+</svg>
