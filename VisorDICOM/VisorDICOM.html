@@ -1777,7 +1777,7 @@ function pintarMedidas(){
       seleccionar(a); };
   });
 }
-function enlazarSeg(){ const b=$('#bSeg3D'); if(b) b.onclick=()=>{ $('#sLayout').value='3d'; mostrarCat('mpr'); cambiarLayout('3d'); setTimeout(()=>{ if(v3d&&v3d.panel){ const s=v3d.panel.querySelector('#p3preset'); s.value='organo'; s.dispatchEvent(new Event('change')); } },400); }; }
+function enlazarSeg(){ const b=$('#bSeg3D'); if(b) b.onclick=()=>{ $('#sLayout').value='3d'; mostrarCat('mpr'); preset3DInicial='organo'; cambiarLayout('3d'); }; }
 function pintarMedidasLigero(){ if(!$('#vMedidas').classList.contains('act')) return; const lista=todasAnot(); $$('#listaMed .med').forEach(el=>{ const a=lista.find(x=>x.id===+el.dataset.id); const val=el.querySelector('.val'); if(a&&val) val.textContent=a.res; }); }
 function textoMedidas(){
   const I=series[0]?series[0].info:{}, Pc=pac(I);
@@ -2003,7 +2003,7 @@ window.addEventListener('keydown',e=>{ const ae=document.activeElement; if(ae &&
 
 
 /* ====================== 3D: volumen (VR) y MIP con WebGL2 ====================== */
-let v3d=null;
+let v3d=null, preset3DInicial=null;
 const PRESETS3D=[
   {id:'hueso', nombre:'Hueso', tipo:'vr', puntos:[[-1024,0,0,0,0],[150,.9,.8,.6,0],[220,.95,.82,.62,.12],[450,1,.95,.85,.55],[1500,1,1,.97,.85],[3071,1,1,1,.9]]},
   {id:'angio', nombre:'Vasos con contraste (angio-TC)', tipo:'vr', puntos:[[-1024,0,0,0,0],[110,.7,.05,.05,0],[170,.8,.12,.1,.18],[280,.95,.25,.2,.55],[450,1,.85,.8,.6],[900,1,.97,.92,.8],[3071,1,1,1,.9]]},
@@ -2033,7 +2033,8 @@ out vec4 color;
 float val(vec3 q){ vec3 t=vec3(q.x/(2.*semi.x)+.5, .5-q.z/(2.*semi.z), .5-q.y/(2.*semi.y)); return texture(vol,t).r; }
 void main(){
   vec2 px=(gl_FragCoord.xy-res*.5)*mmpx-pan;
-  vec3 o=rot*vec3(px,1e5)+cen, d=normalize(rot*vec3(0.,0.,-1.));
+  float lejos=length(semi)*2.+length(cen)+50.;
+  vec3 o=rot*vec3(px,lejos)+cen, d=normalize(rot*vec3(0.,0.,-1.));
   vec3 dd=d; if(abs(dd.x)<1e-6) dd.x=1e-6; if(abs(dd.y)<1e-6) dd.y=1e-6; if(abs(dd.z)<1e-6) dd.z=1e-6;
   vec3 t0=(cmin-o)/dd, t1=(cmax-o)/dd, tn3=min(t0,t1), tf3=max(t0,t1);
   float tn=max(max(tn3.x,tn3.y),tn3.z), tl=min(min(tf3.x,tf3.y),tf3.z);
@@ -2112,12 +2113,15 @@ async function iniciar3D(sPref){
     sombra:true,calidad:calidadInicial(),recorte:[0,100,0,100,0,100],vivo:true,interactuando:false,giro:false,sucio:true,ww:400,wc:40};
   const vpPrev=vps[0]; if(vpPrev){ v3d.ww=vpPrev.ww; v3d.wc=vpPrev.wc; }
   if(s.modalidad!=='CT') v3d.preset=PRESETS3D.find(p=>p.id==='ventana');
+  if(preset3DInicial){ const P=PRESETS3D.find(x=>x.id===preset3DInicial); if(P) v3d.preset=P; preset3DInicial=null; }
+  cv.addEventListener('webglcontextlost',e=>{ e.preventDefault(); if(v3d&&v3d.cv===cv){ v3d.vivo=false; cancelAnimationFrame(v3d.raf); } aviso('La tarjeta de video de este equipo se reinició al dibujar el 3D. Vuelva a abrir "3D volumen" y elija Calidad "Rápida".',9000); });
   crearPanel3D();
   await subirVolumen3D();
   redimensionar3D(); configurarGestos3D(); bucle3D();
   pintarSeries();
 }
-async function subirVolumen3D(){
+function subirVolumen3D(){ const v=v3d; if(!v) return Promise.resolve(); v.fila=(v.fila||Promise.resolve()).then(()=>{ if(v3d===v) return _subirVolumen3D(); }).catch(e=>{ progreso(null); aviso('Error al preparar el 3D: '+e.message,7000); }); return v.fila; }
+async function _subirVolumen3D(){
   const {gl}=v3d, [W,H,N]=mpr.dims, vol=mpr.vol, q=v3d.calidad;
   const w=Math.min(W,q), h=Math.min(H,q), ezmm=N*mpr.esp[2], exmm=W*mpr.esp[0];
   // en Z no más resolución que en XY (en mm)
@@ -2144,12 +2148,13 @@ async function subirVolumen3D(){
         out[(k*h+y)*w+x]=val; if(val<mn)mn=val; if(val>mx)mx=val; } } }
   progreso('Enviando a la tarjeta de video…',1); await espera();
   const datos = v3d.preset.molde ? moldeAire(out,w,h,n) : v3d.preset.organo ? volumenSeg(w,h,n) : v3d.preset.uret ? volumenUret(out,w,h,n) : out;
+  if(v3d.preset.organo||v3d.preset.uret){ let hay=false; for(let i=0;i<datos.length;i+=7) if(datos[i]>-1000){ hay=true; break; } if(!hay) aviso(v3d.preset.uret?'No hay uréter trazado en esta serie: trácelo en "MPR 3 planos" con la herramienta Uréter (en la misma serie que abre en 3D).':'No hay órgano ni lesión separados en esta serie: sepárelos en "MPR 3 planos" con Órgano / Lesión.',8000); }
   v3d.moldeHecho=!!v3d.preset.molde; v3d.organoHecho= v3d.preset.organo? (seg?seg.ver:-1) : null; v3d.uretHecho= v3d.preset.uret? uretVer+'|'+(v3d.radioUret||12) : null;
   if(v3d.tex) gl.deleteTexture(v3d.tex);
   const tex=gl.createTexture(); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_3D,tex);
   gl.pixelStorei(gl.UNPACK_ALIGNMENT,1);
   try{ gl.texImage3D(gl.TEXTURE_3D,0,gl.R16F,w,h,n,0,gl.RED,gl.FLOAT,datos); }catch(e){}
-  if(gl.getError()!==gl.NO_ERROR){ progreso(null); if(v3d.calidad>192){ v3d.calidad=Math.max(128,v3d.calidad-128); aviso('Poca memoria de video: bajando la calidad del 3D.',3000); return subirVolumen3D(); } aviso('La tarjeta de video no pudo cargar este volumen.',5000); return; }
+  if(gl.getError()!==gl.NO_ERROR){ progreso(null); if(v3d.calidad>192){ v3d.calidad=Math.max(128,v3d.calidad-128); aviso('Poca memoria de video: bajando la calidad del 3D.',3000); return _subirVolumen3D(); } aviso('La tarjeta de video no pudo cargar este volumen.',5000); return; }
   for(const [k,v] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_R,gl.CLAMP_TO_EDGE]]) gl.texParameteri(gl.TEXTURE_3D,k,v);
   v3d.tex=tex; v3d.dims=[w,h,n]; v3d.vmin=mn; v3d.vmax=mx;
   v3d.ext=[W*mpr.esp[0], N*mpr.esp[2], H*mpr.esp[1]]; // x: izq-der, y: cráneo-caudal, z: ant-post (mm)
@@ -2701,7 +2706,7 @@ $('#uGiro').onclick=async()=>{ // 6 ángulos (0–150°) en una sola hoja: el ur
   imgs.forEach(([b,a],i)=>{ x.imageSmoothingEnabled=true; x.drawImage(b,10+i*(w+10),30,w,h); x.fillText(a+'°',10+i*(w+10)+w/2,20); });
   c.toBlob(b=>{ descargar(b,nombreBase(vpAct)+'_ureter_giro.png'); aviso('Hoja con 6 ángulos del uréter guardada en Descargas.',3500); });
 };
-$('#u3D').onclick=()=>{ cerrarModales(); $('#sLayout').value='3d'; mostrarCat('mpr'); cambiarLayout('3d'); setTimeout(()=>{ if(v3d&&v3d.panel){ const s=v3d.panel.querySelector('#p3preset'); s.value='uret'; s.dispatchEvent(new Event('change')); } },400); };
+$('#u3D').onclick=()=>{ cerrarModales(); $('#sLayout').value='3d'; mostrarCat('mpr'); preset3DInicial='uret'; cambiarLayout('3d'); };
 $('#uBorrar').onclick=()=>{ const U=uretActual; if(!U) return; const i=ureteres.indexOf(U); if(i>=0) ureteres.splice(i,1); uretVer++; uretActual=null; cerrarModales(); vps.forEach(o=>o.plano&&dibujar(o)); pintarMedidas(); aviso('Trazado del uréter borrado.'); };
 $('#bUretFin').onclick=()=>{ if(uretTrazo) terminarUret(); else if(ureteres.length){ if(mpr && ureteres.some(u=>u.serie===mpr.serie)) abrirUret([...ureteres].reverse().find(u=>u.serie===mpr.serie)); else aviso('Abra "MPR 3 planos" de la serie donde trazó el uréter.',4000); } else aviso('Primero elija "Uréter" y toque el uréter en el MPR.',3500); };
 $('#bUretDes').onclick=()=>deshacerUret();
