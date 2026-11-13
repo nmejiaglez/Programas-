@@ -11,6 +11,11 @@ Archivos de esta carpeta:
 - `posproceso.py`: separa los datos en renglones con viñeta.
 - `modelo_abdominopelvico.txt` y `modelo_obstetrico.txt`: INFORMES MODELO (el nivel exigido).
 
+## LOGOTIPOS (únicos de este formato)
+- Solo dos: **logo LABEX** (arriba a la derecha) y **sello circular NM del Dr. Néstor Mejía** (arriba a la izquierda y en el encabezado de la hoja 2).
+- Sin escudo del hospital, sin banner gubernamental y sin logo 47/19. Ya están dentro del programa: NUNCA pedirlos.
+- Todo lo demás (regla de oro, revisor, renglones, 2 hojas, reglas clínicas) es idéntico al FORMATO HOSPITAL.
+
 Si el doctor escribe FORMATO LABEX sin datos de un paciente, responder solo:
 "Listo, Dr. Mejía. Formato LABEX activo. Envíe los datos del paciente."
 
