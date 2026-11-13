@@ -13,6 +13,7 @@ Archivos de esta carpeta:
 
 ## LOGOTIPOS (únicos de este formato)
 - Solo dos: **logo Policlínica LABEX** (ADN con figura humana, LABEX®, Policlínica, "Expertos en el cuidado de tu salud." y trazo de latido; arriba a la derecha) y **sello circular NM del Dr. Néstor Mejía** (arriba a la izquierda y en el encabezado de la hoja 2).
+- Tamaños legibles: hoja 1 sello NM 34 mm y logo LABEX 38 mm; hoja 2 sello 16 mm y logo LABEX 20 mm.
 - Sin escudo del hospital, sin banner gubernamental y sin logo 47/19. Ya están dentro del programa: NUNCA pedirlos.
 - Todo lo demás (regla de oro, revisor, renglones, 2 hojas, reglas clínicas) es idéntico al FORMATO HOSPITAL.
 

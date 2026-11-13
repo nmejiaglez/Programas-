@@ -1512,7 +1512,7 @@ CODIGO = "Código MINSA: 37294"
 # Página carta
 ANCHO, ALTO = Mm(215.9), Mm(279.4)
 M_IZQ = M_DER = Mm(13)
-M_SUP, M_INF = Mm(10), Mm(21)
+M_SUP, M_INF = Mm(10), Mm(15)
 UTIL = 215.9 - 26  # mm
 LAT = 44  # columna lateral (mm) ≈ 23 %
 CONT = UTIL - LAT
@@ -2841,15 +2841,15 @@ def encabezado(seccion, F, datos, fecha):
     h.is_linked_to_previous = False
     t = h.add_table(1, 3, Mm(UTIL))
     bordes_tabla(t)
-    anchos(t, [18, UTIL - 36, 18])
+    anchos(t, [26, UTIL - 52, 26])
     a, b, c = t.rows[0].cells
     for x in (a, b, c):
         x.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
-    imagen(a, os.path.join(ASSETS, "sello_nm.png"), 10, despues=0)
+    imagen(a, os.path.join(ASSETS, "sello_nm.png"), 16, despues=0)
     parrafo(b, F["institucion"], 8.5, True, NAVY, WD_ALIGN_PARAGRAPH.CENTER, despues=0)
     parrafo(b, f'Informe radiológico (continuación) · Paciente: {datos["paciente"]} · {fecha}', 8, False, GRIS,
             WD_ALIGN_PARAGRAPH.CENTER, despues=0)
-    imagen(c, os.path.join(ASSETS, F["logo"]), 12, despues=0)
+    imagen(c, os.path.join(ASSETS, F["logo"]), 20, despues=0)
     p = h.paragraphs[0]
     p.paragraph_format.space_after = Pt(0)
     borde_parrafo(p, "top", NAVY, 12, 1)
@@ -2859,7 +2859,7 @@ def encabezado(seccion, F, datos, fecha):
     h._element.append(p._p)
 
 
-def pie(footer, F):
+def pie(footer, F, logos=True):
     footer.is_linked_to_previous = False
     t = footer.add_table(1, 3, Mm(UTIL))
     bordes_tabla(t)
@@ -2867,7 +2867,7 @@ def pie(footer, F):
     a, b, c = t.rows[0].cells
     for x in (a, b, c):
         x.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
-    if F["pie_logos"]:
+    if F["pie_logos"] and logos:
         imagen(a, os.path.join(ASSETS, F["pie_logos"][0]), 34, WD_ALIGN_PARAGRAPH.LEFT, 0)
         imagen(c, os.path.join(ASSETS, F["pie_logos"][1]), 12, WD_ALIGN_PARAGRAPH.RIGHT, 0)
     parrafo(b, MEDICO, 7.5, False, GRIS, WD_ALIGN_PARAGRAPH.CENTER, despues=0)
@@ -2894,15 +2894,20 @@ def cabecera_primera(doc, F, datos, fecha, hora):
     t = doc.add_table(rows=1, cols=3)
     bordes_tabla(t)
     margenes_celda(t, 0, 1)
-    anchos(t, [30, UTIL - 60, 30])
+    anchos(t, [46, UTIL - 92, 46])
     a, b, c = t.rows[0].cells
     for x in (a, b, c):
         x.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
-    imagen(a, os.path.join(ASSETS, "sello_nm.png"), 16, WD_ALIGN_PARAGRAPH.LEFT, 0)
-    parrafo(b, F["institucion"], 11, True, NAVY, WD_ALIGN_PARAGRAPH.CENTER, despues=0, interlineado=1.0)
+    imagen(a, os.path.join(ASSETS, "sello_nm.png"), 34, WD_ALIGN_PARAGRAPH.LEFT, 0)
+    parrafo(b, F["institucion"], 10, True, NAVY, WD_ALIGN_PARAGRAPH.CENTER, despues=0, interlineado=1.0)
     parrafo(b, f'{F["depto"]} · {F["lugar"]}', 9, False, "222B38", WD_ALIGN_PARAGRAPH.CENTER, despues=0)
     parrafo(b, "INFORME RADIOLÓGICO", 15, True, NAVY, WD_ALIGN_PARAGRAPH.CENTER, antes=3, despues=0)
-    imagen(c, os.path.join(ASSETS, F["logo"]), 24, WD_ALIGN_PARAGRAPH.RIGHT, 0)
+    if F["pie_logos"]:  # banner gubernamental y 47/19 en el encabezado, grandes y legibles
+        pl = parrafo(b, alin=WD_ALIGN_PARAGRAPH.CENTER, antes=3, despues=0)
+        pl.add_run().add_picture(os.path.join(ASSETS, F["pie_logos"][0]), width=Mm(50))
+        pl.add_run("    ")
+        pl.add_run().add_picture(os.path.join(ASSETS, F["pie_logos"][1]), width=Mm(19))
+    imagen(c, os.path.join(ASSETS, F["logo"]), 38, WD_ALIGN_PARAGRAPH.RIGHT, 0)
     p = parrafo(doc, despues=4, tam=2, primer=False)
     p.paragraph_format.line_spacing = Pt(2)
     borde_parrafo(p, "bottom", DORADO, 16, 1)
@@ -2943,12 +2948,12 @@ def construir(datos, U, k, base, F):
     s = doc.sections[0]
     s.page_width, s.page_height = ANCHO, ALTO
     s.left_margin, s.right_margin, s.top_margin, s.bottom_margin = M_IZQ, M_DER, M_SUP, M_INF
-    s.header_distance, s.footer_distance = Mm(6), Mm(9)
+    s.header_distance, s.footer_distance = Mm(5), Mm(5)
     s.different_first_page_header_footer = True
     fecha, hora = fecha_hora(datos)
     encabezado(s, F, datos, fecha)
-    pie(s.footer, F)
-    pie(s.first_page_footer, F)
+    pie(s.footer, F, logos=False)  # hoja 2+: pie compacto (los logos grandes van en la hoja 1)
+    pie(s.first_page_footer, F, logos=False)  # logos del pie ya van en el encabezado de la hoja 1
     s.first_page_header.is_linked_to_previous = False
 
     cabecera_primera(doc, F, datos, fecha, hora)

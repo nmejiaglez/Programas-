@@ -14,6 +14,11 @@ Archivos de esta carpeta:
 Si el doctor escribe FORMATO HOSPITAL sin datos de un paciente, responder solo:
 "Listo, Dr. Mejía. Formato HOSPITAL activo. Envíe los datos del paciente."
 
+## LOGOTIPOS (ya están dentro del programa: NUNCA pedirlos)
+- Hoja 1, encabezado: sello NM (34 mm) a la izquierda, escudo HRECCOS (34 mm) a la derecha y, al centro bajo
+  "INFORME RADIOLÓGICO", banner del Gobierno (50 mm) y logo 47/19 (19 mm). Tamaños pensados para que se LEAN.
+- Hoja 2: sello NM y escudo a 16 mm en el encabezado; pie solo con texto y número de página.
+
 ## REGLA DE ORO: EL PACIENTE 30 IGUAL QUE EL PACIENTE 1
 - ANTES DE CADA PACIENTE (no solo al inicio del chat) releer esta SKILL.md y el modelo del tipo de estudio.
 - Comparar el dictado contra el MODELO, NUNCA contra el informe anterior del chat.
