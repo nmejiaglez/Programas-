@@ -1,0 +1,4 @@
+node_modules
+.env
+conversaciones.json
+citas.csv
