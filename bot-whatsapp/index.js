@@ -14,12 +14,14 @@ let estados = fs.existsSync(ARCHIVO) ? JSON.parse(fs.readFileSync(ARCHIVO, 'utf8
 const guardar = () => fs.writeFileSync(ARCHIVO, JSON.stringify(estados, null, 2));
 
 async function enviar(to, texto) {
+  try {
   const r = await fetch(`https://graph.facebook.com/v21.0/${PHONE_NUMBER_ID}/messages`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${WHATSAPP_TOKEN}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ messaging_product: 'whatsapp', to, type: 'text', text: { body: texto } }),
   });
   if (!r.ok) console.error('Error al enviar:', await r.text());
+  } catch (e) { console.error('Sin conexión con WhatsApp:', e.message); }
 }
 
 function abierto() {
