@@ -168,6 +168,21 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
       <option value="700,100">Vascular: embolia pulmonar</option>
       <option value="400,100">Vascular: venas / fase portal</option>
       <option value="600,200">Vascular: disección aórtica</option>
+      <option value="700,200">Angio-TC de cráneo (Willis)</option>
+      <option value="1200,300">Urografía (fase excretora)</option>
+      <option value="150,50">Fosa posterior</option>
+      <option value="30,35">ACV muy estrecha (sustancia gris/blanca)</option>
+      <option value="350,60">Cuello / partes blandas</option>
+      <option value="300,40">Páncreas</option>
+      <option value="200,100">Hígado con contraste</option>
+      <option value="1800,400">Columna (ósea)</option>
+      <option value="3000,500">Hueso fino / fracturas</option>
+      <option value="2500,300">Senos paranasales</option>
+      <option value="350,90">Riñón / vía urinaria (litiasis)</option>
+      <option value="600,-100">Grasa / pared abdominal</option>
+      <option value="450,30">Pelvis</option>
+      <option value="1600,-500">Pulmón alta resolución (intersticio)</option>
+      <option value="800,200">Stent / calcio coronario</option>
     </select>
     <button class="b" id="bInvertir"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor"/></svg>Invertir</button>
     <button class="b" id="bRotar"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-3-6.2M20 4v5h-5"/></svg>Rotar</button>
@@ -223,6 +238,16 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
     </select>
     <button class="b" id="bPlay"><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg>Cine</button>
   </div>
+  <div class="grupo" id="gEsp">
+    <button class="b" id="eAngio" title="Vasos con contraste en 3D (con hueso)"><svg viewBox="0 0 24 24"><path d="M12 21V11M12 11C12 7 8 7 7 3M12 11c0-4 4-4 5-8M12 15c-3 0-4-2-6-3M12 14c3 0 4-2 6-3"/></svg>Angio 3D</button><button class="b" id="eAngioSH" title="Cuerpo: quita el hueso y deja los vasos"><svg viewBox="0 0 24 24"><path d="M12 21V11M12 11C12 7 8 7 7 3M12 11c0-4 4-4 5-8M12 15c-3 0-4-2-6-3M12 14c3 0 4-2 6-3"/><path d="M3 3l18 18"/></svg>Vasos sin hueso</button><button class="b" id="eAngioMip" title="Cuerpo: MIP de vasos sin hueso"><svg viewBox="0 0 24 24"><path d="M12 21V11M12 11C12 7 8 7 7 3M12 11c0-4 4-4 5-8M12 15c-3 0-4-2-6-3M12 14c3 0 4-2 6-3"/></svg>MIP sin hueso</button>
+    <button class="b" id="eCraneo" title="Angio-TC de cráneo: polígono de Willis sin hueso"><svg viewBox="0 0 24 24"><circle cx="12" cy="11" r="8"/><path d="M12 19v-6M12 13c-2-2-4-2-5-5M12 13c2-2 4-2 5-5"/></svg>Cráneo: vasos</button><button class="b" id="eCraneoMip" title="MIP de los vasos del cráneo sin hueso"><svg viewBox="0 0 24 24"><circle cx="12" cy="11" r="8"/><path d="M8 11h8M12 7v8"/></svg>Cráneo MIP</button><button class="b" id="eAneu" title="Separar el árbol vascular tocando el vaso"><svg viewBox="0 0 24 24"><path d="M4 18c4 0 5-5 8-5s4 5 8 5"/><circle cx="12" cy="9" r="3.5"/></svg>Aneurisma</button>
+    <button class="b" id="eUro" title="Vía urinaria con contraste (fase excretora)"><svg viewBox="0 0 24 24"><path d="M9 3c-4 0-6 4-5 8s3 6 5 6 2-3 2-5 1-3 1-5-1-4-3-4z"/><path d="M12 12c2 1 3 4 3 9"/></svg>Urografía 3D</button><button class="b" id="eUroMip" title="MIP de la vía urinaria"><svg viewBox="0 0 24 24"><path d="M9 3c-4 0-6 4-5 8s3 6 5 6 2-3 2-5 1-3 1-5-1-4-3-4z"/><path d="M12 12c2 1 3 4 3 9"/></svg>Uro MIP</button><button class="b" id="eUroSep" title="Separa riñón-uréter-vejiga tocando el contraste"><svg viewBox="0 0 24 24"><path d="M9 3c-4 0-6 4-5 8s3 6 5 6 2-3 2-5 1-3 1-5-1-4-3-4z"/><path d="M12 12c2 1 3 4 3 9"/><circle cx="17" cy="6" r="3" fill="currentColor"/></svg>Separar uréter</button><button class="b" id="eUret" title="Uréter sin contraste: trazado manual y uréter estirado"><svg viewBox="0 0 24 24"><path d="M8 3c-3 1-4 4-2 6s3 4 4 6 3 5 6 6"/><circle cx="8" cy="3.5" r="1.5" fill="currentColor"/><circle cx="16" cy="21" r="1.5" fill="currentColor"/></svg>Trazar uréter</button>
+    <button class="b" id="eColon" title="Molde 3D del colon con aire"><svg viewBox="0 0 24 24"><path d="M6 20V8a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v8a3 3 0 0 1-6 0v-5"/></svg>Colon 3D</button><button class="b" id="ePulmon" title=""><svg viewBox="0 0 24 24"><path d="M12 4v8M12 12c-2-4-6-3-7 2s0 6 3 5 4-3 4-7zM12 12c2-4 6-3 7 2s0 6-3 5-4-3-4-7z"/></svg>Pulmón 3D</button><button class="b" id="eHueso" title=""><svg viewBox="0 0 24 24"><path d="M7 4a2.5 2.5 0 1 0-2 4l11 9a2.5 2.5 0 1 0 3-2 2.5 2.5 0 1 0-3-3L8 6a2.5 2.5 0 0 0-1-2z"/></svg>Hueso 3D</button><button class="b" id="ePiel" title=""><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>Superficie</button>
+    <button class="b" id="eOrg" title="Separar un órgano tocándolo"><svg viewBox="0 0 24 24"><path d="M9 3c-4 1-6 6-4 11s7 7 10 5 4-7 2-10-5-7-8-6z"/></svg>Órgano</button><button class="b" id="eLes" title="Separar el tumor del órgano"><svg viewBox="0 0 24 24"><path d="M9 3c-4 1-6 6-4 11s7 7 10 5 4-7 2-10-5-7-8-6z"/><circle cx="13" cy="11" r="3" fill="currentColor"/></svg>Tumor</button>
+    <button class="b" data-h="segCon" title="Toque el contraste en el MPR para separarlo (vasos, vía urinaria)"><svg viewBox="0 0 24 24"><path d="M12 3c4 5 6 8 6 11a6 6 0 0 1-12 0c0-3 2-6 6-11z"/></svg>Contraste</button>
+    <select class="b" id="sConHueso" title="Al separar contraste: no pasar al hueso" style="min-width:130px"><option value="si">Evitar hueso: Sí</option><option value="no">Evitar hueso: No</option></select>
+    <button class="b" id="eSep3D" title="Ver en 3D lo separado (órgano, tumor, contraste)"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>Ver separado en 3D</button>
+  </div>
   <div class="grupo">
     <button class="b" id="bMarcar"><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>Marcar</button>
     <button class="b" id="bGuardar"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>Guardar</button>
@@ -252,6 +277,13 @@ select.b{flex-direction:row;font-size:12px;appearance:auto;min-width:96px}
       <button class="btnAncho" id="gMarcadas">Guardar imágenes marcadas (★)</button>
       <div style="display:flex;gap:6px;margin-bottom:7px"><button class="btnAncho" id="gHoja" style="margin:0;flex:1">Hoja de imágenes clave</button>
         <select id="sHoja" style="background:#0d131a;border:1px solid var(--borde);border-radius:8px;padding:6px"><option value="auto">Auto</option><option value="1x2">1 × 2</option><option value="2x2">2 × 2</option><option value="2x3">2 × 3</option><option value="3x3">3 × 3</option></select></div>
+      <label class="nota" style="display:flex;gap:8px;align-items:center">Formato de las imágenes <select id="sFmtImg" style="background:#0d131a;border:1px solid var(--borde);border-radius:8px;padding:6px"><option value="png">PNG (máxima calidad)</option><option value="jpg">JPG (más liviano)</option></select></label>
+      <div class="tit">PDF (una imagen por página)</div>
+      <button class="btnAncho" id="pdfActual">PDF de la imagen actual</button>
+      <button class="btnAncho" id="pdfMarcadas">PDF de las imágenes marcadas (★)</button>
+      <div style="display:flex;gap:6px;margin-bottom:7px"><button class="btnAncho sec" id="pdfSerie" style="margin:0;flex:1">PDF de la serie actual</button>
+        <select id="pdfPaso" style="background:#0d131a;border:1px solid var(--borde);border-radius:8px;padding:6px"><option value="1">Todas</option><option value="2">1 de cada 2</option><option value="5">1 de cada 5</option><option value="10">1 de cada 10</option></select></div>
+      <button class="btnAncho sec" id="pdfElegidas">PDF de las series elegidas ☑</button>
       <label class="nota" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="chAnon"> Ocultar datos del paciente (anónimo) en imágenes, videos y hojas</label>
       <div class="tit">Cómo guardar varias series</div>
       <select id="modoGuardar" style="width:100%;background:#0d131a;border:1px solid var(--borde);border-radius:8px;padding:10px;margin-bottom:8px">
@@ -407,6 +439,7 @@ const WASM_JLS="AGFzbQEAAAABoQEVYAF/AGAEf39/fwBgAX8Bf2ADf39/AGADf39/AX9gBH9/f38B
     ['ver','Ver',[['[data-h=wl]','[data-h=pan]','[data-h=zoom]','[data-h=scroll]'],['#sPreset','#bInvertir','#bRotar','#bVoltear','#bReset'],['#bPlay']]],
     ['medir','Medir y notas',[['[data-h=dist]','[data-h=angulo]','[data-h=elipse]','[data-h=rect]','[data-h=punto]'],['[data-h=nota]','#bEditarNota','[data-h=texto]'],['[data-h=contorno]','[data-h=nodulo]','[data-h=cobb]','[data-h=altura]','[data-h=ict]','[data-h=perfil]','#bAspects']]],
     ['mpr','MPR · 3D · Comparar',[['#sLayout','#sGrosor'],['[data-h=cruz]','#bCruzVis','[data-h=curvo]'],['[data-h=uret]','#bUretFin','#bUretDes'],['[data-h=segOrg]','[data-h=segLes]','#sSegTol','#sSegRad','#bSegBorrar'],['#bSincro']]],
+    ['esp','Angio · Uro · Colon · Órganos',[['#eAngio','#eAngioSH','#eAngioMip'],['#eCraneo','#eCraneoMip','#eAneu'],['#eUro','#eUroMip','#eUroSep','#eUret'],['#eColon','#ePulmon','#eHueso','#ePiel'],['#eOrg','#eLes','[data-h=segCon]','#sConHueso','#eSep3D']]],
     ['guardar','Guardar',[['#bMarcar','#bGuardar']]],
     ['opc','Opciones',[['#bTexto','#bLupa','#bAnonimo','#bAtajos']]]];
   const fijos=[q('#bAbrir'),q('#bLado')];
@@ -1492,6 +1525,7 @@ function configurarPuntero(v){
       if(v.temp && v.temp.tipo==='angulo'){ v.temp.pts.push(pi); gesto={tipo:'angPt'}; }
       else { v.temp={tipo:'angulo',pts:[pi,pi.slice()],nota:''}; gesto={tipo:'angPt'}; } }
     else if(h==='cruz') moverCruz(v,pi[0],pi[1]);
+    else if(h==='segCon'){ gesto=null; if(!v.plano||!mpr){ aviso('Use "MPR 3 planos" y toque el contraste en cualquiera de las 3 vistas.',4500); return; } segmentarContraste(v,pi); return; }
     else if(h==='uret'){ gesto=null; if(!v.plano||!mpr){ aviso('El uréter se traza en el modo "MPR 3 planos" (pestaña MPR · 3D).',4500); return; } tocarUret(v,pi,ev); return; }
     else if(h==='segOrg'||h==='segLes'){ gesto=null; if(!v.plano||!mpr){ aviso('Use "MPR 3 planos" y toque el órgano o la lesión en cualquiera de las 3 vistas.',4500); return; } segmentarDesde(v,pi,h==='segOrg'?1:2); return; }
     if(!HERR_NAV.includes(h)) ponerLupa(ev);
@@ -1920,7 +1954,7 @@ $$('#barra [data-h]').forEach(b=>b.onclick=()=>{ const h=b.dataset.h, medir=!['w
   elegirHerr(h); b.blur(); vps.forEach(v=>{ if(v.temp){v.temp=null; dibujar(v);} });
   const MSG={dist:'Arrastre para medir.',angulo:'Arrastre el primer brazo y toque el final del segundo.',elipse:'Arrastre para dibujar la ROI.',rect:'Arrastre para dibujar la ROI.',punto:'Toque el punto para ver la densidad.',texto:'Arrastre la flecha y escriba la nota.',nota:'Toque donde quiera poner la nota y escríbala. Para la nota de una medida: toque dos veces sus números.',
     contorno:'Dibuje con el dedo el borde de la lesión (L'+lesionActual+'). Repita en otros cortes: el volumen se calcula solo.',nodulo:'Dibuje el EJE LARGO del nódulo y luego el EJE CORTO.',cobb:'Dibuje la línea del platillo superior y luego la del inferior.',
-    altura:'Dibuje la altura de la vértebra afectada y luego la de una vértebra sana.',ict:'Dibuje el diámetro cardíaco máximo y luego el torácico interno máximo.',perfil:'Arrastre una línea: aparece la gráfica de densidades.',segOrg:'En MPR: toque el ÓRGANO (ej. riñón). Si se escapa a otros órganos, baje la tolerancia o el tamaño.',segLes:'En MPR: toque la LESIÓN / tumor dentro del órgano.',uret:'En MPR 3 planos: toque el CENTRO del uréter desde la pelvis renal hacia la vejiga, cada 1–2 cm, bajando de corte (axial) o en el coronal. Luego "Terminar uréter".',curvo:'En MPR: toque puntos siguiendo la estructura. Toque dos veces el último punto (o Enter) para terminar.'};
+    altura:'Dibuje la altura de la vértebra afectada y luego la de una vértebra sana.',ict:'Dibuje el diámetro cardíaco máximo y luego el torácico interno máximo.',perfil:'Arrastre una línea: aparece la gráfica de densidades.',segOrg:'En MPR: toque el ÓRGANO (ej. riñón). Si se escapa a otros órganos, baje la tolerancia o el tamaño.',segLes:'En MPR: toque la LESIÓN / tumor dentro del órgano.',segCon:'En MPR: toque el CONTRASTE (pelvis renal, uréter, vejiga o vaso). Se separa todo lo conectado.',uret:'En MPR 3 planos: toque el CENTRO del uréter desde la pelvis renal hacia la vejiga, cada 1–2 cm, bajando de corte (axial) o en el coronal. Luego "Terminar uréter".',curvo:'En MPR: toque puntos siguiendo la estructura. Toque dos veces el último punto (o Enter) para terminar.'};
   if(medir) aviso((MSG[h]||'')+(fijarHerr?' (Herramienta fija: toque Ventana para salir.)':''),3800);
   if(herramienta==='cruz' && !mpr) aviso('La cruz se usa en el modo MPR 3 planos.');
   if(herramienta==='angulo') aviso('Ángulo: arrastre el primer brazo y luego toque el final del segundo.',3500); });
@@ -2003,7 +2037,7 @@ window.addEventListener('keydown',e=>{ const ae=document.activeElement; if(ae &&
 
 
 /* ====================== 3D: volumen (VR) y MIP con WebGL2 ====================== */
-let v3d=null, preset3DInicial=null;
+let v3d=null, preset3DInicial=null, cfg3DInicial=null;
 const PRESETS3D=[
   {id:'hueso', nombre:'Hueso', tipo:'vr', puntos:[[-1024,0,0,0,0],[150,.9,.8,.6,0],[220,.95,.82,.62,.12],[450,1,.95,.85,.55],[1500,1,1,.97,.85],[3071,1,1,1,.9]]},
   {id:'angio', nombre:'Vasos con contraste (angio-TC)', tipo:'vr', puntos:[[-1024,0,0,0,0],[110,.7,.05,.05,0],[170,.8,.12,.1,.18],[280,.95,.25,.2,.55],[450,1,.85,.8,.6],[900,1,.97,.92,.8],[3071,1,1,1,.9]]},
@@ -2016,6 +2050,8 @@ const PRESETS3D=[
   {id:'uro', nombre:'Urografía: vía urinaria con contraste (fase excretora)', tipo:'vr', puntos:[[-1024,0,0,0,0],[170,.85,.8,.72,0],[300,.88,.82,.74,.03],[480,1,.85,.3,.45],[900,1,.9,.45,.85],[3071,1,1,.85,.95]]},
   {id:'uret', nombre:'Uréter trazado aislado (tubo 3D)', tipo:'vr', uret:true, puntos:[[-1024,0,0,0,0],[-50,.85,.55,.45,0],[5,.88,.5,.42,.05],[60,.9,.55,.45,.3],[150,.95,.72,.55,.4],[300,1,.95,.55,.85],[3071,1,1,.9,.95]]},
   {id:'mip_uro', nombre:'MIP 3D urografía (contraste excretado)', tipo:'mip', ww:1800, wc:800},
+  {id:'angio_sh', nombre:'Vasos SIN hueso (angio-TC cráneo / cuerpo)', tipo:'vr', sinHueso:true, puntos:[[-1024,0,0,0,0],[110,.7,.05,.05,0],[160,.8,.12,.1,.2],[260,.95,.25,.2,.6],[420,1,.8,.7,.75],[900,1,.97,.92,.85],[3071,1,1,1,.9]]},
+  {id:'mip_sh', nombre:'MIP 3D vasos SIN hueso', tipo:'mip', sinHueso:true, ww:600, wc:300},
   {id:'mip_angio', nombre:'MIP 3D vasos (angio)', tipo:'mip', ww:600, wc:300},
   {id:'mip_pulmon', nombre:'MIP 3D pulmón (nódulos)', tipo:'mip', ww:1000, wc:-650},
   {id:'mip_hueso', nombre:'MIP 3D hueso', tipo:'mip', ww:2000, wc:700},
@@ -2097,6 +2133,7 @@ function volumenSeg(w,h,n){
   suav(out,tmp,1,0,0); suav(tmp,out,0,1,0); suav(out,tmp,0,0,1); void pas;
   return tmp;
 }
+function claveHueso(){ return [v3d.umbralHueso,v3d.margenHueso,v3d.regionHueso].join('|'); }
 function cerrar3D(){ if(!v3d) return; cancelAnimationFrame(v3d.raf); v3d.vivo=false; const gl=v3d.gl; try{ gl.getExtension('WEBGL_lose_context')?.loseContext(); }catch(e){} v3d=null; }
 async function iniciar3D(sPref){
   cerrar3D();
@@ -2114,7 +2151,8 @@ async function iniciar3D(sPref){
   const vpPrev=vps[0]; if(vpPrev){ v3d.ww=vpPrev.ww; v3d.wc=vpPrev.wc; }
   if(s.modalidad!=='CT') v3d.preset=PRESETS3D.find(p=>p.id==='ventana');
   if(preset3DInicial){ const P=PRESETS3D.find(x=>x.id===preset3DInicial); if(P) v3d.preset=P; preset3DInicial=null; }
-  cv.addEventListener('webglcontextlost',e=>{ e.preventDefault(); if(v3d&&v3d.cv===cv){ v3d.vivo=false; cancelAnimationFrame(v3d.raf); } aviso('La tarjeta de video de este equipo se reinició al dibujar el 3D. Vuelva a abrir "3D volumen" y elija Calidad "Rápida".',9000); });
+  v3d.regionHueso=(cfg3DInicial&&cfg3DInicial.region)||(mpr.dims[0]*mpr.esp[0]<300?'craneo':'cuerpo'); cfg3DInicial=null; v3d.umbralHueso=600; v3d.margenHueso=3;
+  cv.addEventListener('webglcontextlost',e=>{ e.preventDefault(); if(!v3d||v3d.cv!==cv) return; v3d.vivo=false; cancelAnimationFrame(v3d.raf); aviso('La tarjeta de video de este equipo se reinició al dibujar el 3D. Vuelva a abrir "3D volumen" y elija Calidad "Rápida".',9000); });
   crearPanel3D();
   await subirVolumen3D();
   redimensionar3D(); configurarGestos3D(); bucle3D();
@@ -2147,9 +2185,9 @@ async function _subirVolumen3D(){
           val=c0*(1-az)+c1*az; }
         out[(k*h+y)*w+x]=val; if(val<mn)mn=val; if(val>mx)mx=val; } } }
   progreso('Enviando a la tarjeta de video…',1); await espera();
-  const datos = v3d.preset.molde ? moldeAire(out,w,h,n) : v3d.preset.organo ? volumenSeg(w,h,n) : v3d.preset.uret ? volumenUret(out,w,h,n) : out;
+  const datos = v3d.preset.molde ? moldeAire(out,w,h,n) : v3d.preset.organo ? volumenSeg(w,h,n) : v3d.preset.uret ? volumenUret(out,w,h,n) : v3d.preset.sinHueso ? quitarHueso(out,w,h,n) : out;
   if(v3d.preset.organo||v3d.preset.uret){ let hay=false; for(let i=0;i<datos.length;i+=7) if(datos[i]>-1000){ hay=true; break; } if(!hay) aviso(v3d.preset.uret?'No hay uréter trazado en esta serie: trácelo en "MPR 3 planos" con la herramienta Uréter (en la misma serie que abre en 3D).':'No hay órgano ni lesión separados en esta serie: sepárelos en "MPR 3 planos" con Órgano / Lesión.',8000); }
-  v3d.moldeHecho=!!v3d.preset.molde; v3d.organoHecho= v3d.preset.organo? (seg?seg.ver:-1) : null; v3d.uretHecho= v3d.preset.uret? uretVer+'|'+(v3d.radioUret||12) : null;
+  v3d.moldeHecho=!!v3d.preset.molde; v3d.organoHecho= v3d.preset.organo? (seg?seg.ver:-1) : null; v3d.uretHecho= v3d.preset.uret? uretVer+'|'+(v3d.radioUret||12) : null; v3d.huesoHecho= v3d.preset.sinHueso? claveHueso() : null;
   if(v3d.tex) gl.deleteTexture(v3d.tex);
   const tex=gl.createTexture(); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_3D,tex);
   gl.pixelStorei(gl.UNPACK_ALIGNMENT,1);
@@ -2173,6 +2211,10 @@ async function _subirVolumen3D(){
 function actualizarTF3D(){
   const {gl}=v3d, P=v3d.preset, N=512, d=new Uint8Array(N*4);
   let lo=-1024, hi=3071, puntos=P.puntos||[[-1024,0,0,0,0],[3071,0,0,0,0]];
+  if(P.organo){ // sólido si sólo hay órgano / contraste; translúcido si hay un tumor dentro que debe verse
+    const conTumor=!!(seg&&seg.organo&&seg.lesion);
+    puntos= conTumor ? [[-1024,0,0,0,0],[300,.95,.62,.55,0],[520,.95,.64,.57,.10],[1100,.95,.66,.6,.14],[1400,.95,.5,.45,.10],[1600,1,.2,.15,.6],[1750,1,.18,.14,.9],[3071,1,.15,.12,.95]]
+                     : [[-1024,0,0,0,0],[250,.95,.6,.52,0],[420,.95,.62,.55,.75],[1100,.96,.68,.6,.92],[1450,.96,.6,.5,.92],[1600,1,.2,.15,.9],[3071,1,.15,.12,.95]]; }
   if(P.ventana || (v3d.serie.modalidad!=='CT' && P.tipo==='vr' && !P.organo && !P.molde)){
     lo=v3d.vmin; hi=v3d.vmax; const a=v3d.wc-v3d.ww/2, b=v3d.wc+v3d.ww/2;
     puntos=[[lo,1,1,1,0],[a,1,1,1,0],[a+(b-a)*.35,.95,.9,.85,.25],[b,1,1,1,.85],[hi,1,1,1,.9]]; }
@@ -2276,6 +2318,9 @@ function crearPanel3D(){
    <label>Opacidad / brillo</label><input type="range" id="p3opac" min="20" max="300" value="100">
    <div class="fila3d"><button id="p3sombra" class="act">Sombras</button><button id="p3giro">Girar ⟳</button><button id="p3reset">Restaurar</button><button id="p3uret" class="act" title="Mostrar la línea del uréter trazado">Trazo uréter</button></div>
    <label>Tubo del uréter aislado</label><select id="p3radio"><option value="6">Fino (6 mm)</option><option value="12" selected>Normal (12 mm)</option><option value="20">Ancho (20 mm)</option><option value="30">Muy ancho (30 mm)</option></select>
+   <label>Quitar hueso (tipos "sin hueso")</label>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px"><select id="p3hT" title="Densidad desde la que se considera hueso"><option value="400">Hueso desde 400 UH</option><option value="500">desde 500 UH</option><option value="600" selected>desde 600 UH</option><option value="750">desde 750 UH</option><option value="900">desde 900 UH</option><option value="1200">desde 1200 UH</option></select>
+   <select id="p3hR" title="En el cuerpo también se quita la médula ósea"><option value="craneo">Cráneo</option><option value="cuerpo">Cuerpo</option></select></div>
    <label>Vistas</label>
    <div class="fila3d"><button data-vista="frontal">Frontal</button><button data-vista="posterior">Posterior</button><button data-vista="derecha">Lat. der.</button><button data-vista="izquierda">Lat. izq.</button><button data-vista="superior">Superior</button><button data-vista="inferior">Inferior</button></div>
    <label>Recorte (quitar camilla, abrir el volumen)</label>
@@ -2298,7 +2343,8 @@ function crearPanel3D(){
     const quiereUret= v3d.preset.uret? uretVer+'|'+(v3d.radioUret||12) : null;
     if(v3d.preset.uret && !ureteres.some(u=>u.serie===v3d.serie)) aviso('Primero trace el uréter: en "MPR 3 planos" use la herramienta Uréter.',6000);
     if(v3d.preset.id==='uro'||v3d.preset.id==='mip_uro') aviso('Requiere fase excretora (contraste dentro de la vía urinaria). Use Recorte para quitar columna y pelvis ósea si tapan el uréter.',6000);
-    if(!!v3d.preset.molde!==!!v3d.moldeHecho || quiereOrg!==v3d.organoHecho || quiereUret!==(v3d.uretHecho??null)) await subirVolumen3D(); else actualizarTF3D();
+    if(v3d.preset.sinHueso) aviso('Se quitó el hueso. Si faltan vasos pegados al hueso, suba "Hueso desde"; si queda hueso, bájelo. Use Recorte para aislar la zona.',7000);
+    if(!!v3d.preset.molde!==!!v3d.moldeHecho || quiereOrg!==v3d.organoHecho || quiereUret!==(v3d.uretHecho??null) || (v3d.preset.sinHueso?claveHueso():null)!==(v3d.huesoHecho??null)) await subirVolumen3D(); else actualizarTF3D();
     if(v3d.preset.molde) aviso('Molde del aire dentro del cuerpo: colon, intestino y estómago (y bases pulmonares). Use Recorte "Superior" para quitar los pulmones.',6000); };
   q('#p3desp').oninput=e=>{ v3d.desp=+e.target.value; q('#p3dv').textContent=e.target.value; v3d.interactuando=true; v3d.sucio=true; clearTimeout(v3d.tInt); v3d.tInt=setTimeout(()=>{v3d.interactuando=false;v3d.sucio=true;},200); };
   q('#p3opac').oninput=e=>{ v3d.opac=e.target.value/100; v3d.sucio=true; };
@@ -2310,6 +2356,7 @@ function crearPanel3D(){
   q('#p3cal').onchange=async e=>{ v3d.calidad=+e.target.value; await subirVolumen3D(); };
   q('#p3uret').onclick=()=>{ v3d.verUret=v3d.verUret===false; q('#p3uret').classList.toggle('act',v3d.verUret!==false); v3d.sucio=true; };
   q('#p3radio').onchange=async e=>{ v3d.radioUret=+e.target.value; if(v3d.preset.uret) await subirVolumen3D(); };
+  q('#p3hR').value=v3d.regionHueso; q('#p3hT').onchange=async e=>{ v3d.umbralHueso=+e.target.value; if(v3d.preset.sinHueso) await subirVolumen3D(); }; q('#p3hR').onchange=async e=>{ v3d.regionHueso=e.target.value; if(v3d.preset.sinHueso) await subirVolumen3D(); };
   q('#p3img').onclick=()=>guardar3D(); q('#p3vid').onclick=()=>video3D();
   p.addEventListener('pointerdown',e=>e.stopPropagation()); p.addEventListener('wheel',e=>e.stopPropagation());
   if(window.innerWidth<700){ p.classList.add('min'); q('#p3min').textContent='Controles ▼'; }
@@ -2761,6 +2808,153 @@ function dibujarUret3D(c,cw,ch,k){
       el.querySelector('[data-uver]').onclick=()=>{ if(!mpr||mpr.serie!==U.serie) return aviso('Abra "MPR 3 planos" de la serie '+(U.serie.num||'')+' para ver este uréter.',4000); abrirUret(U); };
       el.querySelector('[data-uborrar]').onclick=()=>{ const i=ureteres.indexOf(U); if(i>=0) ureteres.splice(i,1); uretVer++; vps.forEach(o=>o.plano&&dibujar(o)); pintarMedidas(); }; }); }; }
 { const _tm=textoMedidas; textoMedidas=function(){ let t=_tm(); if(!ureteres.length) return t; t=t.replace(/\n\(Sin medidas\)$/,''); t+='\nURÉTERES (trazado 3D en MPR):\n'+ureteres.map(U=>'• '+textoUret(U)+'\n').join(''); return t; }; }
+
+/* ====================== FORMATO JPG / PNG ====================== */
+function quiereJpg(){ const s=$('#sFmtImg'); return !!s && s.value==='jpg'; }
+async function aJpeg(blob, calidad=.92){ // cualquier imagen -> JPEG (fondo negro)
+  if(blob.type==='image/jpeg') return blob;
+  const bmp=await createImageBitmap(blob), c=document.createElement('canvas'); c.width=bmp.width; c.height=bmp.height;
+  const x=c.getContext('2d'); x.fillStyle='#000'; x.fillRect(0,0,c.width,c.height); x.drawImage(bmp,0,0); if(bmp.close) bmp.close();
+  return await new Promise(r=>c.toBlob(r,'image/jpeg',calidad)); }
+canvasBlob=function(cv){ return new Promise(r=> quiereJpg()? cv.toBlob(r,'image/jpeg',.92) : cv.toBlob(r,'image/png')); };
+{ const _d=descargar; descargar=function(blob,nombre){
+    if(blob && blob.type==='image/jpeg' && /\.png$/i.test(nombre)) return _d(blob,nombre.replace(/\.png$/i,'.jpg'));
+    if(blob && blob.type==='image/png' && quiereJpg() && /\.png$/i.test(nombre)){ aJpeg(blob).then(b=>_d(b,nombre.replace(/\.png$/i,'.jpg'))); return; }
+    return _d(blob,nombre); };
+  const _z=crearZip; crearZip=async function(arch){ const out=[];
+    for(const a of arch){ let b=a.blob, n=a.nombre; if(b && /\.png$/i.test(n)){ if(b.type==='image/png' && quiereJpg()) b=await aJpeg(b); if(b.type==='image/jpeg') n=n.replace(/\.png$/i,'.jpg'); } out.push({nombre:n, blob:b}); }
+    return _z(out); }; }
+$('#sFmtImg').value=prefs.fmtImg||'png'; $('#sFmtImg').onchange=e=>{ prefs.fmtImg=e.target.value; guardarPrefs(); aviso(e.target.value==='jpg'?'Las imágenes se guardarán en JPG.':'Las imágenes se guardarán en PNG (máxima calidad).'); };
+
+/* ====================== PDF: una imagen por página ====================== */
+// paginas: [{blob (cualquier imagen), pie (texto opcional)}] -> Blob PDF tamaño carta
+async function crearPdf(paginas, titulo){
+  const enc=new TextEncoder(), partes=[], offs=[]; let pos=0;
+  const pon=x=>{ const u= typeof x==='string'? enc.encode(x) : x; partes.push(u); pos+=u.length; };
+  const latin=t=>{ let o=''; for(const ch of String(t||'')){ const c=ch.charCodeAt(0); if(ch==='('||ch===')'||ch==='\\') o+='\\'+ch; else if(c<32) o+=' '; else if(c<127) o+=ch; else if(c<256) o+='\\'+c.toString(8).padStart(3,'0'); else o+= ({'–':'-','—':'-','“':'"','”':'"','’':"'",'·':'\\267','★':'*','→':'->','≥':'>=','≤':'<=','±':'\\261','³':'\\263','²':'\\262','°':'\\260','×':'\\327'})[ch]||'?'; } return o; };
+  const obj=(n,cuerpo)=>{ offs[n]=pos; pon(n+' 0 obj\n'); if(typeof cuerpo==='string') pon(cuerpo); else cuerpo.forEach(pon); pon('\nendobj\n'); };
+  pon('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+  const N=paginas.length, kids=[]; // objetos: 1 catálogo, 2 páginas, 3 fuente, luego 3 por página
+  for(let i=0;i<N;i++) kids.push((4+i*3)+' 0 R');
+  obj(1,'<< /Type /Catalog /Pages 2 0 R >>');
+  obj(2,'<< /Type /Pages /Count '+N+' /Kids ['+kids.join(' ')+'] >>');
+  obj(3,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
+  for(let i=0;i<N;i++){
+    if(i%3===0){ progreso('Creando PDF: página '+(i+1)+' de '+N, i/N); await espera(); }
+    const P=paginas[i], jpg=await aJpeg(P.blob,.9), bytes=new Uint8Array(await jpg.arrayBuffer());
+    const bmp=await createImageBitmap(jpg), iw=bmp.width, ih=bmp.height; if(bmp.close) bmp.close();
+    const apais=iw>ih*1.15, PW=apais?792:612, PH=apais?612:792, m=18, pieH=P.pie?34:0;
+    const k=Math.min((PW-2*m)/iw,(PH-2*m-pieH)/ih), w=iw*k, h=ih*k, x=(PW-w)/2, y=pieH+m+((PH-2*m-pieH)-h)/2;
+    let cont='q '+w.toFixed(2)+' 0 0 '+h.toFixed(2)+' '+x.toFixed(2)+' '+y.toFixed(2)+' cm /Im0 Do Q\n';
+    if(P.pie){ const lineas=String(P.pie).split('\n').slice(0,2); cont+='BT /F1 9 Tf 0.1 0.1 0.1 rg '; lineas.forEach((l,j)=>{ cont+='1 0 0 1 '+m+' '+(m+14-j*12)+' Tm ('+latin(l.slice(0,150))+') Tj '; }); cont+='ET\n'; }
+    cont+='BT /F1 8 Tf 0.4 0.4 0.4 rg 1 0 0 1 '+(PW-m-60)+' '+(m-10)+' Tm ('+latin('Página '+(i+1)+' de '+N)+') Tj ET\n';
+    const a=4+i*3;
+    obj(a,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW+' '+PH+'] /Resources << /XObject << /Im0 '+(a+2)+' 0 R >> /Font << /F1 3 0 R >> >> /Contents '+(a+1)+' 0 R >>');
+    obj(a+1,'<< /Length '+cont.length+' >>\nstream\n'+cont+'endstream');
+    obj(a+2,['<< /Type /XObject /Subtype /Image /Width '+iw+' /Height '+ih+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+bytes.length+' >>\nstream\n', bytes, '\nendstream']);
+  }
+  const total=3+N*3, xref=pos; let t='xref\n0 '+(total+1)+'\n0000000000 65535 f \n';
+  for(let n=1;n<=total;n++) t+=String(offs[n]).padStart(10,'0')+' 00000 n \n';
+  t+='trailer\n<< /Size '+(total+1)+' /Root 1 0 R /Info << /Title ('+latin(titulo||'Estudio')+') /Producer (Visor DICOM) >> >>\nstartxref\n'+xref+'\n%%EOF\n'; pon(t);
+  progreso(null); return new Blob(partes,{type:'application/pdf'});
+}
+function piePagina(desc){ const v=vpAct, I=(v&&v.serie?v.serie.info:series[0]&&series[0].info)||{}, Pc=pac(I); return [Pc.paciente, fechaDicom(I.fecha), desc].filter(Boolean).join('   ·   '); }
+$('#pdfActual').onclick=async()=>{ let blob, desc;
+  if(v3d){ blob=await componer3D(); desc='3D '+v3d.preset.nombre; } else { const v=vpAct; if(!v||!v.dec) return aviso('No hay imagen en pantalla.'); blob=await capturaVisor(v); desc=descImagen(v); }
+  descargar(await crearPdf([{blob, pie:piePagina(desc)}], nombreBase(vpAct)), nombreBase(vpAct)+'_imagen.pdf'); aviso('PDF guardado en Descargas.'); };
+$('#pdfMarcadas').onclick=async()=>{ if(!marcadas.length) return aviso('Primero marque imágenes con ★ Marcar.',3500);
+  descargar(await crearPdf(marcadas.map(m=>({blob:m.blob, pie:piePagina(m.desc)})), nombreBase(vpAct)), nombreBase(vpAct)+'_imagenes_marcadas.pdf'); aviso('PDF con '+marcadas.length+' páginas guardado en Descargas.',3500); };
+async function pdfDeSeries(lista){
+  if(!lista.length) return; const paso=Math.max(1,+$('#pdfPaso').value||1), pags=[]; let tot=0;
+  for(const s of lista) tot+=Math.ceil(s.imgs.length/paso);
+  if(tot>600 && !confirm('El PDF tendrá '+tot+' páginas y puede tardar. ¿Continuar? (Puede elegir "1 de cada 5" para hacerlo más corto.)')) return;
+  const jpgPrev=$('#sFmtImg').value; $('#sFmtImg').value='jpg'; // capturas directas en JPG (más rápido y liviano)
+  try{ for(const s of lista){ const v=visorVirtual(vpAct,s);
+      for(let i=0;i<s.imgs.length;i+=paso){ if(pags.length%4===0){ progreso('Preparando páginas: '+(s.desc||'serie')+' '+(i+1)+'/'+s.imgs.length, pags.length/tot); await espera(); }
+        v.idx=i; await cargarImagen(v); if(!v.dec) continue; pags.push({blob:await canvasBlob(v.cv), pie:piePagina('Serie '+(s.num||'')+' '+(s.desc||'')+' · img '+(i+1)+' de '+s.imgs.length)}); } }
+  } finally { $('#sFmtImg').value=jpgPrev; }
+  if(!pags.length){ progreso(null); return aviso('No se pudo preparar ninguna imagen.'); }
+  descargar(await crearPdf(pags, nombreBase(vpAct)), nombreBase(vpAct)+(lista.length===1?'_'+nombreSerie(lista[0]):'_series')+'.pdf'); aviso('PDF con '+pags.length+' páginas guardado en Descargas.',4000);
+}
+$('#pdfSerie').onclick=()=>{ const v=vpAct; if(!v||!v.serie) return aviso('Abra una serie primero.'); pdfDeSeries([v.serie]); };
+$('#pdfElegidas').onclick=()=>{ const l=series.filter(s=>s.elegida); if(!l.length) return aviso('Marque las casillas ☑ de las series en la pestaña Series.',4000); pdfDeSeries(l); };
+
+/* ====================== VASOS SIN HUESO (angio-TC de cráneo y cuerpo) ====================== */
+// Quita el hueso del volumen 3D: lo muy denso (> umbral) es hueso; se le agrega un margen (borde y hueso esponjoso)
+// y, fuera del cráneo, también la médula ósea encerrada dentro de la cortical.
+function quitarHueso(out,w,h,n){
+  const res=new Float32Array(out), tot=w*h*n, wh=w*h, M=new Uint8Array(tot), T=+(v3d.umbralHueso||600), e=[mpr.dims[0]*mpr.esp[0], mpr.dims[1]*mpr.esp[1], mpr.dims[2]*mpr.esp[2]];
+  const vox=Math.min(e[0]/w,e[1]/h,e[2]/n), pasos=Math.max(1,Math.round((+(v3d.margenHueso||3))/vox)), CAND=110;
+  let frente=[]; for(let i=0;i<tot;i++) if(out[i]>T){ M[i]=1; frente.push(i); }
+  for(let p=0;p<pasos;p++){ const sig=[];
+    for(const o of frente){ const k=(o/wh)|0, r=o-k*wh, y=(r/w)|0, x=r-y*w;
+      if(x>0){ const q=o-1; if(!M[q]&&out[q]>CAND){ M[q]=1; sig.push(q);} } if(x<w-1){ const q=o+1; if(!M[q]&&out[q]>CAND){ M[q]=1; sig.push(q);} }
+      if(y>0){ const q=o-w; if(!M[q]&&out[q]>CAND){ M[q]=1; sig.push(q);} } if(y<h-1){ const q=o+w; if(!M[q]&&out[q]>CAND){ M[q]=1; sig.push(q);} }
+      if(k>0){ const q=o-wh; if(!M[q]&&out[q]>CAND){ M[q]=1; sig.push(q);} } if(k<n-1){ const q=o+wh; if(!M[q]&&out[q]>CAND){ M[q]=1; sig.push(q);} } }
+    frente=sig; if(!frente.length) break; }
+  if((v3d.regionHueso||'craneo')==='cuerpo'){ // médula ósea: zonas pequeñas encerradas por hueso en cada corte
+    const areaVox=(e[0]/w)*(e[1]/h), LIM=Math.round(2500/areaVox), marca=new Int32Array(wh), pila=new Int32Array(wh);
+    for(let k=0;k<n;k++){ const o=k*wh; marca.fill(0); let sp=0;
+      const sem=i=>{ if(!marca[i]&&!M[o+i]){ marca[i]=1; pila[sp++]=i; } };
+      for(let x=0;x<w;x++){ sem(x); sem((h-1)*w+x); } for(let y=0;y<h;y++){ sem(y*w); sem(y*w+w-1); }
+      while(sp){ const i=pila[--sp], x=i%w; if(x>0) sem(i-1); if(x<w-1) sem(i+1); if(i>=w) sem(i-w); if(i<wh-w) sem(i+w); }
+      for(let i0=0;i0<wh;i0++){ if(marca[i0]||M[o+i0]) continue; const comp=[]; sp=0; marca[i0]=2; pila[sp++]=i0;
+          while(sp){ const i=pila[--sp], x=i%w; comp.push(i);
+            if(x>0&&!marca[i-1]&&!M[o+i-1]){ marca[i-1]=2; pila[sp++]=i-1; } if(x<w-1&&!marca[i+1]&&!M[o+i+1]){ marca[i+1]=2; pila[sp++]=i+1; }
+            if(i>=w&&!marca[i-w]&&!M[o+i-w]){ marca[i-w]=2; pila[sp++]=i-w; } if(i<wh-w&&!marca[i+w]&&!M[o+i+w]){ marca[i+w]=2; pila[sp++]=i+w; } }
+          if(comp.length<LIM) for(const i of comp) M[o+i]=1; } } }
+  let queda=0; for(let i=0;i<tot;i++){ if(M[i]) res[i]=20; else if(out[i]>150) queda++; }
+  if(queda<30) aviso('Al quitar el hueso no quedó contraste: el contraste de este estudio es tan denso como el hueso. Suba "Hueso desde" (900 o 1200 UH) en el panel del 3D.',9000);
+  return res;
+}
+
+/* ====================== SEPARAR CONTRASTE (vía urinaria, vasos, aneurisma) ====================== */
+// Toque el contraste en el MPR: se separa todo lo que está conectado y tiene contraste (no usa límite de tamaño).
+function segmentarContraste(v,pi){
+  const [W,H,N]=mpr.dims, vol=mpr.vol, [i0,j0,k0]=vozDesdePlano(v,pi), WH=W*H;
+  if(i0<0||j0<0||k0<0||i0>=W||j0>=H||k0>=N) return;
+  if(!seg||seg.serie!==mpr.serie){ try{ seg={serie:mpr.serie, mask:new Uint8Array(W*H*N), ver:0}; }catch(e){ return aviso('No hay memoria suficiente.',4000); } }
+  const mu=[]; for(let dj=-1;dj<=1;dj++) for(let di=-1;di<=1;di++){ const a=i0+di,b=j0+dj; if(a>=0&&b>=0&&a<W&&b<H) mu.push(vol[k0*WH+b*W+a]); }
+  mu.sort((a,b)=>a-b); const ref=mu[mu.length>>1];
+  if(ref<120){ aviso('Ese punto tiene '+fmt(ref,0)+' UH: no es contraste. Toque dentro de la pelvis renal, el uréter, la vejiga o el vaso con contraste.',5500); return; }
+  const lo=Math.max(130,Math.min(ref*.5,220)), hi= $('#sConHueso').value==='si' ? Math.max(ref*1.9, ref+450) : Infinity;
+  progreso('Separando el contraste…',.4);
+  setTimeout(()=>{ const M=seg.mask; let cola=new Int32Array(1<<20), ini=0, fin=0, n=0; const MAXV=14e6;
+    const empuja=o=>{ if(fin>=cola.length){ if(ini>cola.length/2){ cola.copyWithin(0,ini,fin); fin-=ini; ini=0; } else { const c2=new Int32Array(cola.length*2); c2.set(cola.subarray(ini,fin)); fin-=ini; ini=0; cola=c2; } } cola[fin++]=o; };
+    const o0=k0*WH+j0*W+i0; if(M[o0]!==1){ M[o0]=1; n=1; } empuja(o0);
+    while(ini<fin && n<MAXV){ const o=cola[ini++], k=(o/WH)|0, r=o-k*WH, j=(r/W)|0, i=r-j*W;
+      for(let t=0;t<6;t++){ let a=i,b=j,c=k; if(t===0)a--; else if(t===1)a++; else if(t===2)b--; else if(t===3)b++; else if(t===4)c--; else c++;
+        if(a<0||b<0||c<0||a>=W||b>=H||c>=N) continue; const q=c*WH+b*W+a; if(M[q]) continue; const z=vol[q]; if(z<lo||z>hi) continue; M[q]=1; empuja(q); n++; } }
+    seg.organo=estadisticaSeg(1); seg.ver++; progreso(null); vps.forEach(o=>o.plano&&dibujar(o)); pintarMedidas();
+    const r=seg.organo; aviso((n>=MAXV?'Se separó demasiado (el contraste toca el hueso u otro órgano): use "Borrar seg." y ponga "Evitar hueso: Sí". ':'Contraste separado: '+fmt(r.vol,1)+' cm³, longitud cráneo-caudal '+fmt(r.dims[2],0)+' mm. Toque el otro lado para sumarlo, o ')+'vea el resultado con "Ver separado en 3D".',7500);
+  },30);
+}
+
+/* ====================== APARTADO DE ESPECIALIDADES ====================== */
+function abrir3D(id, cfg){
+  const s=(mpr&&mpr.serie)||(vpAct&&vpAct.serie)||series.find(esVolumen); if(!s||!esVolumen(s)) return aviso('Abra primero una serie de cortes de TC o RM (10 imágenes o más) y tóquela para verla.',5000);
+  preset3DInicial=id; cfg3DInicial=cfg||null; $('#sLayout').value='3d'; cambiarLayout('3d');
+}
+function abrirMPR(herr, vent, msg){
+  const sigue=()=>{ if(vent){ vps.forEach(v=>{ if(v.plano){ v.ww=vent[0]; v.wc=vent[1]; dibujar(v); } }); } if(herr){ fijarHerr=false; elegirHerr(herr); } if(msg) aviso(msg,7000); };
+  if($('#sLayout').value==='mpr' && mpr){ sigue(); return; }
+  if(!series.some(esVolumen)) return aviso('Abra primero una serie de cortes de TC o RM (10 imágenes o más).',5000);
+  $('#sLayout').value='mpr'; cambiarLayout('mpr'); const t0=Date.now(), esperar=()=>{ if(mpr && vps.length===3 && vps.every(v=>v.dec)) sigue(); else if(Date.now()-t0<180000) setTimeout(esperar,300); }; setTimeout(esperar,400);
+}
+const ESPECIALES={
+  eAngio:()=>abrir3D('angio'), eAngioSH:()=>abrir3D('angio_sh',{region:'cuerpo'}), eAngioMip:()=>abrir3D('mip_sh',{region:'cuerpo'}),
+  eCraneo:()=>abrir3D('angio_sh',{region:'craneo'}), eCraneoMip:()=>abrir3D('mip_sh',{region:'craneo'}),
+  eAneu:()=>abrirMPR('segCon',[700,200],'Aneurisma / vaso: toque el vaso con contraste en cualquiera de las 3 vistas. Se separa todo el árbol vascular conectado; luego "Ver separado en 3D". Deje "Evitar hueso: Sí".'),
+  eUro:()=>abrir3D('uro'), eUroMip:()=>abrir3D('mip_uro'),
+  eUroSep:()=>abrirMPR('segCon',[1200,300],'Vía urinaria (fase excretora): toque el contraste dentro de la pelvis renal o el uréter de un lado y luego del otro; también la vejiga si la quiere. Después "Ver separado en 3D".'),
+  eUret:()=>abrirMPR('uret',null,'Uréter sin contraste o con poco contraste: toque el CENTRO del uréter desde la pelvis renal hasta la vejiga, cada 1–2 cm, y luego "Terminar uréter".'),
+  eColon:()=>abrir3D('colon'), ePulmon:()=>abrir3D('pulmon'), eHueso:()=>abrir3D('hueso'), ePiel:()=>abrir3D('piel'),
+  eOrg:()=>abrirMPR('segOrg',null,'Toque el ÓRGANO (riñón, hígado, bazo…). Después elija "Tumor" y toque la lesión para separarla del órgano.'),
+  eLes:()=>abrirMPR('segLes',null,'Toque el TUMOR o la lesión dentro del órgano. Después "Ver separado en 3D".'),
+  eSep3D:()=>{ if(!seg||(!seg.organo&&!seg.lesion)) return aviso('Todavía no ha separado nada. Use Órgano, Tumor o los botones de contraste y toque la estructura en el MPR.',5000); abrir3D('organo'); },
+};
+for(const id in ESPECIALES){ const b=document.getElementById(id); if(b) b.onclick=()=>{ b.blur(); ESPECIALES[id](); }; }
+$('#sConHueso').value=prefs.conHueso||'si'; $('#sConHueso').onchange=e=>{ prefs.conHueso=e.target.value; guardarPrefs(); };
 </script>
 </body>
 </html>
