@@ -34,7 +34,7 @@ class Preparador:
         ventana.configure(bg='white')
         self.paciente = tk.StringVar()
         self.contador = tk.StringVar(value='0 videos · 0 imágenes · 0 carpetas')
-        self.mosaico = tk.StringVar(value='16 cortes')
+        self.mosaico = tk.StringVar(value='9 cortes')
         self.limite = tk.IntVar(value=100)
         tk.Label(ventana, text='PREPARADOR V2  |  VARIOS VIDEOS Y JPG', bg='#123A78', fg='white',
                  font=('Arial', 17, 'bold'), pady=14).pack(fill='x')
@@ -63,10 +63,10 @@ class Preparador:
         self.nombre=ttk.Entry(area,textvariable=self.paciente,font=('Arial',12));self.nombre.pack(fill='x');self.controles.append(self.nombre)
         opts=ttk.Frame(area);opts.pack(fill='x',pady=10)
         ttk.Label(opts,text='Mosaico solo para videos / DICOM:').pack(side='left')
-        combo=ttk.Combobox(opts,textvariable=self.mosaico,values=('9 cortes','16 cortes','25 cortes'),state='readonly',width=12);combo.pack(side='left',padx=6)
+        combo=ttk.Combobox(opts,textvariable=self.mosaico,values=('4 cortes (más grandes)','9 cortes','16 cortes','25 cortes'),state='readonly',width=22);combo.pack(side='left',padx=6)
         ttk.Label(opts,text='Máximo de mosaicos:').pack(side='left',padx=(14,4))
         self.spin=ttk.Spinbox(opts,from_=1,to=100,textvariable=self.limite,width=5);self.spin.pack(side='left');self.controles.extend([combo,self.spin])
-        ttk.Label(area,text='Cada JPG ocupa una página completa. Fotos y videos se incorporan en el orden de la lista.',wraplength=850).pack(anchor='w')
+        ttk.Label(area,text='Cada JPG ocupa una página completa grande. Con menos cortes por mosaico, cada corte se ve más grande. Cada PDF queda siempre por debajo de 40 MB (si hace falta, se divide en partes).',wraplength=850).pack(anchor='w')
         self.btn=ttk.Button(area,text='3. CONVERTIR TODOS LOS ARCHIVOS A PDF',command=self.procesar);self.btn.pack(fill='x',pady=12)
         self.log=ScrolledText(area,height=7,font=('Consolas',10));self.log.pack(fill='both',expand=True)
         self.abrir_btn=ttk.Button(area,text='Abrir carpeta del PDF',command=self.abrir,state='disabled');self.abrir_btn.pack(fill='x',pady=(8,0))
@@ -129,7 +129,7 @@ class Preparador:
             if not 1<=limite<=100:raise ValueError()
         except (ValueError,tk.TclError):
             messagebox.showwarning('Revise el límite','Indique entre 1 y 100 mosaicos.',parent=self.v);return
-        lado={'9 cortes':3,'16 cortes':4,'25 cortes':5}[self.mosaico.get()]
+        lado={'4 cortes (más grandes)':2,'9 cortes':3,'16 cortes':4,'25 cortes':5}[self.mosaico.get()]
         args=list(self.archivos)+['--paciente',self.paciente.get(),'--mosaico',str(lado),'--max-imagenes',str(limite),'--pdf']
         self.trabajando=True;self.btn.configure(state='disabled',text='Convirtiendo todos los archivos...')
         for b in self.controles:b.configure(state='disabled')

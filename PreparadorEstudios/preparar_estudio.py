@@ -35,8 +35,10 @@ LIMITES = {
     # API de Anthropic: hasta 100 imágenes por solicitud, 5 MB por imagen, 32 MB por solicitud.
     "api": {"imgs_por_paquete": 100, "mb_por_imagen": 5.0, "mb_por_paquete": 32.0},
 }
-LADO_MAX = 1568          # px; más resolución la reduce Claude de todos modos
-CALIDAD_JPG = 88
+LADO_MAX = 3000          # px; páginas grandes para leer cada corte con detalle
+CALIDAD_JPG = 90
+LIMITE_PDF_BYTES = 38_000_000   # cada PDF queda por debajo de 40 MB (margen de seguridad)
+PAGINAS_POR_PDF = 100           # límite de páginas por PDF
 EXT_VIDEO = {".mp4", ".mov", ".avi", ".mkv", ".wmv", ".m4v", ".webm"}
 EXT_IMG = {".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff"}
 
@@ -145,11 +147,11 @@ def recolectar(entrada, fps, umbral, umbral_dicom=None):
 def mosaicos(fuente, lado, max_imgs):
     """Reduce cientos/miles de cortes a pocas imágenes: cada una es una cuadrícula lado x lado."""
     from PIL import ImageDraw
-    celda = LADO_MAX // lado
+    celda = LADO_MAX // lado      # 2x2: 1500 px | 3x3: 1000 px | 4x4: 750 px | 5x5: 600 px por corte
     cortes = []
     for etiqueta, img in fuente:                     # se guardan reducidos para no agotar la memoria
         im = img.convert("L"); im.thumbnail((celda, celda), Image.LANCZOS)
-        b = io.BytesIO(); im.save(b, "JPEG", quality=92); cortes.append((etiqueta, b.getvalue()))
+        b = io.BytesIO(); im.save(b, "JPEG", quality=93); cortes.append((etiqueta, b.getvalue()))
     if not cortes:
         return
     cupo = lado * lado * max_imgs
@@ -172,6 +174,70 @@ def mosaicos(fuente, lado, max_imgs):
             d.rectangle([x, y, x + celda - 1, y + celda - 1], outline=90)
             d.text((x + 6, y + 4), f"{k + j + 1}", fill=255, font=fuente_txt)
         yield f"mosaico_cortes_{k + 1:04d}-{k + len(grupo):04d}", hoja
+
+
+def escribir_pdf(ruta, paginas):
+    """PDF con los JPG incrustados tal cual (sin recomprimir ni perder calidad)."""
+    objetos = ["<< /Type /Catalog /Pages 2 0 R >>", None]
+    hijos = []
+    for datos, ancho, alto, gris in paginas:
+        n = len(objetos) + 1                      # imagen n, contenido n+1, página n+2
+        pw, ph = ancho * 72 / 200, alto * 72 / 200    # 200 ppp: página grande y nítida
+        objetos.append((f"<< /Type /XObject /Subtype /Image /Width {ancho} /Height {alto} "
+                        f"/ColorSpace /{'DeviceGray' if gris else 'DeviceRGB'} /BitsPerComponent 8 "
+                        f"/Filter /DCTDecode /Length {len(datos)} >>", datos))
+        dibujo = f"q {pw:.2f} 0 0 {ph:.2f} 0 0 cm /Im Do Q".encode()
+        objetos.append((f"<< /Length {len(dibujo)} >>", dibujo))
+        objetos.append(f"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 {pw:.2f} {ph:.2f}] "
+                       f"/Resources << /XObject << /Im {n} 0 R >> >> /Contents {n + 1} 0 R >>")
+        hijos.append(n + 2)
+    objetos[1] = f"<< /Type /Pages /Kids [{' '.join(f'{h} 0 R' for h in hijos)}] /Count {len(hijos)} >>"
+    with open(ruta, "wb") as fh:
+        fh.write(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n")
+        posiciones = []
+        for i, obj in enumerate(objetos, 1):
+            posiciones.append(fh.tell())
+            fh.write(f"{i} 0 obj\n".encode())
+            if isinstance(obj, tuple):
+                fh.write(obj[0].encode() + b"\nstream\n" + obj[1] + b"\nendstream")
+            else:
+                fh.write(obj.encode())
+            fh.write(b"\nendobj\n")
+        xref = fh.tell()
+        fh.write(f"xref\n0 {len(objetos) + 1}\n0000000000 65535 f \n".encode())
+        for pos in posiciones:
+            fh.write(f"{pos:010d} 00000 n \n".encode())
+        fh.write(f"trailer\n<< /Size {len(objetos) + 1} /Root 1 0 R >>\nstartxref\n{xref}\n%%EOF\n".encode())
+
+
+def ajustar_peso(datos):
+    """Si una sola página fuera enorme, baja la calidad hasta que quepa holgadamente."""
+    tope = LIMITE_PDF_BYTES // 4
+    if len(datos) <= tope:
+        return datos
+    img = Image.open(io.BytesIO(datos)); img.load()
+    for q in (82, 75, 68, 60):
+        b = io.BytesIO(); img.save(b, "JPEG", quality=q, optimize=True)
+        if b.tell() <= tope:
+            return b.getvalue()
+    while True:
+        img = img.resize((img.width * 4 // 5, img.height * 4 // 5), Image.LANCZOS)
+        b = io.BytesIO(); img.save(b, "JPEG", quality=75, optimize=True)
+        if b.tell() <= tope:
+            return b.getvalue()
+
+
+def dividir_pdf(paginas):
+    """Agrupa páginas en orden: cada parte <= 38 MB y <= 100 páginas."""
+    partes, actual, peso = [], [], 0
+    for pag in paginas:
+        costo = len(pag[0]) + 600                  # JPG + estructura del PDF
+        if actual and (peso + costo > LIMITE_PDF_BYTES - 4096 or len(actual) >= PAGINAS_POR_PDF):
+            partes.append(actual); actual, peso = [], 0
+        actual.append(pag); peso += costo
+    if actual:
+        partes.append(actual)
+    return partes
 
 
 def archivos_entrada(entradas):
@@ -217,7 +283,7 @@ def main(argv=None):
                     help="Cortes por lado de cada imagen (4 = 16 cortes por imagen; 1 = sin mosaico)")
     ap.add_argument("--max-imagenes", type=int, default=5, help="Máximo de imágenes a enviar (def. 5)")
     ap.add_argument("--pdf", action="store_true",
-                    help="Entregar TODO en un solo PDF (máx. 100 páginas; se divide en 2 si pasa de 28 MB)")
+                    help="Entregar en PDF (cada parte máx. 100 páginas y siempre menos de 40 MB)")
     ap.add_argument("--modo", choices=LIMITES, default="web", help="web = claude.ai | api = API")
     a = ap.parse_args(argv)
     if a.mosaico < 1 or a.max_imagenes < 1 or a.fps <= 0:
@@ -258,15 +324,18 @@ def main(argv=None):
 
     lineas = []
     if a.pdf:
-        hojas = [Image.open(io.BytesIO(d)) for p in paquetes for _, d in p]
-        partes = [hojas]
-        if total_mb > 28:
-            partes = [hojas[:len(hojas) // 2], hojas[len(hojas) // 2:]]
+        paginas = []
+        for p in paquetes:
+            for _, d in p:
+                d = ajustar_peso(d)
+                with Image.open(io.BytesIO(d)) as im:
+                    paginas.append((d, im.width, im.height, im.mode == "L"))
+        partes = dividir_pdf(paginas)
         os.makedirs(salida, exist_ok=True)
         for i, parte in enumerate(partes, 1):
-            nom = f"{nombre}_Estudio.pdf" if len(partes) == 1 else f"{nombre}_parte{i}.pdf"
+            nom = f"{nombre}_Estudio.pdf" if len(partes) == 1 else f"{nombre}_parte{i}_de_{len(partes)}.pdf"
             ruta_pdf = os.path.join(salida, nom)
-            parte[0].save(ruta_pdf, "PDF", save_all=True, append_images=parte[1:], resolution=150)
+            escribir_pdf(ruta_pdf, parte)
             lineas.append(f"  {nom}: {len(parte)} páginas | {os.path.getsize(ruta_pdf) / 1e6:.2f} MB")
         paquetes = []
 
@@ -291,8 +360,9 @@ def main(argv=None):
         *lineas, "",
         f"  Límites usados ({a.modo}): máx. {lim['imgs_por_paquete']} imágenes por mensaje, "
         f"{lim['mb_por_imagen']:.0f} MB por imagen" + (", 32 MB por solicitud" if a.modo == "api" else ""),
-        "  Fotos: una página por imagen, a color. Video/DICOM: mosaicos numerados." if a.mosaico > 1 else
+        "  Fotos: una página grande por imagen, a color. Video/DICOM: mosaicos numerados." if a.mosaico > 1 else
         "  Si salen demasiadas: use --fps 1 o --umbral 10.",
+        *(["  Cada PDF queda siempre por debajo de 40 MB; envíe todas las partes."] if a.pdf else []),
         f"\n  Carpeta: {salida}", "=" * 62,
     ]
     with open(os.path.join(salida, "RESUMEN.txt"), "w", encoding="utf-8") as fh:

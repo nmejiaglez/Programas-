@@ -18,11 +18,17 @@ SELECCIONAR VARIOS ARCHIVOS
 - Use Subir / Bajar para ordenar, Quitar para retirar y Vaciar para empezar otro paciente.
 - Escriba el nombre y pulse CONVERTIR TODOS LOS ARCHIVOS A PDF.
 
-Cada fotografía ocupa una página completa a color. Los cortes de videos
-se agrupan en mosaicos. Puede mezclar fotos y videos del mismo paciente.
+Cada fotografía ocupa una página completa GRANDE a color (hasta 3000 px).
+Los cortes de videos se agrupan en mosaicos grandes:
+  4 cortes  -> cada corte de 1500 px (lo más legible)
+  9 cortes  -> cada corte de 1000 px (recomendado, valor inicial)
+  16 cortes -> cada corte de 750 px
+  25 cortes -> cada corte de 600 px Puede mezclar fotos y videos del mismo paciente.
 El máximo de mosaicos no elimina fotografías seleccionadas.
 Las imágenes repetidas por selección del mismo archivo se incorporan una sola vez.
 Las carpetas se exploran por ruta y los DICOM se ordenan por serie e instancia.
 Los resultados quedan junto al primer archivo. Nunca se borra una salida anterior.
-Los archivos grandes pueden dividirse en partes; envíe todas las partes del PDF.
+Cada PDF queda SIEMPRE por debajo de 40 MB (máximo 38 MB y 100 páginas).
+Si el estudio es más grande se divide en partes: Nombre_parte1_de_3.pdf, etc.
+Envíe todas las partes. Las imágenes se guardan en el PDF sin recomprimir.
 Este programa prepara imágenes; no realiza interpretación diagnóstica.
