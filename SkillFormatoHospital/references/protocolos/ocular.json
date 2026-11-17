@@ -1,0 +1,57 @@
+{
+  "id": "ocular",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "globo_ocular_derecho",
+      "titulo": "GLOBO OCULAR DERECHO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de globo ocular derecho. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "globo_ocular_izquierdo",
+      "titulo": "GLOBO OCULAR IZQUIERDO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de globo ocular izquierdo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cristalino",
+      "titulo": "CRISTALINO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cristalino. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "camara_vitrea",
+      "titulo": "CÁMARA VÍTREA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cámara vítrea. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "retina_y_coroides",
+      "titulo": "RETINA Y COROIDES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de retina y coroides. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "nervio_optico_y_diametro_de_vaina",
+      "titulo": "NERVIO ÓPTICO Y DIÁMETRO DE VAINA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de nervio óptico y diámetro de vaina. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

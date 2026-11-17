@@ -1,0 +1,65 @@
+{
+  "id": "rm_pelvis_prostata",
+  "modalidad": "resonancia magnética",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "prostata_zona_periferica_pi_rads",
+      "titulo": "PRÓSTATA: ZONA PERIFÉRICA (PI-RADS)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de próstata: zona periférica (pi-rads). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "prostata_zona_de_transicion",
+      "titulo": "PRÓSTATA: ZONA DE TRANSICIÓN",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de próstata: zona de transición. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "capsula_y_extension_extraprostatica",
+      "titulo": "CÁPSULA Y EXTENSIÓN EXTRAPROSTÁTICA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cápsula y extensión extraprostática. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vesiculas_seminales",
+      "titulo": "VESÍCULAS SEMINALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vesículas seminales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vejiga",
+      "titulo": "VEJIGA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vejiga. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ganglios_pelvicos",
+      "titulo": "GANGLIOS PÉLVICOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ganglios pélvicos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "estructuras_oseas",
+      "titulo": "ESTRUCTURAS ÓSEAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de estructuras óseas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

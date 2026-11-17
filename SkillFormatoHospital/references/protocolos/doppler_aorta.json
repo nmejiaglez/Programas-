@@ -1,0 +1,41 @@
+{
+  "id": "doppler_aorta",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "aorta_abdominal_proximal",
+      "titulo": "AORTA ABDOMINAL PROXIMAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de aorta abdominal proximal. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "aorta_abdominal_media_y_distal",
+      "titulo": "AORTA ABDOMINAL MEDIA Y DISTAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de aorta abdominal media y distal. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "bifurcacion_e_iliacas_comunes",
+      "titulo": "BIFURCACIÓN E ILÍACAS COMUNES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bifurcación e ilíacas comunes. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vena_cava_inferior",
+      "titulo": "VENA CAVA INFERIOR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vena cava inferior. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

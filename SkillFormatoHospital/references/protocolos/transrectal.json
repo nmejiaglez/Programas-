@@ -1,0 +1,65 @@
+{
+  "id": "transrectal",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "prostata_zona_periferica",
+      "titulo": "PRÓSTATA: ZONA PERIFÉRICA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de próstata: zona periférica. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "prostata_zona_de_transicion_y_central",
+      "titulo": "PRÓSTATA: ZONA DE TRANSICIÓN Y CENTRAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de próstata: zona de transición y central. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "capsula_prostatica",
+      "titulo": "CÁPSULA PROSTÁTICA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cápsula prostática. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vesiculas_seminales",
+      "titulo": "VESÍCULAS SEMINALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vesículas seminales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "conductos_deferentes_y_eyaculadores",
+      "titulo": "CONDUCTOS DEFERENTES Y EYACULADORES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de conductos deferentes y eyaculadores. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vejiga_base",
+      "titulo": "VEJIGA (BASE)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vejiga (base). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "volumen_y_peso_prostatico",
+      "titulo": "VOLUMEN Y PESO PROSTÁTICO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de volumen y peso prostático. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "id": "rm_hipofisis",
+  "modalidad": "resonancia magnética",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "adenohipofisis",
+      "titulo": "ADENOHIPÓFISIS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de adenohipófisis. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "neurohipofisis",
+      "titulo": "NEUROHIPÓFISIS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de neurohipófisis. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tallo_hipofisario",
+      "titulo": "TALLO HIPOFISARIO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tallo hipofisario. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "silla_turca",
+      "titulo": "SILLA TURCA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de silla turca. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "senos_cavernosos",
+      "titulo": "SENOS CAVERNOSOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de senos cavernosos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "quiasma_optico",
+      "titulo": "QUIASMA ÓPTICO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de quiasma óptico. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "comportamiento_dinamico_con_contraste",
+      "titulo": "COMPORTAMIENTO DINÁMICO CON CONTRASTE",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de comportamiento dinámico con contraste. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "id": "partes_blandas",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "piel_y_tejido_celular_subcutaneo",
+      "titulo": "PIEL Y TEJIDO CELULAR SUBCUTÁNEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel y tejido celular subcutáneo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "planos_fasciales_y_musculares",
+      "titulo": "PLANOS FASCIALES Y MUSCULARES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de planos fasciales y musculares. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "lesion_region_de_interes",
+      "titulo": "LESIÓN / REGIÓN DE INTERÉS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de lesión / región de interés. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "estructuras_vasculares_y_ganglionares_regionales",
+      "titulo": "ESTRUCTURAS VASCULARES Y GANGLIONARES REGIONALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de estructuras vasculares y ganglionares regionales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "superficies_oseas_y_corticales",
+      "titulo": "SUPERFICIES ÓSEAS Y CORTICALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de superficies óseas y corticales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

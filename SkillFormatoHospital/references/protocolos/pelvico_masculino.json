@@ -1,0 +1,56 @@
+{
+  "id": "pelvico_masculino",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "vejiga_urinaria",
+      "titulo": "VEJIGA URINARIA",
+      "campos": {
+        "morfologia": "Grado de repleción, pared y contornos según distensión.",
+        "contenido": "Contenido luminal y hallazgos focales. Chorros solo si se exploraron."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "prostata",
+      "titulo": "PRÓSTATA",
+      "campos": {
+        "morfologia": "Contornos y dimensiones ortogonales para volumen.",
+        "parenquima": "Ecoestructura y zonas evaluadas. Protrusión intravesical si se estudió."
+      },
+      "medidas_requeridas": [
+        "dimensiones"
+      ]
+    },
+    {
+      "id": "vesiculas_seminales",
+      "titulo": "VESÍCULAS SEMINALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vesículas seminales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "residuo_postmiccional",
+      "titulo": "RESIDUO POSTMICCIONAL",
+      "campos": {
+        "evaluacion": "Si fue realizado, documentar volúmenes pre y posmiccionales. Si quedó fuera del alcance o hubo una condición técnica documentada, conservar la razón."
+      },
+      "medidas_requeridas": [
+        "pre",
+        "pos"
+      ]
+    },
+    {
+      "id": "cavidad_peritoneal_pelvica",
+      "titulo": "CAVIDAD PERITONEAL PÉLVICA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cavidad peritoneal pélvica. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

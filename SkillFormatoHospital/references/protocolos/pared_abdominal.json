@@ -1,0 +1,49 @@
+{
+  "id": "pared_abdominal",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "piel_y_tejido_celular_subcutaneo",
+      "titulo": "PIEL Y TEJIDO CELULAR SUBCUTÁNEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel y tejido celular subcutáneo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "plano_aponeurotico_y_linea_alba",
+      "titulo": "PLANO APONEURÓTICO Y LÍNEA ALBA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de plano aponeurótico y línea alba. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "musculos_rectos_y_oblicuos",
+      "titulo": "MÚSCULOS RECTOS Y OBLICUOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de músculos rectos y oblicuos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "orificios_herniarios_y_defectos_parietales",
+      "titulo": "ORIFICIOS HERNIARIOS Y DEFECTOS PARIETALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de orificios herniarios y defectos parietales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "contenido_y_maniobra_de_valsalva",
+      "titulo": "CONTENIDO Y MANIOBRA DE VALSALVA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de contenido y maniobra de valsalva. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

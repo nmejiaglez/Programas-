@@ -1,0 +1,13 @@
+interface:
+  display_name: Formato Hospital
+  short_description: Informes radiológicos hospitalarios con control por paciente
+  default_prompt: Usa $formato-hospital para preparar este informe radiológico.
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true

@@ -1,0 +1,73 @@
+{
+  "id": "aquiles",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "piel_y_tejido_celular_subcutaneo",
+      "titulo": "PIEL Y TEJIDO CELULAR SUBCUTÁNEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel y tejido celular subcutáneo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendon_de_aquiles_union_miotendinosa",
+      "titulo": "TENDÓN DE AQUILES: UNIÓN MIOTENDINOSA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón de aquiles: unión miotendinosa. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendon_de_aquiles_porcion_media",
+      "titulo": "TENDÓN DE AQUILES: PORCIÓN MEDIA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón de aquiles: porción media. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendon_de_aquiles_insercion_calcanea",
+      "titulo": "TENDÓN DE AQUILES: INSERCIÓN CALCÁNEA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón de aquiles: inserción calcánea. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "grasa_de_kager",
+      "titulo": "GRASA DE KAGER",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de grasa de kager. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "derrame_articular_y_sinovial",
+      "titulo": "DERRAME ARTICULAR Y SINOVIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de derrame articular y sinovial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "bursas",
+      "titulo": "BURSAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bursas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "superficies_oseas_y_corticales",
+      "titulo": "SUPERFICIES ÓSEAS Y CORTICALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de superficies óseas y corticales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

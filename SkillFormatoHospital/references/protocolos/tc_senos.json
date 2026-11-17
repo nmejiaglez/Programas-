@@ -1,0 +1,73 @@
+{
+  "id": "tc_senos",
+  "modalidad": "tomografía",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "senos_frontales",
+      "titulo": "SENOS FRONTALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de senos frontales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "celdas_etmoidales_anteriores_y_posteriores",
+      "titulo": "CELDAS ETMOIDALES ANTERIORES Y POSTERIORES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de celdas etmoidales anteriores y posteriores. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "senos_maxilares",
+      "titulo": "SENOS MAXILARES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de senos maxilares. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "complejos_osteomeatales",
+      "titulo": "COMPLEJOS OSTEOMEATALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de complejos osteomeatales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "seno_esfenoidal_y_receso_esfenoetmoidal",
+      "titulo": "SENO ESFENOIDAL Y RECESO ESFENOETMOIDAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de seno esfenoidal y receso esfenoetmoidal. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "fosas_nasales_tabique_y_cornetes",
+      "titulo": "FOSAS NASALES, TABIQUE Y CORNETES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de fosas nasales, tabique y cornetes. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "variantes_anatomicas",
+      "titulo": "VARIANTES ANATÓMICAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de variantes anatómicas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "orbitas_y_base_de_craneo",
+      "titulo": "ÓRBITAS Y BASE DE CRÁNEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de órbitas y base de cráneo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

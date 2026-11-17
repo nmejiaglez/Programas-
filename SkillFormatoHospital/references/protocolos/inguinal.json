@@ -1,0 +1,57 @@
+{
+  "id": "inguinal",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "piel_y_tejido_celular_subcutaneo",
+      "titulo": "PIEL Y TEJIDO CELULAR SUBCUTÁNEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel y tejido celular subcutáneo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "conducto_inguinal_derecho",
+      "titulo": "CONDUCTO INGUINAL DERECHO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de conducto inguinal derecho. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "conducto_inguinal_izquierdo",
+      "titulo": "CONDUCTO INGUINAL IZQUIERDO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de conducto inguinal izquierdo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "regiones_femorales",
+      "titulo": "REGIONES FEMORALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de regiones femorales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "maniobra_de_valsalva_y_contenido",
+      "titulo": "MANIOBRA DE VALSALVA Y CONTENIDO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de maniobra de valsalva y contenido. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ganglios_inguinales",
+      "titulo": "GANGLIOS INGUINALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ganglios inguinales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

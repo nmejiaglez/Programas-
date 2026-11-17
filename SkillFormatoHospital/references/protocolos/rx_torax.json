@@ -1,0 +1,81 @@
+{
+  "id": "rx_torax",
+  "modalidad": "radiografía",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Confirmar proyecciones. No extrapolar tamaño cardíaco de una proyección magnificada. Localizar opacidades y verificar pleura y dispositivos dentro del campo.",
+  "estructuras": [
+    {
+      "id": "calidad_tecnica",
+      "titulo": "CALIDAD TÉCNICA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de calidad técnica. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "partes_blandas_y_estructuras_oseas",
+      "titulo": "PARTES BLANDAS Y ESTRUCTURAS ÓSEAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de partes blandas y estructuras óseas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "traquea_y_mediastino",
+      "titulo": "TRÁQUEA Y MEDIASTINO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tráquea y mediastino. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "silueta_cardiaca_indice_cardiotoracico",
+      "titulo": "SILUETA CARDÍACA (ÍNDICE CARDIOTORÁCICO)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de silueta cardíaca (índice cardiotorácico). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "hilios_pulmonares",
+      "titulo": "HILIOS PULMONARES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de hilios pulmonares. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "parenquima_pulmonar_por_campos",
+      "titulo": "PARÉNQUIMA PULMONAR POR CAMPOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de parénquima pulmonar por campos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "pleura_y_senos_costofrenicos",
+      "titulo": "PLEURA Y SENOS COSTOFRÉNICOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de pleura y senos costofrénicos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "diafragma_y_abdomen_superior_visible",
+      "titulo": "DIAFRAGMA Y ABDOMEN SUPERIOR VISIBLE",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de diafragma y abdomen superior visible. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "dispositivos_y_cateteres",
+      "titulo": "DISPOSITIVOS Y CATÉTERES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de dispositivos y catéteres. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

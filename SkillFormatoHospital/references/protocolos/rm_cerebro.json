@@ -1,0 +1,81 @@
+{
+  "id": "rm_cerebro",
+  "modalidad": "resonancia magnética",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "calota_y_tejidos_blandos",
+      "titulo": "CALOTA Y TEJIDOS BLANDOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de calota y tejidos blandos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "espacios_extraaxiales",
+      "titulo": "ESPACIOS EXTRAAXIALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de espacios extraaxiales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "parenquima_cerebral_sustancia_gris_y_blanca",
+      "titulo": "PARÉNQUIMA CEREBRAL (SUSTANCIA GRIS Y BLANCA)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de parénquima cerebral (sustancia gris y blanca). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "difusion_dwi_adc",
+      "titulo": "DIFUSIÓN (DWI/ADC)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de difusión (dwi/adc). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "sistema_ventricular",
+      "titulo": "SISTEMA VENTRICULAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de sistema ventricular. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "linea_media_silla_turca_e_hipofisis",
+      "titulo": "LÍNEA MEDIA, SILLA TURCA E HIPÓFISIS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de línea media, silla turca e hipófisis. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "fosa_posterior_tronco_y_cerebelo",
+      "titulo": "FOSA POSTERIOR, TRONCO Y CEREBELO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de fosa posterior, tronco y cerebelo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "estructuras_vasculares_y_senos_venosos",
+      "titulo": "ESTRUCTURAS VASCULARES Y SENOS VENOSOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de estructuras vasculares y senos venosos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "orbitas_senos_paranasales_y_mastoides",
+      "titulo": "ÓRBITAS, SENOS PARANASALES Y MASTOIDES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de órbitas, senos paranasales y mastoides. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

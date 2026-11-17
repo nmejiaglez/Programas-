@@ -1,0 +1,65 @@
+{
+  "id": "angiotc_toracica",
+  "modalidad": "tomografía",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "arterias_pulmonares_tronco_principales_lobares_segmentarias",
+      "titulo": "ARTERIAS PULMONARES (TRONCO, PRINCIPALES, LOBARES, SEGMENTARIAS)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arterias pulmonares (tronco, principales, lobares, segmentarias). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cavidades_cardiacas_y_relacion_vd_vi",
+      "titulo": "CAVIDADES CARDÍACAS Y RELACIÓN VD/VI",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cavidades cardíacas y relación vd/vi. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "aorta_toracica",
+      "titulo": "AORTA TORÁCICA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de aorta torácica. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "parenquima_pulmonar",
+      "titulo": "PARÉNQUIMA PULMONAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de parénquima pulmonar. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "pleura_y_pericardio",
+      "titulo": "PLEURA Y PERICARDIO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de pleura y pericardio. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "mediastino",
+      "titulo": "MEDIASTINO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de mediastino. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "estructuras_oseas",
+      "titulo": "ESTRUCTURAS ÓSEAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de estructuras óseas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

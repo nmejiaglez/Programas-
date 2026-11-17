@@ -1,0 +1,81 @@
+{
+  "id": "muneca_mano",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "piel_y_tejido_celular_subcutaneo",
+      "titulo": "PIEL Y TEJIDO CELULAR SUBCUTÁNEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel y tejido celular subcutáneo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendones_flexores",
+      "titulo": "TENDONES FLEXORES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendones flexores. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendones_extensores_compartimentos_i_vi",
+      "titulo": "TENDONES EXTENSORES (COMPARTIMENTOS I–VI)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendones extensores (compartimentos i–vi). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "nervio_mediano_y_tunel_carpiano",
+      "titulo": "NERVIO MEDIANO Y TÚNEL CARPIANO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de nervio mediano y túnel carpiano. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "canal_de_guyon_y_nervio_cubital",
+      "titulo": "CANAL DE GUYON Y NERVIO CUBITAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de canal de guyon y nervio cubital. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "articulaciones_radiocarpiana_e_intercarpianas",
+      "titulo": "ARTICULACIONES RADIOCARPIANA E INTERCARPIANAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de articulaciones radiocarpiana e intercarpianas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "derrame_articular_y_sinovial",
+      "titulo": "DERRAME ARTICULAR Y SINOVIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de derrame articular y sinovial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "bursas",
+      "titulo": "BURSAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bursas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "superficies_oseas_y_corticales",
+      "titulo": "SUPERFICIES ÓSEAS Y CORTICALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de superficies óseas y corticales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

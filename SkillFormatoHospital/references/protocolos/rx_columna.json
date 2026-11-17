@@ -1,0 +1,57 @@
+{
+  "id": "rx_columna",
+  "modalidad": "radiografía",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "calidad_tecnica_y_proyecciones",
+      "titulo": "CALIDAD TÉCNICA Y PROYECCIONES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de calidad técnica y proyecciones. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "alineacion_y_curvaturas",
+      "titulo": "ALINEACIÓN Y CURVATURAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de alineación y curvaturas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cuerpos_vertebrales",
+      "titulo": "CUERPOS VERTEBRALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cuerpos vertebrales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "espacios_intervertebrales",
+      "titulo": "ESPACIOS INTERVERTEBRALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de espacios intervertebrales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "elementos_posteriores_y_facetas",
+      "titulo": "ELEMENTOS POSTERIORES Y FACETAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de elementos posteriores y facetas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tejidos_blandos_prevertebrales_y_paravertebrales",
+      "titulo": "TEJIDOS BLANDOS PREVERTEBRALES Y PARAVERTEBRALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tejidos blandos prevertebrales y paravertebrales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "id": "obstetrico_gemelar",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "corionicidad_y_amnionicidad",
+      "titulo": "CORIONICIDAD Y AMNIONICIDAD",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de corionicidad y amnionicidad. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "feto_a",
+      "titulo": "FETO A",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de feto a. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "feto_b",
+      "titulo": "FETO B",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de feto b. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "placenta_s",
+      "titulo": "PLACENTA(S)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de placenta(s). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "liquido_amniotico_por_saco",
+      "titulo": "LÍQUIDO AMNIÓTICO POR SACO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de líquido amniótico por saco. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cordones_umbilicales",
+      "titulo": "CORDONES UMBILICALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cordones umbilicales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "discordancia_de_peso",
+      "titulo": "DISCORDANCIA DE PESO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de discordancia de peso. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cervix",
+      "titulo": "CÉRVIX",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cérvix. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

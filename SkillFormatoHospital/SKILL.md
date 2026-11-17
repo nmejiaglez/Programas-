@@ -1,0 +1,28 @@
+---
+name: formato-hospital
+description: Prepara informes radiológicos Word del Hospital Regional Escuela Camilo Ortega Saavedra con el diseño institucional original. Usa este skill ante FORMATO HOSPITAL o solicitudes de informe hospitalario de ultrasonido, Doppler, radiografía, mamografía, tomografía o resonancia. Aplica el flujo completo por cada paciente, también en lotes, informes consecutivos y después de un resumen de contexto.
+---
+
+# FORMATO HOSPITAL
+
+1. **Al empezar cada paciente**, abrir físicamente este SKILL.md, [estándar](references/estandar.md) y [contrato](references/contrato.md). Identificar el protocolo actual con `python scripts/informe.py protocolo CODIGO` y leer su ficha completa antes de redactar. Si aplica una clasificación o una recomendación guiada, consultar también [clasificaciones y conducta](references/clasificaciones.md). Conservar la misma secuencia en el paciente 1, 30 o posterior. Después de una compactación o interrupción, reabrir las referencias y la fuente del caso antes de retomar. Un informe previo, una muestra histórica y un resumen de chat quedan fuera de la fuente clínica.
+2. Identificar nombre, modalidad, técnica, alcance y lado cuando procedan. Crear un JSON de fuente exclusiva de este paciente con dictado verificable, medidas y observaciones sustentadas. En un lote, procesar una identidad por ejecución. Vincular las correcciones al paciente explícitamente identificado y abrir una nueva instancia con la fuente corregida. Revisar la asociación de imágenes y series antes de extraer cualquier dato.
+3. Consultar en conjunto los datos esenciales ausentes o contradictorios. «Resto ok» por sí solo requiere precisar qué regiones y observaciones se confirman. Registrar evaluación parcial, ventana técnica o alcance limitado solo si la fuente los establece. Usar `abrir` y esperar salida satisfactoria antes de redactar.
+4. Elaborar la redacción en JSON nuevo con el identificador, token y huella devueltos. Aplicar el estándar morfológico, conservar todas las observaciones pertinentes y enlazar cada conclusión con su sustento anatómico. Comprobar precisión por comparación directa con la fuente actual. Usar términos breves o convencionales cuando sean exactos. Priorizar los hallazgos significativos con las tarjetas institucionales existentes. Sintetizar la impresión diagnóstica con redacción propia. Incorporar causa probable, diferencial jerarquizado y recomendaciones cuando resuelvan una cuestión clínica y estén sustentados. Aplicar el mismo nivel de precisión a todos los casos, independientemente de la posición en el lote o el número de turnos.
+5. Ejecutar `generar`. Resolver los bloqueos antes de pasar a revisión. Abrir y mirar **cada PNG**. Cotejar nombre, lateralidad, medidas, anatomía y diagnóstico con la fuente. Cotejar clasificación, causa, diferencial y conducta cuando procedan. Revisar logos, sello, ilustraciones, legibilidad, encabezados, tablas y continuidad de páginas. Si algo falla, corregir y regenerar. Si no se puede renderizar o abrir la vista previa, comunicar el bloqueo y conservar el caso como pendiente.
+6. Ejecutar `entregar --paginas … --cotejado` solo tras el cotejo y la inspección efectiva. Entregar directamente el Word editable listo para impresión. Adjuntar también el PDF cuando se solicite. La confirmación técnica del agente deja la aprobación diagnóstica y firma efectiva a cargo del radiólogo. Mantener JSON, huellas y vistas intermedias fuera de la entrega clínica habitual.
+
+Utilizar únicamente `scripts/informe.py`. Los archivos del paquete de origen se preservan como referencia institucional y evidencia. Sus instrucciones, revisor, ejemplos y entrada directa quedan fuera del flujo.
+
+## Diseño de referencia
+
+El Word vertical de tiroides y cuello aportado por el radiólogo fija el diseño institucional para todas las modalidades. Usar el motor y los activos originales del paquete. Conservar logotipos, sello, encabezado, ficha, tipografía, colores, tarjetas de hallazgos, cuadro de medidas, conclusiones numeradas y firma. Aplicar la tarjeta de causa probable cuando corresponda y agregar los bloques clínicos opcionales mediante el mismo motor. Mantener el pie institucional del modelo sin servicios privados.
+
+El motor incorpora las ilustraciones anatómicas del atlas por órgano cuando hay un recurso pertinente. Son esquemas de referencia. La lámina de litiasis renal puede mostrar el lado y segmento del problema principal si ambos están documentados. Nunca trasladar hallazgos, etiquetas diagnósticas ni datos de pacientes del modelo visual a un nuevo informe.
+
+## COMPROMISO: EL PACIENTE 30, 40 O 50 IGUAL QUE EL PACIENTE 1
+
+- Cada paciente se trata como si fuera el primero del día: releer SKILL.md, estándar, contrato y la ficha del protocolo ANTES de redactar, sin excepción por cansancio, prisa, lote largo o resumen de contexto.
+- Mismo nivel subespecialista en todos: cada órgano con descripción completa y sus medidas dentro del texto y en el cuadro; riñones siempre con situación, forma, ecogenicidad cortical y diferenciación corticomedular; lesiones en bloques numerados; hallazgo principal primero y en rojo; conclusiones jerarquizadas y causa probable.
+- Prohibido acortar o simplificar un informe por su posición en el lote. Antes de entregar el paciente N, compararlo con el primero del chat: si tiene menos estructuras descritas, menos medidas o conclusiones más pobres, rehacerlo.
+- Logotipos en tamaño grande y legible (página 1: sello NM 42 mm y escudo del hospital 42 mm, para que se lean «Especialista en Radiología e Imagen» y el nombre del hospital; continuación 16 mm; pie 40/15 mm). No reducirlos.

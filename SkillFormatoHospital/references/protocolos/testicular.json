@@ -1,0 +1,65 @@
+{
+  "id": "testicular",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "piel_tcs_y_tunicas_escrotales",
+      "titulo": "PIEL, TCS Y TÚNICAS ESCROTALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel, tcs y túnicas escrotales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "testiculo_derecho",
+      "titulo": "TESTÍCULO DERECHO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de testículo derecho. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "epididimo_derecho",
+      "titulo": "EPIDÍDIMO DERECHO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de epidídimo derecho. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "testiculo_izquierdo",
+      "titulo": "TESTÍCULO IZQUIERDO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de testículo izquierdo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "epididimo_izquierdo",
+      "titulo": "EPIDÍDIMO IZQUIERDO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de epidídimo izquierdo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "plexos_pampiniformes_y_cordones_reposo_y_valsalva",
+      "titulo": "PLEXOS PAMPINIFORMES Y CORDONES (REPOSO Y VALSALVA)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de plexos pampiniformes y cordones (reposo y valsalva). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "conductos_inguinales",
+      "titulo": "CONDUCTOS INGUINALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de conductos inguinales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

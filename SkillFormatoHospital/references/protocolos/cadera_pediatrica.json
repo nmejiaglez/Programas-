@@ -1,0 +1,33 @@
+{
+  "id": "cadera_pediatrica",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "cadera_derecha_graf_angulos_alfa_y_beta",
+      "titulo": "CADERA DERECHA (GRAF: ÁNGULOS ALFA Y BETA)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cadera derecha (graf: ángulos alfa y beta). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cadera_izquierda_graf_angulos_alfa_y_beta",
+      "titulo": "CADERA IZQUIERDA (GRAF: ÁNGULOS ALFA Y BETA)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cadera izquierda (graf: ángulos alfa y beta). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cobertura_cefalica_y_estabilidad_dinamica",
+      "titulo": "COBERTURA CEFÁLICA Y ESTABILIDAD DINÁMICA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cobertura cefálica y estabilidad dinámica. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

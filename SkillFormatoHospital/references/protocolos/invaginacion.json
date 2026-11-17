@@ -1,0 +1,41 @@
+{
+  "id": "invaginacion",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "cuadrantes_abdominales_rastreo",
+      "titulo": "CUADRANTES ABDOMINALES (RASTREO)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cuadrantes abdominales (rastreo). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "asas_intestinales",
+      "titulo": "ASAS INTESTINALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de asas intestinales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ganglios_mesentericos",
+      "titulo": "GANGLIOS MESENTÉRICOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ganglios mesentéricos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "liquido_libre",
+      "titulo": "LÍQUIDO LIBRE",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de líquido libre. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

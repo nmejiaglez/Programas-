@@ -1,0 +1,89 @@
+{
+  "id": "tobillo_pie",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "piel_y_tejido_celular_subcutaneo",
+      "titulo": "PIEL Y TEJIDO CELULAR SUBCUTÁNEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel y tejido celular subcutáneo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendones_anteriores_tibial_anterior_extensores",
+      "titulo": "TENDONES ANTERIORES (TIBIAL ANTERIOR, EXTENSORES)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendones anteriores (tibial anterior, extensores). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendones_mediales_tibial_posterior_flexores",
+      "titulo": "TENDONES MEDIALES (TIBIAL POSTERIOR, FLEXORES)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendones mediales (tibial posterior, flexores). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendones_peroneos",
+      "titulo": "TENDONES PERONEOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendones peroneos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendon_de_aquiles",
+      "titulo": "TENDÓN DE AQUILES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón de aquiles. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ligamentos_laterales_paa_pc",
+      "titulo": "LIGAMENTOS LATERALES (PAA, PC)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ligamentos laterales (paa, pc). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "fascia_plantar",
+      "titulo": "FASCIA PLANTAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de fascia plantar. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "derrame_articular_y_sinovial",
+      "titulo": "DERRAME ARTICULAR Y SINOVIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de derrame articular y sinovial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "bursas",
+      "titulo": "BURSAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bursas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "superficies_oseas_y_corticales",
+      "titulo": "SUPERFICIES ÓSEAS Y CORTICALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de superficies óseas y corticales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

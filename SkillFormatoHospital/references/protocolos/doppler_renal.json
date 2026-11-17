@@ -1,0 +1,75 @@
+{
+  "id": "doppler_renal",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "aorta_abdominal_vps_de_referencia",
+      "titulo": "AORTA ABDOMINAL (VPS DE REFERENCIA)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de aorta abdominal (vps de referencia). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arteria_renal_derecha",
+      "titulo": "ARTERIA RENAL DERECHA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria renal derecha. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arteria_renal_izquierda",
+      "titulo": "ARTERIA RENAL IZQUIERDA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria renal izquierda. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arterias_intrarrenales_ir_tiempo_de_aceleracion",
+      "titulo": "ARTERIAS INTRARRENALES (IR, TIEMPO DE ACELERACIÓN)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arterias intrarrenales (ir, tiempo de aceleración). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "venas_renales",
+      "titulo": "VENAS RENALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de venas renales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "rinon_derecho",
+      "titulo": "RIÑÓN DERECHO",
+      "campos": {
+        "morfologia": "Situación, eje, forma y contorno según la evaluación. Aclarar variantes, ausencia o cambios posquirúrgicos.",
+        "parenquima": "Espesor si se midió, ecogenicidad y diferenciación corticomedular.",
+        "sistema_excretor": "Seno renal, pelvis y cálices. Precisar distribución de la dilatación y causa visible solo si se demostraron.",
+        "focos": "Lesiones focales y litiasis. Para cada foco caracterizar localización, dimensiones, ecogenicidad y sombra cuando consten."
+      },
+      "medidas_requeridas": [
+        "longitud"
+      ]
+    },
+    {
+      "id": "rinon_izquierdo",
+      "titulo": "RIÑÓN IZQUIERDO",
+      "campos": {
+        "morfologia": "Situación, eje, forma y contorno según la evaluación. Aclarar variantes, ausencia o cambios posquirúrgicos.",
+        "parenquima": "Espesor si se midió, ecogenicidad y diferenciación corticomedular.",
+        "sistema_excretor": "Seno renal, pelvis y cálices. Precisar distribución de la dilatación y causa visible solo si se demostraron.",
+        "focos": "Lesiones focales y litiasis. Para cada foco caracterizar localización, dimensiones, ecogenicidad y sombra cuando consten."
+      },
+      "medidas_requeridas": [
+        "longitud"
+      ]
+    }
+  ]
+}

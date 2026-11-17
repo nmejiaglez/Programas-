@@ -1,0 +1,49 @@
+{
+  "id": "doppler_peneano",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "cuerpos_cavernosos",
+      "titulo": "CUERPOS CAVERNOSOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cuerpos cavernosos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cuerpo_esponjoso_y_uretra",
+      "titulo": "CUERPO ESPONJOSO Y URETRA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cuerpo esponjoso y uretra. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tunica_albuginea",
+      "titulo": "TÚNICA ALBUGÍNEA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de túnica albugínea. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arterias_cavernosas_vps_vfd_ir",
+      "titulo": "ARTERIAS CAVERNOSAS (VPS, VFD, IR)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arterias cavernosas (vps, vfd, ir). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vena_dorsal_profunda",
+      "titulo": "VENA DORSAL PROFUNDA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vena dorsal profunda. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

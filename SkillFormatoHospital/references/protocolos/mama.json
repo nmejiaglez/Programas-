@@ -1,0 +1,65 @@
+{
+  "id": "mama",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": "BI-RADS",
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "mama_derecha_cuadrantes",
+      "titulo": "MAMA DERECHA (CUADRANTES)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de mama derecha (cuadrantes). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "mama_izquierda_cuadrantes",
+      "titulo": "MAMA IZQUIERDA (CUADRANTES)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de mama izquierda (cuadrantes). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "piel_y_complejo_areola_pezon",
+      "titulo": "PIEL Y COMPLEJO AREOLA-PEZÓN",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel y complejo areola-pezón. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "regiones_retroareolares_y_conductos",
+      "titulo": "REGIONES RETROAREOLARES Y CONDUCTOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de regiones retroareolares y conductos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "patron_tisular_y_ligamentos_de_cooper",
+      "titulo": "PATRÓN TISULAR Y LIGAMENTOS DE COOPER",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de patrón tisular y ligamentos de cooper. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "region_axilar_derecha",
+      "titulo": "REGIÓN AXILAR DERECHA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de región axilar derecha. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "region_axilar_izquierda",
+      "titulo": "REGIÓN AXILAR IZQUIERDA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de región axilar izquierda. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

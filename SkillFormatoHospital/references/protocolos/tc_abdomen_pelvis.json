@@ -1,0 +1,155 @@
+{
+  "id": "tc_abdomen_pelvis",
+  "modalidad": "tomografía",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "bases_pulmonares",
+      "titulo": "BASES PULMONARES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bases pulmonares. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "higado",
+      "titulo": "HÍGADO",
+      "campos": {
+        "morfologia": "Tamaño y contornos según técnica.",
+        "parenquima": "Ecogenicidad o atenuación/señal según modalidad y distribución.",
+        "focos": "Hallazgos focales o ausencia explícitamente observada."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "sistema_portal_y_venas_hepaticas",
+      "titulo": "SISTEMA PORTAL Y VENAS HEPÁTICAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de sistema portal y venas hepáticas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vesicula_biliar",
+      "titulo": "VESÍCULA BILIAR",
+      "campos": {
+        "descripcion": "Describir vesícula biliar con los atributos de la modalidad, la fase o secuencia y el alcance evaluado."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vias_biliares_intra_y_extrahepaticas_coledoco",
+      "titulo": "VÍAS BILIARES INTRA Y EXTRAHEPÁTICAS / COLÉDOCO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vías biliares intra y extrahepáticas / colédoco. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "pancreas",
+      "titulo": "PÁNCREAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de páncreas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "bazo",
+      "titulo": "BAZO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bazo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "glandulas_suprarrenales_regiones",
+      "titulo": "GLÁNDULAS SUPRARRENALES (REGIONES)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de glándulas suprarrenales (regiones). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "rinon_derecho",
+      "titulo": "RIÑÓN DERECHO",
+      "campos": {
+        "descripcion": "Describir riñón derecho con los atributos de la modalidad, la fase o secuencia y el alcance evaluado."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "rinon_izquierdo",
+      "titulo": "RIÑÓN IZQUIERDO",
+      "campos": {
+        "descripcion": "Describir riñón izquierdo con los atributos de la modalidad, la fase o secuencia y el alcance evaluado."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ureteres",
+      "titulo": "URÉTERES",
+      "campos": {
+        "segmentos": "Precisar segmento y lado visualizados, calibre y eventual causa. No extrapolar a todo el trayecto."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "estomago_intestino_delgado_colon_y_apendice",
+      "titulo": "ESTÓMAGO, INTESTINO DELGADO, COLON Y APÉNDICE",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de estómago, intestino delgado, colon y apéndice. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "retroperitoneo_y_grandes_vasos_aorta_y_vena_cava_inferior",
+      "titulo": "RETROPERITONEO Y GRANDES VASOS (AORTA Y VENA CAVA INFERIOR)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de retroperitoneo y grandes vasos (aorta y vena cava inferior). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ganglios_abdominopelvicos",
+      "titulo": "GANGLIOS ABDOMINOPÉLVICOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ganglios abdominopélvicos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vejiga_urinaria",
+      "titulo": "VEJIGA URINARIA",
+      "campos": {
+        "descripcion": "Describir vejiga urinaria con los atributos de la modalidad, la fase o secuencia y el alcance evaluado."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "organos_pelvicos",
+      "titulo": "ÓRGANOS PÉLVICOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de órganos pélvicos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cavidad_peritoneal_liquido_libre_y_espacios_extraperitoneales",
+      "titulo": "CAVIDAD PERITONEAL, LÍQUIDO LIBRE Y ESPACIOS EXTRAPERITONEALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cavidad peritoneal, líquido libre y espacios extraperitoneales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "pared_abdominal_y_estructuras_oseas",
+      "titulo": "PARED ABDOMINAL Y ESTRUCTURAS ÓSEAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de pared abdominal y estructuras óseas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

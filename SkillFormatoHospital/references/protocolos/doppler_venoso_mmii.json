@@ -1,0 +1,73 @@
+{
+  "id": "doppler_venoso_mmii",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Precisar lado, segmento, compresibilidad, contenido y flujo/maniobras realizados. Diferenciar un estudio por sospecha de trombosis de un mapa de reflujo.",
+  "estructuras": [
+    {
+      "id": "vena_femoral_comun",
+      "titulo": "VENA FEMORAL COMÚN",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vena femoral común. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "union_safenofemoral_y_vena_safena_mayor",
+      "titulo": "UNIÓN SAFENOFEMORAL Y VENA SAFENA MAYOR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de unión safenofemoral y vena safena mayor. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vena_femoral_y_femoral_profunda",
+      "titulo": "VENA FEMORAL Y FEMORAL PROFUNDA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vena femoral y femoral profunda. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vena_poplitea",
+      "titulo": "VENA POPLÍTEA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vena poplítea. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "union_safenopoplitea_y_vena_safena_menor",
+      "titulo": "UNIÓN SAFENOPOPLÍTEA Y VENA SAFENA MENOR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de unión safenopoplítea y vena safena menor. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "venas_tibiales_peroneas_y_gemelares",
+      "titulo": "VENAS TIBIALES, PERONEAS Y GEMELARES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de venas tibiales, peroneas y gemelares. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "venas_perforantes",
+      "titulo": "VENAS PERFORANTES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de venas perforantes. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tejidos_blandos",
+      "titulo": "TEJIDOS BLANDOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tejidos blandos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "id": "muscular",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "piel_y_tejido_celular_subcutaneo",
+      "titulo": "PIEL Y TEJIDO CELULAR SUBCUTÁNEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel y tejido celular subcutáneo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "musculo_s_explorado_s_arquitectura_fibrilar",
+      "titulo": "MÚSCULO(S) EXPLORADO(S): ARQUITECTURA FIBRILAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de músculo(s) explorado(s): arquitectura fibrilar. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "uniones_miotendinosas_y_fascias",
+      "titulo": "UNIONES MIOTENDINOSAS Y FASCIAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de uniones miotendinosas y fascias. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "lesion_coleccion",
+      "titulo": "LESIÓN / COLECCIÓN",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de lesión / colección. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "estructuras_vasculares_y_ganglionares_regionales",
+      "titulo": "ESTRUCTURAS VASCULARES Y GANGLIONARES REGIONALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de estructuras vasculares y ganglionares regionales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

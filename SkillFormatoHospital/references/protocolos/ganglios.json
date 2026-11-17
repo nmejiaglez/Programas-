@@ -1,0 +1,33 @@
+{
+  "id": "ganglios",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "region_explorada",
+      "titulo": "REGIÓN EXPLORADA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de región explorada. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ganglios_morfologia_hilio_corteza_doppler",
+      "titulo": "GANGLIOS (MORFOLOGÍA, HILIO, CORTEZA, DOPPLER)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ganglios (morfología, hilio, corteza, doppler). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tejidos_blandos_adyacentes",
+      "titulo": "TEJIDOS BLANDOS ADYACENTES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tejidos blandos adyacentes. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

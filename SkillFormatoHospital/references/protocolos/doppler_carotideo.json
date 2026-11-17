@@ -1,0 +1,65 @@
+{
+  "id": "doppler_carotideo",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "arteria_carotida_comun_derecha",
+      "titulo": "ARTERIA CARÓTIDA COMÚN DERECHA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria carótida común derecha. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "bulbo_y_carotidas_interna_y_externa_derechas",
+      "titulo": "BULBO Y CARÓTIDAS INTERNA Y EXTERNA DERECHAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bulbo y carótidas interna y externa derechas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arteria_vertebral_derecha",
+      "titulo": "ARTERIA VERTEBRAL DERECHA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria vertebral derecha. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arteria_carotida_comun_izquierda",
+      "titulo": "ARTERIA CARÓTIDA COMÚN IZQUIERDA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria carótida común izquierda. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "bulbo_y_carotidas_interna_y_externa_izquierdas",
+      "titulo": "BULBO Y CARÓTIDAS INTERNA Y EXTERNA IZQUIERDAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bulbo y carótidas interna y externa izquierdas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arteria_vertebral_izquierda",
+      "titulo": "ARTERIA VERTEBRAL IZQUIERDA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria vertebral izquierda. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "complejo_intima_media_y_placas",
+      "titulo": "COMPLEJO ÍNTIMA-MEDIA Y PLACAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de complejo íntima-media y placas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

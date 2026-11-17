@@ -1,0 +1,81 @@
+{
+  "id": "codo",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "piel_y_tejido_celular_subcutaneo",
+      "titulo": "PIEL Y TEJIDO CELULAR SUBCUTÁNEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel y tejido celular subcutáneo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "compartimento_anterior_tendon_del_biceps_distal_y_braquial",
+      "titulo": "COMPARTIMENTO ANTERIOR: TENDÓN DEL BÍCEPS DISTAL Y BRAQUIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de compartimento anterior: tendón del bíceps distal y braquial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "compartimento_lateral_tendon_extensor_comun",
+      "titulo": "COMPARTIMENTO LATERAL: TENDÓN EXTENSOR COMÚN",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de compartimento lateral: tendón extensor común. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "compartimento_medial_tendon_flexor_comun",
+      "titulo": "COMPARTIMENTO MEDIAL: TENDÓN FLEXOR COMÚN",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de compartimento medial: tendón flexor común. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "compartimento_posterior_triceps_y_olecranon",
+      "titulo": "COMPARTIMENTO POSTERIOR: TRÍCEPS Y OLÉCRANON",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de compartimento posterior: tríceps y olécranon. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "nervio_cubital",
+      "titulo": "NERVIO CUBITAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de nervio cubital. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "derrame_articular_y_sinovial",
+      "titulo": "DERRAME ARTICULAR Y SINOVIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de derrame articular y sinovial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "bursas",
+      "titulo": "BURSAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bursas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "superficies_oseas_y_corticales",
+      "titulo": "SUPERFICIES ÓSEAS Y CORTICALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de superficies óseas y corticales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

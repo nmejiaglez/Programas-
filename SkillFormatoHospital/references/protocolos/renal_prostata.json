@@ -1,0 +1,82 @@
+{
+  "id": "renal_prostata",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Aplicar el mismo detalle renal bilateral, con próstata y vesículas seminales según lo evaluado. Documentar volumen y residuo cuando correspondan.",
+  "estructuras": [
+    {
+      "id": "rinon_derecho",
+      "titulo": "RIÑÓN DERECHO",
+      "campos": {
+        "morfologia": "Situación, eje, forma y contorno según la evaluación. Aclarar variantes, ausencia o cambios posquirúrgicos.",
+        "parenquima": "Espesor si se midió, ecogenicidad y diferenciación corticomedular.",
+        "sistema_excretor": "Seno renal, pelvis y cálices. Precisar distribución de la dilatación y causa visible solo si se demostraron.",
+        "focos": "Lesiones focales y litiasis. Para cada foco caracterizar localización, dimensiones, ecogenicidad y sombra cuando consten."
+      },
+      "medidas_requeridas": [
+        "longitud"
+      ]
+    },
+    {
+      "id": "rinon_izquierdo",
+      "titulo": "RIÑÓN IZQUIERDO",
+      "campos": {
+        "morfologia": "Situación, eje, forma y contorno según la evaluación. Aclarar variantes, ausencia o cambios posquirúrgicos.",
+        "parenquima": "Espesor si se midió, ecogenicidad y diferenciación corticomedular.",
+        "sistema_excretor": "Seno renal, pelvis y cálices. Precisar distribución de la dilatación y causa visible solo si se demostraron.",
+        "focos": "Lesiones focales y litiasis. Para cada foco caracterizar localización, dimensiones, ecogenicidad y sombra cuando consten."
+      },
+      "medidas_requeridas": [
+        "longitud"
+      ]
+    },
+    {
+      "id": "ureteres",
+      "titulo": "URÉTERES",
+      "campos": {
+        "segmentos": "Precisar segmento y lado visualizados, calibre y eventual causa. No extrapolar a todo el trayecto."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vejiga_urinaria",
+      "titulo": "VEJIGA URINARIA",
+      "campos": {
+        "morfologia": "Grado de repleción, pared y contornos según distensión.",
+        "contenido": "Contenido luminal y hallazgos focales. Chorros solo si se exploraron."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "prostata",
+      "titulo": "PRÓSTATA",
+      "campos": {
+        "morfologia": "Contornos y dimensiones ortogonales para volumen.",
+        "parenquima": "Ecoestructura y zonas evaluadas. Protrusión intravesical si se estudió."
+      },
+      "medidas_requeridas": [
+        "dimensiones"
+      ]
+    },
+    {
+      "id": "vesiculas_seminales",
+      "titulo": "VESÍCULAS SEMINALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vesículas seminales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "residuo_postmiccional",
+      "titulo": "RESIDUO POSTMICCIONAL",
+      "campos": {
+        "evaluacion": "Si fue realizado, documentar volúmenes pre y posmiccionales. Si quedó fuera del alcance o hubo una condición técnica documentada, conservar la razón."
+      },
+      "medidas_requeridas": [
+        "pre",
+        "pos"
+      ]
+    }
+  ]
+}

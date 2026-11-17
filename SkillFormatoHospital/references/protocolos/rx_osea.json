@@ -1,0 +1,49 @@
+{
+  "id": "rx_osea",
+  "modalidad": "radiografía",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "calidad_tecnica_y_proyecciones",
+      "titulo": "CALIDAD TÉCNICA Y PROYECCIONES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de calidad técnica y proyecciones. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "alineacion",
+      "titulo": "ALINEACIÓN",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de alineación. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "estructuras_oseas_cortical_y_trabeculado",
+      "titulo": "ESTRUCTURAS ÓSEAS, CORTICAL Y TRABECULADO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de estructuras óseas, cortical y trabeculado. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "articulaciones_y_espacios_articulares",
+      "titulo": "ARTICULACIONES Y ESPACIOS ARTICULARES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de articulaciones y espacios articulares. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tejidos_blandos",
+      "titulo": "TEJIDOS BLANDOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tejidos blandos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

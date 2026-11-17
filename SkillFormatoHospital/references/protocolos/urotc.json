@@ -1,0 +1,73 @@
+{
+  "id": "urotc",
+  "modalidad": "tomografía",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "rinon_derecho",
+      "titulo": "RIÑÓN DERECHO",
+      "campos": {
+        "descripcion": "Describir riñón derecho con los atributos de la modalidad, la fase o secuencia y el alcance evaluado."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "rinon_izquierdo",
+      "titulo": "RIÑÓN IZQUIERDO",
+      "campos": {
+        "descripcion": "Describir riñón izquierdo con los atributos de la modalidad, la fase o secuencia y el alcance evaluado."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "sistemas_pielocaliciales_fase_excretora",
+      "titulo": "SISTEMAS PIELOCALICIALES (FASE EXCRETORA)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de sistemas pielocaliciales (fase excretora). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ureteres",
+      "titulo": "URÉTERES",
+      "campos": {
+        "segmentos": "Precisar segmento y lado visualizados, calibre y eventual causa. No extrapolar a todo el trayecto."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vejiga_urinaria",
+      "titulo": "VEJIGA URINARIA",
+      "campos": {
+        "descripcion": "Describir vejiga urinaria con los atributos de la modalidad, la fase o secuencia y el alcance evaluado."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "litiasis_localizacion_tamano_uh",
+      "titulo": "LITIASIS (LOCALIZACIÓN, TAMAÑO, UH)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de litiasis (localización, tamaño, uh). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "retroperitoneo_y_grandes_vasos_aorta_y_vena_cava_inferior",
+      "titulo": "RETROPERITONEO Y GRANDES VASOS (AORTA Y VENA CAVA INFERIOR)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de retroperitoneo y grandes vasos (aorta y vena cava inferior). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cavidad_peritoneal_liquido_libre_y_espacios_extraperitoneales",
+      "titulo": "CAVIDAD PERITONEAL, LÍQUIDO LIBRE Y ESPACIOS EXTRAPERITONEALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cavidad peritoneal, líquido libre y espacios extraperitoneales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

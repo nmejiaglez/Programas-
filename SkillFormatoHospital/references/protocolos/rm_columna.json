@@ -1,0 +1,65 @@
+{
+  "id": "rm_columna",
+  "modalidad": "resonancia magnética",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "alineacion_y_curvaturas",
+      "titulo": "ALINEACIÓN Y CURVATURAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de alineación y curvaturas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cuerpos_vertebrales_y_medula_osea",
+      "titulo": "CUERPOS VERTEBRALES Y MÉDULA ÓSEA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cuerpos vertebrales y médula ósea. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "discos_intervertebrales_nivel_por_nivel",
+      "titulo": "DISCOS INTERVERTEBRALES (NIVEL POR NIVEL)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de discos intervertebrales (nivel por nivel). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "canal_raquideo_y_foramenes",
+      "titulo": "CANAL RAQUÍDEO Y FORÁMENES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de canal raquídeo y forámenes. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "medula_espinal_cono_medular_raices",
+      "titulo": "MÉDULA ESPINAL / CONO MEDULAR / RAÍCES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de médula espinal / cono medular / raíces. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "articulaciones_facetarias_y_ligamentos",
+      "titulo": "ARTICULACIONES FACETARIAS Y LIGAMENTOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de articulaciones facetarias y ligamentos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "partes_blandas_paravertebrales",
+      "titulo": "PARTES BLANDAS PARAVERTEBRALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de partes blandas paravertebrales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

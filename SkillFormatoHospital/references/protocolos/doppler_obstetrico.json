@@ -1,0 +1,49 @@
+{
+  "id": "doppler_obstetrico",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "arteria_umbilical",
+      "titulo": "ARTERIA UMBILICAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria umbilical. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arteria_cerebral_media",
+      "titulo": "ARTERIA CEREBRAL MEDIA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria cerebral media. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "indice_cerebroplacentario",
+      "titulo": "ÍNDICE CEREBROPLACENTARIO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de índice cerebroplacentario. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arterias_uterinas",
+      "titulo": "ARTERIAS UTERINAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arterias uterinas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ductus_venoso",
+      "titulo": "DUCTUS VENOSO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ductus venoso. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

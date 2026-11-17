@@ -1,0 +1,73 @@
+{
+  "id": "tc_craneo",
+  "modalidad": "tomografía",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "tejidos_blandos_epicraneales",
+      "titulo": "TEJIDOS BLANDOS EPICRANEALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tejidos blandos epicraneales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "calota_y_base_de_craneo",
+      "titulo": "CALOTA Y BASE DE CRÁNEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de calota y base de cráneo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "espacios_extraaxiales",
+      "titulo": "ESPACIOS EXTRAAXIALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de espacios extraaxiales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "parenquima_cerebral_sustancia_gris_y_blanca",
+      "titulo": "PARÉNQUIMA CEREBRAL (SUSTANCIA GRIS Y BLANCA)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de parénquima cerebral (sustancia gris y blanca). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "sistema_ventricular_y_cisternas",
+      "titulo": "SISTEMA VENTRICULAR Y CISTERNAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de sistema ventricular y cisternas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "estructuras_de_linea_media",
+      "titulo": "ESTRUCTURAS DE LÍNEA MEDIA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de estructuras de línea media. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "fosa_posterior_tronco_y_cerebelo",
+      "titulo": "FOSA POSTERIOR, TRONCO Y CEREBELO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de fosa posterior, tronco y cerebelo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "orbitas_senos_paranasales_y_mastoides",
+      "titulo": "ÓRBITAS, SENOS PARANASALES Y MASTOIDES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de órbitas, senos paranasales y mastoides. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "id": "doppler_arterial_mmii",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "aorta_distal_e_iliacas_si_evaluables",
+      "titulo": "AORTA DISTAL E ILÍACAS (SI EVALUABLES)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de aorta distal e ilíacas (si evaluables). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arteria_femoral_comun",
+      "titulo": "ARTERIA FEMORAL COMÚN",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria femoral común. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arteria_femoral_profunda",
+      "titulo": "ARTERIA FEMORAL PROFUNDA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria femoral profunda. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arteria_femoral_superficial",
+      "titulo": "ARTERIA FEMORAL SUPERFICIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria femoral superficial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arteria_poplitea",
+      "titulo": "ARTERIA POPLÍTEA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria poplítea. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arterias_tibial_anterior_tibial_posterior_y_peronea",
+      "titulo": "ARTERIAS TIBIAL ANTERIOR, TIBIAL POSTERIOR Y PERONEA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arterias tibial anterior, tibial posterior y peronea. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arteria_pedia",
+      "titulo": "ARTERIA PEDIA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria pedia. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

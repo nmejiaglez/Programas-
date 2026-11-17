@@ -1,0 +1,65 @@
+{
+  "id": "rm_mama",
+  "modalidad": "resonancia magnética",
+  "mediciones_us": false,
+  "clasificacion": "BI-RADS",
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "parenquima_fibroglandular_acr",
+      "titulo": "PARÉNQUIMA FIBROGLANDULAR (ACR)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de parénquima fibroglandular (acr). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "realce_parenquimatoso_de_fondo",
+      "titulo": "REALCE PARENQUIMATOSO DE FONDO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de realce parenquimatoso de fondo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "mama_derecha",
+      "titulo": "MAMA DERECHA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de mama derecha. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "mama_izquierda",
+      "titulo": "MAMA IZQUIERDA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de mama izquierda. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "piel_y_complejo_areola_pezon",
+      "titulo": "PIEL Y COMPLEJO AREOLA-PEZÓN",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel y complejo areola-pezón. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "regiones_axilares",
+      "titulo": "REGIONES AXILARES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de regiones axilares. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "pared_toracica",
+      "titulo": "PARED TORÁCICA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de pared torácica. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

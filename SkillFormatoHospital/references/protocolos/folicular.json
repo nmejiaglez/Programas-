@@ -1,0 +1,50 @@
+{
+  "id": "folicular",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "utero",
+      "titulo": "ÚTERO",
+      "campos": {
+        "morfologia": "Orientación, contornos y dimensiones cuando corresponde.",
+        "miometrio": "Ecoestructura y lesiones con localización y relación con endometrio/serosa."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "endometrio",
+      "titulo": "ENDOMETRIO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de endometrio. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ovario_derecho_recuento_y_diametro_folicular",
+      "titulo": "OVARIO DERECHO: RECUENTO Y DIÁMETRO FOLICULAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ovario derecho: recuento y diámetro folicular. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ovario_izquierdo_recuento_y_diametro_folicular",
+      "titulo": "OVARIO IZQUIERDO: RECUENTO Y DIÁMETRO FOLICULAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ovario izquierdo: recuento y diámetro folicular. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "liquido_libre",
+      "titulo": "LÍQUIDO LIBRE",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de líquido libre. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

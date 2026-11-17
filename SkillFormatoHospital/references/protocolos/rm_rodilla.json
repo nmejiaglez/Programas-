@@ -1,0 +1,89 @@
+{
+  "id": "rm_rodilla",
+  "modalidad": "resonancia magnética",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Precisar lado. Para lesión meniscal, segmento, trayecto, superficie y desplazamiento. En ligamentos distinguir continuidad, señal y orientación. En cartílago precisar compartimento, superficie y profundidad.",
+  "estructuras": [
+    {
+      "id": "menisco_medial",
+      "titulo": "MENISCO MEDIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de menisco medial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "menisco_lateral",
+      "titulo": "MENISCO LATERAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de menisco lateral. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ligamento_cruzado_anterior",
+      "titulo": "LIGAMENTO CRUZADO ANTERIOR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ligamento cruzado anterior. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ligamento_cruzado_posterior",
+      "titulo": "LIGAMENTO CRUZADO POSTERIOR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ligamento cruzado posterior. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ligamentos_colaterales",
+      "titulo": "LIGAMENTOS COLATERALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ligamentos colaterales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "aparato_extensor",
+      "titulo": "APARATO EXTENSOR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de aparato extensor. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cartilago_articular",
+      "titulo": "CARTÍLAGO ARTICULAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cartílago articular. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "medula_osea",
+      "titulo": "MÉDULA ÓSEA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de médula ósea. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "derrame_y_sinovial",
+      "titulo": "DERRAME Y SINOVIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de derrame y sinovial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "fosa_poplitea",
+      "titulo": "FOSA POPLÍTEA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de fosa poplítea. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

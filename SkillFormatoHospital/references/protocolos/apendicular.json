@@ -1,0 +1,63 @@
+{
+  "id": "apendicular",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "fosa_iliaca_derecha_y_apendice_cecal",
+      "titulo": "FOSA ILÍACA DERECHA Y APÉNDICE CECAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de fosa ilíaca derecha y apéndice cecal. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ciego_e_ileon_terminal",
+      "titulo": "CIEGO E ÍLEON TERMINAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ciego e íleon terminal. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "grasa_mesenterica_y_ganglios",
+      "titulo": "GRASA MESENTÉRICA Y GANGLIOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de grasa mesentérica y ganglios. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "liquido_libre_y_colecciones",
+      "titulo": "LÍQUIDO LIBRE Y COLECCIONES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de líquido libre y colecciones. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "rinon_derecho",
+      "titulo": "RIÑÓN DERECHO",
+      "campos": {
+        "morfologia": "Situación, eje, forma y contorno según la evaluación. Aclarar variantes, ausencia o cambios posquirúrgicos.",
+        "parenquima": "Espesor si se midió, ecogenicidad y diferenciación corticomedular.",
+        "sistema_excretor": "Seno renal, pelvis y cálices. Precisar distribución de la dilatación y causa visible solo si se demostraron.",
+        "focos": "Lesiones focales y litiasis. Para cada foco caracterizar localización, dimensiones, ecogenicidad y sombra cuando consten."
+      },
+      "medidas_requeridas": [
+        "longitud"
+      ]
+    },
+    {
+      "id": "vejiga_urinaria",
+      "titulo": "VEJIGA URINARIA",
+      "campos": {
+        "morfologia": "Grado de repleción, pared y contornos según distensión.",
+        "contenido": "Contenido luminal y hallazgos focales. Chorros solo si se exploraron."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

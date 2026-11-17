@@ -1,0 +1,173 @@
+{
+  "id": "general_masculino",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "higado",
+      "titulo": "HÍGADO",
+      "campos": {
+        "morfologia": "Tamaño y contornos según técnica.",
+        "parenquima": "Ecogenicidad o atenuación/señal según modalidad y distribución.",
+        "focos": "Hallazgos focales o ausencia explícitamente observada."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "sistema_portal_y_venas_hepaticas",
+      "titulo": "SISTEMA PORTAL Y VENAS HEPÁTICAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de sistema portal y venas hepáticas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vesicula_biliar",
+      "titulo": "VESÍCULA BILIAR",
+      "campos": {
+        "morfologia": "Distensión, pared y contorno.",
+        "contenido": "Cálculos, barro o lesiones. Murphy sonográfico y entorno únicamente si evaluados."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vias_biliares_intra_y_extrahepaticas_coledoco",
+      "titulo": "VÍAS BILIARES INTRA Y EXTRAHEPÁTICAS / COLÉDOCO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vías biliares intra y extrahepáticas / colédoco. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "pancreas",
+      "titulo": "PÁNCREAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de páncreas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "bazo",
+      "titulo": "BAZO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bazo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "glandulas_suprarrenales_regiones",
+      "titulo": "GLÁNDULAS SUPRARRENALES (REGIONES)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de glándulas suprarrenales (regiones). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "rinon_derecho",
+      "titulo": "RIÑÓN DERECHO",
+      "campos": {
+        "morfologia": "Situación, eje, forma y contorno según la evaluación. Aclarar variantes, ausencia o cambios posquirúrgicos.",
+        "parenquima": "Espesor si se midió, ecogenicidad y diferenciación corticomedular.",
+        "sistema_excretor": "Seno renal, pelvis y cálices. Precisar distribución de la dilatación y causa visible solo si se demostraron.",
+        "focos": "Lesiones focales y litiasis. Para cada foco caracterizar localización, dimensiones, ecogenicidad y sombra cuando consten."
+      },
+      "medidas_requeridas": [
+        "longitud"
+      ]
+    },
+    {
+      "id": "rinon_izquierdo",
+      "titulo": "RIÑÓN IZQUIERDO",
+      "campos": {
+        "morfologia": "Situación, eje, forma y contorno según la evaluación. Aclarar variantes, ausencia o cambios posquirúrgicos.",
+        "parenquima": "Espesor si se midió, ecogenicidad y diferenciación corticomedular.",
+        "sistema_excretor": "Seno renal, pelvis y cálices. Precisar distribución de la dilatación y causa visible solo si se demostraron.",
+        "focos": "Lesiones focales y litiasis. Para cada foco caracterizar localización, dimensiones, ecogenicidad y sombra cuando consten."
+      },
+      "medidas_requeridas": [
+        "longitud"
+      ]
+    },
+    {
+      "id": "ureteres",
+      "titulo": "URÉTERES",
+      "campos": {
+        "segmentos": "Precisar segmento y lado visualizados, calibre y eventual causa. No extrapolar a todo el trayecto."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "retroperitoneo_y_grandes_vasos_aorta_y_vena_cava_inferior",
+      "titulo": "RETROPERITONEO Y GRANDES VASOS (AORTA Y VENA CAVA INFERIOR)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de retroperitoneo y grandes vasos (aorta y vena cava inferior). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "musculos_psoas",
+      "titulo": "MÚSCULOS PSOAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de músculos psoas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vejiga_urinaria",
+      "titulo": "VEJIGA URINARIA",
+      "campos": {
+        "morfologia": "Grado de repleción, pared y contornos según distensión.",
+        "contenido": "Contenido luminal y hallazgos focales. Chorros solo si se exploraron."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cavidad_peritoneal_liquido_libre_y_espacios_extraperitoneales",
+      "titulo": "CAVIDAD PERITONEAL, LÍQUIDO LIBRE Y ESPACIOS EXTRAPERITONEALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cavidad peritoneal, líquido libre y espacios extraperitoneales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "asas_intestinales_y_pared_abdominal",
+      "titulo": "ASAS INTESTINALES Y PARED ABDOMINAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de asas intestinales y pared abdominal. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "prostata",
+      "titulo": "PRÓSTATA",
+      "campos": {
+        "morfologia": "Contornos y dimensiones ortogonales para volumen.",
+        "parenquima": "Ecoestructura y zonas evaluadas. Protrusión intravesical si se estudió."
+      },
+      "medidas_requeridas": [
+        "dimensiones"
+      ]
+    },
+    {
+      "id": "vesiculas_seminales",
+      "titulo": "VESÍCULAS SEMINALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vesículas seminales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "residuo_postmiccional",
+      "titulo": "RESIDUO POSTMICCIONAL",
+      "campos": {
+        "evaluacion": "Si fue realizado, documentar volúmenes pre y posmiccionales. Si quedó fuera del alcance o hubo una condición técnica documentada, conservar la razón."
+      },
+      "medidas_requeridas": [
+        "pre",
+        "pos"
+      ]
+    }
+  ]
+}

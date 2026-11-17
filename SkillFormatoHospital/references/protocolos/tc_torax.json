@@ -1,0 +1,81 @@
+{
+  "id": "tc_torax",
+  "modalidad": "tomografía",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Precisar uso de contraste y fase. Describir nódulos por lóbulo, segmento, atenuación y tamaño. Integrar comparativos cuando existan. No asignar una regla de seguimiento sin contexto clínico.",
+  "estructuras": [
+    {
+      "id": "tiroides_y_base_del_cuello",
+      "titulo": "TIROIDES Y BASE DEL CUELLO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tiroides y base del cuello. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "pared_toracica_y_axilas",
+      "titulo": "PARED TORÁCICA Y AXILAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de pared torácica y axilas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "mediastino_y_ganglios",
+      "titulo": "MEDIASTINO Y GANGLIOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de mediastino y ganglios. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "corazon_pericardio_y_grandes_vasos",
+      "titulo": "CORAZÓN, PERICARDIO Y GRANDES VASOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de corazón, pericardio y grandes vasos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "via_aerea",
+      "titulo": "VÍA AÉREA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vía aérea. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "parenquima_pulmonar_por_lobulos",
+      "titulo": "PARÉNQUIMA PULMONAR POR LÓBULOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de parénquima pulmonar por lóbulos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "pleura",
+      "titulo": "PLEURA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de pleura. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "estructuras_oseas",
+      "titulo": "ESTRUCTURAS ÓSEAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de estructuras óseas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "abdomen_superior_incluido",
+      "titulo": "ABDOMEN SUPERIOR INCLUIDO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de abdomen superior incluido. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

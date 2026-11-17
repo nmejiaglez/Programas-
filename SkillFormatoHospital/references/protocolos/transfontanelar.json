@@ -1,0 +1,65 @@
+{
+  "id": "transfontanelar",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "parenquima_cerebral_y_ecogenicidad_periventricular",
+      "titulo": "PARÉNQUIMA CEREBRAL Y ECOGENICIDAD PERIVENTRICULAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de parénquima cerebral y ecogenicidad periventricular. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "sistema_ventricular",
+      "titulo": "SISTEMA VENTRICULAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de sistema ventricular. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "plexos_coroideos_y_matriz_germinal",
+      "titulo": "PLEXOS COROIDEOS Y MATRIZ GERMINAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de plexos coroideos y matriz germinal. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "linea_media_cuerpo_calloso_y_cavum",
+      "titulo": "LÍNEA MEDIA, CUERPO CALLOSO Y CAVUM",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de línea media, cuerpo calloso y cavum. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "fosa_posterior_y_cerebelo",
+      "titulo": "FOSA POSTERIOR Y CEREBELO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de fosa posterior y cerebelo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "espacios_extraaxiales",
+      "titulo": "ESPACIOS EXTRAAXIALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de espacios extraaxiales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "doppler_ir_arterias_cerebrales",
+      "titulo": "DOPPLER (IR ARTERIAS CEREBRALES)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de doppler (ir arterias cerebrales). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

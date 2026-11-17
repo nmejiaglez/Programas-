@@ -1,0 +1,81 @@
+{
+  "id": "tiroides",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Confirmar qué glándulas y niveles se exploraron. Si hay nódulo, documentar composición, ecogenicidad, forma, márgenes y focos ecogénicos antes de categorizar.",
+  "estructuras": [
+    {
+      "id": "glandulas_parotidas",
+      "titulo": "GLÁNDULAS PARÓTIDAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de glándulas parótidas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "glandulas_submandibulares",
+      "titulo": "GLÁNDULAS SUBMANDIBULARES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de glándulas submandibulares. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "lobulo_tiroideo_derecho",
+      "titulo": "LÓBULO TIROIDEO DERECHO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de lóbulo tiroideo derecho. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "istmo_tiroideo",
+      "titulo": "ISTMO TIROIDEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de istmo tiroideo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "lobulo_tiroideo_izquierdo",
+      "titulo": "LÓBULO TIROIDEO IZQUIERDO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de lóbulo tiroideo izquierdo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "glandulas_paratiroides_regiones",
+      "titulo": "GLÁNDULAS PARATIROIDES (REGIONES)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de glándulas paratiroides (regiones). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cadenas_ganglionares_cervicales_niveles_i_vi",
+      "titulo": "CADENAS GANGLIONARES CERVICALES (NIVELES I–VI)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cadenas ganglionares cervicales (niveles i–vi). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "estructuras_vasculares_del_cuello",
+      "titulo": "ESTRUCTURAS VASCULARES DEL CUELLO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de estructuras vasculares del cuello. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tejidos_blandos_y_musculatura_cervical",
+      "titulo": "TEJIDOS BLANDOS Y MUSCULATURA CERVICAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tejidos blandos y musculatura cervical. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

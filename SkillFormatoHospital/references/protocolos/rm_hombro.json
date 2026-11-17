@@ -1,0 +1,73 @@
+{
+  "id": "rm_hombro",
+  "modalidad": "resonancia magnética",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "tendon_supraespinoso",
+      "titulo": "TENDÓN SUPRAESPINOSO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón supraespinoso. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendon_infraespinoso",
+      "titulo": "TENDÓN INFRAESPINOSO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón infraespinoso. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendon_subescapular",
+      "titulo": "TENDÓN SUBESCAPULAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón subescapular. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendon_del_biceps",
+      "titulo": "TENDÓN DEL BÍCEPS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón del bíceps. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "rodete_glenoideo",
+      "titulo": "RODETE GLENOIDEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de rodete glenoideo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cartilago_y_medula_osea",
+      "titulo": "CARTÍLAGO Y MÉDULA ÓSEA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cartílago y médula ósea. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "articulacion_acromioclavicular_y_arco_coracoacromial",
+      "titulo": "ARTICULACIÓN ACROMIOCLAVICULAR Y ARCO CORACOACROMIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de articulación acromioclavicular y arco coracoacromial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "bursa_subacromiosubdeltoidea",
+      "titulo": "BURSA SUBACROMIOSUBDELTOIDEA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bursa subacromiosubdeltoidea. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

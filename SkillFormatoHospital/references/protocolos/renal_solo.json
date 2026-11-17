@@ -1,0 +1,43 @@
+{
+  "id": "renal_solo",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Separar ambos riñones. La ausencia de dilatación demostrada no excluye obstrucción en todos los escenarios. No deducir función renal del aspecto ecográfico. Usar este alcance únicamente si el radiólogo confirmó estudio renal aislado. No generar evaluación vesical ni residuo.",
+  "estructuras": [
+    {
+      "id": "rinon_derecho",
+      "titulo": "RIÑÓN DERECHO",
+      "campos": {
+        "morfologia": "Situación, eje, forma y contorno según la evaluación. Aclarar variantes, ausencia o cambios posquirúrgicos.",
+        "parenquima": "Espesor si se midió, ecogenicidad y diferenciación corticomedular.",
+        "sistema_excretor": "Seno renal, pelvis y cálices. Precisar distribución de la dilatación y causa visible solo si se demostraron.",
+        "focos": "Lesiones focales y litiasis. Para cada foco caracterizar localización, dimensiones, ecogenicidad y sombra cuando consten."
+      },
+      "medidas_requeridas": [
+        "longitud"
+      ]
+    },
+    {
+      "id": "rinon_izquierdo",
+      "titulo": "RIÑÓN IZQUIERDO",
+      "campos": {
+        "morfologia": "Situación, eje, forma y contorno según la evaluación. Aclarar variantes, ausencia o cambios posquirúrgicos.",
+        "parenquima": "Espesor si se midió, ecogenicidad y diferenciación corticomedular.",
+        "sistema_excretor": "Seno renal, pelvis y cálices. Precisar distribución de la dilatación y causa visible solo si se demostraron.",
+        "focos": "Lesiones focales y litiasis. Para cada foco caracterizar localización, dimensiones, ecogenicidad y sombra cuando consten."
+      },
+      "medidas_requeridas": [
+        "longitud"
+      ]
+    },
+    {
+      "id": "retroperitoneo_y_espacios_perirrenales",
+      "titulo": "RETROPERITONEO Y ESPACIOS PERIRRENALES",
+      "campos": {
+        "entorno": "Describir los espacios efectivamente evaluados, líquido o colección y su ubicación."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

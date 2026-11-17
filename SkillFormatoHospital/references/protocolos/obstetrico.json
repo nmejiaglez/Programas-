@@ -1,0 +1,116 @@
+{
+  "id": "obstetrico",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Confirmar propósito y edad de referencia. Separar biometría de anatomía y explicitar campos con ventana técnica insuficiente si están documentados.",
+  "estructuras": [
+    {
+      "id": "numero_de_fetos_vitalidad_y_estatica_fetal",
+      "titulo": "NÚMERO DE FETOS, VITALIDAD Y ESTÁTICA FETAL",
+      "campos": {
+        "vitalidad": "Número y actividad cardíaca. Registrar FCF medida.",
+        "estatica": "Situación, presentación y dorso cuando procedan."
+      },
+      "medidas_requeridas": [
+        "fcf"
+      ]
+    },
+    {
+      "id": "biometria_fetal_y_peso_fetal_estimado",
+      "titulo": "BIOMETRÍA FETAL Y PESO FETAL ESTIMADO",
+      "campos": {
+        "biometria": "DBP, CC, CA, LF, edad biométrica y FPP cuando procedan.",
+        "peso": "PFE y método si se conocen. Distinguir edad asignada de la biométrica."
+      },
+      "medidas_requeridas": [
+        "dbp",
+        "cc",
+        "ca",
+        "lf",
+        "pfe"
+      ]
+    },
+    {
+      "id": "anatomia_fetal_craneo_y_snc",
+      "titulo": "ANATOMÍA FETAL: CRÁNEO Y SNC",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de anatomía fetal: cráneo y snc. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "anatomia_fetal_cara_y_cuello",
+      "titulo": "ANATOMÍA FETAL: CARA Y CUELLO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de anatomía fetal: cara y cuello. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "anatomia_fetal_torax_y_corazon",
+      "titulo": "ANATOMÍA FETAL: TÓRAX Y CORAZÓN",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de anatomía fetal: tórax y corazón. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "anatomia_fetal_abdomen_estomago_rinones_y_vejiga",
+      "titulo": "ANATOMÍA FETAL: ABDOMEN, ESTÓMAGO, RIÑONES Y VEJIGA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de anatomía fetal: abdomen, estómago, riñones y vejiga. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "anatomia_fetal_columna",
+      "titulo": "ANATOMÍA FETAL: COLUMNA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de anatomía fetal: columna. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "anatomia_fetal_extremidades",
+      "titulo": "ANATOMÍA FETAL: EXTREMIDADES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de anatomía fetal: extremidades. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "placenta",
+      "titulo": "PLACENTA",
+      "campos": {
+        "localizacion": "Localización y relación con OCI si pertinente.",
+        "aspecto": "Espesor, maduración y alteraciones solo según evaluación."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cordon_umbilical",
+      "titulo": "CORDÓN UMBILICAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cordón umbilical. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "liquido_amniotico",
+      "titulo": "LÍQUIDO AMNIÓTICO",
+      "campos": {
+        "cuantificacion": "Precisar método. Si se usa ILA y están disponibles, incluir los cuatro bolsillos y suma. No convertir bolsillo máximo a ILA."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cervix",
+      "titulo": "CÉRVIX",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cérvix. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

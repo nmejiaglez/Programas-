@@ -1,0 +1,57 @@
+{
+  "id": "doppler_venoso_mmss",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "vena_yugular_interna_y_subclavia",
+      "titulo": "VENA YUGULAR INTERNA Y SUBCLAVIA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vena yugular interna y subclavia. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vena_axilar",
+      "titulo": "VENA AXILAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vena axilar. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vena_braquial",
+      "titulo": "VENA BRAQUIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vena braquial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "venas_cefalica_y_basilica",
+      "titulo": "VENAS CEFÁLICA Y BASÍLICA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de venas cefálica y basílica. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "venas_del_antebrazo_radiales_y_cubitales",
+      "titulo": "VENAS DEL ANTEBRAZO (RADIALES Y CUBITALES)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de venas del antebrazo (radiales y cubitales). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tejidos_blandos",
+      "titulo": "TEJIDOS BLANDOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tejidos blandos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

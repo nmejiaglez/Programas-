@@ -1,0 +1,49 @@
+{
+  "id": "toracico",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "pared_toracica",
+      "titulo": "PARED TORÁCICA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de pared torácica. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "espacio_pleural_derecho",
+      "titulo": "ESPACIO PLEURAL DERECHO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de espacio pleural derecho. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "espacio_pleural_izquierdo",
+      "titulo": "ESPACIO PLEURAL IZQUIERDO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de espacio pleural izquierdo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "deslizamiento_pleural_y_lineas_pulmonares",
+      "titulo": "DESLIZAMIENTO PLEURAL Y LÍNEAS PULMONARES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de deslizamiento pleural y líneas pulmonares. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "diafragma",
+      "titulo": "DIAFRAGMA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de diafragma. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

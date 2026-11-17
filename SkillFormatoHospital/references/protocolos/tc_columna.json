@@ -1,0 +1,57 @@
+{
+  "id": "tc_columna",
+  "modalidad": "tomografía",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "alineacion",
+      "titulo": "ALINEACIÓN",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de alineación. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cuerpos_vertebrales",
+      "titulo": "CUERPOS VERTEBRALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cuerpos vertebrales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "discos_intervertebrales_nivel_por_nivel",
+      "titulo": "DISCOS INTERVERTEBRALES (NIVEL POR NIVEL)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de discos intervertebrales (nivel por nivel). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "canal_raquideo_y_foramenes",
+      "titulo": "CANAL RAQUÍDEO Y FORÁMENES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de canal raquídeo y forámenes. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "elementos_posteriores_y_facetas",
+      "titulo": "ELEMENTOS POSTERIORES Y FACETAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de elementos posteriores y facetas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "partes_blandas_paravertebrales",
+      "titulo": "PARTES BLANDAS PARAVERTEBRALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de partes blandas paravertebrales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "id": "transvaginal",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "utero",
+      "titulo": "ÚTERO",
+      "campos": {
+        "morfologia": "Orientación, contornos y dimensiones cuando corresponde.",
+        "miometrio": "Ecoestructura y lesiones con localización y relación con endometrio/serosa."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "endometrio",
+      "titulo": "ENDOMETRIO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de endometrio. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cervix",
+      "titulo": "CÉRVIX",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cérvix. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cavidad_endometrial_diu_y_nicho_de_cesarea",
+      "titulo": "CAVIDAD ENDOMETRIAL, DIU Y NICHO DE CESÁREA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cavidad endometrial, diu y nicho de cesárea. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ovario_derecho",
+      "titulo": "OVARIO DERECHO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ovario derecho. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ovario_izquierdo",
+      "titulo": "OVARIO IZQUIERDO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ovario izquierdo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "regiones_anexiales",
+      "titulo": "REGIONES ANEXIALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de regiones anexiales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "fondo_de_saco_espacio_de_douglas",
+      "titulo": "FONDO DE SACO / ESPACIO DE DOUGLAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de fondo de saco / espacio de douglas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

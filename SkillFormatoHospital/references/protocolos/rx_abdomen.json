@@ -1,0 +1,65 @@
+{
+  "id": "rx_abdomen",
+  "modalidad": "radiografía",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "calidad_tecnica_y_proyecciones",
+      "titulo": "CALIDAD TÉCNICA Y PROYECCIONES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de calidad técnica y proyecciones. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "patron_gaseoso_intestinal",
+      "titulo": "PATRÓN GASEOSO INTESTINAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de patrón gaseoso intestinal. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "niveles_hidroaereos",
+      "titulo": "NIVELES HIDROAÉREOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de niveles hidroaéreos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "aire_libre_neumoperitoneo",
+      "titulo": "AIRE LIBRE / NEUMOPERITONEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de aire libre / neumoperitoneo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "sombras_de_organos_solidos_y_psoas",
+      "titulo": "SOMBRAS DE ÓRGANOS SÓLIDOS Y PSOAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de sombras de órganos sólidos y psoas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "calcificaciones_y_cuerpos_extranos",
+      "titulo": "CALCIFICACIONES Y CUERPOS EXTRAÑOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de calcificaciones y cuerpos extraños. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "estructuras_oseas",
+      "titulo": "ESTRUCTURAS ÓSEAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de estructuras óseas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

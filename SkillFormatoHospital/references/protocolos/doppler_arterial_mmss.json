@@ -1,0 +1,49 @@
+{
+  "id": "doppler_arterial_mmss",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "arteria_subclavia",
+      "titulo": "ARTERIA SUBCLAVIA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria subclavia. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arteria_axilar",
+      "titulo": "ARTERIA AXILAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria axilar. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arteria_braquial",
+      "titulo": "ARTERIA BRAQUIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria braquial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arterias_radial_y_cubital",
+      "titulo": "ARTERIAS RADIAL Y CUBITAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arterias radial y cubital. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arco_palmar",
+      "titulo": "ARCO PALMAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arco palmar. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

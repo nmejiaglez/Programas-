@@ -1,0 +1,81 @@
+{
+  "id": "tc_cuello",
+  "modalidad": "tomografía",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "nasofaringe",
+      "titulo": "NASOFARINGE",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de nasofaringe. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "orofaringe_y_cavidad_oral",
+      "titulo": "OROFARINGE Y CAVIDAD ORAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de orofaringe y cavidad oral. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "glandulas_parotidas_y_submandibulares",
+      "titulo": "GLÁNDULAS PARÓTIDAS Y SUBMANDIBULARES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de glándulas parótidas y submandibulares. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "hipofaringe_y_laringe",
+      "titulo": "HIPOFARINGE Y LARINGE",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de hipofaringe y laringe. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "glandula_tiroides",
+      "titulo": "GLÁNDULA TIROIDES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de glándula tiroides. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ganglios_cervicales_niveles_i_vi",
+      "titulo": "GANGLIOS CERVICALES (NIVELES I–VI)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ganglios cervicales (niveles i–vi). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "estructuras_vasculares",
+      "titulo": "ESTRUCTURAS VASCULARES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de estructuras vasculares. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "espacios_profundos_del_cuello",
+      "titulo": "ESPACIOS PROFUNDOS DEL CUELLO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de espacios profundos del cuello. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "columna_cervical_y_apices_pulmonares",
+      "titulo": "COLUMNA CERVICAL Y ÁPICES PULMONARES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de columna cervical y ápices pulmonares. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "id": "fast",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "espacio_hepatorrenal_morison",
+      "titulo": "ESPACIO HEPATORRENAL (MORISON)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de espacio hepatorrenal (morison). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "espacio_esplenorrenal",
+      "titulo": "ESPACIO ESPLENORRENAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de espacio esplenorrenal. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "pelvis_fondo_de_saco",
+      "titulo": "PELVIS / FONDO DE SACO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de pelvis / fondo de saco. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ventana_subxifoidea_pericardio",
+      "titulo": "VENTANA SUBXIFOIDEA / PERICARDIO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ventana subxifoidea / pericardio. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "espacios_pleurales",
+      "titulo": "ESPACIOS PLEURALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de espacios pleurales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

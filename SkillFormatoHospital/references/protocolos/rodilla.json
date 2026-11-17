@@ -1,0 +1,113 @@
+{
+  "id": "rodilla",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "piel_y_tejido_celular_subcutaneo",
+      "titulo": "PIEL Y TEJIDO CELULAR SUBCUTÁNEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel y tejido celular subcutáneo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendon_cuadricipital",
+      "titulo": "TENDÓN CUADRICIPITAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón cuadricipital. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendon_rotuliano",
+      "titulo": "TENDÓN ROTULIANO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón rotuliano. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "receso_suprarrotuliano",
+      "titulo": "RECESO SUPRARROTULIANO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de receso suprarrotuliano. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ligamento_colateral_medial",
+      "titulo": "LIGAMENTO COLATERAL MEDIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ligamento colateral medial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "menisco_medial_cuerno_periferico",
+      "titulo": "MENISCO MEDIAL (CUERNO PERIFÉRICO)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de menisco medial (cuerno periférico). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ligamento_colateral_lateral_y_cintilla_iliotibial",
+      "titulo": "LIGAMENTO COLATERAL LATERAL Y CINTILLA ILIOTIBIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ligamento colateral lateral y cintilla iliotibial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "menisco_lateral_cuerno_periferico",
+      "titulo": "MENISCO LATERAL (CUERNO PERIFÉRICO)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de menisco lateral (cuerno periférico). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "fosa_poplitea_y_quiste_de_baker",
+      "titulo": "FOSA POPLÍTEA Y QUISTE DE BAKER",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de fosa poplítea y quiste de baker. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "pata_de_ganso",
+      "titulo": "PATA DE GANSO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de pata de ganso. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "derrame_articular_y_sinovial",
+      "titulo": "DERRAME ARTICULAR Y SINOVIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de derrame articular y sinovial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "bursas",
+      "titulo": "BURSAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bursas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "superficies_oseas_y_corticales",
+      "titulo": "SUPERFICIES ÓSEAS Y CORTICALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de superficies óseas y corticales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "id": "cervicometria",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "longitud_cervical",
+      "titulo": "LONGITUD CERVICAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de longitud cervical. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "orificio_cervical_interno_y_embudo",
+      "titulo": "ORIFICIO CERVICAL INTERNO Y EMBUDO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de orificio cervical interno y embudo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "orificio_cervical_externo",
+      "titulo": "ORIFICIO CERVICAL EXTERNO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de orificio cervical externo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "sludge_amniotico",
+      "titulo": "SLUDGE AMNIÓTICO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de sludge amniótico. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "presentacion_y_placenta",
+      "titulo": "PRESENTACIÓN Y PLACENTA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de presentación y placenta. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

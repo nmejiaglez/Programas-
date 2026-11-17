@@ -1,0 +1,33 @@
+{
+  "id": "piloro",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "canal_pilorico_longitud",
+      "titulo": "CANAL PILÓRICO (LONGITUD)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de canal pilórico (longitud). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "grosor_muscular_pilorico",
+      "titulo": "GROSOR MUSCULAR PILÓRICO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de grosor muscular pilórico. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vaciamiento_gastrico",
+      "titulo": "VACIAMIENTO GÁSTRICO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vaciamiento gástrico. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

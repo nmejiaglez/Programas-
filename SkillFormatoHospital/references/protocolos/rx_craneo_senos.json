@@ -1,0 +1,73 @@
+{
+  "id": "rx_craneo_senos",
+  "modalidad": "radiografía",
+  "mediciones_us": false,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "calidad_tecnica_y_proyecciones",
+      "titulo": "CALIDAD TÉCNICA Y PROYECCIONES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de calidad técnica y proyecciones. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "boveda_craneal",
+      "titulo": "BÓVEDA CRANEAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bóveda craneal. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "senos_frontales",
+      "titulo": "SENOS FRONTALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de senos frontales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "celdas_etmoidales",
+      "titulo": "CELDAS ETMOIDALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de celdas etmoidales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "senos_maxilares",
+      "titulo": "SENOS MAXILARES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de senos maxilares. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "seno_esfenoidal",
+      "titulo": "SENO ESFENOIDAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de seno esfenoidal. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tabique_nasal_y_cornetes",
+      "titulo": "TABIQUE NASAL Y CORNETES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tabique nasal y cornetes. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tejidos_blandos",
+      "titulo": "TEJIDOS BLANDOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tejidos blandos. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

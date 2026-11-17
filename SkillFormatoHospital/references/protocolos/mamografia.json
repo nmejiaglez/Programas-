@@ -1,0 +1,57 @@
+{
+  "id": "mamografia",
+  "modalidad": "mamografía",
+  "mediciones_us": false,
+  "clasificacion": "BI-RADS",
+  "criterio": "Confirmar indicación y proyecciones de cada lado. Revisar densidad, masas, asimetrías, distorsión y calcificaciones. Consignar BI-RADS sustentado y revisión de comparativos cuando disponibles.",
+  "estructuras": [
+    {
+      "id": "composicion_mamaria_acr_a_d",
+      "titulo": "COMPOSICIÓN MAMARIA (ACR A–D)",
+      "campos": {
+        "composicion": "Asignar A–D con la densidad disponible y concordante con la técnica."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "mama_derecha_cc_y_mlo",
+      "titulo": "MAMA DERECHA (CC Y MLO)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de mama derecha (cc y mlo). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "mama_izquierda_cc_y_mlo",
+      "titulo": "MAMA IZQUIERDA (CC Y MLO)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de mama izquierda (cc y mlo). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "calcificaciones",
+      "titulo": "CALCIFICACIONES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de calcificaciones. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "piel_y_complejo_areola_pezon",
+      "titulo": "PIEL Y COMPLEJO AREOLA-PEZÓN",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel y complejo areola-pezón. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "regiones_axilares",
+      "titulo": "REGIONES AXILARES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de regiones axilares. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

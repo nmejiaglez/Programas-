@@ -1,0 +1,59 @@
+{
+  "id": "doppler_portal",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "higado",
+      "titulo": "HÍGADO",
+      "campos": {
+        "morfologia": "Tamaño y contornos según técnica.",
+        "parenquima": "Ecogenicidad o atenuación/señal según modalidad y distribución.",
+        "focos": "Hallazgos focales o ausencia explícitamente observada."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vena_porta_calibre_velocidad_direccion",
+      "titulo": "VENA PORTA (CALIBRE, VELOCIDAD, DIRECCIÓN)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vena porta (calibre, velocidad, dirección). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "venas_hepaticas",
+      "titulo": "VENAS HEPÁTICAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de venas hepáticas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "arteria_hepatica",
+      "titulo": "ARTERIA HEPÁTICA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria hepática. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vena_esplenica_y_mesenterica_superior",
+      "titulo": "VENA ESPLÉNICA Y MESENTÉRICA SUPERIOR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vena esplénica y mesentérica superior. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "circulacion_colateral_y_signos_de_hipertension_portal",
+      "titulo": "CIRCULACIÓN COLATERAL Y SIGNOS DE HIPERTENSIÓN PORTAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de circulación colateral y signos de hipertensión portal. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

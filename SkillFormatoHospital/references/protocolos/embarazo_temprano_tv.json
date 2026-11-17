@@ -1,0 +1,73 @@
+{
+  "id": "embarazo_temprano_tv",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "utero_y_localizacion_de_la_gestacion",
+      "titulo": "ÚTERO Y LOCALIZACIÓN DE LA GESTACIÓN",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de útero y localización de la gestación. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "saco_gestacional",
+      "titulo": "SACO GESTACIONAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de saco gestacional. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vesicula_vitelina",
+      "titulo": "VESÍCULA VITELINA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vesícula vitelina. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "embrion_lcc_y_actividad_cardiaca",
+      "titulo": "EMBRIÓN, LCC Y ACTIVIDAD CARDÍACA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de embrión, lcc y actividad cardíaca. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "cervix",
+      "titulo": "CÉRVIX",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de cérvix. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "ovarios_y_cuerpo_luteo",
+      "titulo": "OVARIOS Y CUERPO LÚTEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de ovarios y cuerpo lúteo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "anexos_descarte_de_ectopico",
+      "titulo": "ANEXOS (DESCARTE DE ECTÓPICO)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de anexos (descarte de ectópico). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "fondo_de_saco",
+      "titulo": "FONDO DE SACO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de fondo de saco. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "id": "hombro",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "piel_y_tejido_celular_subcutaneo",
+      "titulo": "PIEL Y TEJIDO CELULAR SUBCUTÁNEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel y tejido celular subcutáneo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendon_de_la_porcion_larga_del_biceps",
+      "titulo": "TENDÓN DE LA PORCIÓN LARGA DEL BÍCEPS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón de la porción larga del bíceps. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendon_subescapular",
+      "titulo": "TENDÓN SUBESCAPULAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón subescapular. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendon_supraespinoso",
+      "titulo": "TENDÓN SUPRAESPINOSO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón supraespinoso. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendon_infraespinoso",
+      "titulo": "TENDÓN INFRAESPINOSO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón infraespinoso. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendon_redondo_menor",
+      "titulo": "TENDÓN REDONDO MENOR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendón redondo menor. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "articulacion_acromioclavicular",
+      "titulo": "ARTICULACIÓN ACROMIOCLAVICULAR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de articulación acromioclavicular. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "intervalo_rotador_y_prueba_dinamica",
+      "titulo": "INTERVALO ROTADOR Y PRUEBA DINÁMICA",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de intervalo rotador y prueba dinámica. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "derrame_articular_y_sinovial",
+      "titulo": "DERRAME ARTICULAR Y SINOVIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de derrame articular y sinovial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "bursas",
+      "titulo": "BURSAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bursas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "superficies_oseas_y_corticales",
+      "titulo": "SUPERFICIES ÓSEAS Y CORTICALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de superficies óseas y corticales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

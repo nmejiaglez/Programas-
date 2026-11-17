@@ -1,0 +1,49 @@
+{
+  "id": "fistula_av",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "arteria_aferente",
+      "titulo": "ARTERIA AFERENTE",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de arteria aferente. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "anastomosis",
+      "titulo": "ANASTOMOSIS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de anastomosis. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "vena_eferente_de_drenaje",
+      "titulo": "VENA EFERENTE / DE DRENAJE",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de vena eferente / de drenaje. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "flujo_de_acceso_ml_min",
+      "titulo": "FLUJO DE ACCESO (ML/MIN)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de flujo de acceso (ml/min). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "estenosis_trombosis_y_colecciones",
+      "titulo": "ESTENOSIS, TROMBOSIS Y COLECCIONES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de estenosis, trombosis y colecciones. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

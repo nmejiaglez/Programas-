@@ -1,0 +1,81 @@
+{
+  "id": "cadera",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "piel_y_tejido_celular_subcutaneo",
+      "titulo": "PIEL Y TEJIDO CELULAR SUBCUTÁNEO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de piel y tejido celular subcutáneo. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "articulacion_coxofemoral_y_receso_anterior",
+      "titulo": "ARTICULACIÓN COXOFEMORAL Y RECESO ANTERIOR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de articulación coxofemoral y receso anterior. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "musculo_psoas_iliaco",
+      "titulo": "MÚSCULO PSOAS ILÍACO",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de músculo psoas ilíaco. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tendones_gluteos_medio_y_menor",
+      "titulo": "TENDONES GLÚTEOS (MEDIO Y MENOR)",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tendones glúteos (medio y menor). Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "trocanter_mayor",
+      "titulo": "TROCÁNTER MAYOR",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de trocánter mayor. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "musculos_aductores_e_isquiotibiales_proximales",
+      "titulo": "MÚSCULOS ADUCTORES E ISQUIOTIBIALES PROXIMALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de músculos aductores e isquiotibiales proximales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "derrame_articular_y_sinovial",
+      "titulo": "DERRAME ARTICULAR Y SINOVIAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de derrame articular y sinovial. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "bursas",
+      "titulo": "BURSAS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de bursas. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "superficies_oseas_y_corticales",
+      "titulo": "SUPERFICIES ÓSEAS Y CORTICALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de superficies óseas y corticales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}

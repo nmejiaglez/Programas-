@@ -1,0 +1,49 @@
+{
+  "id": "perfil_biofisico",
+  "modalidad": "ultrasonido",
+  "mediciones_us": true,
+  "clasificacion": null,
+  "criterio": "Recorrer cada estructura en el orden del protocolo. Aplicar los descriptores de la modalidad y cubrir la indicación con una conclusión sustentada.",
+  "estructuras": [
+    {
+      "id": "movimientos_respiratorios",
+      "titulo": "MOVIMIENTOS RESPIRATORIOS",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de movimientos respiratorios. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "movimientos_corporales",
+      "titulo": "MOVIMIENTOS CORPORALES",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de movimientos corporales. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "tono_fetal",
+      "titulo": "TONO FETAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de tono fetal. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "liquido_amniotico",
+      "titulo": "LÍQUIDO AMNIÓTICO",
+      "campos": {
+        "cuantificacion": "Precisar método. Si se usa ILA y están disponibles, incluir los cuatro bolsillos y suma. No convertir bolsillo máximo a ILA."
+      },
+      "medidas_requeridas": []
+    },
+    {
+      "id": "puntuacion_total",
+      "titulo": "PUNTUACIÓN TOTAL",
+      "campos": {
+        "descripcion": "Describir morfología y hallazgos verificables de puntuación total. Si hay lesión, precisar ubicación, lado, extensión y atributos de la modalidad que consten."
+      },
+      "medidas_requeridas": []
+    }
+  ]
+}
