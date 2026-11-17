@@ -1,0 +1,28 @@
+PREPARADOR V2 - VARIOS VIDEOS Y JPG
+=================================
+1. Extraiga el ZIP completo en una carpeta fija.
+2. Ejecute INSTALAR.bat.
+3. Abra el NUEVO icono del Escritorio: Preparador V2 - Videos y JPG.
+   También puede abrir ABRIR.bat desde esta carpeta.
+   La ventana debe mostrar PREPARADOR V2 arriba. Si no lo muestra,
+   está abriendo la versión anterior.
+
+SELECCIONAR VARIOS ARCHIVOS
+- Pulse AGREGAR VARIOS VIDEOS.
+- En la ventana de archivos, Ctrl + A selecciona todos los videos.
+  Ctrl + clic selecciona videos separados; Shift selecciona un grupo.
+- Pulse Abrir. Todos aparecen en la lista.
+- Pulse AGREGAR VARIOS JPG / PNG y repita para las fotografías.
+- Puede usar cada botón varias veces, incluso desde otras carpetas.
+- Revise el contador debajo de la lista.
+- Use Subir / Bajar para ordenar, Quitar para retirar y Vaciar para empezar otro paciente.
+- Escriba el nombre y pulse CONVERTIR TODOS LOS ARCHIVOS A PDF.
+
+Cada fotografía ocupa una página completa a color. Los cortes de videos
+se agrupan en mosaicos. Puede mezclar fotos y videos del mismo paciente.
+El máximo de mosaicos no elimina fotografías seleccionadas.
+Las imágenes repetidas por selección del mismo archivo se incorporan una sola vez.
+Las carpetas se exploran por ruta y los DICOM se ordenan por serie e instancia.
+Los resultados quedan junto al primer archivo. Nunca se borra una salida anterior.
+Los archivos grandes pueden dividirse en partes; envíe todas las partes del PDF.
+Este programa prepara imágenes; no realiza interpretación diagnóstica.
