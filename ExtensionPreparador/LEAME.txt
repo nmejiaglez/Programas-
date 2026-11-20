@@ -1,0 +1,41 @@
+PREPARADOR DE ESTUDIOS - EXTENSIÓN DE CHROME (también Edge)
+==========================================================
+No necesita Python ni instalar nada más.
+
+INSTALAR (una sola vez)
+1. Extraiga el ZIP en una carpeta fija (por ejemplo Documentos\ExtensionPreparador).
+   No la borre ni la mueva después: Chrome la usa desde ahí.
+2. Abra Chrome y escriba en la barra de direcciones:  chrome://extensions
+   (En Edge:  edge://extensions)
+3. Active "Modo de desarrollador" (arriba a la derecha; en Edge, a la izquierda).
+4. Pulse "Cargar descomprimida" y elija la carpeta ExtensionPreparador
+   (la que contiene manifest.json).
+5. Pulse el icono de la pieza de rompecabezas y fije (chincheta) "Preparador de Estudios".
+
+USAR
+- Pulse el icono azul NM: se abre el Preparador en una pestaña.
+- AGREGAR VARIOS VIDEOS / AGREGAR VARIOS JPG / PNG: Ctrl + A selecciona todos.
+  También puede ARRASTRAR videos, fotos o carpetas a la lista.
+- Agregar DICOM: archivos .dcm o sin extensión. Agregar carpeta: toda la carpeta del estudio.
+- Use Subir / Bajar para ordenar, Quitar y Vaciar lista para otro paciente.
+- Escriba el nombre del paciente y pulse CONVERTIR TODOS LOS ARCHIVOS A PDF.
+- El resultado queda en Descargas\Nombre_PARA_CLAUDE\ (PDF y RESUMEN.txt).
+  Los acentos se quitan solo del nombre del archivo (Chrome no los acepta): María -> Maria.
+
+TAMAÑOS
+- Cada foto: una página completa grande, a color (hasta 3000 px).
+- Mosaicos de video / DICOM: 4 cortes = 1500 px por corte (lo más legible),
+  9 cortes = 1000 px (valor inicial), 16 cortes = 750 px, 25 cortes = 600 px.
+  Los mosaicos conservan el color (Doppler).
+- Cada PDF queda SIEMPRE por debajo de 40 MB (máximo 38 MB y 100 páginas).
+  Si el estudio es más grande se divide: Nombre_parte1_de_3.pdf, etc. Envíe todas las partes.
+
+FORMATOS
+- Videos: MP4, MOV (H.264), WEBM. AVI, WMV y algunos MKV no los abre Chrome:
+  para esos use el Preparador V2 de Python o grabe en MP4.
+- Imágenes: JPG, PNG, BMP, WEBP. (TIFF no lo abre Chrome.)
+- DICOM: sin compresión y JPEG baseline. Los DICOM con JPEG 2000 o JPEG sin pérdida
+  se indican en la lista de mensajes y se omiten.
+
+Los archivos se procesan en su computadora; no se envían a ningún sitio.
+Este programa prepara imágenes; no realiza interpretación diagnóstica.

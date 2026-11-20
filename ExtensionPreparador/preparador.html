@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Preparador de Estudios</title>
+  <link rel="stylesheet" href="preparador.css">
+</head>
+<body>
+  <header>
+    <h1>PREPARADOR DE ESTUDIOS &nbsp;|&nbsp; VIDEOS, JPG Y DICOM</h1>
+    <p>Dr. Néstor José Mejía González · Radiología e Imagen · PDF grandes y legibles, siempre menos de 40 MB</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>1. Agregue todos los archivos del mismo paciente</h2>
+      <p class="ayuda">Puede usar cada botón varias veces. Los archivos nuevos se añaden a la lista.
+        En la ventana de selección: <b>Ctrl + A</b> selecciona todos; <b>Ctrl + clic</b> selecciona archivos separados.</p>
+      <div class="botones">
+        <button id="btnVideos" class="principal">AGREGAR VARIOS VIDEOS</button>
+        <button id="btnImagenes" class="principal">AGREGAR VARIOS JPG / PNG</button>
+        <button id="btnDicom">Agregar DICOM</button>
+        <button id="btnCarpeta">Agregar carpeta</button>
+      </div>
+      <input type="file" id="selVideos" multiple accept=".mp4,.mov,.avi,.mkv,.wmv,.m4v,.webm,video/*" hidden>
+      <input type="file" id="selImagenes" multiple accept=".jpg,.jpeg,.png,.bmp,.tif,.tiff,.webp,image/*" hidden>
+      <input type="file" id="selDicom" multiple hidden>
+      <input type="file" id="selCarpeta" webkitdirectory multiple hidden>
+
+      <div id="zona" class="zona">
+        <table id="tabla">
+          <thead><tr><th>Orden</th><th>Tipo</th><th>Archivo</th><th>Tamaño</th></tr></thead>
+          <tbody id="lista"></tbody>
+        </table>
+        <p id="vacia" class="vacia">También puede <b>arrastrar aquí</b> videos, fotos o carpetas.</p>
+      </div>
+      <div class="botones">
+        <button id="btnQuitar">Quitar seleccionados</button>
+        <button id="btnVaciar">Vaciar lista</button>
+        <button id="btnSubir">Subir</button>
+        <button id="btnBajar">Bajar</button>
+      </div>
+      <p id="contador" class="contador">0 elementos seleccionados: 0 videos · 0 imágenes · 0 DICOM · 0 carpetas</p>
+    </section>
+
+    <section>
+      <h2>2. Nombre del paciente</h2>
+      <input type="text" id="paciente" placeholder="Ej.: María López" autocomplete="off">
+      <div class="opciones">
+        <label>Mosaico solo para videos / DICOM:
+          <select id="mosaico">
+            <option value="2">4 cortes (más grandes)</option>
+            <option value="3" selected>9 cortes</option>
+            <option value="4">16 cortes</option>
+            <option value="5">25 cortes</option>
+          </select>
+        </label>
+        <label>Máximo de mosaicos:
+          <input type="number" id="limite" min="1" max="100" value="100">
+        </label>
+      </div>
+      <p class="ayuda">Cada JPG ocupa una página completa grande, a color. Con menos cortes por mosaico, cada corte se ve más grande.
+        Cada PDF queda siempre por debajo de 40 MB (si hace falta, se divide en partes).</p>
+    </section>
+
+    <button id="btnConvertir" class="convertir">3. CONVERTIR TODOS LOS ARCHIVOS A PDF</button>
+    <progress id="progreso" value="0" max="1" hidden></progress>
+    <pre id="registro"></pre>
+    <button id="btnAbrir" disabled>Mostrar el PDF en la carpeta de Descargas</button>
+    <p class="nota">Este programa prepara imágenes; no realiza interpretación diagnóstica. Los archivos no salen de su computadora.</p>
+  </main>
+
+  <script src="pdf.js"></script>
+  <script src="dicom.js"></script>
+  <script src="preparador.js"></script>
+</body>
+</html>
