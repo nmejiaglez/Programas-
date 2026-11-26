@@ -1,0 +1,125 @@
+<title>Comedor La Ceiba</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Nunito+Sans:wght@400;600;800&display=swap">
+<style>
+/* Layout: menú de una columna para teléfono; cabecera verde, plato del día, categorías fijas arriba, barra de pedido fija abajo */
+:root{
+  --bg:#F4F6F0;
+  --card:#FFFFFF;
+  --ink:#1C2B22;
+  --muted:#5C6B60;
+  --line:#DCE3D6;
+  --green:#1F4D3A;
+  --green-2:#2E6B50;
+  --corn:#F2B632;
+  --chili:#C8402F;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Nunito Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121A15;--card:#1A241E;--ink:#EAF1EA;--muted:#A3B2A6;--line:#2C3A31;--green:#163A2B;--green-2:#4E9A76;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121A15;--card:#1A241E;--ink:#EAF1EA;--muted:#A3B2A6;--line:#2C3A31;--green:#163A2B;--green-2:#4E9A76;color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.45}
+.wrap{max-width:620px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.hero{background:var(--green);color:#F4F6F0;margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 22px);padding-bottom:22px}
+.demo{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:var(--corn);color:#2A1E00;padding:3px 9px;border-radius:999px}
+.hero h1{font-family:var(--display);font-size:clamp(34px,9vw,48px);line-height:.95;margin:10px 0 6px;font-weight:800;letter-spacing:-.01em;text-wrap:balance}
+.hero p{margin:0;color:#CFE0D4;font-size:14.5px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:12px;font-size:13.5px;font-weight:600;color:#E7EFE8}
+.day{margin-top:18px;background:var(--card);border:2px solid var(--corn);border-radius:16px;padding:14px;display:flex;gap:12px;align-items:center}
+.day .em{font-size:40px;line-height:1}
+.day small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--chili)}
+.day b{display:block;font-family:var(--display);font-size:20px;line-height:1.1}
+.day span{color:var(--muted);font-size:13.5px}
+.day .pr{margin-left:auto;font-family:var(--display);font-weight:800;font-size:20px;white-space:nowrap}
+nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+nav a{flex:none;text-decoration:none;color:var(--ink);font-weight:800;font-size:14px;padding:7px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--card)}
+nav a:focus-visible,button:focus-visible{outline:3px solid var(--corn);outline-offset:2px}
+section{padding-block:14px 4px}
+h2{font-family:var(--display);font-size:24px;margin:8px 0 10px;font-weight:800}
+.item{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px dashed var(--line)}
+.item .tx{flex:1;min-width:0}
+.item b{display:block;font-size:16px}
+.item small{color:var(--muted);font-size:13.5px;display:block}
+.price{font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:15.5px}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:34px;height:34px;border-radius:50%;border:0;font:800 19px/1 var(--body);cursor:pointer;background:var(--line);color:var(--ink)}
+.qty button.add{background:var(--green-2);color:#fff}
+.qty output{min-width:16px;text-align:center;font-weight:800;font-variant-numeric:tabular-nums}
+.foot{color:var(--muted);font-size:13px;text-align:center;padding-block:26px 120px}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:8;padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:var(--bg);border-top:1px solid var(--line)}
+.bar button{width:100%;max-width:620px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;border:0;border-radius:14px;background:var(--chili);color:#fff;font:800 16px var(--body);padding:14px 18px;cursor:pointer}
+.sheet{position:fixed;inset:0;background:rgba(10,20,14,.5);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.panel{background:var(--card);width:100%;max-width:620px;border-radius:20px 20px 0 0;padding:18px max(16px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:10px;max-height:85%;overflow-y:auto}
+.panel h3{font-family:var(--display);font-size:22px;margin:0}
+.line{display:flex;justify-content:space-between;gap:10px;font-variant-numeric:tabular-nums}
+.total{border-top:2px solid var(--line);padding-top:8px;font-weight:800;font-size:17px}
+.wa{display:block;text-align:center;text-decoration:none;background:#1FA855;color:#fff;font-weight:800;padding:14px;border-radius:14px}
+.ghost{border:0;background:var(--line);color:var(--ink);font:800 15px var(--body);padding:12px;border-radius:14px;cursor:pointer}
+.note{font-size:12.5px;color:var(--muted);margin:0}
+</style>
+
+<header class="hero"><div class="wrap">
+  <span class="demo">Ejemplo de muestrario</span>
+  <h1>Comedor La Ceiba</h1>
+  <p>Comida casera chontaleña, hecha con leña.</p>
+  <div class="meta"><span>🕖 Lunes a sábado, 7:00 a.m. a 8:00 p.m.</span><span>📍 Juigalpa, Chontales</span></div>
+  <div class="day"><div class="em">🍲</div><div style="min-width:0"><small>Plato del día</small><b>Sopa de queso</b><span>Con tortilla y refresco natural</span></div><div class="pr">C$ 150</div></div>
+</div></header>
+<nav aria-label="Categorías"><div class="wrap" id="cats"></div></nav>
+<main class="wrap" id="menu"></main>
+<p class="foot wrap">Precios en córdobas, IVA incluido.<br>Menú digital de ejemplo para mostrar a clientes.</p>
+<div class="bar" id="bar" hidden><button id="cartBtn"><span id="cartCount">Ver pedido</span><span id="cartTotal">C$ 0</span></button></div>
+<div class="sheet" id="sheet" hidden><div class="panel" role="dialog" aria-label="Su pedido"><h3>Su pedido</h3><div id="lines"></div><a class="wa" id="wa" href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a><p class="note">Número de ejemplo. En el menú real va el WhatsApp del restaurante.</p><button class="ghost" id="closeS">Seguir viendo el menú</button></div></div>
+
+<script>
+const MENU=[
+ {id:"desayunos",name:"Desayunos",items:[
+  ["Gallo pinto completo","Con huevo, queso frito, crema y tortilla",120],
+  ["Nacatamal","De cerdo, con pan y café",90],
+  ["Quesillo","Tortilla, quesillo, crema y cebolla en vinagre",70],
+  ["Tostones con queso","Plátano verde frito con queso de Chontales",80]]},
+ {id:"almuerzos",name:"Almuerzos",items:[
+  ["Carne asada","Gallo pinto, tajadas, ensalada y chimichurri",180],
+  ["Pollo frito","Con papas, ensalada y tortilla",150],
+  ["Indio viejo","Con arroz y tortilla",130],
+  ["Vigorón","Yuca, chicharrón y ensalada de repollo",110],
+  ["Baho","Solo los domingos",170]]},
+ {id:"bebidas",name:"Bebidas",items:[
+  ["Pinolillo","Bien frío, con leche",40],
+  ["Cacao","Natural, preparado en casa",45],
+  ["Fresco de cálala","Vaso grande",35],
+  ["Café de palo","Taza",25],
+  ["Gaseosa","350 ml",30]]},
+ {id:"postres",name:"Postres",items:[
+  ["Tres leches","Porción",60],
+  ["Pío V","Porción",55],
+  ["Cajeta de leche","Dos piezas",30]]}
+];
+const WA="50500000000";
+const cart={};
+const fmt=n=>"C$ "+n.toLocaleString("es-NI");
+const cats=document.getElementById("cats"),menu=document.getElementById("menu");
+MENU.forEach(c=>{
+  const a=document.createElement("a");a.href="#"+c.id;a.textContent=c.name;cats.appendChild(a);
+  const s=document.createElement("section");s.id=c.id;s.innerHTML="<h2>"+c.name+"</h2>";
+  c.items.forEach((it,i)=>{const key=c.id+i;const row=document.createElement("div");row.className="item";
+    row.innerHTML='<div class="tx"><b>'+it[0]+'</b><small>'+it[1]+'</small></div><span class="price">'+fmt(it[2])+'</span><div class="qty"><button aria-label="Quitar '+it[0]+'" hidden>−</button><output hidden>0</output><button class="add" aria-label="Agregar '+it[0]+'">+</button></div>';
+    const [minus,add]=row.querySelectorAll("button"),out=row.querySelector("output");
+    const sync=()=>{const q=cart[key]?cart[key].q:0;out.textContent=q;minus.hidden=out.hidden=q===0;update();};
+    add.onclick=()=>{cart[key]=cart[key]||{n:it[0],p:it[2],q:0};cart[key].q++;sync();};
+    minus.onclick=()=>{if(!cart[key])return;cart[key].q--;if(cart[key].q<=0)delete cart[key];sync();};
+    s.appendChild(row);});
+  menu.appendChild(s);
+});
+function update(){const items=Object.values(cart);const n=items.reduce((a,b)=>a+b.q,0),t=items.reduce((a,b)=>a+b.q*b.p,0);
+  document.getElementById("bar").hidden=n===0;document.getElementById("cartCount").textContent="Ver pedido ("+n+")";document.getElementById("cartTotal").textContent=fmt(t);
+  document.getElementById("lines").innerHTML=items.map(i=>'<div class="line"><span>'+i.q+' × '+i.n+'</span><span>'+fmt(i.q*i.p)+'</span></div>').join("")+'<div class="line total"><span>Total</span><span>'+fmt(t)+'</span></div>';
+  const msg="Hola, quiero pedir:\n"+items.map(i=>"• "+i.q+" × "+i.n).join("\n")+"\nTotal: "+fmt(t);
+  document.getElementById("wa").href="https://wa.me/"+WA+"?text="+encodeURIComponent(msg);}
+document.getElementById("cartBtn").onclick=()=>{document.getElementById("sheet").hidden=false;};
+document.getElementById("closeS").onclick=()=>{document.getElementById("sheet").hidden=true;};
+document.getElementById("sheet").addEventListener("click",e=>{if(e.target.id==="sheet")e.target.hidden=true;});
+</script>
