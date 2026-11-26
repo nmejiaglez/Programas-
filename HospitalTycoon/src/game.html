@@ -1,0 +1,700 @@
+<title>Mi Hospital Tycoon</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Layout: pantalla de juego vertical para teléfono: HUD arriba, escena de recepción, salas en 2 columnas, barra de pestañas abajo */
+:root{
+  --bg:#E7F3F1;
+  --surface:#FFFFFF;
+  --ink:#12324A;
+  --muted:#58738A;
+  --line:#CFE2DE;
+  --accent:#0E9C89;
+  --accent-d:#0A7768;
+  --coin:#F4A714;
+  --coin-d:#B87800;
+  --danger:#D9435A;
+  --scene-a:#BFE8E1;
+  --scene-b:#F7FBFA;
+  --display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --body:"Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+button:focus-visible{outline:3px solid var(--coin);outline-offset:2px}
+#app{height:100%;display:flex;flex-direction:column;max-width:560px;margin:0 auto;background:var(--bg)}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* HUD */
+.hud{display:flex;align-items:center;gap:10px;padding-block:10px;background:var(--surface);border-bottom:2px solid var(--line)}
+.cash{flex:1;min-width:0}
+.cash b{display:block;font-family:var(--display);font-size:26px;line-height:1;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cash small{color:var(--muted);font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums}
+.mc{display:flex;align-items:center;gap:6px;background:#FFF6DF;border:2px solid var(--coin);border-radius:999px;padding:4px 6px 4px 8px;font-weight:800;font-variant-numeric:tabular-nums}
+.mc .plus{width:26px;height:26px;border-radius:50%;background:var(--coin);color:#3B2600;font-size:18px;line-height:26px;text-align:center}
+.coin{display:inline-block;width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFE28A,var(--coin) 55%,var(--coin-d));box-shadow:inset 0 -2px 0 rgba(0,0,0,.18);position:relative;flex:none;vertical-align:-4px}
+.coin::after{content:"+";position:absolute;inset:0;text-align:center;font:800 14px/20px var(--body);color:#fff}
+.coin.sm{width:16px;height:16px;vertical-align:-3px}
+.coin.sm::after{font-size:11px;line-height:16px}
+.boostbar{font-size:12.5px;font-weight:800;color:#fff;background:var(--danger);text-align:center;padding:3px 0}
+
+main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.view{padding-block:14px 24px;display:flex;flex-direction:column;gap:14px}
+h2{font-family:var(--display);font-size:22px;line-height:1.1;margin:0;font-weight:800;text-wrap:balance}
+.sub{color:var(--muted);font-size:13.5px;margin:-8px 0 0}
+
+/* Escena */
+.scene{position:relative;height:150px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,var(--scene-a),var(--scene-b) 72%);border:2px solid var(--line)}
+.scene .sign{position:absolute;top:10px;left:12px;background:var(--surface);border-radius:8px;padding:3px 10px;font-family:var(--display);font-weight:800;font-size:14px;color:var(--accent-d);box-shadow:0 2px 0 var(--line)}
+.scene .floor{position:absolute;left:0;right:0;bottom:0;height:46px;background:repeating-linear-gradient(90deg,#fff 0 28px,#EEF6F4 28px 56px);border-top:2px solid var(--line)}
+.scene .desk{position:absolute;right:14px;bottom:30px;font-size:44px;line-height:1}
+.scene .desk span{display:block;width:70px;height:16px;background:var(--accent);border-radius:6px 6px 0 0;margin-top:-8px}
+.scene .pet{position:absolute;bottom:28px;font-size:28px}
+.walker{position:absolute;bottom:34px;left:-50px;font-size:34px;line-height:1;animation:walk linear forwards}
+@keyframes walk{0%{transform:translateX(0)}100%{transform:translateX(calc(var(--w) - 110px))}}
+.vip{position:absolute;top:40px;font-size:34px;animation:bob 1s ease-in-out infinite alternate;cursor:pointer;filter:drop-shadow(0 0 6px gold)}
+.vip::after{content:"VIP";position:absolute;top:-10px;left:50%;transform:translateX(-50%);font:800 10px var(--body);background:var(--coin);color:#3B2600;padding:0 5px;border-radius:6px}
+@keyframes bob{to{transform:translateY(-8px)}}
+
+.tapwrap{display:flex;align-items:center;gap:14px}
+.tapbtn{flex:none;width:108px;height:108px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#3FD3BE,var(--accent) 60%,var(--accent-d));color:#fff;font-family:var(--display);font-weight:800;font-size:15px;line-height:1.05;box-shadow:0 6px 0 var(--accent-d),0 10px 18px rgba(14,156,137,.3);transition:transform .06s}
+.tapbtn .big{font-size:36px;display:block;line-height:1}
+.tapbtn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--accent-d)}
+.tapinfo{min-width:0;font-size:13.5px;color:var(--muted);line-height:1.45}
+.tapinfo b{color:var(--ink)}
+
+.mult{display:flex;gap:6px;align-items:center}
+.mult span{font-weight:800;font-size:13px;color:var(--muted);margin-right:auto}
+.mult button{padding:5px 12px;border-radius:999px;background:var(--surface);border:2px solid var(--line);font-weight:800;font-size:13px}
+.mult button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* Salas */
+.rooms{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.room{background:var(--surface);border-radius:16px;padding:10px;border:2px solid var(--line);display:flex;flex-direction:column;gap:6px;min-width:0;position:relative}
+.room .top{display:flex;gap:8px;align-items:center}
+.room .ic{font-size:30px;width:42px;height:42px;border-radius:12px;background:var(--bg);display:grid;place-items:center;flex:none}
+.room .nm{font-weight:800;font-size:14px;line-height:1.15;min-width:0}
+.room .lv{font-size:12px;color:var(--muted);font-weight:700}
+.room .inc{font-size:12.5px;font-weight:800;color:var(--accent-d);font-variant-numeric:tabular-nums}
+.room .bar{height:6px;border-radius:4px;background:var(--bg);overflow:hidden}
+.room .bar i{display:block;height:100%;background:var(--coin);width:0}
+.buy{width:100%;padding:8px 6px;border-radius:12px;background:var(--accent);color:#fff;font-weight:800;font-size:13.5px;line-height:1.15;box-shadow:0 3px 0 var(--accent-d);font-variant-numeric:tabular-nums}
+.buy small{display:block;font-size:11px;font-weight:700;opacity:.9}
+.buy:disabled{background:#B9CBC8;box-shadow:0 3px 0 #9DB2AE;cursor:default}
+.buy:not(:disabled):active{transform:translateY(2px);box-shadow:0 1px 0 var(--accent-d)}
+.room.locked{border-style:dashed;background:transparent}
+.room.locked .ic{filter:grayscale(1);opacity:.5}
+.room.hidden-room{opacity:.55;border-style:dashed;background:transparent}
+
+/* Listas */
+.list{display:flex;flex-direction:column;gap:8px}
+.item{display:flex;align-items:center;gap:12px;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:10px 12px}
+.item .ic{font-size:28px;width:44px;height:44px;flex:none;display:grid;place-items:center;border-radius:12px;background:var(--bg)}
+.item .tx{flex:1;min-width:0}
+.item .tx b{display:block;font-size:14.5px;line-height:1.2}
+.item .tx small{color:var(--muted);font-size:12.5px;line-height:1.3;display:block}
+.item .act{flex:none;min-width:88px}
+.item.done{opacity:.6}
+.pill{display:inline-block;font-size:11px;font-weight:800;padding:1px 7px;border-radius:999px;background:var(--coin);color:#3B2600;vertical-align:1px;margin-left:4px}
+.coinbuy{background:var(--coin);box-shadow:0 3px 0 var(--coin-d);color:#3B2600}
+.coinbuy:disabled{background:#E5D7B8;box-shadow:0 3px 0 #CDBE9E;color:#7A6B4E}
+.owned{font-weight:800;color:var(--accent-d);font-size:13px;text-align:center}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{padding:7px 14px;border-radius:999px;background:var(--surface);border:2px solid var(--line);font-weight:800;font-size:13.5px}
+.seg button[aria-pressed="true"]{background:var(--coin);border-color:var(--coin-d);color:#3B2600}
+.packs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pack{background:var(--surface);border:2px solid var(--coin);border-radius:16px;padding:12px 10px;text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center;position:relative}
+.pack .amt{font-family:var(--display);font-weight:800;font-size:22px;line-height:1;font-variant-numeric:tabular-nums}
+.pack .tag{position:absolute;top:-10px;background:var(--danger);color:#fff;font-size:11px;font-weight:800;padding:1px 8px;border-radius:999px}
+.pack .stack{font-size:30px;line-height:1}
+.note{font-size:12.5px;color:var(--muted);background:var(--surface);border:2px dashed var(--line);border-radius:12px;padding:10px 12px;line-height:1.45}
+.daily{display:flex;align-items:center;gap:12px;background:linear-gradient(120deg,#FFF3CF,#FFFFFF);border:2px solid var(--coin);border-radius:16px;padding:12px}
+.daily .tx{flex:1;min-width:0}
+.daily b{display:block;font-family:var(--display);font-size:17px;line-height:1.1}
+.daily small{color:var(--muted);font-size:12.5px}
+
+/* Pestañas */
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border-top:2px solid var(--line);padding-block:4px}
+.tabs button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 0;font-size:11.5px;font-weight:800;color:var(--muted);position:relative}
+.tabs button .e{font-size:22px;line-height:1}
+.tabs button[aria-selected="true"]{color:var(--accent-d)}
+.tabs button[aria-selected="true"]::before{content:"";position:absolute;top:-6px;left:30%;right:30%;height:4px;border-radius:0 0 4px 4px;background:var(--accent)}
+.dot{position:absolute;top:2px;right:calc(50% - 22px);width:10px;height:10px;border-radius:50%;background:var(--danger);border:2px solid var(--surface)}
+
+/* Modal y avisos */
+.modal{position:fixed;inset:0;background:rgba(10,30,45,.55);display:grid;place-items:center;z-index:50;padding:20px max(16px,env(safe-area-inset-right,0px)) 20px max(16px,env(safe-area-inset-left,0px))}
+.card{background:var(--surface);border-radius:20px;padding:20px;max-width:360px;width:100%;text-align:center;display:flex;flex-direction:column;gap:12px;box-shadow:0 20px 40px rgba(0,0,0,.25)}
+.card .big{font-size:48px;line-height:1}
+.card h3{font-family:var(--display);font-size:22px;margin:0;line-height:1.1}
+.card p{margin:0;color:var(--muted);line-height:1.45}
+.card .row{display:flex;gap:8px}
+.card .row .buy{flex:1}
+.ghost{background:var(--bg)!important;color:var(--ink)!important;box-shadow:0 3px 0 var(--line)!important}
+.adbox{background:#12324A;color:#fff;border-radius:14px;padding:22px 10px;font-weight:800}
+.adbox .cnt{font-family:var(--display);font-size:40px;line-height:1}
+#toasts{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 64px);display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;z-index:60}
+.toast{background:var(--ink);color:#fff;font-weight:800;font-size:13.5px;padding:8px 14px;border-radius:999px;animation:tin .25s ease-out;max-width:90%;text-align:center}
+@keyframes tin{from{transform:translateY(-10px);opacity:0}}
+.float{position:fixed;pointer-events:none;font-family:var(--display);font-weight:800;font-size:22px;color:var(--accent-d);text-shadow:0 2px 0 #fff;z-index:40;animation:up .9s ease-out forwards}
+@keyframes up{to{transform:translateY(-70px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.walker,.vip,.float,.toast{animation-duration:.01s!important}.vip{animation:none}}
+</style>
+
+<div id="app">
+  <header class="hud gut">
+    <div class="cash"><b id="money">$ 0</b><small id="rate">$ 0 por segundo</small></div>
+    <button class="mc" id="mcBtn" aria-label="Abrir tienda de MediCoins"><span class="coin"></span><span id="mc">0</span><span class="plus">+</span></button>
+  </header>
+  <div class="boostbar" id="boostbar" hidden></div>
+  <main id="main">
+    <section class="view gut" id="v-hospital">
+      <div class="scene" id="scene">
+        <div class="sign" id="hname">Hospital Dr. Mejía</div>
+        <div class="floor"></div>
+        <div class="desk"><span id="doctor">🧑‍⚕️</span><span></span></div>
+      </div>
+      <div class="tapwrap">
+        <button class="tapbtn" id="tap"><span class="big">🩺</span>Atender<br>paciente</button>
+        <div class="tapinfo">Cada toque gana <b id="tapval">$ 1</b>.<br>Pacientes atendidos: <b id="treated">0</b><br>Toque al <b>paciente VIP</b> ⭐ cuando aparezca para ganar MediCoins.</div>
+      </div>
+      <div class="mult"><span>Comprar niveles</span>
+        <button data-m="1" aria-pressed="true">x1</button><button data-m="10" aria-pressed="false">x10</button><button data-m="max" aria-pressed="false">MÁX</button>
+      </div>
+      <div class="rooms" id="rooms"></div>
+    </section>
+
+    <section class="view gut" id="v-mejoras" hidden>
+      <h2>Mejoras del hospital</h2>
+      <p class="sub">Se compran una sola vez con dinero del juego y multiplican las ganancias.</p>
+      <div class="list" id="upgrades"></div>
+    </section>
+
+    <section class="view gut" id="v-tienda" hidden>
+      <div class="daily" id="daily"></div>
+      <div>
+        <h2>Comprar MediCoins</h2>
+      </div>
+      <div class="packs" id="packs"></div>
+      <p class="note" id="paynote">Versión de prueba: los paquetes se acreditan gratis para que pruebe la tienda. En la versión de Play Store aquí se abre el pago de Google Play.</p>
+      <h2>Tienda MediCoins</h2>
+      <div class="seg" id="shopSeg">
+        <button data-s="poderes" aria-pressed="true">Poderes</button>
+        <button data-s="estilos" aria-pressed="false">Estilos</button>
+        <button data-s="doctores" aria-pressed="false">Doctores</button>
+        <button data-s="mascotas" aria-pressed="false">Mascotas</button>
+      </div>
+      <div class="list" id="shop"></div>
+    </section>
+
+    <section class="view gut" id="v-logros" hidden>
+      <h2>Logros</h2>
+      <p class="sub">Cumpla metas y cobre MediCoins gratis.</p>
+      <div class="list" id="achs"></div>
+      <h2>Estadísticas</h2>
+      <div class="list" id="stats"></div>
+      <button class="buy ghost" id="resetBtn">Reiniciar partida</button>
+    </section>
+  </main>
+  <nav class="tabs gut" role="tablist">
+    <button role="tab" data-v="hospital" aria-selected="true"><span class="e">🏥</span>Hospital</button>
+    <button role="tab" data-v="mejoras" aria-selected="false"><span class="e">⬆️</span>Mejoras<i class="dot" id="dotUp" hidden></i></button>
+    <button role="tab" data-v="tienda" aria-selected="false"><span class="e">🛒</span>Tienda<i class="dot" id="dotShop" hidden></i></button>
+    <button role="tab" data-v="logros" aria-selected="false"><span class="e">🏆</span>Logros<i class="dot" id="dotAch" hidden></i></button>
+  </nav>
+</div>
+<div class="modal" id="modal" hidden><div class="card" id="mcard"></div></div>
+<div id="toasts"></div>
+
+<script>
+(function(){
+"use strict";
+const SAVE_KEY="hospitalTycoon.v1";
+const GROWTH=1.15;
+
+/* ---------- Datos del juego ---------- */
+const ROOMS=[
+  {id:"consulta",name:"Consultorio",icon:"🩺",cost:10,inc:1},
+  {id:"enfer",name:"Enfermería",icon:"💉",cost:70,inc:4},
+  {id:"lab",name:"Laboratorio",icon:"🧪",cost:700,inc:22},
+  {id:"rx",name:"Rayos X",icon:"🩻",cost:5000,inc:100},
+  {id:"us",name:"Ultrasonido",icon:"🤰",cost:32000,inc:450},
+  {id:"farm",name:"Farmacia",icon:"💊",cost:200000,inc:2000},
+  {id:"emer",name:"Emergencias",icon:"🚑",cost:1.3e6,inc:9000},
+  {id:"tac",name:"Tomografía",icon:"🌀",cost:9e6,inc:40000},
+  {id:"quir",name:"Quirófano",icon:"🫀",cost:6.5e7,inc:180000},
+  {id:"rm",name:"Resonancia",icon:"🧲",cost:5e8,inc:820000},
+  {id:"uci",name:"Terapia Intensiva",icon:"🛏️",cost:3.8e9,inc:3.8e6},
+  {id:"heli",name:"Helipuerto",icon:"🚁",cost:3e10,inc:1.8e7}
+];
+const MILESTONES=[10,25,50,100,200,300];
+
+const UPGRADES=[
+  {id:"g_tap",name:"Recepción digital",icon:"🖥️",desc:"Toques x2",cost:400,kind:"tap",mult:2},
+  {id:"g_citas",name:"Sistema de citas",icon:"📅",desc:"Todo el hospital x1.5",cost:60000,kind:"global",mult:1.5},
+  {id:"g_tap2",name:"Médicos residentes",icon:"🧑‍🎓",desc:"Toques x3",cost:2.5e6,kind:"tap",mult:3},
+  {id:"g_expe",name:"Expediente electrónico",icon:"🗂️",desc:"Todo el hospital x2",cost:4e8,kind:"global",mult:2},
+  {id:"g_acred",name:"Acreditación internacional",icon:"🏅",desc:"Todo el hospital x3",cost:2e11,kind:"global",mult:3}
+];
+ROOMS.forEach(r=>{
+  UPGRADES.push({id:"e_"+r.id,name:"Equipo nuevo: "+r.name,icon:r.icon,desc:r.name+" x2 · requiere nivel 10",cost:r.cost*30,kind:"room",room:r.id,mult:2,req:10});
+  UPGRADES.push({id:"s_"+r.id,name:"Especialistas: "+r.name,icon:r.icon,desc:r.name+" x3 · requiere nivel 25",cost:r.cost*900,kind:"room",room:r.id,mult:3,req:25});
+});
+
+const PACKS=[
+  {id:"p1",mc:100,price:"US$ 0.99",stack:"🪙"},
+  {id:"p2",mc:550,price:"US$ 4.99",stack:"💰",tag:"+10 % extra"},
+  {id:"p3",mc:1200,price:"US$ 9.99",stack:"💰💰",tag:"Popular"},
+  {id:"p4",mc:2600,price:"US$ 19.99",stack:"🏦",tag:"Mejor valor"}
+];
+
+const POWERS=[
+  {id:"x2",name:"Doble ingreso para siempre",icon:"💰",desc:"Todas las salas ganan el doble, para siempre.",price:200,perm:true},
+  {id:"tap5",name:"Toque de oro",icon:"👆",desc:"Cada toque vale x5, para siempre.",price:120,perm:true},
+  {id:"night",name:"Gerente nocturno",icon:"🌙",desc:"Gana mientras no juega hasta 24 h (normal: 8 h).",price:150,perm:true},
+  {id:"turbo",name:"Turbo x3 · 15 minutos",icon:"⚡",desc:"Triplica todas las ganancias durante 15 minutos.",price:30},
+  {id:"warp",name:"Salto de 2 horas",icon:"⏩",desc:"Cobre al instante 2 horas de ganancias.",price:50},
+  {id:"vipmag",name:"Imán de VIP",icon:"⭐",desc:"Los pacientes VIP llegan el doble de seguido, para siempre.",price:90,perm:true}
+];
+const STYLES=[
+  {id:"clasico",name:"Clásico",icon:"🏥",price:0,v:{accent:"#0E9C89",accentD:"#0A7768",a:"#BFE8E1",b:"#F7FBFA",bg:"#E7F3F1"}},
+  {id:"nocturno",name:"Turno de noche",icon:"🌃",price:60,v:{accent:"#4F63D8",accentD:"#3646A8",a:"#2B3A7A",b:"#9EA9E8",bg:"#E9ECF8"}},
+  {id:"pediatrico",name:"Pediatría arcoíris",icon:"🌈",price:60,v:{accent:"#D9559B",accentD:"#A93C76",a:"#FFD6EA",b:"#FFF6D9",bg:"#FBEFF5"}},
+  {id:"volcan",name:"Volcán y lago",icon:"🌋",price:80,v:{accent:"#D4602A",accentD:"#A2461C",a:"#FFC9A8",b:"#CDEBF2",bg:"#F8EEE8"}},
+  {id:"navidad",name:"Navidad",icon:"🎄",price:80,v:{accent:"#C23544",accentD:"#922432",a:"#CFEBD6",b:"#FFFFFF",bg:"#EEF5EF"}},
+  {id:"dorado",name:"Dorado VIP",icon:"👑",price:150,v:{accent:"#B98512",accentD:"#86600A",a:"#FFE7A3",b:"#FFF9E8",bg:"#F8F2E2"}}
+];
+const DOCTORS=[
+  {id:"d1",name:"Doctor",icon:"🧑‍⚕️",price:0},
+  {id:"d2",name:"Doctora",icon:"👩‍⚕️",price:0},
+  {id:"d3",name:"Doctor veterano",icon:"👨‍⚕️",price:0},
+  {id:"d4",name:"Superdoctor",icon:"🦸",price:50},
+  {id:"d5",name:"Doctora heroína",icon:"🦸‍♀️",price:50},
+  {id:"d6",name:"Robot cirujano",icon:"🤖",price:80},
+  {id:"d7",name:"Mago de la salud",icon:"🧙",price:100},
+  {id:"d8",name:"Director alienígena",icon:"👽",price:120}
+];
+const PETS=[
+  {id:"m1",name:"Perrito de terapia",icon:"🐶",price:40},
+  {id:"m2",name:"Gatito",icon:"🐱",price:40},
+  {id:"m3",name:"Loro hablador",icon:"🦜",price:60},
+  {id:"m4",name:"Tortuga",icon:"🐢",price:60},
+  {id:"m5",name:"Pingüino",icon:"🐧",price:80},
+  {id:"m6",name:"Unicornio",icon:"🦄",price:150}
+];
+const PATIENTS=["🧍","🧍‍♀️","🧓","👵","🧑‍🦽","🤕","🤒","🤧","👶","🧔","👩‍🦳","🧑‍🦯"];
+const DAILY=[10,15,20,25,30,40,60];
+
+const ACHS=[
+  {id:"a1",name:"Primer paciente",desc:"Atienda 1 paciente",mc:5,test:s=>s.treated>=1},
+  {id:"a2",name:"Sala de espera llena",desc:"Atienda 100 pacientes",mc:10,test:s=>s.treated>=100},
+  {id:"a3",name:"Médico incansable",desc:"Atienda 1,000 pacientes",mc:25,test:s=>s.treated>=1000},
+  {id:"a4",name:"Leyenda de la medicina",desc:"Atienda 25,000 pacientes",mc:60,test:s=>s.treated>=25000},
+  {id:"a5",name:"Clínica en crecimiento",desc:"Construya 3 salas",mc:10,test:()=>ownedCount()>=3},
+  {id:"a6",name:"Centro de diagnóstico",desc:"Construya 6 salas",mc:25,test:()=>ownedCount()>=6},
+  {id:"a7",name:"Hospital regional",desc:"Construya 9 salas",mc:50,test:()=>ownedCount()>=9},
+  {id:"a8",name:"Hospital completo",desc:"Construya las 12 salas",mc:120,test:()=>ownedCount()>=12},
+  {id:"a9",name:"Primer millón",desc:"Gane $ 1 M en total",mc:15,test:s=>s.total>=1e6},
+  {id:"a10",name:"Mil millones",desc:"Gane $ 1 B en total",mc:40,test:s=>s.total>=1e9},
+  {id:"a11",name:"Imperio de la salud",desc:"Gane $ 1 T en total",mc:100,test:s=>s.total>=1e12},
+  {id:"a12",name:"Sala experta",desc:"Lleve una sala al nivel 50",mc:30,test:s=>Object.values(s.rooms).some(l=>l>=50)},
+  {id:"a13",name:"Cazador de VIP",desc:"Atienda 10 pacientes VIP",mc:20,test:s=>s.vips>=10}
+];
+
+/* ---------- Estado ---------- */
+function freshState(){
+  return {money:0,mc:25,total:0,treated:0,taps:0,vips:0,rooms:{consulta:1},ups:{},perm:{},turboUntil:0,
+    owned:{clasico:1,d1:1,d2:1,d3:1},style:"clasico",doctor:"d1",pets:[],achs:{},
+    daily:{last:"",streak:0},lastSeen:Date.now(),started:Date.now(),name:"Hospital Dr. Mejía"};
+}
+let S=freshState();
+let buyMult="1";
+let shopTab="poderes";
+let view="hospital";
+
+function load(){
+  try{const raw=localStorage.getItem(SAVE_KEY); if(raw){const d=JSON.parse(raw); S=Object.assign(freshState(),d);} }catch(e){}
+}
+function save(){
+  S.lastSeen=Date.now();
+  try{localStorage.setItem(SAVE_KEY,JSON.stringify(S));}catch(e){}
+}
+
+/* ---------- Cálculos ---------- */
+const $=id=>document.getElementById(id);
+function fmt(n){
+  if(!isFinite(n)) return "∞";
+  if(n<1000){return (n<10&&n%1)?n.toFixed(1):String(Math.floor(n));}
+  const u=["K","M","B","T","Qa","Qi","Sx","Sp","Oc","No","Dc"]; let i=-1;
+  while(n>=1000&&i<u.length-1){n/=1000;i++;}
+  return (n<10?n.toFixed(2):n<100?n.toFixed(1):Math.floor(n))+" "+u[i];
+}
+const money=n=>"$ "+fmt(n);
+function ownedCount(){return ROOMS.filter(r=>(S.rooms[r.id]||0)>0).length;}
+function milestoneMult(l){let m=1;MILESTONES.forEach(t=>{if(l>=t)m*=2;});return m;}
+function nextMilestone(l){return MILESTONES.find(t=>t>l)||null;}
+function roomMult(id){let m=1;UPGRADES.forEach(u=>{if(u.kind==="room"&&u.room===id&&S.ups[u.id])m*=u.mult;});return m;}
+function globalMult(withBoost){
+  let m=1;UPGRADES.forEach(u=>{if(u.kind==="global"&&S.ups[u.id])m*=u.mult;});
+  if(S.perm.x2)m*=2;
+  if(withBoost&&turboOn())m*=3;
+  return m;
+}
+function turboOn(){return S.turboUntil>Date.now();}
+function roomIncome(r,lvl){const l=lvl==null?(S.rooms[r.id]||0):lvl; return l<=0?0:r.inc*l*milestoneMult(l)*roomMult(r.id);}
+function rate(withBoost=true){let t=0;ROOMS.forEach(r=>t+=roomIncome(r));return t*globalMult(withBoost);}
+function tapValue(){
+  let m=1;UPGRADES.forEach(u=>{if(u.kind==="tap"&&S.ups[u.id])m*=u.mult;});
+  if(S.perm.tap5)m*=5;
+  if(turboOn())m*=3;
+  return (1+rate(false)*0.06)*m;
+}
+function levelCost(r,l){return r.cost*Math.pow(GROWTH,l);}
+function bulk(r){
+  const l=S.rooms[r.id]||0;
+  if(l===0) return {n:1,cost:r.cost};
+  const c0=levelCost(r,l);
+  let n;
+  if(buyMult==="max"){n=Math.floor(Math.log(S.money*(GROWTH-1)/c0+1)/Math.log(GROWTH)); if(n<1)n=1;}
+  else n=parseInt(buyMult,10);
+  const cost=c0*(Math.pow(GROWTH,n)-1)/(GROWTH-1);
+  return {n,cost};
+}
+function earn(v){S.money+=v;S.total+=v;}
+
+/* ---------- Interfaz: salas ---------- */
+const roomEls={};
+function buildRooms(){
+  const box=$("rooms"); box.innerHTML="";
+  ROOMS.forEach(r=>{
+    const el=document.createElement("div"); el.className="room";
+    el.innerHTML='<div class="top"><div class="ic">'+r.icon+'</div><div style="min-width:0"><div class="nm">'+r.name+'</div><div class="lv"></div></div></div>'+
+      '<div class="inc"></div><div class="bar"><i></i></div><button class="buy"></button>';
+    el.querySelector(".buy").addEventListener("click",()=>buyRoom(r));
+    box.appendChild(el);
+    roomEls[r.id]={el,lv:el.querySelector(".lv"),inc:el.querySelector(".inc"),bar:el.querySelector(".bar i"),btn:el.querySelector(".buy"),nm:el.querySelector(".nm"),ic:el.querySelector(".ic")};
+  });
+}
+function updateRooms(){
+  const firstLocked=ROOMS.findIndex(r=>!(S.rooms[r.id]>0));
+  const gm=globalMult(true);
+  ROOMS.forEach((r,i)=>{
+    const E=roomEls[r.id]; const l=S.rooms[r.id]||0;
+    if(l>0){
+      E.el.className="room"; E.el.hidden=false;
+      E.nm.textContent=r.name; E.ic.textContent=r.icon;
+      const nm=nextMilestone(l);
+      E.lv.textContent="Nivel "+l+(nm?" · x2 en nivel "+nm:" · máximo bono");
+      E.inc.textContent="+"+money(roomIncome(r)*gm)+"/s";
+      const prev=[0,...MILESTONES].filter(t=>t<=l).pop();
+      E.bar.style.width=nm?Math.min(100,(l-prev)/(nm-prev)*100)+"%":"100%";
+      const b=bulk(r);
+      E.btn.innerHTML="Mejorar x"+b.n+"<small>"+money(b.cost)+"</small>";
+      E.btn.disabled=S.money<b.cost;
+    }else if(i===firstLocked){
+      E.el.className="room locked"; E.el.hidden=false;
+      E.nm.textContent=r.name; E.ic.textContent=r.icon;
+      E.lv.textContent="Sin construir";
+      E.inc.textContent="Ganará +"+money(roomIncome(r,1)*gm)+"/s";
+      E.bar.style.width="0";
+      E.btn.innerHTML="Construir<small>"+money(r.cost)+"</small>";
+      E.btn.disabled=S.money<r.cost;
+    }else if(i===firstLocked+1){
+      E.el.className="room hidden-room"; E.el.hidden=false;
+      E.nm.textContent="Sala secreta"; E.ic.textContent="🔒";
+      E.lv.textContent="Construya la anterior";
+      E.inc.textContent=""; E.bar.style.width="0";
+      E.btn.innerHTML="Bloqueada<small>???</small>"; E.btn.disabled=true;
+    }else{E.el.hidden=true;}
+  });
+}
+function buyRoom(r){
+  const l=S.rooms[r.id]||0; const b=bulk(r);
+  if(S.money<b.cost) return;
+  S.money-=b.cost; S.rooms[r.id]=l+b.n;
+  if(l===0){toast(r.icon+" ¡"+r.name+" construida!"); spawnPatient();}
+  else if(MILESTONES.some(t=>l<t&&l+b.n>=t)) toast(r.icon+" "+r.name+": ¡ganancias x2!");
+  refresh();
+}
+
+/* ---------- Mejoras ---------- */
+function upgradeAvailable(u){
+  if(S.ups[u.id]) return false;
+  if(u.kind==="room"){const l=S.rooms[u.room]||0; return l>0 && l>=u.req-5;}
+  return true;
+}
+function renderUpgrades(){
+  const box=$("upgrades"); box.innerHTML="";
+  const list=UPGRADES.filter(upgradeAvailable).sort((a,b)=>a.cost-b.cost).slice(0,12);
+  if(!list.length){box.innerHTML='<p class="note">Suba de nivel sus salas para desbloquear más mejoras.</p>';}
+  list.forEach(u=>{
+    const reqOk=u.kind!=="room"||(S.rooms[u.room]||0)>=u.req;
+    const it=document.createElement("div"); it.className="item";
+    it.innerHTML='<div class="ic">'+u.icon+'</div><div class="tx"><b>'+u.name+'</b><small>'+u.desc+'</small></div><div class="act"><button class="buy"></button></div>';
+    const btn=it.querySelector(".buy");
+    btn.innerHTML=reqOk?money(u.cost):"Nivel "+u.req;
+    btn.disabled=!reqOk||S.money<u.cost;
+    btn.dataset.cost=u.cost; btn.dataset.req=reqOk?"1":"0";
+    btn.addEventListener("click",()=>{ if(S.money<u.cost||!reqOk) return; S.money-=u.cost; S.ups[u.id]=1; toast("⬆️ "+u.name); renderUpgrades(); refresh(); });
+    box.appendChild(it);
+  });
+  const bought=UPGRADES.filter(u=>S.ups[u.id]).length;
+  if(bought){const p=document.createElement("p");p.className="note";p.textContent="Mejoras compradas: "+bought+" de "+UPGRADES.length+".";box.appendChild(p);}
+}
+function updateUpgradeButtons(){
+  $("upgrades").querySelectorAll(".buy").forEach(b=>{ if(b.dataset.req==="1") b.disabled=S.money<+b.dataset.cost; });
+}
+function anyUpgradeAffordable(){return UPGRADES.some(u=>upgradeAvailable(u)&&(u.kind!=="room"||(S.rooms[u.room]||0)>=u.req)&&S.money>=u.cost);}
+
+/* ---------- Tienda ---------- */
+function todayStr(){const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function yesterdayStr(){const d=new Date(Date.now()-864e5);return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function dailyReady(){return S.daily.last!==todayStr();}
+function renderDaily(){
+  const box=$("daily");
+  const streak=S.daily.last===yesterdayStr()||S.daily.last===todayStr()?S.daily.streak:0;
+  const ready=dailyReady();
+  const day=ready?streak+1:streak;
+  const amt=DAILY[Math.min(day,7)-1]||DAILY[0];
+  box.innerHTML='<div class="coin" style="width:40px;height:40px"></div><div class="tx"><b>Regalo diario · día '+Math.max(day,1)+'</b><small>'+(ready?"Hoy: "+amt+" MediCoins gratis. Vuelva cada día para ganar más.":"Ya cobró hoy. Vuelva mañana por más.")+'</small></div>';
+  const b=document.createElement("button"); b.className="buy coinbuy"; b.style.width="auto"; b.style.padding="8px 14px";
+  b.textContent=ready?"Cobrar":"✓"; b.disabled=!ready;
+  b.addEventListener("click",()=>{ if(!dailyReady())return; S.daily.streak=day; S.daily.last=todayStr(); S.mc+=amt; toast("🎁 +"+amt+" MediCoins"); renderShop(); refresh(); });
+  box.appendChild(b);
+}
+function renderPacks(){
+  const box=$("packs"); box.innerHTML="";
+  PACKS.forEach(p=>{
+    const el=document.createElement("div"); el.className="pack";
+    el.innerHTML=(p.tag?'<span class="tag">'+p.tag+'</span>':"")+'<div class="stack">'+p.stack+'</div><div class="amt"><span class="coin"></span> '+p.mc.toLocaleString("es")+'</div><button class="buy coinbuy">'+p.price+'</button>';
+    el.querySelector("button").addEventListener("click",()=>purchasePack(p));
+    box.appendChild(el);
+  });
+}
+function purchasePack(p){
+  /* Aquí se conecta Google Play Billing en la versión de tienda.
+     window.HospitalBilling (si existe) recibe el id del producto y llama onDone al confirmar el pago. */
+  if(window.HospitalBilling&&typeof window.HospitalBilling.buy==="function"){
+    window.HospitalBilling.buy(p.id,()=>{S.mc+=p.mc;toast("💳 +"+p.mc+" MediCoins");refresh();renderShop();});
+    return;
+  }
+  modal('<div class="big">🪙</div><h3>'+p.mc.toLocaleString("es")+' MediCoins</h3><p>Modo de prueba: en Play Store aquí aparece el pago de Google por <b>'+p.price+'</b>. Ahora se le acreditan gratis.</p><div class="row"><button class="buy ghost" data-x>Cancelar</button><button class="buy coinbuy" data-ok>Acreditar</button></div>',
+    c=>{c.querySelector("[data-ok]").onclick=()=>{S.mc+=p.mc;closeModal();toast("+"+p.mc+" MediCoins");refresh();renderShop();};});
+}
+function shopItems(){
+  if(shopTab==="poderes") return POWERS;
+  if(shopTab==="estilos") return STYLES;
+  if(shopTab==="doctores") return DOCTORS;
+  return PETS;
+}
+function renderShop(){
+  renderDaily();
+  const box=$("shop"); box.innerHTML="";
+  shopItems().forEach(it=>{
+    const el=document.createElement("div"); el.className="item";
+    let desc=it.desc||(shopTab==="estilos"?"Cambia los colores del hospital":shopTab==="doctores"?"Su médico en la recepción":"Pasea por la sala de espera");
+    if(it.id==="turbo"&&turboOn()) desc="Activo: quedan "+Math.ceil((S.turboUntil-Date.now())/60000)+" min. Comprar suma 15 min.";
+    if(it.id==="warp") desc="Cobre al instante "+money(rate(false)*7200)+" (2 horas).";
+    el.innerHTML='<div class="ic">'+it.icon+'</div><div class="tx"><b>'+it.name+'</b><small>'+desc+'</small></div><div class="act"></div>';
+    const act=el.querySelector(".act");
+    const isCos=shopTab!=="poderes";
+    const owned=isCos?!!S.owned[it.id]:(it.perm&&S.perm[it.id]);
+    if(owned){
+      if(!isCos){act.innerHTML='<div class="owned">✓ Activo</div>'; el.classList.add("done");}
+      else{
+        const inUse=(shopTab==="estilos"&&S.style===it.id)||(shopTab==="doctores"&&S.doctor===it.id)||(shopTab==="mascotas"&&S.pets.includes(it.id));
+        const b=document.createElement("button"); b.className="buy"+(inUse?" ghost":"");
+        b.textContent=inUse?(shopTab==="mascotas"?"Quitar":"En uso"):"Usar";
+        b.disabled=inUse&&shopTab!=="mascotas";
+        b.onclick=()=>equip(it);
+        act.appendChild(b);
+      }
+    }else{
+      const b=document.createElement("button"); b.className="buy coinbuy";
+      b.innerHTML='<span class="coin sm"></span> '+it.price;
+      b.disabled=S.mc<it.price;
+      b.onclick=()=>buyItem(it,isCos);
+      act.appendChild(b);
+    }
+    box.appendChild(el);
+  });
+  const more=document.createElement("p"); more.className="note";
+  more.textContent="Cada mes llegan estilos, doctores y mascotas nuevos a la tienda.";
+  box.appendChild(more);
+}
+function buyItem(it,isCos){
+  if(S.mc<it.price){openPacks();return;}
+  S.mc-=it.price;
+  if(isCos){S.owned[it.id]=1; equip(it,true); toast("🛍️ "+it.name);}
+  else if(it.perm){S.perm[it.id]=1; toast(it.icon+" "+it.name+" activado");}
+  else if(it.id==="turbo"){S.turboUntil=Math.max(Date.now(),S.turboUntil)+15*60000; toast("⚡ Turbo x3 activado");}
+  else if(it.id==="warp"){const g=rate(false)*7200; earn(g); toast("⏩ +"+money(g));}
+  renderShop(); refresh();
+}
+function equip(it){
+  if(shopTab==="estilos"||STYLES.includes(it)){S.style=it.id; applyStyle();}
+  else if(shopTab==="doctores"||DOCTORS.includes(it)){S.doctor=it.id; applyDoctor();}
+  else {const i=S.pets.indexOf(it.id); if(i>=0)S.pets.splice(i,1); else {S.pets.push(it.id); if(S.pets.length>3)S.pets.shift();} applyPets();}
+  renderShop(); save();
+}
+function openPacks(){switchView("tienda"); setTimeout(()=>$("packs").scrollIntoView({behavior:"smooth",block:"center"}),50); toast("Le faltan MediCoins");}
+function applyStyle(){
+  const st=STYLES.find(s=>s.id===S.style)||STYLES[0]; const r=document.documentElement.style;
+  r.setProperty("--accent",st.v.accent); r.setProperty("--accent-d",st.v.accentD);
+  r.setProperty("--scene-a",st.v.a); r.setProperty("--scene-b",st.v.b); r.setProperty("--bg",st.v.bg);
+}
+function applyDoctor(){const d=DOCTORS.find(x=>x.id===S.doctor)||DOCTORS[0]; $("doctor").textContent=d.icon;}
+function applyPets(){
+  $("scene").querySelectorAll(".pet").forEach(p=>p.remove());
+  S.pets.forEach((id,i)=>{const p=PETS.find(x=>x.id===id); if(!p)return; const s=document.createElement("div"); s.className="pet"; s.textContent=p.icon; s.style.right=(100+i*34)+"px"; $("scene").appendChild(s);});
+}
+
+/* ---------- Logros ---------- */
+function renderAchs(){
+  const box=$("achs"); box.innerHTML="";
+  const sorted=ACHS.slice().sort((a,b)=>{const ka=S.achs[a.id]?2:a.test(S)?0:1, kb=S.achs[b.id]?2:b.test(S)?0:1; return ka-kb;});
+  sorted.forEach(a=>{
+    const done=a.test(S), claimed=S.achs[a.id];
+    const el=document.createElement("div"); el.className="item"+(claimed?" done":"");
+    el.innerHTML='<div class="ic">'+(claimed?"✅":done?"🏆":"🎯")+'</div><div class="tx"><b>'+a.name+'</b><small>'+a.desc+'</small></div><div class="act"></div>';
+    const act=el.querySelector(".act");
+    if(claimed) act.innerHTML='<div class="owned">Cobrado</div>';
+    else{const b=document.createElement("button"); b.className="buy coinbuy"; b.innerHTML=(done?"Cobrar ":"")+'<span class="coin sm"></span> '+a.mc; b.disabled=!done;
+      b.onclick=()=>{S.achs[a.id]=1; S.mc+=a.mc; toast("🏆 +"+a.mc+" MediCoins"); renderAchs(); refresh();}; act.appendChild(b);}
+    box.appendChild(el);
+  });
+  const st=$("stats"); const days=Math.max(1,Math.ceil((Date.now()-S.started)/864e5));
+  st.innerHTML=[["💵","Dinero ganado en total",money(S.total)],["🧑‍⚕️","Pacientes atendidos",Math.floor(S.treated).toLocaleString("es")],["⭐","Pacientes VIP",S.vips],["🏥","Salas construidas",ownedCount()+" de "+ROOMS.length],["📆","Días jugando",days]]
+    .map(r=>'<div class="item"><div class="ic">'+r[0]+'</div><div class="tx"><b>'+r[2]+'</b><small>'+r[1]+'</small></div></div>').join("");
+}
+function achReady(){return ACHS.some(a=>!S.achs[a.id]&&a.test(S));}
+
+/* ---------- Escena y VIP ---------- */
+function spawnPatient(){
+  const sc=$("scene"); if(view!=="hospital"||document.hidden) return;
+  if(sc.querySelectorAll(".walker").length>6) return;
+  const w=document.createElement("div"); w.className="walker";
+  w.textContent=PATIENTS[Math.floor(Math.random()*PATIENTS.length)];
+  const dur=4+Math.random()*3; w.style.animationDuration=dur+"s"; w.style.setProperty("--w",sc.clientWidth+"px");
+  w.style.bottom=(30+Math.random()*10)+"px";
+  sc.appendChild(w); w.addEventListener("animationend",()=>w.remove());
+}
+let vipTimer=0, vipEl=null;
+function scheduleVip(){const base=S.perm.vipmag?22:45; vipTimer=Date.now()+(base+Math.random()*base)*1000;}
+function spawnVip(){
+  if(vipEl||view!=="hospital") return;
+  const sc=$("scene"); vipEl=document.createElement("button"); vipEl.className="vip"; vipEl.setAttribute("aria-label","Atender paciente VIP");
+  vipEl.textContent=["🤴","👸","🧑‍🚀","🕵️","🧑‍🎤"][Math.floor(Math.random()*5)];
+  vipEl.style.left=(20+Math.random()*(sc.clientWidth-160))+"px";
+  vipEl.onclick=e=>{
+    S.vips++;
+    if(Math.random()<0.55){const g=1+Math.floor(Math.random()*4); S.mc+=g; floatAt(e.clientX,e.clientY,"+"+g+" 🪙"); toast("⭐ Paciente VIP: +"+g+" MediCoins");}
+    else{const g=Math.max(50,rate(false)*90); earn(g); floatAt(e.clientX,e.clientY,"+"+money(g)); toast("⭐ Paciente VIP: +"+money(g));}
+    vipEl.remove(); vipEl=null; scheduleVip(); refresh();
+  };
+  sc.appendChild(vipEl);
+  setTimeout(()=>{if(vipEl){vipEl.remove();vipEl=null;scheduleVip();}},10000);
+}
+
+/* ---------- Avisos, modal ---------- */
+function toast(t){const el=document.createElement("div"); el.className="toast"; el.textContent=t; $("toasts").appendChild(el); setTimeout(()=>el.remove(),2200); while($("toasts").children.length>3)$("toasts").firstChild.remove();}
+function floatAt(x,y,t){const f=document.createElement("div"); f.className="float"; f.textContent=t; f.style.left=(x-30)+"px"; f.style.top=(y-30)+"px"; document.body.appendChild(f); setTimeout(()=>f.remove(),900);}
+function modal(html,wire){const c=$("mcard"); c.innerHTML=html; $("modal").hidden=false; c.querySelectorAll("[data-x]").forEach(b=>b.onclick=closeModal); if(wire)wire(c);}
+function closeModal(){$("modal").hidden=true;}
+
+function offlineCheck(){
+  const secs=(Date.now()-S.lastSeen)/1000;
+  if(secs<60) return;
+  const cap=(S.perm.night?24:8)*3600;
+  const g=rate(false)*Math.min(secs,cap)*0.5;
+  if(g<1) return;
+  const h=Math.floor(Math.min(secs,cap)/3600), m=Math.floor(Math.min(secs,cap)%3600/60);
+  modal('<div class="big">🏥</div><h3>Su hospital siguió trabajando</h3><p>Mientras no estaba ('+(h?h+" h ":"")+m+' min) ganó <b>'+money(g)+'</b>.</p><div class="row"><button class="buy ghost" data-c1>Cobrar</button><button class="buy coinbuy" data-c2>Cobrar x2 📺</button></div>',
+    c=>{
+      c.querySelector("[data-c1]").onclick=()=>{earn(g);closeModal();refresh();};
+      c.querySelector("[data-c2]").onclick=()=>fakeAd(()=>{earn(g*2);toast("x2: +"+money(g*2));refresh();});
+    });
+}
+function fakeAd(done){
+  /* En la versión de tienda aquí se muestra un anuncio con recompensa (AdMob). */
+  let n=5;
+  modal('<div class="adbox"><div>Anuncio de prueba</div><div class="cnt" id="adc">5</div><div style="font-size:12px;opacity:.8">En Play Store aquí va un anuncio real</div></div>');
+  const iv=setInterval(()=>{n--; const a=document.getElementById("adc"); if(a)a.textContent=n; if(n<=0){clearInterval(iv);closeModal();done();}},1000);
+}
+
+/* ---------- Navegación ---------- */
+function switchView(v){
+  view=v;
+  ["hospital","mejoras","tienda","logros"].forEach(x=>$("v-"+x).hidden=x!==v);
+  document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===v?"true":"false"));
+  $("main").scrollTop=0;
+  if(v==="mejoras")renderUpgrades();
+  if(v==="tienda")renderShop();
+  if(v==="logros")renderAchs();
+}
+
+/* ---------- Bucle ---------- */
+let last=performance.now(), uiAcc=0, saveAcc=0, patAcc=0;
+function refresh(){
+  $("money").textContent=money(S.money);
+  $("rate").textContent=money(rate())+" por segundo"+(turboOn()?" ⚡":"");
+  $("mc").textContent=Math.floor(S.mc).toLocaleString("es");
+  $("tapval").textContent=money(tapValue());
+  $("treated").textContent=Math.floor(S.treated).toLocaleString("es");
+  const bb=$("boostbar");
+  if(turboOn()){const s=Math.ceil((S.turboUntil-Date.now())/1000); bb.hidden=false; bb.textContent="⚡ TURBO x3 · "+Math.floor(s/60)+":"+String(s%60).padStart(2,"0");} else bb.hidden=true;
+  updateRooms();
+  if(view==="mejoras")updateUpgradeButtons();
+  $("dotUp").hidden=!anyUpgradeAffordable();
+  $("dotShop").hidden=!dailyReady();
+  $("dotAch").hidden=!achReady();
+}
+function loop(now){
+  const dt=Math.min(1,(now-last)/1000); last=now;
+  const r=rate();
+  earn(r*dt);
+  let lv=0; ROOMS.forEach(x=>lv+=S.rooms[x.id]||0);
+  S.treated+=lv*0.03*dt;
+  uiAcc+=dt; saveAcc+=dt; patAcc+=dt;
+  if(uiAcc>0.2){uiAcc=0;refresh();}
+  if(saveAcc>5){saveAcc=0;save();}
+  const gap=Math.max(0.8,3.2-ownedCount()*0.2);
+  if(patAcc>gap){patAcc=0;spawnPatient();}
+  if(Date.now()>vipTimer)spawnVip();
+  requestAnimationFrame(loop);
+}
+
+/* ---------- Inicio ---------- */
+function start(data){
+  load();
+  if(data&&data.S){S=Object.assign(freshState(),data.S);}
+  buildRooms(); renderPacks(); applyStyle(); applyDoctor(); applyPets();
+  $("tap").addEventListener("click",e=>{
+    const v=tapValue(); earn(v); S.treated++; S.taps++;
+    const x=e.clientX||(e.target.getBoundingClientRect().left+54), y=e.clientY||(e.target.getBoundingClientRect().top+20);
+    floatAt(x,y,"+"+money(v));
+    if(S.taps%4===0)spawnPatient();
+    refresh();
+  });
+  document.querySelectorAll(".mult button").forEach(b=>b.addEventListener("click",()=>{buyMult=b.dataset.m; document.querySelectorAll(".mult button").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false")); refresh();}));
+  document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.v)));
+  document.querySelectorAll("#shopSeg button").forEach(b=>b.addEventListener("click",()=>{shopTab=b.dataset.s; document.querySelectorAll("#shopSeg button").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false")); renderShop();}));
+  $("mcBtn").addEventListener("click",openPacksQuiet);
+  $("resetBtn").addEventListener("click",()=>modal('<div class="big">⚠️</div><h3>¿Reiniciar la partida?</h3><p>Se borra todo el progreso, el dinero y las MediCoins de este teléfono.</p><div class="row"><button class="buy ghost" data-x>Cancelar</button><button class="buy" style="background:var(--danger);box-shadow:0 3px 0 #9E2B3D" data-ok>Reiniciar</button></div>',
+    c=>{c.querySelector("[data-ok]").onclick=()=>{S=freshState();save();closeModal();applyStyle();applyDoctor();applyPets();switchView("hospital");refresh();};}));
+  $("modal").addEventListener("click",e=>{if(e.target.id==="modal"&&!$("adc"))closeModal();});
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)save();else{offlineCheck();}});
+  window.addEventListener("pagehide",save);
+  scheduleVip(); vipTimer=Date.now()+12000;
+  refresh();
+  offlineCheck();
+  for(let i=0;i<3;i++)setTimeout(spawnPatient,i*700);
+  requestAnimationFrame(t=>{last=t;requestAnimationFrame(loop);});
+  if(window.claude&&window.claude.hot&&window.claude.hot.snapshot){window.claude.hot.snapshot(()=>({S}));}
+}
+function openPacksQuiet(){switchView("tienda"); setTimeout(()=>$("packs").scrollIntoView({behavior:"smooth",block:"center"}),50);}
+if(window.claude&&window.claude.hot&&window.claude.hot.ready) window.claude.hot.ready(start); else start((window.claude&&window.claude.hot&&window.claude.hot.data)||{});
+})();
+</script>

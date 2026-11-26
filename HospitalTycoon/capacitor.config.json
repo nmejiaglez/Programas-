@@ -1,0 +1,6 @@
+{
+  "appId": "com.drmejia.hospitaltycoon",
+  "appName": "Mi Hospital Tycoon",
+  "webDir": "www",
+  "android": { "backgroundColor": "#E7F3F1" }
+}
