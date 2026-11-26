@@ -1,0 +1,18 @@
+{
+  "name": "mi-ciudad-pc",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mi Ciudad para computadora",
+  "main": "main.js",
+  "devDependencies": {
+    "electron": "31.7.7",
+    "electron-builder": "24.13.3"
+  },
+  "build": {
+    "appId": "com.drmejia.miciudad",
+    "productName": "Mi Ciudad",
+    "files": ["main.js", "app/**"],
+    "win": { "target": "portable" },
+    "portable": { "artifactName": "MiCiudad-PC.exe" }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "appId": "com.drmejia.miciudad",
+  "appName": "Mi Ciudad",
+  "webDir": "www",
+  "android": { "backgroundColor": "#9FD8F5" }
+}
