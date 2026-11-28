@@ -58,6 +58,7 @@ function makeChar(look){
  if(st==="punta"){for(let i=0;i<7;i++){const a=(i/6-0.5)*1.8;const c=cone(0.13,0.42,hair,Math.sin(a)*0.3,0.42,0.12-Math.abs(a)*0.08,head,6);c.rotation.z=-a*0.6;c.rotation.x=-0.5;}}
  hat(L.hat,head);
  const wings=extraLook(L,body,head);
+ if(typeof lookExtras==="function")lookExtras(L,{body,head,tor,tg,tt,eyes,mouth,hair,skin,shirt,sItem,pItem});
  const sh=new T.Mesh(new T.CircleGeometry(0.7,18),new T.MeshBasicMaterial({color:0x000000,transparent:true,opacity:0.18,depthWrite:false}));sh.rotation.x=-Math.PI/2;sh.position.y=0.33;g.add(sh);
  return {g,body,legs,arms,head,shadow:sh,wings,eyes,mouth,tor,phase:Math.random()*6,blink:2+Math.random()*3,t:Math.random()*10};
 }

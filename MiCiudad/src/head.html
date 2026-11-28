@@ -236,6 +236,16 @@ input:focus{outline:none;border-color:var(--accent)}
 img.th{width:84px;height:84px;object-fit:contain;display:block;filter:drop-shadow(0 3px 2px rgba(20,48,74,.18))}
 .card .big img.th{margin:-4px auto}
 .fcard img.th{width:64px;height:64px}.res img.th{width:130px;height:130px;margin:0 auto}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:45;overflow:hidden}.confetti i{position:absolute;top:-20px;width:10px;height:16px;border-radius:3px;animation:fall 2s ease-in forwards}
+@keyframes fall{to{top:110%;transform:rotate(720deg) translateX(40px)}}
+.objchip{position:fixed;left:max(12px,env(safe-area-inset-left,0px));top:calc(env(safe-area-inset-top,0px) + 62px);max-width:min(46vw,300px);background:linear-gradient(#FFFFFF,#FFF3D6);border:3px solid #FFC94D;color:#3B2600;font-weight:800;font-size:12.5px;line-height:1.25;padding:6px 10px;border-radius:14px;z-index:5;text-align:left;box-shadow:0 3px 0 rgba(20,48,74,.18);animation:objin .5s ease-out}
+@keyframes objin{from{transform:scale(.6);opacity:0}}
+.rbar.big{height:14px}
+.zonetag,.banner,.zbtn{left:62%}
+@media (max-width:520px){.zonetag,.banner,.zbtn{left:auto;right:72px;transform:none}}
+.card{position:relative}.ptag{position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:10.5px;font-weight:800;color:#fff;padding:1px 8px;border-radius:999px;background:#E2465C;white-space:nowrap}
+.ptag.ptnuevo{background:#19A858}.ptag.ptlimitado{background:linear-gradient(90deg,#7B4BD1,#FF4FA3)}.res .ptag{position:static;transform:none;vertical-align:middle}
+.trycv{width:min(280px,70vw);aspect-ratio:1;align-self:center;border-radius:24px;background:radial-gradient(circle at 50% 40%,#FFFFFF,#FFE3F1 60%,#E6DBFF);border:4px solid #fff;box-shadow:0 6px 20px rgba(123,75,209,.25)}
 @media (prefers-reduced-motion:reduce){#title .logo .w span,#title .tplay{animation:none}#act{animation:none}.toast{animation:none}}
 </style>
 
@@ -257,6 +267,7 @@ img.th{width:84px;height:84px;object-fit:contain;display:block;filter:drop-shado
     <button class="tb" id="bSet" aria-label="Ajustes"><span class="e">⚙️</span><small>Ajustes</small></button>
   </div>
 </div>
+<button class="objchip" id="objChip" hidden></button>
 <div class="banner" id="banner" hidden></div>
 <div class="zonetag" id="zonetag" hidden></div>
 <button class="zbtn" id="zbtn" hidden></button>

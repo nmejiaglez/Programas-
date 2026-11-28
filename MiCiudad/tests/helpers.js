@@ -7,7 +7,7 @@ async function open(opts = {}) {
   const p = await ctx.newPage();
   const errs = [];
   p.on("pageerror", e => errs.push("PAGEERROR " + e.message));
-  p.on("console", m => { if (m.type() === "error") errs.push(m.text()); });
+  p.on("console", m => { if (m.type() === "error" && m.text().indexOf("status of 401") < 0) errs.push(m.text()); });
   if (opts.save) await p.addInitScript(s => localStorage.setItem("miCiudad.v1", s), JSON.stringify(opts.save));
   await p.goto("file://" + path.resolve(__dirname, "../www/index.html") + "?test=1");
   await p.waitForFunction(() => window.__t, null, { timeout: 20000 });

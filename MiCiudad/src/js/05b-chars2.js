@@ -15,7 +15,7 @@ function extraLook(L,body,head){
   wings.forEach((w,i)=>{w.rotation.order="YXZ";});
  }
  if(a==="jetpack"){for(const s of [-1,1]){cyl(0.16,0.16,0.8,"#C9D3DC",s*0.2,1.3,-0.42,body,12);const fl=cone(0.13,0.35,"#F28C28",s*0.2,0.78,-0.42,body,8);fl.rotation.x=Math.PI;fl.material=M("#F28C28","#8A3A00");}}
- if(f==="lentes"||f==="corazon"||f==="estrella"){const c=f==="lentes"?"#14212E":f==="corazon"?"#FF4FA3":"#F5C518";for(const s of [-1,1]){const l=f==="lentes"?box(0.24,0.14,0.04,c,s*0.17,0.04,0.45,head):cyl(0.13,0.13,0.05,c,s*0.17,0.04,0.45,head,f==="estrella"?5:12);if(f!=="lentes")l.rotation.x=Math.PI/2;}box(0.12,0.03,0.03,c,0,0.06,0.46,head);}
+ if(f==="lentes"){const c=f==="lentes"?"#14212E":f==="corazon"?"#FF4FA3":"#F5C518";for(const s of [-1,1]){const l=f==="lentes"?box(0.24,0.14,0.04,c,s*0.17,0.04,0.45,head):cyl(0.13,0.13,0.05,c,s*0.17,0.04,0.45,head,f==="estrella"?5:12);if(f!=="lentes")l.rotation.x=Math.PI/2;}box(0.12,0.03,0.03,c,0,0.06,0.46,head);}
  if(f==="antifaz"){box(0.72,0.16,0.06,"#14212E",0,0.05,0.42,head);}
  if(f==="mascarilla"){box(0.5,0.26,0.06,"#BFE6FF",0,-0.14,0.42,head);}
  if(n==="corbatin"){box(0.28,0.12,0.06,"#E2465C",0,1.74,0.28,body);}

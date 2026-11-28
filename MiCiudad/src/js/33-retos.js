@@ -11,7 +11,8 @@ const RETO_POOL=[
  {k:"tobogan",t:"Baja {n} veces por el tobogán",icon:"🛝",n:[3,5,8]},
  {k:"trampolin",t:"Rebota {n} veces en el trampolín",icon:"🤸",n:[10,20,30]},
  {k:"mascota",t:"Cuida a tu mascota {n} veces",icon:"🐶",n:[2,3,5]},
- {k:"amigas",t:"Juega en una sala con amigas",icon:"👭",n:[1,1,1]}
+ {k:"amigas",t:"Juega en una sala con amigas",icon:"👭",n:[1,1,1]},
+ {k:"bosque",t:"Pasa {n} niveles del Bosque de Retos",icon:"🌳",n:[1,2,3]}
 ];
 const MEDALS=[
  {k:"saltos",n:500,name:"Saltarina",icon:"🦘"},{k:"monedas",n:300,name:"Coleccionista",icon:"🪙"},{k:"bailes",n:60,name:"Estrella del baile",icon:"💃"},

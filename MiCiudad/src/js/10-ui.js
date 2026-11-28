@@ -68,7 +68,8 @@ function itemGrid(body,items,sub,owned,inUse,use,toggle){
  const g=el("div","grid");items.forEach(it=>{const own=owned(it),on=inUse(it);const c=el("div","card"+(on?" on":""),'<div class="big">'+it.icon+'</div><b>'+it.name+'</b><small>'+sub(it)+'</small>');
   const b=el("button","btn"+(own?(on&&!toggle?" ghost":" go"):(it.cur==="mc"?" coinb":"")),own?(on?(toggle?"Guardar":"En uso"):"Usar"):priceHTML(it));
   if(own&&on&&!toggle)b.disabled=true;
-  b.onclick=()=>{if(!own){if(!pay(it))return;S.owned[it.id]=1;toast("🎉 ¡"+it.name+" es suyo!");}use(it);save();};
+  b.onclick=()=>{if(!own){if(it.tryOver&&typeof tryOn==="function"&&tryOn(it.tryOver,it,()=>{S.owned[it.id]=1;toast("🎉 ¡"+it.name+" es suyo!");use(it);save();}))return;if(!pay(it))return;S.owned[it.id]=1;if(typeof confetti==="function")confetti();sfx("compra");toast("🎉 ¡"+it.name+" es suyo!");}use(it);save();};
+  if(it.tag&&!own)c.appendChild(el("span","ptag pt"+it.tag.toLowerCase(),it.tag));
   c.appendChild(b);g.appendChild(c);});body.appendChild(g);}
 function creditPack(p){S.mc+=p.mc;toast("💳 +"+p.mc+" MediCoins");if(p.starter){S.starter=true;S.owned.alas_mariposa=1;S.look.acc="alas_mariposa";if(typeof hatchEgg==="function")hatchEgg("dorado",true);buildPlayer();}save();hud();}
 function buyPack(p){
@@ -86,10 +87,10 @@ function redeem(v){redeemOnline(v);}
 
 /* ---------- Ropa ---------- */
 function swatch(c){return '<span class="sw" style="display:inline-block;width:40px;height:40px;background:'+c+'"></span>';}
-function wearGrid(body,list,key,tab){const fr=key==="hat"||key==="face"?FRAME_HEAD:key==="pants"?FRAME_LEGS:FRAME_BODY;itemGrid(body,list.map(x=>Object.assign({},x,{icon:x.id==="none"?(x.icon||"🚫"):imgTag(lookThumb({[key]:x.id,[key+"C"]:undefined},fr),x.icon||swatch(x.c))})),it=>it.p?"":"Gratis",it=>S.owned[it.id]||!it.p,it=>S.look[key]===it.id,it=>{S.look[key]=it.id;buildPlayer();openCloset(tab);});}
+function wearGrid(body,list,key,tab){const fr=key==="hat"||key==="face"?FRAME_HEAD:key==="pants"?FRAME_LEGS:FRAME_BODY;itemGrid(body,list.filter(x=>!x.hide||S.owned[x.id]).map(x=>Object.assign({},x,{slot:key,tryOver:{[key]:x.id,[key+"C"]:undefined},tryTab:tab,tryKey:key,icon:x.id==="none"?(x.icon||"🚫"):imgTag(lookThumb({[key]:x.id,[key+"C"]:undefined},fr),x.icon||swatch(x.c))})),it=>it.p?"":"Gratis",it=>S.owned[it.id]||!it.p,it=>S.look[key]===it.id,it=>{S.look[key]=it.id;buildPlayer();openCloset(tab);});}
 function openCloset(tab){tab=tab||"pelo";
  sheet("Mi personaje",body=>{
-  seg(body,[["pelo","Piel y pelo"],["camisas","Camisas"],["pantalones","Pantalones y faldas"],["sombreros","Sombreros"],["accesorios","Accesorios"],["colores","🎨 Colores"],["estelas","✨ Estelas"],["bailes","💃 Bailes"],["rol","Mi rol"]],tab,t=>openCloset(t));
+  seg(body,[["pelo","Piel y pelo"],["cara","😊 Cara"],["camisas","Camisas"],["pantalones","Pantalones y faldas"],["sombreros","Sombreros"],["accesorios","Accesorios"],["colores","🎨 Colores"],["estelas","✨ Estelas"],["bailes","💃 Bailes"],["rol","Mi rol"]],tab,t=>openCloset(t));
   if(typeof closetExtra==="function")closetExtra(body,tab);
   if(tab==="pelo"){
    body.appendChild(el("h3","","Color de piel"));const r1=el("div","seg");SKINS.forEach((c,i)=>{const b=el("button","");b.innerHTML='<span class="sw" style="display:block;background:'+c+'"></span>';b.setAttribute("aria-pressed",S.look.skin===i?"true":"false");b.setAttribute("aria-label","Piel "+(i+1));b.onclick=()=>{S.look.skin=i;buildPlayer();openCloset("pelo");};r1.appendChild(b);});body.appendChild(r1);

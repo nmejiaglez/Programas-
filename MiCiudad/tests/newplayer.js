@@ -4,11 +4,17 @@ const { open } = require("./helpers");
   const out = process.argv[2] || "/tmp";
   const { b, p, errs } = await open({});
   await p.fill("#welName", "Sofía"); await p.click("text=¡A jugar!"); await p.waitForTimeout(500);
+  const job = { hospital: "Atender", super: "cajero", helados: "preparando", cine: "palomitas", escuela: "Responder", bomberos: "incendios" };
   for (const id of ["hospital", "super", "helados", "cine", "escuela", "casa", "mall", "bomberos"]) {
-    await p.evaluate(i => __t.enter({ id: i }), id); await p.waitForTimeout(250);
-    if (["hospital", "super", "helados", "cine", "escuela"].includes(id)) { await p.click("text=Empezar"); await p.waitForTimeout(400); }
-    if (id === "bomberos") { await p.click("text=Empezar"); await p.waitForTimeout(400); break; }
-    await p.evaluate(() => __t.closeSheet());
+    await p.evaluate(i => __t.enter(__t.BUILDINGS.find(b => b.id === i)), id); await p.waitForTimeout(250);
+    if (id === "casa") { await p.evaluate(() => __t.closeSheet()); continue; }
+    await p.waitForFunction(i => __t.zone.id === "in_" + i, id, { timeout: 10000 });
+    if (id === "mall") { await p.screenshot({ path: out + "/n_mall.png" }); await p.evaluate(() => __t.travelTo("city")); await p.waitForTimeout(900); continue; }
+    await p.evaluate(w => { const s = __t.SPOTS.find(s => s.zone === __t.zone.id && String(typeof s.label === "function" ? s.label() : s.label).indexOf(w) >= 0); __t.P.x = s.x; __t.P.z = s.z; }, job[id]);
+    await p.waitForTimeout(500); console.log(id, await p.evaluate(() => __t.near && __t.near.label)); await p.evaluate(() => __t.useSpot()); await p.waitForTimeout(1300);
+    await p.click("text=Empezar"); await p.waitForTimeout(400);
+    if (id === "bomberos") break;
+    await p.evaluate(() => { __t.closeSheet(); __t.travelTo("city"); }); await p.waitForTimeout(900);
   }
   await p.evaluate(() => __t.closeSheet());
   // monedas del suelo: ir a una moneda

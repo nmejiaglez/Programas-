@@ -1,7 +1,7 @@
 /* ---------- Mundo ---------- */
 const doors=[];
 function buildWorld(){
- const CZ=zone({id:"city",name:"Ciudad",icon:"🏙️",cx:0,cz:0,hw:96,hd:96,spawn:{x:0,z:12}});ROOT=CZ.g;
+ const CZ=zone({id:"city",name:"Ciudad",icon:"🏙️",cx:0,cz:0,hw:96,hd:96,spawn:{x:0,z:18}});ROOT=CZ.g;
  {const gr=new T.Mesh(new T.PlaneGeometry(600,600),texMat(GRASS_TEX,90,90));gr.rotation.x=-Math.PI/2;gr.receiveShadow=true;ROOT.add(gr);}
  const G=[-90,-30,30,90];
  const roadM="#5B6470";

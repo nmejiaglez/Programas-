@@ -19,7 +19,7 @@ function paintRow(body,title,key,cb){body.appendChild(el("h3","",title));const r
  const x=el("button","");x.textContent="Original";x.setAttribute("aria-pressed",S.look[key]?"false":"true");x.onclick=()=>{delete S.look[key];buildPlayer();save();cb();};r.appendChild(x);
  PAINT.forEach(c=>add(c,false));MAGIC.forEach(c=>add(c,true));body.appendChild(r);}
 function closetExtra(body,tab){
- if(tab==="pelo"){body.appendChild(el("h3","","Color de ojos"));seg(body,EYES.map((c,i)=>[i,'<span class="sw" style="display:inline-block;background:'+c+'"></span>']),S.look.eyes||0,v=>{S.look.eyes=v;buildPlayer();openCloset("pelo");});}
+ if(tab==="cara"&&typeof faceStylesUI==="function")faceStylesUI(body);
  if(tab==="colores"){
   body.appendChild(el("p","muted","¡Pinte su ropa, su pelo y su vehículo del color que quiera! Los colores con brillo son de la Paleta mágica."));
   if(!S.owned.magia){const m=el("button","btn coinb",'✨ Paleta mágica (8 colores brillantes) · <span class="coin sm"></span> 40');m.onclick=()=>{if(!pay({p:40,cur:"mc"}))return;S.owned.magia=1;sfx("compra");toast("✨ ¡Paleta mágica desbloqueada!");save();openCloset("colores");};body.appendChild(m);}
