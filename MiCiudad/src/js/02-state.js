@@ -12,14 +12,16 @@ function fresh(){return{name:"",created:false,money:80,mc:30,
  park:{rides:{},bank:0,last:Date.now(),boostUntil:0,manager:false},
  fashion:{wins:0,last:""},
  house:{big:false},
- offersDay:"",offersBought:{},starter:false
+ offersDay:"",offersBought:{},starter:false,
+ blocked:{},grantsDone:{},parent:{pin:"",limit:0,spent:{},time:0,rooms:true},savedAt:0
 };}
 let S=fresh();
 function deepMerge(base,d){for(const k in d){if(d[k]&&typeof d[k]==="object"&&!Array.isArray(d[k])&&base[k]&&typeof base[k]==="object"&&!Array.isArray(base[k]))deepMerge(base[k],d[k]);else base[k]=d[k];}return base;}
 function load(){try{const r=localStorage.getItem(SAVE);if(r){const d=JSON.parse(r);S=deepMerge(fresh(),d);
  if(d.pet&&!d.pets){S.pets.push({uid:S.petUid++,type:d.pet,lvl:1,xp:0,food:80,joy:80,t:Date.now(),name:""});S.petActive=S.pets[0].uid;}
  delete S.pet;}}catch(e){console.error(e);}}
-function save(){try{localStorage.setItem(SAVE,JSON.stringify(S));}catch(e){}}
+function save(){S.savedAt=Date.now();try{localStorage.setItem(SAVE,JSON.stringify(S));}catch(e){}}
+function saveLocalOnly(){save();}
 function fmt(n){n=Math.floor(n);if(n<10000)return n.toLocaleString("es");const u=["K","M","B","T"];let i=-1;let v=n;while(v>=1000&&i<3){v/=1000;i++;}return (v<10?v.toFixed(2):v<100?v.toFixed(1):Math.floor(v))+" "+u[i];}
 const turboOn=()=>S.turboUntil>Date.now();
 function roleMult(job){if(!job||!S.role)return 1;const r=ROLES.find(x=>x.id===S.role);return r&&r.jobs.includes(job)?1.5:1;}

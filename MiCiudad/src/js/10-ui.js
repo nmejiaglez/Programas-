@@ -30,8 +30,8 @@ shopTab("paquetes","MediCoins",body=>{
  const g=el("div","packs");PACKS.forEach(p=>{const c=el("div","pack",(p.tag?'<span class="tag">'+p.tag+'</span>':"")+'<div style="font-size:30px;line-height:1">'+p.ic+'</div><div class="amt"><span class="coin"></span> '+p.mc.toLocaleString("es")+'</div>');const b=el("button","btn coinb",p.price);b.onclick=()=>buyPack(p);c.appendChild(b);g.appendChild(c);});body.appendChild(g);
  body.appendChild(el("p","note","Versión de prueba: al tocar un paquete se acreditan gratis para que pruebe. En la versión de la tienda aquí se abre el pago de Google Play."));
  body.appendChild(el("h3","","¿Tiene un código?"));
- const inp=el("input");inp.type="text";inp.id="codeIn";inp.placeholder="MC-1000-XXXX-XXXX";inp.autocomplete="off";inp.setAttribute("autocapitalize","characters");body.appendChild(inp);
- const rb=el("button","btn go","Canjear código");rb.onclick=()=>redeem(inp.value);body.appendChild(rb);
+ const inp=el("input");inp.type="text";inp.id="codeIn";inp.placeholder="MC-XXXX-XXXX";inp.autocomplete="off";inp.setAttribute("autocapitalize","characters");body.appendChild(inp);
+ const rb=el("button","btn go","Canjear código");rb.onclick=()=>redeemOnline(inp.value);body.appendChild(rb);
 },1);
 function seeded(seed){let x=seed>>>0||1;return()=>{x^=x<<13;x>>>=0;x^=x>>>17;x^=x<<5;x>>>=0;return x/4294967296;};}
 function offerPool(){const pool=[];
@@ -82,11 +82,7 @@ function h32(s){let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);
 function enc(n,len){let s="";for(let i=0;i<len;i++){s+=B32[n%32];n=Math.floor(n/32);}return s;}
 function makeCode(amount){const r=enc(Math.floor(Math.random()*1048576),4);return "MC-"+amount+"-"+r+"-"+enc(h32(SALT+amount+r),4);}
 function checkCode(c){const m=/^MC-(\d{1,6})-([A-Z2-9]{4})-([A-Z2-9]{4})$/.exec((c||"").toUpperCase().replace(/\s/g,""));if(!m)return 0;if(enc(h32(SALT+m[1]+m[2]),4)!==m[3])return 0;return +m[1];}
-function redeem(v){const code=(v||"").toUpperCase().replace(/\s/g,"");const amt=checkCode(code);
- if(!amt){toast("❌ Código no válido. Revise que esté bien escrito.");return;}
- if(S.used[code]){toast("Ese código ya fue usado.");return;}
- S.used[code]=Date.now();S.mc+=amt;save();hud();
- sheet("¡Código canjeado!",b=>{b.appendChild(el("div","res","🎉<br><span class='coin'></span> +"+amt.toLocaleString("es")+" MediCoins"));const k=el("button","btn go big","¡Genial!");k.onclick=closeSheet;b.appendChild(k);},{half:true});}
+function redeem(v){redeemOnline(v);}
 
 /* ---------- Ropa ---------- */
 function swatch(c){return '<span class="sw" style="display:inline-block;width:40px;height:40px;background:'+c+'"></span>';}
@@ -128,11 +124,13 @@ function openPlaces(){sheet("¿A dónde quiere ir?",body=>{
 let ownerTaps=0;
 function openSettings(){sheet("Ajustes",body=>{
  body.appendChild(el("h3","","Su nombre"));const n=el("input");n.type="text";n.id="nameIn";n.maxLength=12;n.value=S.name;body.appendChild(n);
- const sv=el("button","btn go","Guardar nombre");sv.onclick=()=>{const v=n.value.trim().slice(0,12);if(!v){toast("Escriba un nombre");return;}S.name=v;buildPlayer();toast("Nombre guardado");};body.appendChild(sv);
+ const nr=el("div","row");const sv=el("button","btn go","Guardar nombre");sv.onclick=()=>{const v=n.value.trim().slice(0,12);const pr=nombreProblema(v);if(pr){toast(pr);return;}S.name=v;buildPlayer();save();if(NET.ok)pushCloud(true).catch(()=>{});toast("Nombre guardado");};
+ const rnd_=el("button","btn ghost","🎲 Nombre al azar");rnd_.onclick=()=>{n.value=nombreAuto();};nr.append(rnd_,sv);body.appendChild(nr);
+ const acc=el("div","row");const ab=el("button","btn ghost","👤 Mi cuenta");ab.onclick=openAccount;const pb=el("button","btn ghost","👨‍👩‍👧 Control de padres");pb.onclick=openParents;acc.append(ab,pb);body.appendChild(acc);
  body.appendChild(el("h3","","Calidad de imagen"));seg(body,[["normal","Normal"],["baja","Rápida (teléfonos básicos)"]],S.quality,q=>{S.quality=q;setQuality();resize();openSettings();});
  body.appendChild(el("h3","","Estadísticas"));
  body.appendChild(el("div","list",[["💵","Dinero ganado",$fmt(S.stats.earned)],["🧰","Trabajos completados",S.stats.jobs],["🪙","Monedas recogidas",S.stats.coins],["🔥","Incendios apagados",S.stats.fires],["🚓","Ladrones atrapados",S.stats.thieves],["🕵️","Misterios resueltos",S.stats.mysteries],["👾","Monstruos derrotados",S.stats.monsters],["🌋","Desastres sobrevividos",S.stats.survived],["🧗","Torres completadas",S.stats.obby],["🐟","Peces pescados",S.stats.fish],["🌽","Cosechas",S.stats.harvest],["👗","Pasarelas",S.stats.catwalks]].map(r=>'<div class="li"><div style="font-size:24px">'+r[0]+'</div><div class="tx"><b>'+r[2]+'</b><small>'+r[1]+'</small></div></div>').join("")));
- const rs=el("button","btn ghost","Reiniciar partida");rs.onclick=()=>sheet("¿Reiniciar?",b=>{b.appendChild(el("p","","Se borra todo el progreso, el dinero y las MediCoins de este dispositivo."));const r=el("div","row");const c=el("button","btn ghost","Cancelar");c.onclick=openSettings;const o=el("button","btn red","Reiniciar");o.onclick=()=>{const keep={pin:S.pin,gen:S.gen};S=fresh();S.pin=keep.pin;S.gen=keep.gen;save();location.reload();};r.append(c,o);b.appendChild(r);},{half:true});body.appendChild(rs);
+ const rs=el("button","btn ghost","Reiniciar partida");rs.onclick=()=>requireParent(()=>sheet("¿Reiniciar?",b=>{b.appendChild(el("p","","Se borra todo el progreso, el dinero y las MediCoins de este dispositivo."));const r=el("div","row");const c=el("button","btn ghost","Cancelar");c.onclick=openSettings;const o=el("button","btn red","Reiniciar");o.onclick=()=>{const keep={pin:S.pin,gen:S.gen,parent:S.parent};S=fresh();S.pin=keep.pin;S.gen=keep.gen;S.parent=keep.parent;save();location.reload();};r.append(c,o);b.appendChild(r);},{half:true}),"reiniciar la partida");body.appendChild(rs);
  const ver=el("p","muted","Mi Ciudad · versión 2.0");ver.style.textAlign="center";ver.onclick=()=>{ownerTaps++;if(ownerTaps>=5){ownerTaps=0;ownerLogin();}};body.appendChild(ver);
 });}
 function $fmt(n){return "$ "+fmt(n);}
@@ -142,18 +140,12 @@ function ownerLogin(){sheet("Panel de dueño",b=>{
  const first=!S.pin;b.appendChild(el("p","muted",first?"Cree una clave de 4 a 8 números. Solo usted debe saberla.":"Escriba su clave de dueño."));
  const i=el("input");i.type="password";i.id="pinIn";i.inputMode="numeric";i.maxLength=8;b.appendChild(i);
  const ok=el("button","btn go",first?"Crear clave":"Entrar");ok.onclick=()=>{const v=i.value.trim();if(first){if(!/^\d{4,8}$/.test(v)){toast("Use de 4 a 8 números");return;}S.pin=v;save();ownerPanel();}else if(v===S.pin)ownerPanel();else toast("Clave incorrecta");};b.appendChild(ok);},{half:true});}
-function ownerPanel(amt){amt=amt||1000;sheet("👑 Panel de dueño",b=>{
- b.appendChild(el("p","muted","Genere códigos de MediCoins para vender. Cada código sirve una vez en cada dispositivo."));
- b.appendChild(el("h3","","Cantidad"));
- seg(b,[[100,"100"],[500,"500"],[1000,"1,000"],[2500,"2,500"],[5000,"5,000"]].map(x=>[x[0],x[1]]),amt,a=>ownerPanel(a));
+function ownerPanel(amt){amt=amt||10000;sheet("👑 Panel de dueño",b=>{
+ b.appendChild(el("h3","","Mis MediCoins (este teléfono)"));
  const ci=el("input");ci.type="number";ci.id="amtIn";ci.min=1;ci.max=999999;ci.value=amt;b.appendChild(ci);
- const out=el("div","codebox","—");
- const gb=el("button","btn coinb big","Generar código");gb.onclick=()=>{const a=Math.max(1,Math.min(999999,parseInt(ci.value,10)||0));const code=makeCode(a);S.gen.unshift({code,a,t:Date.now()});S.gen=S.gen.slice(0,50);save();out.textContent=code;toast("Código creado");};
- b.appendChild(gb);b.appendChild(out);
- const cp=el("button","btn ghost","Copiar código");cp.onclick=()=>{const t=out.textContent;if(t==="—")return;try{navigator.clipboard.writeText(t).then(()=>toast("Copiado"),()=>selectText(out));}catch(e){selectText(out);}};b.appendChild(cp);
- const me=el("button","btn go","Darme estas MediCoins a mí");me.onclick=()=>{const a=Math.max(1,Math.min(999999,parseInt(ci.value,10)||0));S.mc+=a;hud();save();toast("+"+a+" MediCoins para usted");};b.appendChild(me);
- if(S.gen.length){b.appendChild(el("h3","","Últimos códigos creados"));const l=el("div","list");S.gen.slice(0,15).forEach(g=>{const d=new Date(g.t);l.appendChild(el("div","li",'<div class="tx"><b class="mono">'+g.code+'</b><small>'+g.a.toLocaleString("es")+' MediCoins · '+d.toLocaleDateString("es")+' '+d.toLocaleTimeString("es",{hour:"2-digit",minute:"2-digit"})+'</small></div>'));});b.appendChild(l);}
- b.appendChild(el("p","note","Importante: en esta versión sin internet, un código se puede usar una vez en cada teléfono. Con el modo en línea (etapa 2) cada código servirá una sola vez en total."));
+ const me=el("button","btn go","Darme estas MediCoins a mí");me.onclick=()=>{const a=Math.max(1,Math.min(999999,parseInt(ci.value,10)||0));S.mc+=a;hud();save();if(NET.ok)pushCloud(true).catch(()=>{});toast("+"+fmt(a)+" MediCoins para usted");};b.appendChild(me);
+ ownerOnline(b);
+ if(S.gen.length){b.appendChild(el("h3","","Últimos códigos creados"));const l=el("div","list");S.gen.slice(0,15).forEach(g=>{const d=new Date(g.t);l.appendChild(el("div","li",'<div class="tx"><b class="mono">'+g.code+'</b><small>'+fmt(g.a)+' MediCoins · '+d.toLocaleDateString("es")+' '+d.toLocaleTimeString("es",{hour:"2-digit",minute:"2-digit"})+'</small></div>'));});b.appendChild(l);}
 });}
 function selectText(n){const r=document.createRange();r.selectNodeContents(n);const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Mantenga presionado para copiar");}
 

@@ -43,7 +43,7 @@ function start(){
  for(const m of MODES)if(m.afterStart)try{m.afterStart();}catch(e){console.error(e);}
  if(!S.created)welcome();else{toast("👋 ¡Hola de nuevo, "+S.name+"!");}
  setTimeout(()=>{if(!isTouch)$("pchint").hidden=true;},14000);
- if(/[?&]test/.test(location.search))window.__t={get S(){return S;},P,teleport,travelTo,enter,ZONES,SPOTS,MODES,useSpot,get near(){return nearSpot;},doJump,doAttack,closeSheet,damage,colliders,get zone(){return curZone;},joy,setYaw(v){camYaw=v;},openShop,openPlaces,renderer,scene};
+ if(/[?&]test/.test(location.search))window.__t={get S(){return S;},P,teleport,travelTo,enter,ZONES,SPOTS,MODES,useSpot,get near(){return nearSpot;},doJump,doAttack,closeSheet,damage,colliders,get zone(){return curZone;},joy,setYaw(v){camYaw=v;},openShop,openPlaces,renderer,scene,NET,openFriends,joinRoom,leaveRoom,sendChat,redeemOnline,openAccount,openParents,nombreProblema,netStart,pushCloud,db};
  requestAnimationFrame(t=>{last=t;loop(t);});
 }
 const fontsReady=document.fonts&&document.fonts.ready?Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,1500))]):Promise.resolve();

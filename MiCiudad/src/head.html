@@ -54,6 +54,14 @@ button:focus-visible{outline:3px solid var(--coin);outline-offset:2px}
 .hpfill{height:100%;background:linear-gradient(90deg,#E2465C,#FF7A59);width:100%;transition:width .2s}
 .hpbar span{position:absolute;inset:0;text-align:center;font-size:12px;font-weight:800;color:#fff;line-height:20px}
 .zbtn{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 92px);background:var(--coin);color:#3B2600;font-weight:800;font-size:14px;padding:7px 14px;border-radius:999px;z-index:5;white-space:nowrap;box-shadow:0 3px 0 var(--coin-d);max-width:92vw;overflow:hidden;text-overflow:ellipsis}
+.netdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-left:2px;background:#9AAAB6}
+.netdot.on{background:#19A858;box-shadow:0 0 0 3px rgba(25,168,88,.2)}
+.netdot.off{background:#E2465C}
+#chatBtn{left:calc(max(16px,env(safe-area-inset-left,0px)) + 4px);bottom:calc(env(safe-area-inset-bottom,0px) + 200px);width:58px;height:58px;border-radius:50%;background:#7B4BD1;color:#fff;font-size:26px;box-shadow:0 4px 0 #5A2FA8}
+.phr{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.phr button{background:var(--soft);border:2px solid var(--line);border-radius:14px;padding:12px 8px;font-weight:800;font-size:15px;text-align:left}
+.phr button:active{background:#E6F8EE}
+.li.me{border:2px solid var(--go);background:#E6F8EE}
 #fade{position:fixed;inset:0;background:#0C1A26;opacity:0;transition:opacity .3s;z-index:30;pointer-events:none}
 #hurt{position:fixed;inset:0;background:radial-gradient(circle,transparent 40%,rgba(226,70,92,.9));opacity:0;transition:opacity .25s;z-index:6;pointer-events:none}
 #ride{right:calc(max(16px,env(safe-area-inset-right,0px)) + 96px);bottom:calc(env(safe-area-inset-bottom,0px) + 34px);width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.9);box-shadow:0 4px 0 rgba(20,48,74,.25);font-size:26px}
@@ -189,13 +197,14 @@ input:focus{outline:none;border-color:var(--accent)}
 <div id="loading"><div>🏙️ Mi Ciudad<small id="loadmsg">Construyendo la ciudad…</small></div></div>
 
 <div class="top" id="hud" hidden>
-  <div class="pill cash"><span class="ico">💵</span><span id="money">$ 0</span></div>
+  <div class="pill cash"><span class="ico">💵</span><span id="money">$ 0</span><i class="netdot" id="netdot" hidden></i></div>
   <button class="pill mcp" id="mcBtn" aria-label="Comprar MediCoins"><span class="coin"></span><span id="mc">0</span><span class="plus">+</span></button>
   <div class="spacer"></div>
   <div class="tbtns">
     <button class="tb" id="bShop" aria-label="Tienda"><span class="e">🛒</span><small>Tienda</small></button>
     <button class="tb" id="bCloset" aria-label="Ropa"><span class="e">👕</span><small>Ropa</small></button>
     <button class="tb" id="bPets" aria-label="Mascotas"><span class="e">🐾</span><small>Mascotas</small></button>
+    <button class="tb" id="bFriends" aria-label="Amigas"><span class="e">👭</span><small>Amigas</small></button>
     <button class="tb" id="bPlaces" aria-label="Lugares"><span class="e">📍</span><small>Lugares</small></button>
     <button class="tb" id="bSet" aria-label="Ajustes"><span class="e">⚙️</span><small>Ajustes</small></button>
   </div>
@@ -208,6 +217,7 @@ input:focus{outline:none;border-color:var(--accent)}
 <div id="fade" hidden></div><div id="hurt" hidden></div>
 <button class="ctrl" id="act" hidden>Entrar</button>
 <button class="ctrl" id="jump" hidden aria-label="Saltar"><span><span class="e">⤴️</span>Saltar</span></button>
+<button class="ctrl" id="chatBtn" hidden aria-label="Mensajes">💬</button>
 <button class="ctrl" id="ride" hidden aria-label="Usar vehículo" aria-pressed="false">🛹</button>
 <div id="joy" hidden><div id="knob"></div></div>
 <div class="joyhint" id="joyhint" hidden>Arrastre aquí para caminar</div>

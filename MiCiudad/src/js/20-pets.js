@@ -67,7 +67,7 @@ function openMyPets(){sheet("Mis mascotas",body=>{
 });}
 function petOptions(p){const t=PET_TYPES[p.type];sheet(t.icon+" "+petName(p),b=>{
  b.appendChild(el("h3","","Cambiar nombre"));const i=el("input");i.type="text";i.id="petName";i.maxLength=12;i.value=p.name||"";i.placeholder=t.name;b.appendChild(i);
- const sv=el("button","btn go","Guardar nombre");sv.onclick=()=>{p.name=i.value.trim().slice(0,12);save();openMyPets();};b.appendChild(sv);
+ const sv=el("button","btn go","Guardar nombre");sv.onclick=()=>{const v=i.value.trim().slice(0,12);if(v){const pr=nombreProblema(v);if(pr){toast(pr);return;}}p.name=v;save();openMyPets();};b.appendChild(sv);
  const val=Math.round(RAR_SELL[t.r]*(1+p.lvl/5));
  b.appendChild(el("h3","","Dejarla en el refugio"));b.appendChild(el("p","muted","Otra familia la cuidará y usted recibe $ "+fmt(val)+"."));
  const rel=el("button","btn red","Dejar en el refugio");rel.onclick=()=>{sheet("¿Seguro?",c=>{c.appendChild(el("p","","Se despedirá de "+petName(p)+" y recibirá $ "+fmt(val)+"."));const r=el("div","row");const no=el("button","btn ghost","Cancelar");no.onclick=openMyPets;const si=el("button","btn red","Sí, dejarla");si.onclick=()=>{S.pets=S.pets.filter(x=>x!==p);if(S.petActive===p.uid)S.petActive=null;S.money+=val;buildPlayer();toast("💵 +$"+fmt(val));openMyPets();};r.append(no,si);c.appendChild(r);},{half:true});};b.appendChild(rel);
