@@ -70,17 +70,19 @@ function openAccount(){sheet("👤 Mi cuenta",b=>{
  const st=el("div","li",'<div style="font-size:28px">'+(NET.ok?"🟢":"🔴")+'</div><div class="tx"><b>'+(NET.ok?"En línea":"Sin conexión")+'</b><small>'+(NET.ok?"Su progreso se guarda en internet":NET.lastErr||"El juego funciona igual sin internet")+'</small></div>');b.appendChild(st);
  if(NET.uid){b.appendChild(el("div","li",'<div style="font-size:28px">🏷️</div><div class="tx"><b class="mono">'+myTag()+'</b><small>Su nombre de usuario (para que el dueño le envíe premios)</small></div>'));b.appendChild(el("p","muted",'Número de cuenta: <span class="mono" style="font-size:11px">'+NET.uid+'</span>'));}
  if(!NET.ok){const r=el("button","btn go","Reintentar conexión");r.onclick=async()=>{r.disabled=true;await netStart();openAccount();};b.appendChild(r);return;}
- if(NET.email){b.appendChild(el("p","muted","Cuenta guardada con el correo de los papás: "+NET.email+". Puede entrar con ese correo desde otro teléfono o computadora."));
-  const o=el("button","btn ghost","Cerrar sesión en este aparato");o.onclick=()=>requireParent(()=>sheet("¿Cerrar sesión?",c=>{c.appendChild(el("p","","Su progreso queda guardado en internet con "+NET.email+". En este aparato el juego empieza de cero, sin sus MediCoins. Para volver, entre con su correo y contraseña."));const r=el("div","row");const no=el("button","btn ghost","Cancelar");no.onclick=closeSheet;const si=el("button","btn red","Cerrar sesión");si.onclick=async()=>{si.disabled=true;try{await pushCloud(true);}catch(e){}try{localStorage.removeItem(AUTH_KEY);}catch(e){}NET.uid=null;NET.token=null;NET.email=null;NET.ok=false;const q=S.quality;S=fresh();S.quality=q;save();location.reload();};r.append(no,si);c.appendChild(r);},{half:true}),"cerrar la sesión");b.appendChild(o);}
- else{b.appendChild(el("h3","","Guardar la cuenta (para papás)"));b.appendChild(el("p","muted","Con el correo de un adulto la cuenta no se pierde si cambia de teléfono. No escriba el correo del niño."));
+ if(NET.email){b.appendChild(el("div","li",'<div style="font-size:28px">🔐</div><div class="tx"><b>'+escapeHtml(userName(NET.email))+'</b><small>Su cuenta. Puede entrar con este usuario y su contraseña desde otro teléfono o computadora.</small></div>'));
+  const o=el("button","btn ghost","Cerrar sesión en este aparato");o.onclick=()=>requireParent(()=>sheet("¿Cerrar sesión?",c=>{c.appendChild(el("p","","Su progreso queda guardado en internet con su usuario "+userName(NET.email)+". En este aparato el juego empieza de cero, sin sus MediCoins. Para volver, inicie sesión con su usuario y contraseña."));const r=el("div","row");const no=el("button","btn ghost","Cancelar");no.onclick=closeSheet;const si=el("button","btn red","Cerrar sesión");si.onclick=async()=>{si.disabled=true;try{await pushCloud(true);}catch(e){}try{localStorage.removeItem(AUTH_KEY);}catch(e){}NET.uid=null;NET.token=null;NET.email=null;NET.ok=false;const q=S.quality;S=fresh();S.quality=q;save();location.reload();};r.append(no,si);c.appendChild(r);},{half:true}),"cerrar la sesión");b.appendChild(o);}
+ else{b.appendChild(el("p","note","Todavía no tiene cuenta. Cree una para no perder sus cosas y poder jugar en otro teléfono."));const cc=el("button","btn go big","✨ Crear mi cuenta");cc.onclick=()=>requireParent(()=>openCuenta("crear",()=>openAccount()),"crear la cuenta");b.appendChild(cc);}
+ if(false){b.appendChild(el("h3","","Guardar la cuenta (para papás)"));b.appendChild(el("p","muted","Con el correo de un adulto la cuenta no se pierde si cambia de teléfono. No escriba el correo del niño."));
   const e=el("input");e.type="text";e.id="accEmail";e.placeholder="Correo del papá o la mamá";e.setAttribute("autocapitalize","off");b.appendChild(e);
   const p=el("input");p.type="password";p.id="accPass";p.placeholder="Contraseña (6 o más)";b.appendChild(p);
   const g=el("button","btn go","Guardar mi cuenta");g.onclick=()=>requireParent(async()=>{g.disabled=true;try{const j=await idt("accounts:signUp",{idToken:await tok(),email:e.value.trim(),password:p.value,returnSecureToken:true});setAuth(j.localId,j.idToken,j.refreshToken,j.expiresIn,j.email);await pushCloud(true);toast("✅ Cuenta guardada");openAccount();}catch(er){toast(errMsg(er));g.disabled=false;}},"guardar la cuenta");b.appendChild(g);
  }
- b.appendChild(el("h3","","Entrar con otra cuenta"));
+ {const oc=el("button","btn ghost","🔑 Entrar con otra cuenta");oc.onclick=()=>requireParent(()=>openCuenta("entrar",()=>openAccount()),"entrar con otra cuenta");b.appendChild(oc);}
+ if(false){b.appendChild(el("h3","","Entrar con otra cuenta"));
  const e2=el("input");e2.type="text";e2.id="logEmail";e2.placeholder="Correo";e2.setAttribute("autocapitalize","off");const p2=el("input");p2.type="password";p2.id="logPass";p2.placeholder="Contraseña";b.append(e2,p2);
  const l=el("button","btn ghost","Entrar con mi correo");l.onclick=()=>requireParent(async()=>{l.disabled=true;try{const j=await idt("accounts:signInWithPassword",{email:e2.value.trim(),password:p2.value,returnSecureToken:true});setAuth(j.localId,j.idToken,j.refreshToken,j.expiresIn,j.email);NET.admin=(await db("GET","admins/"+NET.uid))===true;const had=await pullCloud(true);if(!had)await pushCloud(true);toast("✅ Entró como "+j.email);openAccount();}catch(er){toast(errMsg(er));l.disabled=false;}},"entrar con otra cuenta");b.appendChild(l);
- const f=el("button","btn ghost","Olvidé la contraseña");f.onclick=async()=>{try{await idt("accounts:sendOobCode",{requestType:"PASSWORD_RESET",email:e2.value.trim()});toast("📧 Le enviamos un correo para cambiarla");}catch(er){toast(errMsg(er));}};b.appendChild(f);
+ const f=el("button","btn ghost","Olvidé la contraseña");f.onclick=async()=>{try{await idt("accounts:sendOobCode",{requestType:"PASSWORD_RESET",email:e2.value.trim()});toast("📧 Le enviamos un correo para cambiarla");}catch(er){toast(errMsg(er));}};b.appendChild(f);}
 });}
 
 /* ---------- salas con amigas ---------- */
@@ -258,7 +260,9 @@ async function redeemOnline(v){
  try{
   const c=await db("GET","codes/"+code);if(!c||!(+c.a>0)){toast("❌ Ese código no existe. Revise que esté bien escrito.");return;}
   try{await db("PUT","redeemed/"+code,NET.uid);}catch(e){toast("Ese código ya fue usado.");return;}
-  S.mc+=+c.a;S.used[code]=Date.now();save();hud();pushCloud(true).catch(()=>{});
+  S.mc+=+c.a;S.used[code]=Date.now();
+  if(c.starter&&!S.starter){S.starter=true;S.owned.alas_mariposa=1;S.look.acc="alas_mariposa";buildPlayer();setTimeout(()=>{if(typeof hatchEgg==="function")hatchEgg("dorado",true);},1800);}
+  save();hud();pushCloud(true).catch(()=>{});if(typeof confetti==="function")confetti();
   sheet("¡Código canjeado!",b=>{b.appendChild(el("div","res","🎉<br><span class='coin'></span> +"+fmt(+c.a)+" MediCoins"));const k=el("button","btn go big","¡Genial!");k.onclick=closeSheet;b.appendChild(k);},{half:true});
  }catch(e){toast(errMsg(e));}
 }
@@ -276,8 +280,10 @@ function ownerOnline(b){
  b.appendChild(el("p","muted","✅ Cuenta de dueño. Los códigos sirven una sola vez en total."));
  const amt=el("input");amt.type="number";amt.id="onAmt";amt.min=1;amt.max=999999;amt.value=1000;b.appendChild(amt);
  const out=el("div","codebox","—");
- const g=el("button","btn coinb big","Crear código de un solo uso");g.onclick=async()=>{const a=Math.max(1,Math.min(999999,parseInt(amt.value,10)||0));let code="";for(let i=0;i<8;i++)code+=B32[Math.floor(Math.random()*32)];
-  try{await db("PUT","codes/"+code,{a,t:SV_TIME,by:NET.uid});const pretty="MC-"+code.slice(0,4)+"-"+code.slice(4);out.textContent=pretty;S.gen.unshift({code:pretty,a,t:Date.now()});S.gen=S.gen.slice(0,50);save();toast("Código creado");}catch(e){toast(errMsg(e));}};
+ const stl=el("label","li",'<input type="checkbox" id="onStarter" style="width:22px;height:22px"><div class="tx"><b>🎁 Paquete de bienvenida</b><small>600 MediCoins + alas de mariposa + huevo dorado (solo una vez por jugador)</small></div>');b.appendChild(stl);
+ stl.querySelector("input").onchange=e=>{if(e.target.checked)amt.value=600;};
+ const g=el("button","btn coinb big","Crear código de un solo uso");g.onclick=async()=>{const a=Math.max(1,Math.min(999999,parseInt(amt.value,10)||0));const starter=$("onStarter").checked;let code="";for(let i=0;i<8;i++)code+=B32[Math.floor(Math.random()*32)];
+  try{await db("PUT","codes/"+code,starter?{a,starter:1,t:SV_TIME,by:NET.uid}:{a,t:SV_TIME,by:NET.uid});const pretty="MC-"+code.slice(0,4)+"-"+code.slice(4);out.textContent=pretty;S.gen.unshift({code:pretty,a,t:Date.now()});S.gen=S.gen.slice(0,50);save();toast("Código creado");}catch(e){toast(errMsg(e));}};
  b.append(g,out);
  const cp=el("button","btn ghost","Copiar código");cp.onclick=()=>{const t=out.textContent;if(t==="—")return;try{navigator.clipboard.writeText(t).then(()=>toast("Copiado"),()=>selectText(out));}catch(e){selectText(out);}};b.appendChild(cp);
  b.appendChild(el("h3","","Enviar MediCoins a un jugador"));

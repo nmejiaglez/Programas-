@@ -24,14 +24,12 @@ const PROXY = process.env.HTTPS_PROXY || process.env.https_proxy;
   await p.fill("#parPin", "0000"); await p.click("text=Aceptar"); await p.waitForTimeout(200);
   console.log("clave mala rechazada:", await p.locator("#parPin").count());
   await p.fill("#parPin", "4321"); await p.click("text=Aceptar"); await p.waitForTimeout(200);
-  await p.click("text=Acreditar"); await p.waitForTimeout(200);
-  console.log("gasto mes:", await p.evaluate(() => JSON.stringify(__t.S.parent.spent)), "mc:", await p.evaluate(() => __t.S.mc));
-  await p.evaluate(() => __t.openShop("paquetes")); await p.click(".pack >> nth=2 >> button"); await p.waitForTimeout(200);
-  console.log("límite bloquea:", await p.locator("text=Límite de compras").count());
+  console.log("con la clave abre compra por WhatsApp:", await p.locator("text=💬 Pedir por WhatsApp").count());
+  await p.evaluate(() => __t.closeSheet());
   await p.evaluate(() => __t.closeSheet());
   // recordatorio de descanso (forzado a 3 segundos)
-  await p.evaluate(() => { __t.S.parent.time = 0.05; }); await p.waitForTimeout(4500);
-  console.log("recordatorio:", await p.locator("text=¡Hora de descansar!").count());
+  await p.evaluate(() => { __t.S.parent.time = 0.05; }); await p.waitForSelector("text=¡Hora de descansar!", { timeout: 25000 }).catch(() => {});
+  const rec = await p.locator("text=¡Hora de descansar!").count(); console.log("recordatorio:", rec); if (!rec) errs.push("no salió el recordatorio");
   await p.evaluate(() => { __t.S.parent.time = 0; __t.closeSheet(); });
   // salas desactivadas
   await p.evaluate(() => { __t.S.parent.rooms = false; __t.openFriends(); }); await p.waitForTimeout(200);
@@ -40,9 +38,9 @@ const PROXY = process.env.HTTPS_PROXY || process.env.https_proxy;
   // cuenta con correo (pide clave de padres)
   await p.waitForFunction(() => __t.NET.ok, null, { timeout: 30000 });
   const uid0 = await p.evaluate(() => __t.NET.uid);
-  const mail = "prueba." + Date.now() + "@example.com";
-  await p.evaluate(() => __t.openAccount()); await p.fill("#accEmail", mail); await p.fill("#accPass", "clave123");
-  await p.click("text=Guardar mi cuenta"); await p.fill("#parPin", "4321"); await p.click("text=Aceptar"); await p.waitForTimeout(4000);
+  const mail = "papas" + Date.now().toString(36);
+  await p.evaluate(() => __t.openAccount()); await p.click("text=✨ Crear mi cuenta"); await p.fill("#parPin", "4321"); await p.click("text=Aceptar");
+  await p.fill("#cuUser", mail); await p.fill("#cuPass", "clave123"); await p.fill("#cuPass2", "clave123"); await p.click("#cuGo"); await p.waitForTimeout(4000);
   console.log("cuenta guardada:", await p.evaluate(() => __t.NET.email), "mismo uid:", await p.evaluate(u => __t.NET.uid === u, uid0));
   // limpiar
   await p.evaluate(async () => { const u = __t.NET.uid; for (const x of ["users/" + u, "perfiles/" + u, "ranking/" + u]) { try { await __t.db("DELETE", x); } catch (e) {} }

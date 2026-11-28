@@ -57,10 +57,11 @@ const SP = process.argv[2] || "/tmp";
   await p.evaluate(() => __t.openShop("ofertas")); await p.click(".card >> nth=0 >> button"); await p.waitForTimeout(200);
   await p.click("text=VIP ⭐"); await p.click("text=Ser VIP"); await p.waitForTimeout(200);
   log("vip", await p.evaluate(() => __t.S.perm.vip));
-  await p.click("text=MediCoins"); await p.click("text=US$ 2.99"); await p.click("text=Acreditar"); await p.waitForTimeout(500);
-  for (let i = 0; i < 3; i++) { await p.click(".egg").catch(() => {}); await p.waitForTimeout(150); }
-  await p.waitForTimeout(500);
-  log("starter", await p.evaluate(() => [__t.S.starter, __t.S.look.acc, __t.S.pets.length]));
+  const mcAntes = await p.evaluate(() => __t.S.mc);
+  await p.click("text=MediCoins"); await p.click("text=US$ 2.99"); await p.waitForSelector("text=💬 Pedir por WhatsApp"); await p.waitForTimeout(300);
+  const mcDespues = await p.evaluate(() => __t.S.mc);
+  log("compra por WhatsApp (no regala)", mcAntes === mcDespues, await p.evaluate(() => __t.S.starter));
+  if (mcAntes !== mcDespues) errs.push("la compra regaló MediCoins");
   await p.evaluate(() => __t.closeSheet());
   await p.screenshot({ path: SP + "/x_wings.png" });
   log("ERRORES", errs);

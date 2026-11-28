@@ -1,5 +1,5 @@
 /* ================= ESTADO ================= */
-function fresh(){return{name:"",created:false,money:80,mc:30,
+function fresh(){return{name:"",created:false,money:150,mc:100,
  look:{skin:0,hair:0,hstyle:"corto",shirt:"s1",pants:"p1",hat:"none",acc:"none",face:"none",neck:"none"},
  owned:{s1:1,s2:1,s3:1,p1:1,p2:1,f1:1,none:1},vehicle:null,riding:false,perm:{},turboUntil:0,furn:{},
  daily:{last:"",streak:0},used:{},pin:"",gen:[],stats:{jobs:0,coins:0,fires:0,earned:0,thieves:0,mysteries:0,catwalks:0,monsters:0,survived:0,obby:0,fish:0,harvest:0},quality:"normal",started:Date.now(),

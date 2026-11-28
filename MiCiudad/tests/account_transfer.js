@@ -11,15 +11,15 @@ async function tel(b, save) {
 }
 (async () => {
   const b = await chromium.launch({ args: ["--use-gl=swiftshader"], proxy: PROXY ? { server: PROXY } : undefined });
-  const mail = "familia." + Date.now() + "@example.com";
+  const mail = "familia" + Date.now().toString(36);
   const A = await tel(b, { name: "Sofi", created: true, money: 12345, mc: 777 });
-  await A.p.evaluate(() => __t.openAccount()); await A.p.fill("#accEmail", mail); await A.p.fill("#accPass", "clave123");
-  await A.p.click("text=Guardar mi cuenta"); await A.p.waitForTimeout(4000);
+  await A.p.evaluate(() => __t.openAccount()); await A.p.click("text=✨ Crear mi cuenta"); await A.p.fill("#cuUser", mail); await A.p.fill("#cuPass", "clave123"); await A.p.fill("#cuPass2", "clave123");
+  await A.p.click("#cuGo"); await A.p.waitForTimeout(4000);
   console.log("teléfono 1 guardó:", await A.p.evaluate(() => __t.NET.email));
   const B = await tel(b, { name: "Nuevo", created: true, money: 5, mc: 1 });
   const uidTemp = await B.p.evaluate(() => [__t.NET.uid, __t.NET.token]);
-  await B.p.evaluate(() => __t.openAccount()); await B.p.fill("#logEmail", mail); await B.p.fill("#logPass", "clave123");
-  await B.p.click("text=Entrar con mi correo"); await B.p.waitForTimeout(5000);
+  await B.p.evaluate(() => __t.openAccount()); await B.p.click("text=🔑 Entrar con otra cuenta"); await B.p.fill("#inUser", mail); await B.p.fill("#inPass", "clave123");
+  await B.p.click("#inGo"); await B.p.waitForTimeout(5000);
   console.log("teléfono 2 recuperó:", await B.p.evaluate(() => [__t.S.name, __t.S.money, __t.S.mc, __t.NET.email]));
   // limpiar
   for (const J of [A]) await J.p.evaluate(async () => { const u = __t.NET.uid; for (const x of ["users/" + u, "perfiles/" + u, "ranking/" + u]) { try { await __t.db("DELETE", x); } catch (e) {} }
