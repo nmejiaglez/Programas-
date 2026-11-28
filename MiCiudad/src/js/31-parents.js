@@ -26,8 +26,9 @@ function parentsPanel(){sheet("👨‍👩‍👧 Control de padres",b=>{
  const pi=el("input");pi.type="password";pi.id="parNew";pi.inputMode="numeric";pi.maxLength=8;pi.placeholder="Nueva clave de 4 a 8 números";b.appendChild(pi);
  const r=el("div","row");const sv=el("button","btn go",c.pin?"Cambiar clave":"Poner clave");sv.onclick=()=>{if(!/^\d{4,8}$/.test(pi.value)){toast("Use de 4 a 8 números");return;}c.pin=pi.value;save();toast("🔒 Clave de padres guardada");parentsPanel();};r.appendChild(sv);
  if(c.pin){const q=el("button","btn ghost","Quitar clave");q.onclick=()=>{c.pin="";save();toast("Clave quitada");parentsPanel();};r.appendChild(q);}b.appendChild(r);
- b.appendChild(el("h3","","Límite de compras por mes"));const gasto=c.spent[monthKey()]||0;b.appendChild(el("p","muted","Este mes: US$ "+gasto.toFixed(2)+" en MediCoins."));
- seg(b,[[0,"Sin límite"],[5,"US$ 5"],[10,"US$ 10"],[20,"US$ 20"]],c.limit,v=>{c.limit=v;save();parentsPanel();});
+ if(!window.CiudadBilling){b.appendChild(el("h3","","Compras"));b.appendChild(el("p","muted","Las MediCoins y los paquetes se compran solo con un adulto, por WhatsApp con el vendedor oficial. El niño no puede pagar nada desde el juego."));}
+ if(window.CiudadBilling){b.appendChild(el("h3","","Límite de compras por mes"));const gasto=c.spent[monthKey()]||0;b.appendChild(el("p","muted","Este mes: C$ "+gasto.toFixed(2)+" en MediCoins."));
+ seg(b,[[0,"Sin límite"],[200,"C$ 200"],[500,"C$ 500"],[1000,"C$ 1000"]],c.limit,v=>{c.limit=v;save();parentsPanel();});}
  b.appendChild(el("h3","","Recordatorio para descansar"));seg(b,[[0,"Apagado"],[30,"30 min"],[60,"1 hora"],[90,"1 h 30"]],c.time,v=>{c.time=v;playSec=0;save();parentsPanel();});
  b.appendChild(el("h3","","Jugar con amigos en línea"));seg(b,[[true,"Permitido"],[false,"No permitido"]],c.rooms,v=>{c.rooms=v;if(!v&&NET.room)leaveRoom();save();parentsPanel();});
  b.appendChild(el("h3","","Que lo puedan encontrar por su nombre"));b.appendChild(el("p","muted","Si lo apaga, solo pueden invitarlo quienes ya jugaron juntos o tienen su código."));seg(b,[[true,"Sí"],[false,"No"]],c.find!==false,v=>{c.find=v;save();if(NET.ok)db("PATCH","perfiles/"+NET.uid,{hide:findHidden()?1:0}).catch(()=>{});parentsPanel();});
@@ -35,7 +36,7 @@ function parentsPanel(){sheet("👨‍👩‍👧 Control de padres",b=>{
 // límite de gasto y permiso en las compras de MediCoins
 const _buyPack=buyPack;
 buyPack=function(p){const c=parentCfg();const precio=priceUSD(p.price);const mes=monthKey();
- if(c.limit&&((c.spent[mes]||0)+precio)>c.limit){sheet("Límite de compras",b=>{b.appendChild(el("p","","Este mes ya se llegó al límite de compras que pusieron los papás (US$ "+c.limit+")."));},{half:true});return;}
+ if(c.limit&&((c.spent[mes]||0)+precio)>c.limit){sheet("Límite de compras",b=>{b.appendChild(el("p","","Este mes ya se llegó al límite de compras que pusieron los papás (C$ "+c.limit+")."));},{half:true});return;}
  requireParent(()=>_buyPack(p),"comprar MediCoins");};
 const _creditPack=creditPack;
 creditPack=function(p){const c=parentCfg();const mes=monthKey();c.spent[mes]=(c.spent[mes]||0)+priceUSD(p.price);_creditPack(p);};

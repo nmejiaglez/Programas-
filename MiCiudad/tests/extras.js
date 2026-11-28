@@ -58,7 +58,7 @@ const SP = process.argv[2] || "/tmp";
   await p.click("text=VIP ⭐"); await p.click("text=Ser VIP"); await p.waitForTimeout(200);
   log("vip", await p.evaluate(() => __t.S.perm.vip));
   const mcAntes = await p.evaluate(() => __t.S.mc);
-  await p.click("text=MediCoins"); await p.click("text=US$ 2.99"); await p.waitForSelector("text=💬 Pedir por WhatsApp"); await p.waitForTimeout(300);
+  await p.click("text=MediCoins"); await p.click("text=C$ 99"); await p.waitForSelector("text=💬 Pedir por WhatsApp"); await p.waitForTimeout(300);
   const mcDespues = await p.evaluate(() => __t.S.mc);
   log("compra por WhatsApp (no regala)", mcAntes === mcDespues, await p.evaluate(() => __t.S.starter));
   if (mcAntes !== mcDespues) errs.push("la compra regaló MediCoins");

@@ -25,9 +25,9 @@ function openShop(tab){tab=tab||"paquetes";
 }
 shopTab("paquetes","MediCoins",body=>{
  if(!S.starter){const st=el("div","pack");st.style.borderColor="var(--danger)";st.innerHTML='<span class="tag">Solo una vez</span><div style="font-size:30px">🎁</div><b style="font-family:var(--display);font-size:20px">Paquete de bienvenida</b><small class="muted">600 MediCoins + Alas de mariposa + Huevo dorado</small>';
-  const b=el("button","btn red","US$ 2.99");b.onclick=()=>buyPack({id:"starter",mc:600,price:"US$ 2.99",starter:true});st.appendChild(b);body.appendChild(st);}
+  const b=el("button","btn red","C$ 99");b.onclick=()=>buyPack({id:"starter",mc:600,price:"C$ 99",starter:true});st.appendChild(b);body.appendChild(st);}
  body.appendChild(el("p","muted","Las MediCoins sirven para mascotas, espadas, alas, vehículos, ropa especial y poderes."));
- const g=el("div","packs");PACKS.forEach(p=>{const c=el("div","pack",(p.tag?'<span class="tag">'+p.tag+'</span>':"")+'<div style="font-size:30px;line-height:1">'+p.ic+'</div><div class="amt"><span class="coin"></span> '+p.mc.toLocaleString("es")+'</div>');const b=el("button","btn coinb",p.price);b.onclick=()=>buyPack(p);c.appendChild(b);g.appendChild(c);});body.appendChild(g);
+ const g=el("div","packs");PACKS.forEach(p=>{const c=el("div","pack",(p.tag?'<span class="tag">'+p.tag+'</span>':"")+'<div style="font-size:30px;line-height:1">'+p.ic+'</div><b style="font-size:13px;color:var(--muted)">'+(p.name||"")+'</b><div class="amt"><span class="coin"></span> '+p.mc.toLocaleString("es")+'</div>');const b=el("button","btn coinb",p.price);b.onclick=()=>buyPack(p);c.appendChild(b);g.appendChild(c);});body.appendChild(g);
  body.appendChild(el("p","note","💬 Las MediCoins se compran con el vendedor oficial por WhatsApp. Le mandan un código y lo canjea aquí abajo. ¡También puede ganar MediCoins gratis con los retos, objetivos y el Bosque de Retos!"));
  body.appendChild(el("h3","","¿Tiene un código?"));
  const inp=el("input");inp.type="text";inp.id="codeIn";inp.placeholder="MC-XXXX-XXXX";inp.autocomplete="off";inp.setAttribute("autocapitalize","characters");body.appendChild(inp);
@@ -77,10 +77,10 @@ function buyPack(p){
  if(window.CiudadBilling&&typeof window.CiudadBilling.buy==="function"){window.CiudadBilling.buy(p.id,()=>{creditPack(p);hud();save();});return;}
  const usuario=(typeof myTag==="function"&&NET.uid)?myTag():(S.name||"");
  sheet("💎 Comprar MediCoins",b=>{
-  b.appendChild(el("div","res",(p.starter?"🎁 Paquete de bienvenida<br>":"")+'<span class="coin"></span> '+p.mc.toLocaleString("es")+" MediCoins<br><small style='font-size:18px'>"+p.price+"</small>"));
+  b.appendChild(el("div","res",(p.combo?p.combo.icon+" "+p.combo.name+"<br><small style='font-size:15px'>"+p.combo.desc+"</small><br>":p.starter?"🎁 Paquete de bienvenida<br>":'<span class="coin"></span> '+p.mc.toLocaleString("es")+" MediCoins<br>")+"<small style='font-size:20px'>"+p.price+"</small>"));
   b.appendChild(el("p","","Pídale a su papá o mamá que escriba por WhatsApp al vendedor oficial de Mi Ciudad. Después de pagar le mandan un <b>código</b> para canjear aquí en la tienda."));
   b.appendChild(el("div","note","Su usuario para la compra: <b class='mono'>"+escapeHtml(usuario)+"</b>"));
-  const msg="Hola 👋 Quiero comprar "+(p.starter?"el Paquete de bienvenida (":"")+p.mc+" MediCoins"+(p.starter?")":"")+" de Mi Ciudad ("+p.price+"). Mi usuario es: "+usuario;
+  const msg="Hola 👋 Quiero comprar "+(p.combo?"el "+p.combo.name:p.starter?"el Paquete de bienvenida (600 MediCoins + alas + huevo dorado)":p.mc+" MediCoins")+" de Mi Ciudad ("+p.price+"). Mi usuario es: "+usuario;
   const w=el("button","btn go big","💬 Pedir por WhatsApp");w.onclick=()=>{try{window.open("https://wa.me/"+VENTAS_WA+"?text="+encodeURIComponent(msg),"_blank");}catch(e){}};b.appendChild(w);
   const r=el("button","btn ghost","🎟️ Ya tengo un código");r.onclick=()=>openShop("paquetes");b.appendChild(r);
  },{half:true});return;

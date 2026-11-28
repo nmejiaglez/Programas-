@@ -3,7 +3,7 @@
 cd "$(dirname "$0")/.." && node build.js >/dev/null || exit 1
 OUT=${1:-/tmp}
 fail=0
-for t in smoke newplayer pets rural obby obby_walk survive adventure park extras nuevo nuevo2; do
+for t in smoke newplayer pets rural obby obby_walk survive adventure park extras nuevo nuevo2 combos; do
   r=$(node tests/$t.js "$OUT" 2>&1)
   e=$(echo "$r" | grep -E "ERRORES" | tail -1)
   if echo "$e" | grep -q "ERRORES \[\]"; then echo "OK    $t"; else echo "FALLA $t"; echo "$r" | tail -8; fail=1; fi

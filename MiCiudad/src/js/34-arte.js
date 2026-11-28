@@ -6,7 +6,7 @@ function thumbSetup(){if(thR)return true;try{const c=document.createElement("can
 function thumb(key,build,frame){if(thCache[key])return thCache[key];if(!thumbSetup())return null;
  const g=build();thS.add(g);const f=frame||{y:1.6,d:7.5,ty:1.6};thC.position.set(f.x||1.2,f.y,f.d);thC.lookAt(0,f.ty,0);
  try{thR.render(thS,thC);thCache[key]=thR.domElement.toDataURL("image/png");}catch(e){thCache[key]=null;}thS.remove(g);return thCache[key];}
-function lookThumb(over,frame){const L=Object.assign({},S.look,over);const key="L"+JSON.stringify(L)+JSON.stringify(frame||0);return thumb(key,()=>{const c=makeChar(L);c.g.rotation.y=-0.35;c.shadow.visible=false;if(c.wings)c.g.rotation.y=2.6;return c.g;},frame);}
+function lookThumb(over,frame){const L=Object.assign({},S.look,over);const key="L"+JSON.stringify(L)+JSON.stringify(frame||0);return thumb(key,()=>{const c=makeChar(L);c.g.rotation.y=-0.35;c.shadow.visible=false;if(c.wings&&over&&over.acc&&Object.keys(over).length<=2)c.g.rotation.y=2.6;return c.g;},frame);}
 function vehThumb(id){return thumb("V"+id+(S.look.carC||""),()=>{const v=makeVehicle(id,S.look.carC);v.g.rotation.y=-0.8;return v.g;},{y:2.6,d:7,ty:0.6,x:2.5});}
 function imgTag(src,fb){return src?'<img class="th" alt="" src="'+src+'">':fb;}
 const FRAME_HEAD={y:2.9,d:3.6,ty:2.55,x:0.6},FRAME_BODY={y:1.9,d:7.2,ty:1.55,x:1.2},FRAME_LEGS={y:1.2,d:6,ty:0.9,x:1};

@@ -42,10 +42,11 @@ const FURN=[
  {id:"piano",name:"Piano",icon:"🎹",p:1500},{id:"tina",name:"Tina",icon:"🛁",p:1000},{id:"trofeo",name:"Trofeo dorado",icon:"🏆",p:60,cur:"mc"}
 ];
 const PACKS=[
- {id:"mc100",mc:100,price:"US$ 0.99",ic:"🪙"},
- {id:"mc550",mc:550,price:"US$ 4.99",ic:"💰",tag:"+10 %"},
- {id:"mc1200",mc:1200,price:"US$ 9.99",ic:"💰💰",tag:"Popular"},
- {id:"mc2600",mc:2600,price:"US$ 19.99",ic:"🏦",tag:"Mejor valor"}
+ {id:"mc150",mc:150,price:"C$ 50",ic:"🪙",name:"Mini"},
+ {id:"mc350",mc:350,price:"C$ 100",ic:"💰",name:"Básico"},
+ {id:"mc800",mc:800,price:"C$ 200",ic:"💰💰",tag:"Popular",name:"Popular"},
+ {id:"mc1500",mc:1500,price:"C$ 350",ic:"🏦",tag:"+ Valor",name:"Grande"},
+ {id:"mc3000",mc:3000,price:"C$ 600",ic:"💎",tag:"Mejor valor",name:"Súper"}
 ];
 const DAILY=[10,15,20,25,30,40,60];
 

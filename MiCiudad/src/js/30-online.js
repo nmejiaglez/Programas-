@@ -261,9 +261,10 @@ async function redeemOnline(v){
   const c=await db("GET","codes/"+code);if(!c||!(+c.a>0)){toast("❌ Ese código no existe. Revise que esté bien escrito.");return;}
   try{await db("PUT","redeemed/"+code,NET.uid);}catch(e){toast("Ese código ya fue usado.");return;}
   S.mc+=+c.a;S.used[code]=Date.now();
+  if(c.pack&&typeof applyCombo==="function")applyCombo(c.pack);
   if(c.starter&&!S.starter){S.starter=true;S.owned.alas_mariposa=1;S.look.acc="alas_mariposa";buildPlayer();setTimeout(()=>{if(typeof hatchEgg==="function")hatchEgg("dorado",true);},1800);}
   save();hud();pushCloud(true).catch(()=>{});if(typeof confetti==="function")confetti();
-  sheet("¡Código canjeado!",b=>{b.appendChild(el("div","res","🎉<br><span class='coin'></span> +"+fmt(+c.a)+" MediCoins"));const k=el("button","btn go big","¡Genial!");k.onclick=closeSheet;b.appendChild(k);},{half:true});
+  sheet("¡Código canjeado!",b=>{const cb=c.pack&&typeof COMBOS!=="undefined"&&COMBOS.find(x=>x.id===c.pack);b.appendChild(el("div","res","🎉<br>"+(cb?cb.icon+" "+cb.name+"<br><small style='font-size:15px'>¡Ya lo tiene puesto!</small><br>":"")+"<span class='coin'></span> +"+fmt(+c.a)+" MediCoins"));const k=el("button","btn go big","¡Genial!");k.onclick=closeSheet;b.appendChild(k);},{half:true});
  }catch(e){toast(errMsg(e));}
 }
 
@@ -281,9 +282,11 @@ function ownerOnline(b){
  const amt=el("input");amt.type="number";amt.id="onAmt";amt.min=1;amt.max=999999;amt.value=1000;b.appendChild(amt);
  const out=el("div","codebox","—");
  const stl=el("label","li",'<input type="checkbox" id="onStarter" style="width:22px;height:22px"><div class="tx"><b>🎁 Paquete de bienvenida</b><small>600 MediCoins + alas de mariposa + huevo dorado (solo una vez por jugador)</small></div>');b.appendChild(stl);
- stl.querySelector("input").onchange=e=>{if(e.target.checked)amt.value=600;};
- const g=el("button","btn coinb big","Crear código de un solo uso");g.onclick=async()=>{const a=Math.max(1,Math.min(999999,parseInt(amt.value,10)||0));const starter=$("onStarter").checked;let code="";for(let i=0;i<8;i++)code+=B32[Math.floor(Math.random()*32)];
-  try{await db("PUT","codes/"+code,starter?{a,starter:1,t:SV_TIME,by:NET.uid}:{a,t:SV_TIME,by:NET.uid});const pretty="MC-"+code.slice(0,4)+"-"+code.slice(4);out.textContent=pretty;S.gen.unshift({code:pretty,a,t:Date.now()});S.gen=S.gen.slice(0,50);save();toast("Código creado");}catch(e){toast(errMsg(e));}};
+ stl.querySelector("input").onchange=e=>{if(e.target.checked){amt.value=600;$("onCombo").value="";}};
+ const cs=document.createElement("select");cs.id="onCombo";cs.className="sel";cs.innerHTML='<option value="">Solo MediCoins (sin combo)</option>'+(typeof COMBOS!=="undefined"?COMBOS.map(c=>'<option value="'+c.id+'">'+c.icon+" "+c.name+" · "+c.price+'</option>').join(""):"");
+ cs.onchange=()=>{const c=COMBOS.find(x=>x.id===cs.value);if(c){amt.value=c.mc;$("onStarter").checked=false;}};b.appendChild(el("p","muted","Para vender un combo, elíjalo aquí:"));b.appendChild(cs);
+ const g=el("button","btn coinb big","Crear código de un solo uso");g.onclick=async()=>{const a=Math.max(1,Math.min(999999,parseInt(amt.value,10)||0));const starter=$("onStarter").checked;const pack=$("onCombo")?$("onCombo").value:"";let code="";for(let i=0;i<8;i++)code+=B32[Math.floor(Math.random()*32)];
+  try{const data={a,t:SV_TIME,by:NET.uid};if(starter)data.starter=1;if(pack)data.pack=pack;await db("PUT","codes/"+code,data);const pretty="MC-"+code.slice(0,4)+"-"+code.slice(4);out.textContent=pretty;S.gen.unshift({code:pretty,a,t:Date.now()});S.gen=S.gen.slice(0,50);save();toast("Código creado");}catch(e){toast(errMsg(e));}};
  b.append(g,out);
  const cp=el("button","btn ghost","Copiar código");cp.onclick=()=>{const t=out.textContent;if(t==="—")return;try{navigator.clipboard.writeText(t).then(()=>toast("Copiado"),()=>selectText(out));}catch(e){selectText(out);}};b.appendChild(cp);
  b.appendChild(el("h3","","Enviar MediCoins a un jugador"));

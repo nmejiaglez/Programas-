@@ -275,6 +275,13 @@ img.th{width:84px;height:84px;object-fit:contain;display:block;filter:drop-shado
 #title.home .menu .row{display:flex;gap:10px}#title.home .menu .row .tbig{flex:1;font-size:20px;padding:12px}
 .acchead{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}.acchead .ai{font-size:44px}.acchead b{font-family:var(--display);font-size:22px}.acchead small{color:var(--muted)}
 .accerr{color:var(--danger);font-weight:800;min-height:1.2em;margin:0}
+.combos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.combo{position:relative;background:linear-gradient(#FFFFFF,#FFF3FA);border:2px solid #FFC2DE;border-radius:20px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;box-shadow:0 4px 0 #FFD6EA}
+.combo .cpic{width:100%;display:grid;place-items:center;min-height:96px;background:radial-gradient(circle,#FFFFFF,#FFE3F1 70%);border-radius:14px}
+.combo .cpic img.th{width:110px;height:110px}.combo .cbig{font-size:44px}
+.combo b{font-family:var(--display);font-size:16px;line-height:1.1}.combo small{font-size:11.5px;color:var(--muted);line-height:1.3}
+.combo .btn{margin-top:auto}
+select.sel{font:inherit;font-weight:800;font-size:15px;padding:10px;border-radius:12px;border:2px solid var(--line);background:#fff;width:100%}
 @media (prefers-reduced-motion:reduce){.hgrid{animation:none}}
 @media (prefers-reduced-motion:reduce){#title .logo .w span,#title .tplay{animation:none}#act{animation:none}.toast{animation:none}}
 </style>
