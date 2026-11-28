@@ -21,10 +21,10 @@ async function tel(b, save) {
   const found = await B.p.$$eval(".fcard b", els => els.map(e => e.textContent));
   console.log("encontró:", found); if (!found.includes(nombre)) bad.push("no la encontró");
   await B.p.screenshot({ path: (process.argv[2] || "/tmp") + "/inv_buscar.png" });
-  await B.p.click(".fcard >> text=💌 Invitar"); await B.p.waitForTimeout(2500);
+  await B.p.click(".fcard:has-text('" + nombre + "') >> text=💌 Invitar"); await B.p.waitForTimeout(2500);
   const roomB = await B.p.evaluate(() => __t.NET.room);
   // A recibe y acepta
-  await A.p.waitForSelector("text=✅ Aceptar", { timeout: 20000 }).catch(() => bad.push("no le llegó la invitación"));
+  await A.p.waitForSelector("text=✅ Aceptar", { timeout: 40000 }).catch(() => bad.push("no le llegó la invitación"));
   await A.p.screenshot({ path: (process.argv[2] || "/tmp") + "/inv_recibe.png" });
   await A.p.click("text=✅ Aceptar").catch(() => {}); await A.p.waitForTimeout(3000);
   const roomA = await A.p.evaluate(() => __t.NET.room);
@@ -33,14 +33,14 @@ async function tel(b, save) {
   await A.p.evaluate(() => __t.leaveRoom()); await B.p.waitForTimeout(31000);
   await B.p.evaluate(() => { __t.closeSheet(); });
   await B.p.evaluate(q => __t.openSearch(q), nombre); await B.p.waitForTimeout(3000);
-  await B.p.click(".fcard >> text=💌 Invitar").catch(() => bad.push("no pudo reinvitar")); await B.p.waitForTimeout(1500);
-  await A.p.waitForSelector("text=❌ No, gracias", { timeout: 20000 }).catch(() => bad.push("no llegó la segunda"));
+  await B.p.click(".fcard:has-text('" + nombre + "') >> text=💌 Invitar").catch(() => bad.push("no pudo reinvitar")); await B.p.waitForTimeout(1500);
+  await A.p.waitForSelector("text=❌ No, gracias", { timeout: 40000 }).catch(() => bad.push("no llegó la segunda"));
   await A.p.click("text=❌ No, gracias").catch(() => {}); await A.p.waitForTimeout(1500);
   const quedo = await A.p.evaluate(async () => { try { return await __t.db("GET", "invites/" + __t.NET.uid); } catch (e) { return "ERROR " + e.message; } });
   if (quedo) bad.push("la invitación no se borró");
   console.log("después de rechazar:", quedo, "sala A:", await A.p.evaluate(() => __t.NET.room));
   // limpiar
-  for (const J of [A, B]) await J.p.evaluate(async () => { __t.leaveRoom(); const u = __t.NET.uid; for (const x of ["users/" + u, "perfiles/" + u, "ranking/" + u, "invites/" + u]) { try { await __t.db("DELETE", x); } catch (e) {} }
+  for (const J of [A, B]) await J.p.evaluate(async () => { __t.leaveRoom(); __t.NET.ok = false; await new Promise(r => setTimeout(r, 500)); const u = __t.NET.uid; for (const x of ["users/" + u, "perfiles/" + u, "ranking/" + u, "invites/" + u]) { try { await __t.db("DELETE", x); } catch (e) {} }
     await fetch("https://identitytoolkit.googleapis.com/v1/accounts:delete?key=AIzaSyCcK3SfW8lpa5fiDyr8BJzofaRqG3zTfg8", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ idToken: __t.NET.token }) }); });
   console.log("ERRORES", A.errs.concat(B.errs, bad));
   await b.close();

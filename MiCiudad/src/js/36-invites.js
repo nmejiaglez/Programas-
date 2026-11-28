@@ -43,6 +43,6 @@ function showInvite(from,v){sfx("reto");sheet("💌 ¡Te invitan a jugar!",b=>{
  r.append(no,si);b.appendChild(r);
  const bl=el("button","btn ghost","🔇 No quiero invitaciones de esta persona");bl.onclick=()=>{del();S.blocked=S.blocked||{};S.blocked[from]=1;save();closeSheet();toast("Bloqueada");};b.appendChild(bl);
 },{half:true});}
-mode({id:"invitaciones",update(dt){if(!NET.ok)return;INV.pollT+=dt;INV.beatT+=dt;
- if(INV.pollT>8){INV.pollT=0;checkInvites();}
- if(INV.beatT>60){INV.beatT=0;db("PATCH","perfiles/"+NET.uid,{t:SV_TIME,hide:findHidden()?1:0,n:S.name||"Jugador",tag:myTag()}).catch(()=>{});}}});
+mode({id:"invitaciones",update(dt){if(!NET.ok)return;const now=Date.now();
+ if(now-(INV.lastPoll||0)>5000){INV.lastPoll=now;checkInvites();}
+ if(now-(INV.lastBeat||0)>60000){INV.lastBeat=now;db("PATCH","perfiles/"+NET.uid,{t:SV_TIME,hide:findHidden()?1:0,n:S.name||"Jugador",tag:myTag()}).catch(()=>{});}}});
