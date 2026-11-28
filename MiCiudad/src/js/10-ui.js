@@ -132,7 +132,7 @@ function openSettings(){sheet("Ajustes",body=>{
  body.appendChild(el("h3","","Estadísticas"));
  body.appendChild(el("div","list",[["💵","Dinero ganado",$fmt(S.stats.earned)],["🧰","Trabajos completados",S.stats.jobs],["🪙","Monedas recogidas",S.stats.coins],["🔥","Incendios apagados",S.stats.fires],["🚓","Ladrones atrapados",S.stats.thieves],["🕵️","Misterios resueltos",S.stats.mysteries],["👾","Monstruos derrotados",S.stats.monsters],["🌋","Desastres sobrevividos",S.stats.survived],["🧗","Torres completadas",S.stats.obby],["🐟","Peces pescados",S.stats.fish],["🌽","Cosechas",S.stats.harvest],["👗","Pasarelas",S.stats.catwalks]].map(r=>'<div class="li"><div style="font-size:24px">'+r[0]+'</div><div class="tx"><b>'+r[2]+'</b><small>'+r[1]+'</small></div></div>').join("")));
  const rs=el("button","btn ghost","Reiniciar partida");rs.onclick=()=>requireParent(()=>sheet("¿Reiniciar?",b=>{b.appendChild(el("p","","Se borra todo el progreso, el dinero y las MediCoins de este dispositivo."));const r=el("div","row");const c=el("button","btn ghost","Cancelar");c.onclick=openSettings;const o=el("button","btn red","Reiniciar");o.onclick=()=>{const keep={pin:S.pin,gen:S.gen,parent:S.parent};S=fresh();S.pin=keep.pin;S.gen=keep.gen;S.parent=keep.parent;save();location.reload();};r.append(c,o);b.appendChild(r);},{half:true}),"reiniciar la partida");body.appendChild(rs);
- const ver=el("p","muted","Mi Ciudad · versión 2.0");ver.style.textAlign="center";ver.onclick=()=>{ownerTaps++;if(ownerTaps>=5){ownerTaps=0;ownerLogin();}};body.appendChild(ver);
+ const ver=el("p","muted","Mi Ciudad · versión 3.0");ver.style.textAlign="center";ver.onclick=()=>{ownerTaps++;if(ownerTaps>=5){ownerTaps=0;ownerLogin();}};body.appendChild(ver);
 });}
 function $fmt(n){return "$ "+fmt(n);}
 
