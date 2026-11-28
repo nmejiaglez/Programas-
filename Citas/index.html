@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Citas de Ultrasonido · Dr. Néstor Mejía</title>
+<meta name="description" content="Agende su ultrasonido o Doppler con el Dr. Néstor José Mejía González, especialista en Radiología e Imagen, Juigalpa, Chontales. Precios, preparación y cita por WhatsApp.">
+<meta property="og:title" content="Citas de Ultrasonido · Dr. Néstor Mejía">
+<meta property="og:description" content="Ultrasonido y Doppler en Juigalpa. Vea precios y preparación, y pida su cita por WhatsApp.">
+<meta name="theme-color" content="#123A78">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Baloo+2:wght@700;800&display=swap">
+<style>
+:root{--azul:#123A78;--azul2:#1F5BB8;--celeste:#EAF1FA;--dorado:#C9A227;--verde:#1DA851;--verde2:#128C3E;--tinta:#1E2B3A;--gris:#5E6E80;--linea:#D7E2EE;--fondo:#F5F8FC;--blanco:#FFFFFF;--rojo:#C00028}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--fondo);color:var(--tinta);font-family:Nunito,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.45}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 120px}
+header.hero{background:linear-gradient(160deg,var(--azul) 0%,var(--azul2) 100%);color:#fff;padding:28px 16px 70px;position:relative;overflow:hidden}
+header.hero:after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.07)}
+.hero .in{max-width:760px;margin:0 auto;display:flex;gap:16px;align-items:center}
+.sello{flex:none;width:74px;height:74px;border-radius:50%;border:3px solid var(--dorado);display:grid;place-items:center;background:rgba(255,255,255,.08);font-family:"Baloo 2",sans-serif;font-weight:800;font-size:28px;letter-spacing:1px}
+.hero h1{margin:0;font-family:"Baloo 2",sans-serif;font-size:clamp(22px,5.6vw,32px);line-height:1.1}
+.hero p{margin:4px 0 0;opacity:.92;font-size:14.5px}
+.hero .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.hero .chip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:3px 10px;font-size:13px;font-weight:700}
+.card{background:var(--blanco);border-radius:20px;box-shadow:0 6px 24px rgba(18,58,120,.08);border:1px solid var(--linea);padding:18px;margin-top:16px}
+.card.up{margin-top:-48px;position:relative}
+h2{font-family:"Baloo 2",sans-serif;font-size:21px;margin:0 0 4px;color:var(--azul);display:flex;align-items:center;gap:8px}
+h2 .n{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--azul);color:#fff;font-size:15px;flex:none}
+.muted{color:var(--gris);font-size:14px;margin:0 0 10px}
+.horario{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:15px}
+.horario b{color:var(--azul)}
+.grupo{margin-top:14px}
+.grupo h3{margin:0 0 8px;font-size:15px;color:var(--gris);text-transform:uppercase;letter-spacing:.04em}
+.est{display:flex;align-items:flex-start;gap:12px;border:2px solid var(--linea);border-radius:14px;padding:12px;margin-bottom:8px;cursor:pointer;background:#fff;transition:border-color .15s,background .15s}
+.est:hover{border-color:#B9CCE3}
+.est.sel{border-color:var(--azul2);background:var(--celeste)}
+.est input{width:22px;height:22px;margin:2px 0 0;accent-color:var(--azul2);flex:none}
+.est .tx{flex:1;min-width:0}
+.est .nom{font-weight:800;font-size:15.5px}
+.est .pre{font-weight:800;color:var(--azul);white-space:nowrap;font-variant-numeric:tabular-nums}
+.est details{margin-top:4px;font-size:14px;color:var(--gris)}
+.est summary{cursor:pointer;color:var(--azul2);font-weight:700;font-size:13.5px;list-style:none}
+.est summary::-webkit-details-marker{display:none}
+.est summary:before{content:"📋 "}
+.est details p{margin:6px 0 0;color:var(--tinta)}
+.dias{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.dia{flex:none;width:72px;border:2px solid var(--linea);border-radius:14px;background:#fff;padding:8px 4px;text-align:center;cursor:pointer;scroll-snap-align:start}
+.dia .d1{font-size:12px;color:var(--gris);font-weight:700;text-transform:capitalize}
+.dia .d2{font-family:"Baloo 2",sans-serif;font-size:24px;line-height:1.1;color:var(--azul)}
+.dia .d3{font-size:12px;color:var(--gris);text-transform:capitalize}
+.dia.sel{background:var(--azul);border-color:var(--azul)}
+.dia.sel .d1,.dia.sel .d2,.dia.sel .d3{color:#fff}
+.horas{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.hora{border:2px solid var(--linea);border-radius:12px;background:#fff;padding:10px 4px;font-weight:800;cursor:pointer;font-variant-numeric:tabular-nums}
+.hora.sel{background:var(--azul);border-color:var(--azul);color:#fff}
+.hora:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+label.f{display:block;font-weight:800;font-size:14.5px;margin:12px 0 4px}
+label.f small{font-weight:600;color:var(--gris)}
+input[type=text],input[type=tel],input[type=number],textarea{width:100%;border:2px solid var(--linea);border-radius:12px;padding:11px 12px;background:#fff;font-size:16px}
+input:focus,textarea:focus{outline:none;border-color:var(--azul2)}
+textarea{min-height:70px;resize:vertical}
+.fila{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+.resumen{background:var(--celeste);border-radius:14px;padding:12px 14px;font-size:15px}
+.resumen ul{margin:6px 0 0;padding-left:20px}
+.total{font-weight:800;color:var(--azul);margin-top:8px;font-variant-numeric:tabular-nums}
+.aviso{font-size:13.5px;color:var(--gris);margin-top:10px}
+.wa{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:16px;padding:15px;background:var(--verde);color:#fff;font-weight:800;font-size:18px;cursor:pointer;box-shadow:0 4px 0 var(--verde2);margin-top:14px}
+.wa:active{transform:translateY(2px);box-shadow:0 2px 0 var(--verde2)}
+.wa svg{width:26px;height:26px;flex:none}
+.barra{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-top:1px solid var(--linea);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px;justify-content:center;z-index:10}
+.barra a,.barra button{flex:1;max-width:240px;text-align:center;text-decoration:none;border-radius:14px;padding:11px 8px;font-weight:800;font-size:15px;border:2px solid var(--azul);color:var(--azul);background:#fff;cursor:pointer}
+.barra a.v{background:var(--verde);border-color:var(--verde);color:#fff}
+.err{color:var(--rojo);font-weight:800;font-size:14px;margin-top:8px;min-height:1em}
+.gen{display:grid;gap:8px;font-size:14.5px}
+.gen div{display:flex;gap:10px;align-items:flex-start}
+.gen span{flex:none;font-size:20px}
+footer{text-align:center;color:var(--gris);font-size:13px;margin-top:24px}
+@media (max-width:420px){.fila{grid-template-columns:1fr}}
+@media print{.barra,.wa{display:none}}
+</style>
+</head>
+<body>
+<header class="hero">
+ <div class="in">
+  <div class="sello" aria-hidden="true">NM</div>
+  <div>
+   <h1>Dr. Néstor José Mejía González</h1>
+   <p>Especialista en Radiología e Imagen · Código MINSA 37294</p>
+   <div class="chips"><span class="chip">📍 Juigalpa, Chontales</span><span class="chip">🩻 Ultrasonido y Doppler</span></div>
+  </div>
+ </div>
+</header>
+<main class="wrap">
+ <section class="card up" aria-labelledby="h-hor">
+  <h2 id="h-hor">🕗 Horario de atención</h2>
+  <div class="horario" id="horario"></div>
+  <p class="aviso">Pida su cita aquí y se la confirmamos por WhatsApp. 📍 La dirección exacta se la enviamos al confirmar.</p>
+ </section>
+
+ <section class="card" aria-labelledby="h-est">
+  <h2 id="h-est"><span class="n">1</span>Elija su estudio</h2>
+  <p class="muted">Puede marcar uno o varios. Toque «Preparación» para saber cómo venir.</p>
+  <div id="estudios"></div>
+ </section>
+
+ <section class="card" aria-labelledby="h-dia">
+  <h2 id="h-dia"><span class="n">2</span>Elija el día y la hora</h2>
+  <p class="muted">Deslice para ver más días.</p>
+  <div class="dias" id="dias" role="listbox" aria-label="Días disponibles"></div>
+  <div class="horas" id="horas" role="listbox" aria-label="Horas disponibles"></div>
+ </section>
+
+ <section class="card" aria-labelledby="h-dat">
+  <h2 id="h-dat"><span class="n">3</span>Datos del paciente</h2>
+  <label class="f" for="nom">Nombre completo</label>
+  <input type="text" id="nom" autocomplete="name" placeholder="Ej.: María José López">
+  <div class="fila">
+   <div><label class="f" for="tel">Teléfono / WhatsApp</label><input type="tel" id="tel" inputmode="tel" autocomplete="tel" placeholder="Ej.: 8888 8888"></div>
+   <div><label class="f" for="edad">Edad</label><input type="number" id="edad" min="0" max="120" inputmode="numeric" placeholder="Años"></div>
+  </div>
+  <label class="f" for="ref">Médico que lo envía <small>(si tiene)</small></label>
+  <input type="text" id="ref" placeholder="Ej.: Dra. Pérez">
+  <label class="f" for="nota">¿Algo que debamos saber? <small>(opcional)</small></label>
+  <textarea id="nota" placeholder="Ej.: dolor en el lado derecho, embarazo, estudio de control…"></textarea>
+
+  <div class="resumen" id="resumen" aria-live="polite"></div>
+  <div class="err" id="err" role="alert"></div>
+  <button class="wa" id="enviar" type="button">
+   <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M16 3C9 3 3.3 8.6 3.3 15.6c0 2.4.7 4.7 1.9 6.6L3 29l7-1.8c1.9 1 4 1.6 6.1 1.6 7 0 12.7-5.6 12.7-12.6S23 3 16 3zm0 23.1c-1.9 0-3.8-.5-5.4-1.5l-.4-.2-4.1 1.1 1.1-4-.3-.4c-1.1-1.7-1.6-3.6-1.6-5.5C5.3 9.8 10.1 5.1 16 5.1s10.6 4.7 10.6 10.5S21.9 26.1 16 26.1zm5.8-7.8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.6 8.6 0 0 1-4.3-3.7c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.5 1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.6.7.6-.1 1.9-.8 2.1-1.5.3-.7.3-1.3.2-1.5-.1-.1-.3-.2-.6-.3z"/></svg>
+   Enviar solicitud por WhatsApp
+  </button>
+  <p class="aviso">Su cita queda confirmada cuando le respondamos por WhatsApp. Los datos solo se envían por su WhatsApp; esta página no los guarda.</p>
+ </section>
+
+ <section class="card" aria-labelledby="h-gen">
+  <h2 id="h-gen">📌 Para todos los estudios</h2>
+  <div class="gen">
+   <div><span>🪪</span>Traiga su cédula o partida de nacimiento.</div>
+   <div><span>📄</span>Traiga la orden de su médico, si tiene.</div>
+   <div><span>🗂️</span>Traiga sus estudios anteriores (ultrasonidos, radiografías, exámenes de laboratorio).</div>
+   <div><span>⏰</span>Llegue 10 minutos antes de su hora.</div>
+   <div><span>👕</span>Use ropa cómoda y fácil de quitar.</div>
+  </div>
+ </section>
+ <footer>Dr. Néstor José Mejía González · Radiología e Imagen · Juigalpa, Chontales</footer>
+</main>
+<nav class="barra" aria-label="Contacto rápido">
+ <a href="tel:+50585344022">📞 Llamar</a>
+ <a class="v" id="waDirecto" href="https://wa.me/50585344022">💬 WhatsApp</a>
+ <button type="button" id="compartir">🔗 Compartir</button>
+</nav>
+<script>
+/* ======= CONFIGURACIÓN: cambie aquí horario, precios y preparaciones ======= */
+const WHATSAPP="50585344022";
+const HORARIO={1:[8,12],2:[8,12],3:[8,12],4:[8,12],5:[8,12],6:[8,12]}; // 0=domingo … 6=sábado; [hora inicio, hora fin]
+const CADA_MIN=30;   // cada cuántos minutos hay un espacio
+const DIAS_ADELANTE=21;
+const PREP={
+ abdomen:"Ayuno de 8 horas (sin comer). Puede tomar solo agua. Niños: 4 horas de ayuno; bebés: 3 horas. No masque chicle ni fume ese día.",
+ vejiga:"Vejiga llena: tome 4 a 6 vasos de agua (1 litro) 1 hora antes del estudio y NO orine hasta terminar.",
+ combo:"Ayuno de 8 horas (puede tomar solo agua) y vejiga llena: tome 4 a 6 vasos de agua 1 hora antes y no orine hasta terminar el estudio.",
+ nada:"No necesita preparación. Venga con ropa cómoda que permita descubrir la zona a estudiar.",
+ mama:"No necesita preparación. Traiga mamografías o ultrasonidos de mama anteriores. Use blusa de dos piezas.",
+ tiroides:"No necesita preparación. Venga sin collares ni cadenas. Traiga sus exámenes de tiroides (TSH, T4) si los tiene.",
+ doppler:"No necesita ayuno. Venga con ropa cómoda (short o falda) para descubrir las piernas o brazos. Si tiene vendas o medias de compresión, puede quitárselas antes.",
+ carotida:"No necesita ayuno. Venga sin collares ni cadenas y con el cuello descubierto. Tome sus medicinas de siempre.",
+ lectura:"Traiga el CD, la memoria USB o las imágenes del estudio y el informe anterior si lo tiene. También puede enviarlas por WhatsApp."
+};
+const ESTUDIOS=[
+ {g:"Paquetes completos",items:[
+  {id:"arp",n:"Ultrasonido abdominal, renal y pélvico",p:900,m:"C$",prep:"combo"},
+  {id:"arpr",n:"Ultrasonido abdominal, renal y de próstata",p:900,m:"C$",prep:"combo"}]},
+ {g:"Ultrasonido por separado",items:[
+  {id:"abd",n:"Ultrasonido abdominal",p:600,m:"C$",prep:"abdomen"},
+  {id:"ren",n:"Ultrasonido renal",p:600,m:"C$",prep:"vejiga"},
+  {id:"pel",n:"Ultrasonido pélvico",p:600,m:"C$",prep:"vejiga"},
+  {id:"pro",n:"Ultrasonido de próstata",p:600,m:"C$",prep:"vejiga"}]},
+ {g:"Tiroides, mama y músculos",items:[
+  {id:"tir",n:"Ultrasonido de tiroides",p:700,m:"C$",prep:"tiroides"},
+  {id:"mam",n:"Ultrasonido de mama",p:700,m:"C$",prep:"mama"},
+  {id:"hom",n:"Ultrasonido de hombro",p:700,m:"C$",prep:"nada"},
+  {id:"cod",n:"Ultrasonido de codo",p:700,m:"C$",prep:"nada"},
+  {id:"cad",n:"Ultrasonido de cadera",p:700,m:"C$",prep:"nada"},
+  {id:"rod",n:"Ultrasonido de rodilla",p:700,m:"C$",prep:"nada"},
+  {id:"tob",n:"Ultrasonido de tobillo",p:700,m:"C$",prep:"nada"},
+  {id:"msk",n:"Ultrasonido musculoesquelético (otras zonas)",p:700,m:"C$",prep:"nada"}]},
+ {g:"Doppler",items:[
+  {id:"dv1",n:"Doppler venoso de 1 miembro",p:40,m:"US$",prep:"doppler"},
+  {id:"dv2",n:"Doppler venoso de 2 miembros",p:70,m:"US$",prep:"doppler"},
+  {id:"da1",n:"Doppler arterial de 1 miembro",p:40,m:"US$",prep:"doppler"},
+  {id:"da2",n:"Doppler arterial de 2 miembros",p:70,m:"US$",prep:"doppler"},
+  {id:"car",n:"Doppler carotídeo",p:70,m:"US$",prep:"carotida"}]},
+ {g:"Otros",items:[
+  {id:"lec",n:"Lectura de estudios (segunda opinión)",p:700,m:"C$",prep:"lectura"}]}
+];
+/* ========================================================================= */
+const $=id=>document.getElementById(id);
+const DN=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"],MN=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const sel={est:new Set(),dia:null,hora:null};
+function hm(h,m){const ap=h<12?"AM":"PM";const hh=h%12||12;return hh+":"+String(m).padStart(2,"0")+" "+ap;}
+function money(m,v){return m+" "+v.toLocaleString("es-NI");}
+// horario
+(function(){const nombres={1:"Lunes a viernes",6:"Sábados"};const rows=[["Lunes a viernes",HORARIO[1]],["Sábados",HORARIO[6]]].filter(r=>r[1]);
+ $("horario").innerHTML=rows.map(r=>"<b>"+r[0]+"</b><span>"+hm(r[1][0],0)+" a "+hm(r[1][1],0)+"</span>").join("")+"<b>Domingos</b><span>Cerrado</span>";})();
+// estudios
+(function(){const box=$("estudios");ESTUDIOS.forEach(gr=>{const g=document.createElement("div");g.className="grupo";g.innerHTML="<h3>"+gr.g+"</h3>";
+ gr.items.forEach(it=>{const l=document.createElement("label");l.className="est";l.innerHTML='<input type="checkbox" value="'+it.id+'"><div class="tx"><div class="nom">'+it.n+'</div><details><summary>Preparación</summary><p>'+PREP[it.prep]+'</p></details></div><div class="pre">'+money(it.m,it.p)+'</div>';
+  const cb=l.querySelector("input");cb.addEventListener("change",()=>{if(cb.checked)sel.est.add(it.id);else sel.est.delete(it.id);l.classList.toggle("sel",cb.checked);resumen();});
+  l.querySelector("details").addEventListener("click",e=>e.stopPropagation());g.appendChild(l);});box.appendChild(g);});})();
+function allItems(){return ESTUDIOS.flatMap(g=>g.items);}
+// días
+function buildDias(){const box=$("dias");box.innerHTML="";const hoy=new Date();let n=0;
+ for(let i=0;n<DIAS_ADELANTE&&i<40;i++){const d=new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate()+i);const h=HORARIO[d.getDay()];if(!h)continue;
+  if(i===0){const now=new Date();if(now.getHours()*60+now.getMinutes()>=h[1]*60-CADA_MIN)continue;}
+  n++;const b=document.createElement("button");b.type="button";b.className="dia";b.setAttribute("role","option");
+  b.innerHTML='<div class="d1">'+(i===0?"hoy":i===1?"mañana":DN[d.getDay()].slice(0,3))+'</div><div class="d2">'+d.getDate()+'</div><div class="d3">'+MN[d.getMonth()].slice(0,3)+'</div>';
+  b.setAttribute("aria-label",DN[d.getDay()]+" "+d.getDate()+" de "+MN[d.getMonth()]);
+  b.onclick=()=>{sel.dia=d;sel.hora=null;box.querySelectorAll(".dia").forEach(x=>{x.classList.remove("sel");x.setAttribute("aria-selected","false");});b.classList.add("sel");b.setAttribute("aria-selected","true");buildHoras();resumen();};
+  box.appendChild(b);}}
+function buildHoras(){const box=$("horas");box.innerHTML="";if(!sel.dia){box.innerHTML='<p class="muted" style="grid-column:1/-1">Primero elija un día.</p>';return;}
+ const h=HORARIO[sel.dia.getDay()];const now=new Date();const esHoy=sel.dia.toDateString()===now.toDateString();
+ for(let t=h[0]*60;t<h[1]*60;t+=CADA_MIN){const hh=Math.floor(t/60),mm=t%60;const b=document.createElement("button");b.type="button";b.className="hora";b.textContent=hm(hh,mm);b.setAttribute("role","option");
+  if(esHoy&&t<=now.getHours()*60+now.getMinutes()+30)b.disabled=true;
+  b.onclick=()=>{sel.hora=[hh,mm];box.querySelectorAll(".hora").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");resumen();};box.appendChild(b);}}
+function fechaTxt(d){return DN[d.getDay()]+" "+d.getDate()+" de "+MN[d.getMonth()]+" de "+d.getFullYear();}
+function resumen(){const its=allItems().filter(i=>sel.est.has(i.id));const r=$("resumen");
+ if(!its.length&&!sel.dia){r.innerHTML="<b>Su solicitud</b><br><span class='muted'>Elija estudio, día y hora.</span>";return;}
+ const c=its.filter(i=>i.m==="C$").reduce((a,i)=>a+i.p,0),u=its.filter(i=>i.m==="US$").reduce((a,i)=>a+i.p,0);
+ r.innerHTML="<b>Su solicitud</b>"+(its.length?"<ul>"+its.map(i=>"<li>"+i.n+" — "+money(i.m,i.p)+"</li>").join("")+"</ul>":"")+
+  (sel.dia?"<div>📅 "+fechaTxt(sel.dia)+(sel.hora?" · 🕗 "+hm(sel.hora[0],sel.hora[1]):"")+"</div>":"")+
+  ((c||u)?'<div class="total">Total: '+[c?money("C$",c):"",u?money("US$",u):""].filter(Boolean).join(" + ")+"</div>":"");}
+$("enviar").onclick=()=>{const err=$("err");err.textContent="";
+ const its=allItems().filter(i=>sel.est.has(i.id));const nom=$("nom").value.trim(),tel=$("tel").value.trim(),edad=$("edad").value.trim();
+ if(!its.length)return err.textContent="Elija al menos un estudio (paso 1).";
+ if(!sel.dia||!sel.hora)return err.textContent="Elija el día y la hora (paso 2).";
+ if(nom.length<3)return err.textContent="Escriba el nombre del paciente.";
+ if(tel.replace(/\D/g,"").length<8)return err.textContent="Escriba un teléfono de 8 números.";
+ const c=its.filter(i=>i.m==="C$").reduce((a,i)=>a+i.p,0),u=its.filter(i=>i.m==="US$").reduce((a,i)=>a+i.p,0);
+ const ref=$("ref").value.trim(),nota=$("nota").value.trim();
+ const msg=["Hola, Dr. Mejía 👋 Quiero agendar una cita:","",
+  "🩻 Estudio: "+its.map(i=>i.n).join(", "),
+  "📅 Día: "+fechaTxt(sel.dia),"🕗 Hora: "+hm(sel.hora[0],sel.hora[1]),
+  "👤 Paciente: "+nom+(edad?", "+edad+" años":""),"📞 Teléfono: "+tel,
+  ref?"🩺 Lo envía: "+ref:null,nota?"📝 Nota: "+nota:null,"",
+  "💵 Total: "+[c?money("C$",c):"",u?money("US$",u):""].filter(Boolean).join(" + "),"",
+  "Quedo atento(a) a su confirmación. ¡Gracias!"].filter(x=>x!==null).join("\n");
+ window.location.href="https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(msg);};
+$("waDirecto").href="https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent("Hola, Dr. Mejía 👋 Quisiera información sobre un ultrasonido.");
+$("compartir").onclick=async()=>{const data={title:"Citas de Ultrasonido · Dr. Néstor Mejía",text:"Pida su cita de ultrasonido o Doppler con el Dr. Néstor Mejía (Juigalpa):",url:location.href};
+ try{if(navigator.share){await navigator.share(data);return;}}catch(e){return;}
+ try{await navigator.clipboard.writeText(location.href);$("compartir").textContent="✅ Enlace copiado";setTimeout(()=>$("compartir").textContent="🔗 Compartir",2000);}catch(e){prompt("Copie este enlace:",location.href);}};
+buildDias();buildHoras();resumen();
+</script>
+</body>
+</html>
