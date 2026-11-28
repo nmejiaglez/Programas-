@@ -55,9 +55,9 @@ function openMyPets(){sheet("Mis mascotas",body=>{
    '<div class="bar"><i style="width:'+(p.lvl>=10?100:p.xp/petLevelNeed(p.lvl)*100)+'%"></i></div>'+
    '<div class="mini"><span>🍖 '+Math.round(p.food)+'</span><span>❤️ '+Math.round(p.joy)+'</span></div>';
   const acts=el("div","pacts");
-  const feed=el("button","btn","🍖 $30");feed.onclick=()=>{if(!pay({p:30,cur:"$"}))return;p.food=Math.min(100,p.food+40);addPetXp(p,10);openMyPets();};
+  const feed=el("button","btn","🍖 $30");feed.onclick=()=>{if(!pay({p:30,cur:"$"}))return;p.food=Math.min(100,p.food+40);addPetXp(p,10);retoAdd("mascota",1);openMyPets();};
   const pet=el("button","btn go","❤️ Acariciar");const cd=(p.petT||0)+300000-Date.now();if(cd>0){pet.disabled=true;pet.textContent="❤️ "+Math.ceil(cd/60000)+" min";}
-  pet.onclick=()=>{p.joy=Math.min(100,p.joy+25);p.petT=Date.now();addPetXp(p,5);openMyPets();};
+  pet.onclick=()=>{p.joy=Math.min(100,p.joy+25);p.petT=Date.now();addPetXp(p,5);retoAdd("mascota",1);openMyPets();};
   const treat=el("button","btn coinb",'🍬 <span class="coin sm"></span> 3');treat.onclick=()=>{if(p.lvl>=10){toast("Ya es adulto");return;}if(!pay({p:3,cur:"mc"}))return;p.food=100;p.joy=100;addPetXp(p,100);openMyPets();};
   const use=el("button","btn"+(on?" ghost":" go"),on?"Guardar":"Llevar");use.onclick=()=>{S.petActive=on?null:p.uid;buildPlayer();openMyPets();};
   const more=el("button","btn ghost","⋯");more.onclick=()=>petOptions(p);

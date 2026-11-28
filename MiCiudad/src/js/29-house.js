@@ -28,6 +28,7 @@ function buildRoom(){
  plane(2.6,1.4,"#7A5232",x0,0.33,z0+d/2-0.4);
  box(3,2,0.2,"#BFE6FF",x0-w/4,3.4,z0-d/2+0.25,null);box(3,2,0.2,"#BFE6FF",x0+w/4,3.4,z0-d/2+0.25,null);
  box(w,0.2,0.3,"#F28C28",x0,0.6,z0-d/2+0.3,null);
+ if(S.art&&S.art[0]){box(2.3,2.3,0.12,"#F5C518",x0,3.5,z0-d/2+0.28,null);const pm=new T.Mesh(new T.PlaneGeometry(2,2),new T.MeshBasicMaterial({color:0xffffff}));pm.position.set(x0,3.5,z0-d/2+0.36);hs.g.add(pm);const im=new Image();im.onload=()=>{const t=new T.Texture(im);t.needsUpdate=true;pm.material.map=t;pm.material.needsUpdate=true;};im.src=S.art[0];}
  for(const [k,fx,fz] of FURN_SLOTS){if(!S.furn[k])continue;furniture(k,x0+fx*(w/2-2.2),z0+fz*(d/2-2));}
  ROOT=scene;
  const n=Object.keys(S.furn).length;zoneButton("🛋️ Muebles: "+n+" · Comprar más",openCasa);
@@ -57,3 +58,5 @@ function exitHouse(){const door=doors.find(x=>x.b.id==="casa");const f=FACE[door
 function houseUpgradeUI(body){if(S.house.big){body.appendChild(el("p","muted","🏡 Tiene la casa grande."));return;}
  const b=el("button","btn coinb",'🏡 Casa grande: más espacio para muebles · <span class="coin sm"></span> 200');b.onclick=()=>{if(!pay({p:200,cur:"mc"}))return;S.house.big=true;save();toast("🏡 ¡Su casa ahora es grande!");if(curZone.id==="casa")buildRoom();openCasa();};body.appendChild(b);}
 mode({id:"casa",init:buildHouse,update(){}});
+
+function refreshHouseArt(){if(curZone&&curZone.id==="casa")buildRoom();}

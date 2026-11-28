@@ -190,21 +190,68 @@ input:focus{outline:none;border-color:var(--accent)}
 @keyframes tin{from{transform:translateY(-10px);opacity:0}}
 #loading{position:fixed;inset:0;display:grid;place-items:center;background:var(--sky);z-index:60;font-family:var(--display);font-size:28px;font-weight:800;color:var(--ink);text-align:center}
 #loading small{display:block;font-family:var(--body);font-size:14px;color:var(--muted)}
-@media (prefers-reduced-motion:reduce){#act{animation:none}.toast{animation:none}}
+
+/* ---- Estilo nuevo: botones de colores, pantalla de inicio ---- */
+.tb{width:52px;height:52px;border-radius:17px;border:3px solid #fff;box-shadow:0 4px 0 rgba(20,48,74,.22),0 6px 14px rgba(20,48,74,.12);background:var(--tbc,#fff)}
+.tb .e{font-size:24px;filter:drop-shadow(0 2px 0 rgba(0,0,0,.12))}
+.tb small{bottom:-2px;color:#24425E;font-size:9.5px}
+.tb:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(20,48,74,.22)}
+#bShop{--tbc:linear-gradient(#FFF3C4,#FFD970)}#bCloset{--tbc:linear-gradient(#FFE3F1,#FFB3D6)}#bPets{--tbc:linear-gradient(#E2F6FF,#A9DDF7)}
+#bFriends{--tbc:linear-gradient(#EFE6FF,#CDB6FF)}#bPlaces{--tbc:linear-gradient(#E3FBEB,#A6E8BF)}#bSet{--tbc:linear-gradient(#F6F8FB,#D9E1EA)}
+#bRetos{--tbc:linear-gradient(#FFEBD6,#FFC28A)}#bOwner{--tbc:linear-gradient(#FFF6C9,#F5C518)}
+.tb .badge{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;border-radius:10px;background:var(--danger);color:#fff;font-size:11px;font-weight:800;line-height:20px;padding:0 5px;border:2px solid #fff}
+.pill{border:3px solid #fff;box-shadow:0 4px 0 rgba(20,48,74,.18),0 6px 14px rgba(20,48,74,.1);background:linear-gradient(#FFFFFF,#EEF6FB)}
+.mcp{border-color:#FFE08A;background:linear-gradient(#FFF9E3,#FFE9A6)}
+#emoBtn{right:calc(max(16px,env(safe-area-inset-right,0px)) + 166px);bottom:calc(env(safe-area-inset-bottom,0px) + 34px);width:58px;height:58px;border-radius:50%;background:linear-gradient(#FFF3C4,#FFD970);border:3px solid #fff;box-shadow:0 4px 0 rgba(20,48,74,.22);font-size:28px}
+#jump{border:3px solid #fff;background:linear-gradient(#E9F5FF,#BFE0FA)}
+#ride{border:3px solid #fff}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+.dcard{background:linear-gradient(#FFFFFF,#EEF4F8);border:2px solid var(--line);border-radius:18px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 3px 0 var(--line)}
+.dcard .de{font-size:36px;line-height:1.1}.dcard b{font-size:13px;line-height:1.15}.dcard small{font-size:12px;font-weight:800}
+.dcard.lock{background:linear-gradient(#FFF9E3,#FFEFC0);border-color:#F5D27A}
+#title{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 36px) 20px calc(env(safe-area-inset-bottom,0px) + 30px);background:linear-gradient(rgba(255,255,255,.0) 40%,rgba(20,48,74,.35));pointer-events:auto}
+#title .logo{text-align:center;filter:drop-shadow(0 6px 0 rgba(20,48,74,.25))}
+#title .logo .w{font-family:var(--display);font-weight:800;font-size:min(19vw,92px);line-height:.9;letter-spacing:1px;-webkit-text-stroke:3px #fff;paint-order:stroke fill}
+#title .logo .w span{display:inline-block;animation:bob 2.4s ease-in-out infinite}
+#title .logo .sub{display:inline-block;margin-top:8px;background:#fff;color:#7B4BD1;font-weight:800;font-size:16px;padding:6px 16px;border-radius:999px;box-shadow:0 4px 0 rgba(20,48,74,.2)}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-3deg)}}
+#title .menu{display:flex;flex-direction:column;gap:12px;width:min(340px,90vw)}
+#title .tbig{font-family:var(--display);font-weight:800;font-size:26px;padding:14px;border-radius:22px;color:#fff;border:4px solid #fff;box-shadow:0 6px 0 rgba(20,48,74,.3),0 10px 24px rgba(20,48,74,.2)}
+#title .tplay{background:linear-gradient(#3FD47A,#19A858);font-size:32px;animation:pulse2 1.6s ease-in-out infinite}
+#title .tfr{background:linear-gradient(#B38CFF,#7B4BD1)}
+#title .tav{background:linear-gradient(#FF8DC4,#FF4FA3)}
+#title .ver{color:#fff;font-weight:800;font-size:12px;text-align:center;opacity:.9;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+@keyframes pulse2{50%{transform:scale(1.04)}}
+#loading{background:linear-gradient(#7FC8F8,#BFE6FF 60%,#9BE07A 60%)}
+#loading .lb{width:200px;height:14px;border-radius:7px;background:rgba(255,255,255,.6);margin:14px auto 0;overflow:hidden;border:3px solid #fff}
+#loading .lb i{display:block;height:100%;width:30%;background:linear-gradient(90deg,#FF4FA3,#F5C518,#19A858,#2E7BEF);animation:lbar 1.2s ease-in-out infinite alternate}
+@keyframes lbar{to{width:100%}}
+.reto{display:flex;align-items:center;gap:10px;background:linear-gradient(#FFFFFF,#F2F7FB);border:2px solid var(--line);border-radius:18px;padding:10px 12px}
+.reto.done{opacity:.6}.reto .ri{font-size:34px;width:46px;text-align:center}.reto .rt{flex:1;min-width:0}.reto .rt b{display:block;font-size:14.5px;line-height:1.2}.reto small{font-size:12px;color:var(--muted)}
+.reto .btn{width:auto;padding:9px 12px;flex:none}.rbar{height:10px;border-radius:6px;background:#E2E9EF;overflow:hidden;margin:5px 0 3px}.rbar i{display:block;height:100%;background:linear-gradient(90deg,#FFB347,#FF4FA3)}
+.dcard.off{opacity:.55}
+.artcv{width:100%;max-width:360px;aspect-ratio:1;align-self:center;border-radius:16px;border:4px solid #F5C518;box-shadow:0 4px 0 #D8A40F;background:#fff;touch-action:none}
+.pal button{padding:3px}.pal .mg .sw{box-shadow:0 0 0 2px #F5C518,0 0 8px #F5C518}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}.gi{display:flex;flex-direction:column;gap:6px}.gi img{width:100%;border-radius:12px;border:4px solid #F5C518}
+img.th{width:84px;height:84px;object-fit:contain;display:block;filter:drop-shadow(0 3px 2px rgba(20,48,74,.18))}
+.card .big img.th{margin:-4px auto}
+@media (prefers-reduced-motion:reduce){#title .logo .w span,#title .tplay{animation:none}#act{animation:none}.toast{animation:none}}
 </style>
 
 <canvas id="c" aria-label="Ciudad en 3D"></canvas>
-<div id="loading"><div>🏙️ Mi Ciudad<small id="loadmsg">Construyendo la ciudad…</small></div></div>
+<div id="loading"><div>🏙️ Mi Ciudad<small id="loadmsg">Construyendo la ciudad…</small><div class="lb"><i></i></div></div></div>
 
 <div class="top" id="hud" hidden>
   <div class="pill cash"><span class="ico">💵</span><span id="money">$ 0</span><i class="netdot" id="netdot" hidden></i></div>
   <button class="pill mcp" id="mcBtn" aria-label="Comprar MediCoins"><span class="coin"></span><span id="mc">0</span><span class="plus">+</span></button>
   <div class="spacer"></div>
   <div class="tbtns">
+    <button class="tb" id="bOwner" hidden aria-label="Panel de dueño"><span class="e">👑</span><small>Dueño</small></button>
     <button class="tb" id="bShop" aria-label="Tienda"><span class="e">🛒</span><small>Tienda</small></button>
     <button class="tb" id="bCloset" aria-label="Ropa"><span class="e">👕</span><small>Ropa</small></button>
     <button class="tb" id="bPets" aria-label="Mascotas"><span class="e">🐾</span><small>Mascotas</small></button>
     <button class="tb" id="bFriends" aria-label="Amigas"><span class="e">👭</span><small>Amigas</small></button>
+    <button class="tb" id="bRetos" aria-label="Retos"><span class="e">🏆</span><small>Retos</small><i class="badge" id="retoBadge" hidden></i></button>
     <button class="tb" id="bPlaces" aria-label="Lugares"><span class="e">📍</span><small>Lugares</small></button>
     <button class="tb" id="bSet" aria-label="Ajustes"><span class="e">⚙️</span><small>Ajustes</small></button>
   </div>
@@ -217,6 +264,7 @@ input:focus{outline:none;border-color:var(--accent)}
 <div id="fade" hidden></div><div id="hurt" hidden></div>
 <button class="ctrl" id="act" hidden>Entrar</button>
 <button class="ctrl" id="jump" hidden aria-label="Saltar"><span><span class="e">⤴️</span>Saltar</span></button>
+<button class="ctrl" id="emoBtn" hidden aria-label="Bailes y gestos">😀</button>
 <button class="ctrl" id="chatBtn" hidden aria-label="Mensajes">💬</button>
 <button class="ctrl" id="ride" hidden aria-label="Usar vehículo" aria-pressed="false">🛹</button>
 <div id="joy" hidden><div id="knob"></div></div>

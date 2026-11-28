@@ -27,7 +27,7 @@ const turboOn=()=>S.turboUntil>Date.now();
 function roleMult(job){if(!job||!S.role)return 1;const r=ROLES.find(x=>x.id===S.role);return r&&r.jobs.includes(job)?1.5:1;}
 function petBonus(){return typeof activePetBonus==="function"?activePetBonus():0;}
 function payMult(job){return (S.perm.x2?2:1)*(S.perm.vip?1.5:1)*(turboOn()?3:1)*(1+0.03*Object.keys(S.furn).length+petBonus())*roleMult(job);}
-function earn(base,job){const v=Math.round(base*payMult(job));S.money+=v;S.stats.earned+=v;hud();return v;}
+function earn(base,job){const v=Math.round(base*payMult(job));S.money+=v;S.stats.earned+=v;hud();if(job&&typeof retoAdd==="function")retoAdd("trabajos",1);return v;}
 function priceHTML(it){return it.cur==="mc"?'<span class="coin sm"></span> '+fmt(it.p):"$ "+fmt(it.p);}
 function canPay(it){return it.cur==="mc"?S.mc>=it.p:S.money>=it.p;}
 function pay(it){if(!canPay(it)){if(it.cur==="mc"){toast("Le faltan MediCoins");openShop("paquetes");}else toast("Le falta dinero. ¡Trabaje en la ciudad!");return false;}

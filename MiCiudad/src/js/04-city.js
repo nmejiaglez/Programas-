@@ -2,12 +2,12 @@
 const doors=[];
 function buildWorld(){
  const CZ=zone({id:"city",name:"Ciudad",icon:"🏙️",cx:0,cz:0,hw:96,hd:96,spawn:{x:0,z:12}});ROOT=CZ.g;
- mesh(new T.PlaneGeometry(600,600),"#8FD36C",0,0,0).rotation.x=-Math.PI/2;
+ {const gr=new T.Mesh(new T.PlaneGeometry(600,600),texMat(GRASS_TEX,90,90));gr.rotation.x=-Math.PI/2;gr.receiveShadow=true;ROOT.add(gr);}
  const G=[-90,-30,30,90];
  const roadM="#5B6470";
  for(const g of G){
-  const h=mesh(new T.PlaneGeometry(194,14),roadM,0,0.02,g);h.rotation.x=-Math.PI/2;
-  const v=mesh(new T.PlaneGeometry(14,194),roadM,g,0.025,0);v.rotation.x=-Math.PI/2;
+  const h=new T.Mesh(new T.PlaneGeometry(194,14),texMat(ROAD_TEX,28,2));h.position.set(0,0.02,g);h.rotation.x=-Math.PI/2;h.receiveShadow=true;ROOT.add(h);
+  const v=new T.Mesh(new T.PlaneGeometry(14,194),texMat(ROAD_TEX,2,28));v.position.set(g,0.025,0);v.rotation.x=-Math.PI/2;v.receiveShadow=true;ROOT.add(v);
  }
  const dashGeo=new T.PlaneGeometry(2.4,0.35);
  for(const g of G){for(let t=-94;t<=94;t+=6){
@@ -25,11 +25,11 @@ function buildWorld(){
  const C=[-60,0,60];
  for(const bx of C)for(const bz of C){
   const park=bx===0&&bz===0;
-  const p=mesh(new T.BoxGeometry(46,0.3,46),park?"#7FCB60":"#E7E1D3",bx,0.15,bz);
+  const p=park?mesh(new T.BoxGeometry(46,0.3,46),"#7FCB60",bx,0.15,bz):new T.Mesh(new T.BoxGeometry(46,0.3,46),texMat(TILE_TEX,15,15));if(!park){p.position.set(bx,0.15,bz);p.receiveShadow=true;ROOT.add(p);}else{p.material=texMat(GRASS_TEX,8,8);}
   if(!park){ for(const s of [-1,1]){ lamp(bx+s*22.3,bz+22.3); lamp(bx+s*22.3,bz-22.3);} }
  }
  for(const b of BUILDINGS)building(b);
- buildPark();
+ buildCityPark();
  for(let t=-110;t<=110;t+=11){tree(t+Math.random()*3,-108+Math.random()*4,1.2,false);tree(t+Math.random()*3,108+Math.random()*4,1.2,false);tree(-108+Math.random()*4,t,1.2,false);tree(108+Math.random()*4,t,1.2,false);}
  for(let i=0;i<14;i++){const cl=new T.Group();for(let k=0;k<4;k++)sph(4+Math.random()*3,"#FFFFFF",k*5-7,Math.random()*2,Math.random()*3,cl);cl.position.set(Math.random()*300-150,52+Math.random()*18,Math.random()*300-150);cl.scale.y=0.55;ROOT.add(cl);clouds.push(cl);}
 }
@@ -75,7 +75,7 @@ function building(b){
  if(b.id==="bomberos"){const tx=cx+(-b.w/2-3.5)*Math.cos(0)+0,tz=cz+4;}
  const dx=b.bx+f.x*20.2,dz=b.bz+f.z*20.2;doors.push({b,x:dx,z:dz});spot({x:dx,z:dz,r:4.2,label:b.icon+" Entrar: "+b.name,fn:()=>enter(b)});
 }
-function buildPark(){
+function buildCityPark(){
  const ring=cyl(4.6,4.8,1,"#C9C2B2",0,0.8,0,null,28);
  const water=cyl(4.1,4.1,0.2,"#4FB7E8",0,1.25,0,null,28);water.material=M("#4FB7E8","#0A3A55");
  cyl(0.6,0.8,2.6,"#C9C2B2",0,2.2,0,null,12);cyl(1.6,0.6,0.5,"#C9C2B2",0,3.6,0,null,16);
@@ -84,9 +84,6 @@ function buildPark(){
  for(let i=0;i<12;i++){const a=i/12*Math.PI*2;if(i%3===0)continue;tree(Math.cos(a)*15,Math.sin(a)*15,1);}
  for(const [x,z,r] of [[8,-8,0.8],[-8,8,-2.3],[-8,-8,2.3],[8,8,-0.8]]){const bg=new T.Group();bg.position.set(x,0.3,z);bg.rotation.y=r;ROOT.add(bg);box(3.2,0.25,1,"#B5762E",0,0.8,0,bg);box(3.2,0.9,0.2,"#B5762E",0,1.3,-0.45,bg);box(0.2,0.8,0.8,"#3E4B59",-1.4,0.4,0,bg);box(0.2,0.8,0.8,"#3E4B59",1.4,0.4,0,bg);}
  for(let i=0;i<24;i++){const a=i/24*Math.PI*2;sph(0.4,["#E2465C","#F5C518","#FF4FA3","#FFFFFF"][i%4],Math.cos(a)*7,0.5,Math.sin(a)*7,null,8,6);}
- const sl=new T.Group();sl.position.set(14,0.3,-6);ROOT.add(sl);box(0.2,4,0.2,"#E2465C",-1,2,-1,sl);box(0.2,4,0.2,"#E2465C",1,2,-1,sl);box(2.2,0.25,2.2,"#F5C518",0,4,-1,sl);const ramp=box(2,0.2,6,"#2E7BEF",0,2,2.2,sl);ramp.rotation.x=0.65;addCol(14,-5,3,7);
- const sw=new T.Group();sw.position.set(-14,0.3,6);ROOT.add(sw);box(0.25,4.5,0.25,"#19A858",-2.5,2.25,0,sw);box(0.25,4.5,0.25,"#19A858",2.5,2.25,0,sw);box(5.3,0.25,0.25,"#19A858",0,4.5,0,sw);
- for(const s of [-1,1]){box(0.05,3,0.05,"#3E4B59",s*1.2-0.4,3,0,sw);box(0.05,3,0.05,"#3E4B59",s*1.2+0.4,3,0,sw);box(1,0.15,0.6,"#E2465C",s*1.2,1.5,0,sw);}addCol(-14,6,5.5,1);
 }
 let fountainDrop=null;
 

@@ -1,7 +1,8 @@
 /* ================= DATOS ================= */
-const SKINS=["#F6D3B5","#E2B08A","#C4875A","#8C5A3A"];
-const HAIRS=["#2B1B12","#5A3A1E","#B5762E","#E8C267","#D2452F","#7A4BD1","#1F7FD1"];
-const STYLES_H=[{id:"corto",name:"Corto"},{id:"largo",name:"Largo"},{id:"coleta",name:"Coleta"}];
+const SKINS=["#F6D3B5","#E2B08A","#C4875A","#8C5A3A","#FBE3D0","#6B4430"];
+const HAIRS=["#2B1B12","#5A3A1E","#B5762E","#E8C267","#D2452F","#7A4BD1","#1F7FD1","#FF7EB6","#5FD3B8","#E9EEF4"];
+const STYLES_H=[{id:"corto",name:"Corto"},{id:"largo",name:"Largo"},{id:"coleta",name:"Coleta"},{id:"coletas",name:"Dos coletas"},{id:"mono",name:"Moño"},{id:"rizado",name:"Rizado"},{id:"trenzas",name:"Trenzas"},{id:"melena",name:"Melena"},{id:"punta",name:"Picudo"}];
+const EYES=["#14212E","#5A3A1E","#2E7BEF","#19A858","#7B4BD1"];
 const SHIRTS=[
  {id:"s1",name:"Azul",c:"#2E7BEF",p:0},{id:"s2",name:"Roja",c:"#E2465C",p:0},{id:"s3",name:"Verde",c:"#19A858",p:0},
  {id:"s4",name:"Amarilla",c:"#F5C518",p:200,cur:"$"},{id:"s5",name:"Naranja",c:"#F28C28",p:200,cur:"$"},{id:"s6",name:"Turquesa",c:"#14B8A6",p:350,cur:"$"},

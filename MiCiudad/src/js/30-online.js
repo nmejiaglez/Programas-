@@ -29,12 +29,13 @@ function errMsg(e){const m=String(e&&e.message||e);
  for(const k in map)if(m.indexOf(k)>=0)return map[k];return "No se pudo: "+m;}
 function myTag(){const base=(S.name||"Jugador").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z]/g,"").slice(0,10)||"Jugador";const n=NET.uid?(h32(NET.uid)%9000)+1000:0;return base+"-"+n;}
 
+function ownerUI(){const b=$("bOwner");if(!b)return;b.hidden=!NET.admin;b.onclick=ownerLogin;if(player)buildPlayer();}
 async function netStart(){
  authLoad();
  try{
   if(!NET.uid)await signUpAnon();else await tok();
   NET.ok=true;netDot();
-  NET.admin=(await db("GET","admins/"+NET.uid))===true;
+  NET.admin=(await db("GET","admins/"+NET.uid))===true;ownerUI();
   await pullCloud(false);
   await pushCloud(true);
   await checkGrants();
@@ -83,6 +84,15 @@ function openAccount(){sheet("👤 Mi cuenta",b=>{
 });}
 
 /* ---------- salas con amigas ---------- */
+function myHome(){if(!NET.uid)return roomCode();let h=h32(NET.uid+"casa"),out="";for(let i=0;i<5;i++){out+=B32[h%32];h=Math.floor(h/32)+h32(out+NET.uid)%997;}return out;}
+function inviteText(code){return "¡Ven a jugar conmigo en Mi Ciudad! 🌈🏙️ Mi sala es: "+code+" — Abre el juego, toca 👭 Amigas y escribe el código.";}
+function invite(code){const t=inviteText(code);sfx("pop");
+ if(navigator.share){navigator.share({text:t}).catch(()=>{});return;}
+ try{window.open("https://wa.me/?text="+encodeURIComponent(t),"_blank");}catch(e){}
+ try{navigator.clipboard.writeText(t).then(()=>toast("📋 Invitación copiada: péguela en WhatsApp"));}catch(e){}}
+function rememberFriend(id,p){if(!p||!p.n||!p.home||id===NET.uid||(S.blocked&&S.blocked[id]))return;S.friends=S.friends||{};const f=S.friends[id];
+ if(!f||f.home!==p.home||f.n!==p.n||Date.now()-f.t>60000){S.friends[id]={n:p.n,tag:p.tag||"",home:p.home,t:Date.now(),look:p.look?{skin:p.look.skin,hair:p.look.hair,hstyle:p.look.hstyle}:null};
+  const ids=Object.keys(S.friends).sort((a,b)=>S.friends[b].t-S.friends[a].t);ids.slice(30).forEach(k=>delete S.friends[k]);if(!f)toast("💞 "+p.n+" se guardó en Mis amigas");}}
 function roomCode(){let s="";for(let i=0;i<5;i++)s+=B32[Math.floor(Math.random()*32)];return s;}
 function openFriends(tab){tab=tab||"sala";
  if(!S.parent||S.parent.rooms===false){sheet("👭 Jugar con amigas",b=>{b.appendChild(el("p","","Los papás desactivaron el juego con amigas en Control de padres."));});return;}
@@ -93,7 +103,8 @@ function openFriends(tab){tab=tab||"sala";
   if(NET.room){
    body.appendChild(el("p","muted","Comparta este código con sus amigas. Solo entra quien lo tenga."));
    const cb=el("div","codebox",NET.room);body.appendChild(cb);
-   const cp=el("button","btn ghost","Copiar código");cp.onclick=()=>{try{navigator.clipboard.writeText(NET.room).then(()=>toast("Copiado"),()=>selectText(cb));}catch(e){selectText(cb);}};body.appendChild(cp);
+   const rw=el("div","row");const cp=el("button","btn ghost","📋 Copiar código");cp.onclick=()=>{try{navigator.clipboard.writeText(NET.room).then(()=>toast("Copiado"),()=>selectText(cb));}catch(e){selectText(cb);}};
+   const iv=el("button","btn go","📲 Invitar amigas");iv.onclick=()=>invite(NET.room);rw.append(cp,iv);body.appendChild(rw);
    body.appendChild(el("h3","","En la sala"));
    const l=el("div","list");const ids=Object.keys(NET.players).filter(id=>id!==NET.uid&&remoteAlive(NET.players[id]));
    l.appendChild(el("div","li",'<div style="font-size:24px">⭐</div><div class="tx"><b>'+escapeHtml(S.name||"Yo")+' (usted)</b><small>'+myTag()+'</small></div>'));
@@ -106,8 +117,15 @@ function openFriends(tab){tab=tab||"sala";
    if(NET.poll)body.appendChild(el("p","note","Conexión en modo de respaldo: las amigas se mueven un poco más lento."));
    const lv=el("button","btn red","Salir de la sala");lv.onclick=()=>{leaveRoom();openFriends();};body.appendChild(lv);
    return;}
-  body.appendChild(el("p","muted","Cree una sala y comparta el código, o escriba el código que le mandó una amiga. Solo pueden entrar las personas que tengan el código."));
-  const c=el("button","btn go big","➕ Crear mi sala");c.onclick=()=>{joinRoom(roomCode());openFriends();};body.appendChild(c);
+  body.appendChild(el("p","muted","Su sala tiene un código fijo: compártalo una vez y sus amigas siempre la encuentran. Solo entra quien tenga el código."));
+  const home=myHome();const hb=el("div","codebox",home);body.appendChild(hb);
+  const rw=el("div","row");const c=el("button","btn go big","🏠 Abrir mi sala");c.onclick=()=>{joinRoom(home);openFriends();};const iv=el("button","btn big","📲 Invitar");iv.onclick=()=>invite(home);rw.append(c,iv);body.appendChild(rw);
+  const fr=S.friends?Object.keys(S.friends).filter(id=>!(S.blocked&&S.blocked[id])).sort((a,b)=>S.friends[b].t-S.friends[a].t):[];
+  body.appendChild(el("h3","","💞 Mis amigas"));
+  if(!fr.length)body.appendChild(el("p","muted","Cuando juegue con alguien en una sala, aparecerá aquí para visitarla con un toque."));
+  else{const l=el("div","list");fr.forEach(id=>{const f=S.friends[id];const r=el("div","li",'<div style="font-size:26px">'+["🧒","👧","👦","🧒🏽","👧🏾"][h32(id)%5]+'</div><div class="tx"><b>'+escapeHtml(f.n)+'</b><small>'+escapeHtml(f.tag)+' · Sala '+f.home+'</small></div>');
+    const v=el("button","btn go","🏠 Visitar");v.style.width="auto";v.style.padding="7px 10px";v.onclick=()=>{joinRoom(f.home);openFriends();};
+    const x=el("button","btn ghost","✖");x.style.width="auto";x.style.padding="7px 10px";x.setAttribute("aria-label","Quitar de mis amigas");x.onclick=()=>{delete S.friends[id];save();openFriends();};r.append(v,x);l.appendChild(r);});body.appendChild(l);}
   body.appendChild(el("h3","","Entrar a la sala de una amiga"));
   const i=el("input");i.type="text";i.id="roomIn";i.placeholder="Código, por ejemplo K7P2Q";i.maxLength=5;i.setAttribute("autocapitalize","characters");body.appendChild(i);
   const j=el("button","btn go","Entrar");j.onclick=()=>{const v=i.value.toUpperCase().replace(/[^A-Z0-9]/g,"");if(v.length!==5){toast("El código tiene 5 letras o números");return;}joinRoom(v);openFriends();};body.appendChild(j);
@@ -120,7 +138,7 @@ async function joinRoom(code){
  if(NET.room)leaveRoom();
  NET.room=code;NET.players={};NET.chatSeen={};NET.poll=false;NET.joinedAt=Date.now();NET.lastSent="";
  try{await tok();await sendMyState(true);}catch(e){toast(errMsg(e));NET.room=null;return;}
- toast("👭 Está en la sala "+code);openStreams();$("chatBtn").hidden=false;
+ toast("👭 Está en la sala "+code);if(typeof retoAdd==="function")retoAdd("amigas",1);openStreams();$("chatBtn").hidden=false;
 }
 function openStreams(){
  closeStreams();if(!NET.room)return;
@@ -144,7 +162,7 @@ function applyPlayersEvent(path,data,patch){
  const id=parts[0];if(parts.length===1){if(data===null){delete NET.players[id];removeRemote(id);}else setPlayer(id,data,patch);return;}
  const p=NET.players[id]||(NET.players[id]={});p[parts[1]]=data;p._seen=Date.now();
 }
-function setPlayer(id,data,patch){if(data===null){delete NET.players[id];removeRemote(id);return;}const p=patch&&NET.players[id]?Object.assign(NET.players[id],data):Object.assign({},data);p._seen=Date.now();NET.players[id]=p;}
+function setPlayer(id,data,patch){if(data===null){delete NET.players[id];removeRemote(id);return;}const p=patch&&NET.players[id]?Object.assign(NET.players[id],data):Object.assign({},data);p._seen=Date.now();NET.players[id]=p;rememberFriend(id,p);}
 function applyChatEvent(path,data){
  const parts=path.split("/").filter(Boolean);
  if(!parts.length){if(data)Object.keys(data).sort().forEach(k=>showChat(k,data[k]));return;}
@@ -172,9 +190,10 @@ function myPetLite(){const pi=petInfo;return pi?{type:pi.type,s:+pi.scale.toFixe
 async function sendMyState(full){
  if(!NET.room||!NET.ok)return;
  const pos={x:+P.x.toFixed(2),z:+P.z.toFixed(2),y:+P.y.toFixed(2),f:+P.face.toFixed(2),zone:curZone?curZone.id:"city",mv:P.speed>0.5?1:0,t:SV_TIME};
- if(full){await db("PUT","rooms/"+NET.room+"/players/"+NET.uid,Object.assign({n:S.name||"Jugador",tag:myTag(),look:S.look,pet:myPetLite(),veh:S.riding&&S.vehicle&&!(curZone&&curZone.noVehicle)?S.vehicle:null,vip:S.perm.vip?1:0},pos));return;}
+ if(full){await db("PUT","rooms/"+NET.room+"/players/"+NET.uid,Object.assign({n:S.name||"Jugador",tag:myTag(),home:myHome(),look:S.look,pet:myPetLite(),veh:S.riding&&S.vehicle&&!(curZone&&curZone.noVehicle)?S.vehicle:null,vip:S.perm.vip?1:0},pos));return;}
  await db("PATCH","rooms/"+NET.room+"/players/"+NET.uid,pos);
 }
+function sendEmote(id){if(!NET.room||!NET.ok)return;db("PATCH","rooms/"+NET.room+"/players/"+NET.uid,{em:id,emt:Date.now()}).catch(()=>{});}
 function leaveRoom(){
  const code=NET.room;if(!code)return;NET.room=null;closeStreams();
  db("DELETE","rooms/"+code+"/players/"+NET.uid).catch(()=>{});
@@ -192,8 +211,8 @@ function ensureRemote(id,p){
  if(r&&r.key===k)return r;
  if(r)removeRemote(id);
  const look=Object.assign(fresh().look,p.look||{});const ch=makeChar(look);scene.add(ch.g);
- const tag=labelSprite((p.vip?"⭐ ":"")+(p.n||"Amiga"),p.vip?"rgba(181,123,0,.9)":"rgba(123,75,209,.88)","#FFFFFF");tag.position.y=3.65;ch.g.add(tag);
- let veh=null;if(p.veh){const v=makeVehicle(p.veh);ch.g.add(v.g);veh=v;}
+ const tag=labelSprite((p.vip?"⭐ ":"")+(p.n||"Amiga"),p.vip?"rgba(181,123,0,.9)":"rgba(123,75,209,.88)","#FFFFFF");tag.position.y=3.85;tag.scale.multiplyScalar(0.72);ch.g.add(tag);addStars(ch);
+ let veh=null;if(p.veh){const v=makeVehicle(p.veh,p.look&&p.look.carC);ch.g.add(v.g);veh=v;}
  let pet=null;if(p.pet&&p.pet.type){pet=makePet(p.pet.type);pet.scale.setScalar(p.pet.s||1);scene.add(pet);}
  r={ch,veh,pet,key:k,x:p.x||0,z:p.z||0,y:p.y||0.3,f:p.f||0,px:p.x||0,pz:p.z||0};NET.remotes[id]=r;return r;
 }
@@ -207,7 +226,9 @@ function updateRemotes(dt){
   let d=(p.f||0)-r.f;while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d+=Math.PI*2;r.f+=d*k;
   r.ch.g.position.set(r.x,r.y,r.z);r.ch.g.rotation.y=r.f;
   const sp=Math.hypot(r.x-ox,r.z-oz)/Math.max(dt,0.001);
-  if(r.veh){r.ch.body.position.y=r.veh.lift;r.ch.legs.forEach(l=>l.visible=!r.veh.sit);}else animChar(r.ch,p.mv?Math.max(sp,3):0,dt,(p.y||0.3)>((support(r.x,r.z,r.y+0.3).y)||0.3)+0.6);
+  if(p.emt&&p.emt!==r.emt){const first=r.emt===undefined;r.emt=p.emt;if(!first||Date.now()-p.emt<6000){if(p.em===-1)r.ch.fall=1.6;else if(p.em!=null){r.ch.dance=p.em===2?2.2:5;r.ch.danceT=p.em;}}}
+  if(p.look&&p.look.trail&&p.look.trail!=="none"&&sp>1){r.trT=(r.trT||0)+dt;if(r.trT>0.09){r.trT=0;emitTrail(p.look.trail,r.x,r.y,r.z);}}
+  if(r.veh){rideAnim(r.ch,r.veh,p.mv?Math.max(sp,4):0,dt);}else animChar(r.ch,p.mv?Math.max(sp,3):0,dt,(p.y||0.3)>((support(r.x,r.z,r.y+0.3).y)||0.3)+0.6);
   if(r.pet){const tx=r.x-Math.sin(r.f)*1.6,tz=r.z-Math.cos(r.f)*1.6;r.px+=(tx-r.px)*Math.min(1,dt*3);r.pz+=(tz-r.pz)*Math.min(1,dt*3);r.pet.position.set(r.px,r.y+(p.pet.fly?1.2:0),r.pz);r.pet.rotation.y=r.f;}
  }
  for(const id in NET.remotes)if(!NET.players[id])removeRemote(id);

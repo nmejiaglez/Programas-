@@ -1,6 +1,6 @@
 /* ================= CONTROLES ================= */
 const keys={};let joy={id:null,x:0,y:0,ox:0,oy:0},drag={id:null,x:0,y:0};
-let camYaw=0,camPitch=0.55,camDist=13,camShake=0;
+let camYaw=0,camPitch=0.36,camDist=11,camShake=0;
 let uiOpen=false;const isTouch=matchMedia("(pointer:coarse)").matches||"ontouchstart" in window;
 addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;keys[e.code]=true;
  if(e.code==="Space"){e.preventDefault();doJump();}
@@ -17,7 +17,7 @@ function endPtr(e){if(e.pointerId===joy.id){joy.id=null;joy.x=0;joy.y=0;$("joy")
 canvas.addEventListener("pointerup",endPtr);canvas.addEventListener("pointercancel",endPtr);
 canvas.addEventListener("wheel",e=>{camDist=Math.max(6,Math.min(22,camDist+e.deltaY*0.01));},{passive:true});
 let jumpHeld=false;
-function doJump(){if(uiOpen||P.dead)return;if(P.ground){P.vy=S.perm.salto?11:7.5;P.ground=false;P.plat=null;}}
+function doJump(){if(swingRun){swingRun.stop=true;return;}if(uiOpen||P.dead||P.lock||(player&&player.fall>0))return;if(P.ground){P.vy=S.perm.salto?11:7.5;P.ground=false;P.plat=null;sfx("salto");if(typeof retoAdd==="function")retoAdd("saltos",1);}}
 $("jump").addEventListener("click",doJump);
 $("jump").addEventListener("pointerdown",()=>{jumpHeld=true;});addEventListener("pointerup",()=>{jumpHeld=false;});
 $("ride").addEventListener("click",()=>{if(!S.vehicle)return;S.riding=!S.riding;buildPlayer();save();});
@@ -26,11 +26,19 @@ $("atk").addEventListener("click",()=>doAttack());
 function doAttack(){if(uiOpen||P.dead||!curZone||!curZone.combat)return;if(typeof attack==="function")attack();}
 
 let nearSpot=null;let perf=0;
+function trip(msg){if(!player||player.fall>0)return;player.fall=1.6;player.dance=0;if(msg)toast("💫 "+msg);if(typeof sfx==="function")sfx("caida");if(typeof retoAdd==="function")retoAdd("caidas",1);}
+function rideAnim(ch,v,speed,dt){const ps=v.pose;ch.body.rotation.set(0,0,0);ch.body.position.z=0;
+ if(ps==="car"){ch.body.position.y=v.lift-0.55;ch.body.position.z=-0.25;ch.legs.forEach(l=>{l.visible=true;l.rotation.x=-1.4;});ch.arms.forEach(a=>{a.rotation.x=-1.2;a.rotation.z=0;});}
+ else if(ps==="bike"){ch.body.position.y=v.lift-0.08;ch.body.position.z=-0.35;ch.body.rotation.x=0.25;v.pedals&&(v.pedals.rotation.x+=speed*dt*1.4);const a=v.pedals?v.pedals.rotation.x:0;ch.legs[0].visible=ch.legs[1].visible=true;ch.legs[0].rotation.x=-1.0+Math.sin(a)*0.45;ch.legs[1].rotation.x=-1.0-Math.sin(a)*0.45;ch.arms.forEach(a2=>{a2.rotation.x=-1.25;});}
+ else if(ps==="moto"){ch.body.position.y=v.lift-0.15;ch.body.position.z=-0.35;ch.legs.forEach(l=>{l.visible=true;l.rotation.x=-1.25;});ch.arms.forEach(a=>a.rotation.x=-1.35);}
+ else {ch.body.position.y=v.lift;ch.legs[0].rotation.x=0.25;ch.legs[1].rotation.x=-0.25;ch.legs.forEach(l=>l.visible=true);ch.arms[0].rotation.x=0.4;ch.arms[1].rotation.x=-0.4;ch.arms[0].rotation.z=-0.5;ch.arms[1].rotation.z=0.5;ch.body.rotation.y=0.6;}
+ if(v.wheels)for(const w of v.wheels)w.rotation.x+=speed*dt*(ps==="skate"?6:2.4);}
 function useSpot(){const s=nearSpot;if(!s)return;s.fn(s);}
 function spotPos(s){return s.pos?s.pos():s;}
 function updatePlayer(dt){
  let mx=0,mz=0;
- if(!uiOpen&&!P.dead&&!teleporting){
+ const fallen=player&&player.fall>0;
+ if(!uiOpen&&!P.dead&&!teleporting&&!fallen&&!P.lock){
   if(keys.KeyW||keys.ArrowUp)mz-=1;if(keys.KeyS||keys.ArrowDown)mz+=1;if(keys.KeyA||keys.ArrowLeft)mx-=1;if(keys.KeyD||keys.ArrowRight)mx+=1;
   if(joy.id!==null){mx+=joy.x;mz+=joy.y;}
  }
@@ -53,7 +61,7 @@ function updatePlayer(dt){
  if(P.vy<0&&wingsOn()&&!P.ground)P.vy=Math.max(P.vy,jumpHeld||keys.Space?-1.6:-4.2);
  const sup=support(P.x,P.z,P.y);
  let ny=P.y+P.vy*dt;
- if(ny<=sup.y&&P.y>=sup.y-0.5){ny=sup.y;P.vy=0;if(!P.ground&&sup.plat&&sup.plat.onLand)sup.plat.onLand(sup.plat);P.ground=true;P.plat=sup.plat;if(sup.plat&&sup.plat.bounce){P.vy=sup.plat.bounce;P.ground=false;P.plat=null;}}
+ if(ny<=sup.y&&P.y>=sup.y-0.5){ny=sup.y;if(P.vy<-19&&!P.ground&&!wingsOn()&&!vehicleObj&&!(sup.plat&&sup.plat.bounce))trip("¡Ay! Qué caída");P.vy=0;if(!P.ground&&sup.plat&&sup.plat.onLand)sup.plat.onLand(sup.plat);P.ground=true;P.plat=sup.plat;if(sup.plat&&sup.plat.bounce){P.vy=sup.plat.bounce;P.ground=false;P.plat=null;}}
  else{P.ground=false;P.plat=null;}
  P.y=ny;
  if(P.plat&&P.plat.onStand)P.plat.onStand(P.plat,dt);
@@ -61,7 +69,7 @@ function updatePlayer(dt){
  if(P.inv>0)P.inv-=dt;
  player.g.position.set(P.x,P.y,P.z);player.g.rotation.y=P.face;
  player.g.visible=!(P.inv>0&&Math.floor(P.inv*12)%2===0&&P.hp<P.maxHp);
- if(vehicleObj){player.body.position.y=vehicleObj.lift;player.legs.forEach(l=>{l.visible=!vehicleObj.sit;l.rotation.x=0;});player.arms.forEach(a=>a.rotation.x=-0.9);player.shadow.scale.setScalar(1.6);}
+ if(vehicleObj){rideAnim(player,vehicleObj,P.speed,dt);player.shadow.scale.setScalar(1.6);}
  else{player.legs.forEach(l=>l.visible=true);player.shadow.scale.setScalar(1);animChar(player,P.forceWalk||P.speed,dt,!P.ground);if(P.swing>0){P.swing-=dt;player.arms[1].rotation.x=-2.6+(0.35-P.swing)*9;}}
  if(player.wings){const fl=!P.ground?Math.sin(perf*14)*0.5:Math.sin(perf*2)*0.1;player.wings.forEach((w,i)=>w.rotation.y=(i?-1:1)*(0.35+fl));}
  if(petObj){const tx=P.x-Math.sin(P.face)*1.8+Math.cos(P.face)*1.2,tz=P.z-Math.cos(P.face)*1.8-Math.sin(P.face)*1.2;const k=Math.min(1,dt*(veh?6:3.5));const ox=petPos.x,oz=petPos.z;petPos.x+=(tx-petPos.x)*k;petPos.z+=(tz-petPos.z)*k;

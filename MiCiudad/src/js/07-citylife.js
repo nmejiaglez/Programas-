@@ -32,5 +32,5 @@ function spawnCoin(){const gem=Math.random()<0.07;const [x,z]=freeSpot();const m
 function updateCoins(dt){const R=S.perm.iman?4.5:1.6;for(let i=coins.length-1;i>=0;i--){const c=coins[i];c.t+=dt;c.m.position.y=1.2+Math.sin(c.t*3)*0.2;c.m.rotation.y+=dt*3;if(c.gem)c.m.rotation.x+=dt;
  const d=Math.hypot(c.x-P.x,c.z-P.z);
  if(S.perm.iman&&d<R&&d>0.6){c.x+=(P.x-c.x)*dt*6;c.z+=(P.z-c.z)*dt*6;c.m.position.x=c.x;c.m.position.z=c.z;}
- if(d<1.3){rm(c.m);coins.splice(i,1);S.stats.coins++;if(c.gem){S.mc+=1;toast("💎 +1 MediCoin");}else{const v=earn(5+Math.floor(Math.random()*11));pop("+$"+v);}hud();}}}
+ if(d<1.3){rm(c.m);coins.splice(i,1);S.stats.coins++;sfx("moneda");if(typeof retoAdd==="function")retoAdd("monedas",1);if(c.gem){S.mc+=1;toast("💎 +1 MediCoin");}else{const v=earn(5+Math.floor(Math.random()*11));pop("+$"+v);}hud();}}}
 

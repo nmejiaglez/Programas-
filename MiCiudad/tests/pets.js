@@ -6,7 +6,8 @@ const { open, baseSave } = require("./helpers");
   await p.screenshot({ path: out + "/p_eggs.png" });
   for (let k = 0; k < 3; k++) {
     await p.click(".eggcard >> nth=" + (k % 3) + " >> button");
-    for (let i = 0; i < 3; i++) { await p.click(".egg"); await p.waitForTimeout(120); }
+    for (let i = 0; i < 3; i++) { await p.click(".egg", { timeout: 3000 }).catch(() => {}); await p.waitForTimeout(120); }
+    await p.waitForSelector("text=Llevarlo conmigo", { timeout: 9000 });
     await p.waitForTimeout(600);
     if (k === 0) await p.screenshot({ path: out + "/p_born.png" });
     await p.click("text=Llevarlo conmigo"); await p.waitForTimeout(200);

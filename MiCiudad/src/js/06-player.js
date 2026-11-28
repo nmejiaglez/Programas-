@@ -4,12 +4,12 @@ let player=null,nameTag=null,vehicleObj=null,petObj=null,petInfo=null,petPos=new
 function wingsOn(){const a=ACCS.find(x=>x.id===S.look.acc);return !!(a&&a.wings);}
 function buildPlayer(){
  if(player)rm(player.g);
- player=makeChar(S.look);scene.add(player.g);
+ player=makeChar(S.look);scene.add(player.g);addStars(player);
  const vip=S.perm.vip;
- nameTag=labelSprite((vip?"⭐ ":"")+(S.name||"Yo"),vip?"rgba(181,123,0,.92)":"rgba(20,48,74,.85)","#FFFFFF");nameTag.position.y=3.65;player.g.add(nameTag);
+ const own=typeof NET!=="undefined"&&NET.admin;nameTag=labelSprite((own?"👑 ":vip?"⭐ ":"")+(S.name||"Yo"),own?"rgba(123,75,209,.92)":vip?"rgba(181,123,0,.92)":"rgba(20,48,74,.85)","#FFFFFF");nameTag.position.y=3.85;nameTag.scale.multiplyScalar(0.72);nameTag.visible=!!(typeof NET!=="undefined"&&NET.room);player.g.add(nameTag);
  vehicleObj=null;weaponObj=null;
  const inCombat=curZone&&curZone.combat;
- if(S.riding&&S.vehicle&&!(curZone&&curZone.noVehicle)){vehicleObj=makeVehicle(S.vehicle);player.g.add(vehicleObj.g);player.body.position.y=0;}
+ if(S.riding&&S.vehicle&&!(curZone&&curZone.noVehicle)){vehicleObj=makeVehicle(S.vehicle,S.look.carC);player.g.add(vehicleObj.g);player.body.position.y=0;}
  if(inCombat&&typeof makeSword==="function"){weaponObj=makeSword(S.adv.sword);player.arms[1].add(weaponObj);weaponObj.position.set(0,-0.78,0.1);weaponObj.rotation.x=Math.PI/2;}
  if(petObj){rm(petObj);petObj=null;}
  petInfo=typeof activePetInfo==="function"?activePetInfo():null;
@@ -42,4 +42,4 @@ function teleport(x,z,y,face,cb){
   setTimeout(()=>{f.style.opacity=0;setTimeout(()=>{f.hidden=true;teleporting=false;},300);},120);
  },320);
 }
-function travelTo(id){const Z=ZONES[id];if(!Z)return;closeSheet();const sp=Z.spawn||{x:Z.cx,z:Z.cz};teleport(sp.x,sp.z,sp.y,sp.face);}
+function travelTo(id){const Z=ZONES[id];if(!Z)return;if(typeof retoAdd==="function")retoAdd("viajes",1);closeSheet();const sp=Z.spawn||{x:Z.cx,z:Z.cz};teleport(sp.x,sp.z,sp.y,sp.face);}
