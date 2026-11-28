@@ -44,7 +44,7 @@ function zoneAt(x,z){for(const id in ZONES){const Z=ZONES[id];if(Math.abs(x-Z.cx
 function setZone(Z){
  if(curZone===Z)return;const prev=curZone;curZone=Z;
  for(const id in ZONES)ZONES[id].g.visible=ZONES[id]===Z;
- setSky(Z.sky||0x9FD8F5);scene.fog.near=Z.fogNear||110;scene.fog.far=Z.fogFar||260;
+ setSky(Z.sky||0x9FD8F5);hemi.intensity=Z.indoor?0.68:0.95;sun.intensity=Z.indoor?0.42:0.62;scene.fog.near=Z.fogNear||110;scene.fog.far=Z.fogFar||260;
  const zt=$("zonetag");zt.textContent=Z.icon+" "+Z.name;zt.hidden=Z.id==="city";
  if(prev&&prev.onLeave)prev.onLeave();
  if(Z.onEnter)Z.onEnter();

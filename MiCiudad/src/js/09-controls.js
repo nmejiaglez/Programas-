@@ -47,7 +47,7 @@ function updatePlayer(dt){
  const vx=rx*mx+fx*(-mz),vz=rz*mx+fz*(-mz);
  const veh=vehicleObj&&S.riding&&S.vehicle?VEHICLES.find(v=>v.id===S.vehicle):null;
  const zoneMul=curZone&&curZone.speedMul||1;
- const maxS=7*(veh?veh.speed:1)*zoneMul*(P.slow||1);
+ const maxS=7*(veh?veh.speed:1)*zoneMul*(P.slow||1)*(P.boost>Date.now()?1.3:1);
  const amt=Math.min(1,Math.hypot(vx,vz));
  P.speed=amt*maxS;
  // plataforma en movimiento
@@ -82,11 +82,13 @@ function updatePlayer(dt){
  const act=$("act");if(nearSpot&&!uiOpen&&!teleporting){act.hidden=false;const t=typeof nearSpot.label==="function"?nearSpot.label():nearSpot.label;if(act.textContent!==t)act.textContent=t;}else act.hidden=true;
 }
 function updateCamera(dt){
+ const cp=curZone.indoor?Math.max(camPitch,0.62):camPitch;
  const tx=P.x,ty=P.y+1.9,tz=P.z;
  const cmax=Math.min(camDist,curZone.camMax||99);let dist=cmax;
- for(let k=1;k<=12;k++){const t=cmax*k/12;const px=tx+Math.sin(camYaw)*Math.cos(camPitch)*t,py=ty+Math.sin(camPitch)*t,pz=tz+Math.cos(camYaw)*Math.cos(camPitch)*t;
+ for(let k=1;k<=12;k++){const t=cmax*k/12;const px=tx+Math.sin(camYaw)*Math.cos(cp)*t,py=ty+Math.sin(cp)*t,pz=tz+Math.cos(camYaw)*Math.cos(cp)*t;
   if(colliders.some(c=>c.h&&!c.off&&py<c.y1&&px>c.a-0.5&&px<c.b+0.5&&pz>c.c-0.5&&pz<c.d+0.5)){dist=Math.max(2.5,t-cmax/12);break;}}
- const cx=tx+Math.sin(camYaw)*Math.cos(camPitch)*dist,cy=ty+Math.sin(camPitch)*dist,cz=tz+Math.cos(camYaw)*Math.cos(camPitch)*dist;
+ let cx=tx+Math.sin(camYaw)*Math.cos(cp)*dist,cy=ty+Math.sin(cp)*dist,cz=tz+Math.cos(camYaw)*Math.cos(cp)*dist;
+ if(curZone.indoor){const Z=curZone;cx=Math.max(Z.cx-Z.hw+0.2,Math.min(Z.cx+Z.hw-0.2,cx));cz=Math.max(Z.cz-Z.hd+0.2,Math.min(Z.cz+Z.hd-0.2,cz));cy=Math.min(cy,9);}
  const k=Math.min(1,dt*8);camera.position.x+=(cx-camera.position.x)*k;camera.position.y+=(cy-camera.position.y)*k;camera.position.z+=(cz-camera.position.z)*k;
  camera.lookAt(tx,ty,tz);
  if(camShake>0){camShake-=dt;camera.position.x+=(Math.random()-0.5)*0.5;camera.position.y+=(Math.random()-0.5)*0.4;}

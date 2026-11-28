@@ -28,7 +28,7 @@ async function sendInvite(uid,p){
   const k=el("button","btn go big","¡A jugar!");k.onclick=closeSheet;b.appendChild(k);},{half:true});
 }
 async function checkInvites(){if(!NET.ok||(S.parent&&S.parent.rooms===false))return;
- let d=null;try{d=await db("GET","invites/"+NET.uid);}catch(e){return;}if(!d)return;
+ if(INV.off)return;let d=null;try{d=await db("GET","invites/"+NET.uid);}catch(e){if(String(e.message).indexOf("ermission")>=0)INV.off=true;return;}if(!d)return;
  const now=Date.now();
  for(const from in d){const v=d[from];const old=!v||!v.t||now-v.t>5*60000;
   if(old||(S.blocked&&S.blocked[from])||(S.parent&&S.parent.rooms===false)){db("DELETE","invites/"+NET.uid+"/"+from).catch(()=>{});continue;}
