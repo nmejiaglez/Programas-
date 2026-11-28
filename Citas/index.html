@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Citas de Ultrasonido · Dr. Néstor Mejía</title>
-<meta name="description" content="Agende su ultrasonido o Doppler con el Dr. Néstor José Mejía González, especialista en Radiología e Imagen, Juigalpa, Chontales. Precios, preparación y cita por WhatsApp.">
+<meta name="description" content="Agende su ultrasonido o Doppler con el Dr. Néstor José Mejía González, especialista en Radiología e Imagen, Juigalpa, Chontales. Consultorio y a domicilio. Precios, preparación y cita por WhatsApp.">
 <meta property="og:title" content="Citas de Ultrasonido · Dr. Néstor Mejía">
 <meta property="og:description" content="Ultrasonido y Doppler en Juigalpa. Vea precios y preparación, y pida su cita por WhatsApp.">
 <meta name="theme-color" content="#123A78">
@@ -73,6 +73,11 @@ textarea{min-height:70px;resize:vertical}
 .barra{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-top:1px solid var(--linea);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px;justify-content:center;z-index:10}
 .barra a,.barra button{flex:1;max-width:240px;text-align:center;text-decoration:none;border-radius:14px;padding:11px 8px;font-weight:800;font-size:15px;border:2px solid var(--azul);color:var(--azul);background:#fff;cursor:pointer}
 .barra a.v{background:var(--verde);border-color:var(--verde);color:#fff}
+.horario .sec{grid-column:1/-1;margin-top:6px;color:var(--tinta);font-size:15.5px}
+.modos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 12px}
+.modo{border:2px solid var(--linea);border-radius:16px;background:#fff;padding:12px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.modo span{font-size:30px}.modo b{font-size:15.5px;color:var(--azul)}.modo small{font-size:12.5px;color:var(--gris);line-height:1.25}
+.modo[aria-pressed="true"]{border-color:var(--azul2);background:var(--celeste);box-shadow:0 0 0 3px rgba(31,91,184,.15)}
 .err{color:var(--rojo);font-weight:800;font-size:14px;margin-top:8px;min-height:1em}
 .gen{display:grid;gap:8px;font-size:14.5px}
 .gen div{display:flex;gap:10px;align-items:flex-start}
@@ -97,7 +102,7 @@ footer{text-align:center;color:var(--gris);font-size:13px;margin-top:24px}
  <section class="card up" aria-labelledby="h-hor">
   <h2 id="h-hor">🕗 Horario de atención</h2>
   <div class="horario" id="horario"></div>
-  <p class="aviso">Pida su cita aquí y se la confirmamos por WhatsApp. 📍 La dirección exacta se la enviamos al confirmar.</p>
+  <p class="aviso">Pida su cita aquí y se la confirmamos por WhatsApp. 📍 La dirección del consultorio se la enviamos al confirmar. 🏠 También atendemos a domicilio después de las 8 PM y los domingos, con cita.</p>
  </section>
 
  <section class="card" aria-labelledby="h-est">
@@ -107,8 +112,12 @@ footer{text-align:center;color:var(--gris);font-size:13px;margin-top:24px}
  </section>
 
  <section class="card" aria-labelledby="h-dia">
-  <h2 id="h-dia"><span class="n">2</span>Elija el día y la hora</h2>
-  <p class="muted">Deslice para ver más días.</p>
+  <h2 id="h-dia"><span class="n">2</span>¿Dónde y cuándo?</h2>
+  <div class="modos" role="group" aria-label="Lugar del estudio">
+   <button type="button" class="modo" data-m="consultorio" aria-pressed="true"><span>🏥</span><b>En el consultorio</b><small>Lunes a sábado en la mañana</small></button>
+   <button type="button" class="modo" data-m="domicilio" aria-pressed="false"><span>🏠</span><b>A domicilio</b><small>Noches desde las 8 PM y domingos</small></button>
+  </div>
+  <p class="muted">Elija el día (deslice para ver más) y la hora.</p>
   <div class="dias" id="dias" role="listbox" aria-label="Días disponibles"></div>
   <div class="horas" id="horas" role="listbox" aria-label="Horas disponibles"></div>
  </section>
@@ -120,6 +129,13 @@ footer{text-align:center;color:var(--gris);font-size:13px;margin-top:24px}
   <div class="fila">
    <div><label class="f" for="tel">Teléfono / WhatsApp</label><input type="tel" id="tel" inputmode="tel" autocomplete="tel" placeholder="Ej.: 8888 8888"></div>
    <div><label class="f" for="edad">Edad</label><input type="number" id="edad" min="0" max="120" inputmode="numeric" placeholder="Años"></div>
+  </div>
+  <div id="domBox" hidden>
+   <label class="f" for="dir">Dirección para la visita a domicilio</label>
+   <input type="text" id="dir" autocomplete="street-address" placeholder="Barrio, calle, número de casa">
+   <label class="f" for="refdir">Punto de referencia <small>(opcional)</small></label>
+   <input type="text" id="refdir" placeholder="Ej.: frente a la iglesia, casa verde">
+   <p class="aviso">🏠 El costo del traslado a domicilio se lo confirmamos por WhatsApp.</p>
   </div>
   <label class="f" for="ref">Médico que lo envía <small>(si tiene)</small></label>
   <input type="text" id="ref" placeholder="Ej.: Dra. Pérez">
@@ -155,7 +171,9 @@ footer{text-align:center;color:var(--gris);font-size:13px;margin-top:24px}
 <script>
 /* ======= CONFIGURACIÓN: cambie aquí horario, precios y preparaciones ======= */
 const WHATSAPP="50585344022";
-const HORARIO={1:[8,12],2:[8,12],3:[8,12],4:[8,12],5:[8,12],6:[8,12]}; // 0=domingo … 6=sábado; [hora inicio, hora fin]
+// 0=domingo … 6=sábado; cada día tiene una lista de horarios [hora inicio, hora fin] en formato de 24 horas
+const HORARIO={1:[[8,12]],2:[[8,12]],3:[[8,12]],4:[[8,12]],5:[[8,12]],6:[[8,12]]};            // en el consultorio
+const DOMICILIO={0:[[8,12],[20,22]],1:[[20,22]],2:[[20,22]],3:[[20,22]],4:[[20,22]],5:[[20,22]],6:[[20,22]]}; // a domicilio
 const CADA_MIN=30;   // cada cuántos minutos hay un espacio
 const DIAS_ADELANTE=21;
 const PREP={
@@ -199,12 +217,15 @@ const ESTUDIOS=[
 /* ========================================================================= */
 const $=id=>document.getElementById(id);
 const DN=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"],MN=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
-const sel={est:new Set(),dia:null,hora:null};
+const sel={est:new Set(),dia:null,hora:null,modo:"consultorio"};
+function tabla(){return sel.modo==="domicilio"?DOMICILIO:HORARIO;}
 function hm(h,m){const ap=h<12?"AM":"PM";const hh=h%12||12;return hh+":"+String(m).padStart(2,"0")+" "+ap;}
 function money(m,v){return m+" "+v.toLocaleString("es-NI");}
 // horario
-(function(){const nombres={1:"Lunes a viernes",6:"Sábados"};const rows=[["Lunes a viernes",HORARIO[1]],["Sábados",HORARIO[6]]].filter(r=>r[1]);
- $("horario").innerHTML=rows.map(r=>"<b>"+r[0]+"</b><span>"+hm(r[1][0],0)+" a "+hm(r[1][1],0)+"</span>").join("")+"<b>Domingos</b><span>Cerrado</span>";})();
+function rango(r){return r.map(x=>hm(x[0],0)+" a "+hm(x[1],0)).join(" y ");}
+(function(){$("horario").innerHTML=
+ '<b class="sec">🏥 En el consultorio</b><span></span><b>Lunes a viernes</b><span>'+rango(HORARIO[1])+'</span><b>Sábados</b><span>'+rango(HORARIO[6])+'</span>'+
+ '<b class="sec">🏠 A domicilio (con cita)</b><span></span><b>Lunes a sábado</b><span>'+rango(DOMICILIO[1])+'</span><b>Domingos</b><span>'+rango(DOMICILIO[0])+'</span>';})();
 // estudios
 (function(){const box=$("estudios");ESTUDIOS.forEach(gr=>{const g=document.createElement("div");g.className="grupo";g.innerHTML="<h3>"+gr.g+"</h3>";
  gr.items.forEach(it=>{const l=document.createElement("label");l.className="est";l.innerHTML='<input type="checkbox" value="'+it.id+'"><div class="tx"><div class="nom">'+it.n+'</div><details><summary>Preparación</summary><p>'+PREP[it.prep]+'</p></details></div><div class="pre">'+money(it.m,it.p)+'</div>';
@@ -213,16 +234,16 @@ function money(m,v){return m+" "+v.toLocaleString("es-NI");}
 function allItems(){return ESTUDIOS.flatMap(g=>g.items);}
 // días
 function buildDias(){const box=$("dias");box.innerHTML="";const hoy=new Date();let n=0;
- for(let i=0;n<DIAS_ADELANTE&&i<40;i++){const d=new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate()+i);const h=HORARIO[d.getDay()];if(!h)continue;
-  if(i===0){const now=new Date();if(now.getHours()*60+now.getMinutes()>=h[1]*60-CADA_MIN)continue;}
+ for(let i=0;n<DIAS_ADELANTE&&i<40;i++){const d=new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate()+i);const h=tabla()[d.getDay()];if(!h)continue;
+  if(i===0){const now=new Date();const fin=Math.max(...h.map(r=>r[1]));if(now.getHours()*60+now.getMinutes()>=fin*60-CADA_MIN)continue;}
   n++;const b=document.createElement("button");b.type="button";b.className="dia";b.setAttribute("role","option");
   b.innerHTML='<div class="d1">'+(i===0?"hoy":i===1?"mañana":DN[d.getDay()].slice(0,3))+'</div><div class="d2">'+d.getDate()+'</div><div class="d3">'+MN[d.getMonth()].slice(0,3)+'</div>';
   b.setAttribute("aria-label",DN[d.getDay()]+" "+d.getDate()+" de "+MN[d.getMonth()]);
   b.onclick=()=>{sel.dia=d;sel.hora=null;box.querySelectorAll(".dia").forEach(x=>{x.classList.remove("sel");x.setAttribute("aria-selected","false");});b.classList.add("sel");b.setAttribute("aria-selected","true");buildHoras();resumen();};
   box.appendChild(b);}}
 function buildHoras(){const box=$("horas");box.innerHTML="";if(!sel.dia){box.innerHTML='<p class="muted" style="grid-column:1/-1">Primero elija un día.</p>';return;}
- const h=HORARIO[sel.dia.getDay()];const now=new Date();const esHoy=sel.dia.toDateString()===now.toDateString();
- for(let t=h[0]*60;t<h[1]*60;t+=CADA_MIN){const hh=Math.floor(t/60),mm=t%60;const b=document.createElement("button");b.type="button";b.className="hora";b.textContent=hm(hh,mm);b.setAttribute("role","option");
+ const H=tabla()[sel.dia.getDay()]||[];const now=new Date();const esHoy=sel.dia.toDateString()===now.toDateString();
+ for(const h of H)for(let t=h[0]*60;t<h[1]*60;t+=CADA_MIN){const hh=Math.floor(t/60),mm=t%60;const b=document.createElement("button");b.type="button";b.className="hora";b.textContent=hm(hh,mm);b.setAttribute("role","option");
   if(esHoy&&t<=now.getHours()*60+now.getMinutes()+30)b.disabled=true;
   b.onclick=()=>{sel.hora=[hh,mm];box.querySelectorAll(".hora").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");resumen();};box.appendChild(b);}}
 function fechaTxt(d){return DN[d.getDay()]+" "+d.getDate()+" de "+MN[d.getMonth()]+" de "+d.getFullYear();}
@@ -230,7 +251,7 @@ function resumen(){const its=allItems().filter(i=>sel.est.has(i.id));const r=$("
  if(!its.length&&!sel.dia){r.innerHTML="<b>Su solicitud</b><br><span class='muted'>Elija estudio, día y hora.</span>";return;}
  const c=its.filter(i=>i.m==="C$").reduce((a,i)=>a+i.p,0),u=its.filter(i=>i.m==="US$").reduce((a,i)=>a+i.p,0);
  r.innerHTML="<b>Su solicitud</b>"+(its.length?"<ul>"+its.map(i=>"<li>"+i.n+" — "+money(i.m,i.p)+"</li>").join("")+"</ul>":"")+
-  (sel.dia?"<div>📅 "+fechaTxt(sel.dia)+(sel.hora?" · 🕗 "+hm(sel.hora[0],sel.hora[1]):"")+"</div>":"")+
+  "<div>"+(sel.modo==="domicilio"?"🏠 A domicilio":"🏥 En el consultorio")+"</div>"+(sel.dia?"<div>📅 "+fechaTxt(sel.dia)+(sel.hora?" · 🕗 "+hm(sel.hora[0],sel.hora[1]):"")+"</div>":"")+
   ((c||u)?'<div class="total">Total: '+[c?money("C$",c):"",u?money("US$",u):""].filter(Boolean).join(" + ")+"</div>":"");}
 $("enviar").onclick=()=>{const err=$("err");err.textContent="";
  const its=allItems().filter(i=>sel.est.has(i.id));const nom=$("nom").value.trim(),tel=$("tel").value.trim(),edad=$("edad").value.trim();
@@ -238,11 +259,14 @@ $("enviar").onclick=()=>{const err=$("err");err.textContent="";
  if(!sel.dia||!sel.hora)return err.textContent="Elija el día y la hora (paso 2).";
  if(nom.length<3)return err.textContent="Escriba el nombre del paciente.";
  if(tel.replace(/\D/g,"").length<8)return err.textContent="Escriba un teléfono de 8 números.";
+ if(sel.modo==="domicilio"&&$("dir").value.trim().length<5)return err.textContent="Escriba la dirección para la visita a domicilio.";
  const c=its.filter(i=>i.m==="C$").reduce((a,i)=>a+i.p,0),u=its.filter(i=>i.m==="US$").reduce((a,i)=>a+i.p,0);
  const ref=$("ref").value.trim(),nota=$("nota").value.trim();
  const msg=["Hola, Dr. Mejía 👋 Quiero agendar una cita:","",
   "🩻 Estudio: "+its.map(i=>i.n).join(", "),
+  sel.modo==="domicilio"?"🏠 A DOMICILIO":"🏥 En el consultorio",
   "📅 Día: "+fechaTxt(sel.dia),"🕗 Hora: "+hm(sel.hora[0],sel.hora[1]),
+  sel.modo==="domicilio"?"📍 Dirección: "+$("dir").value.trim()+($("refdir").value.trim()?" ("+$("refdir").value.trim()+")":""):null,
   "👤 Paciente: "+nom+(edad?", "+edad+" años":""),"📞 Teléfono: "+tel,
   ref?"🩺 Lo envía: "+ref:null,nota?"📝 Nota: "+nota:null,"",
   "💵 Total: "+[c?money("C$",c):"",u?money("US$",u):""].filter(Boolean).join(" + "),"",
@@ -252,6 +276,8 @@ $("waDirecto").href="https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent("Hola,
 $("compartir").onclick=async()=>{const data={title:"Citas de Ultrasonido · Dr. Néstor Mejía",text:"Pida su cita de ultrasonido o Doppler con el Dr. Néstor Mejía (Juigalpa):",url:location.href};
  try{if(navigator.share){await navigator.share(data);return;}}catch(e){return;}
  try{await navigator.clipboard.writeText(location.href);$("compartir").textContent="✅ Enlace copiado";setTimeout(()=>$("compartir").textContent="🔗 Compartir",2000);}catch(e){prompt("Copie este enlace:",location.href);}};
+document.querySelectorAll(".modo").forEach(b=>b.onclick=()=>{sel.modo=b.dataset.m;sel.dia=null;sel.hora=null;
+ document.querySelectorAll(".modo").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));$("domBox").hidden=sel.modo!=="domicilio";buildDias();buildHoras();resumen();});
 buildDias();buildHoras();resumen();
 </script>
 </body>
