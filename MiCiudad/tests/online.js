@@ -58,9 +58,10 @@ async function jugador(b, nombre) {
   await A.p.evaluate(() => __t.redeemOnline("MC-ZZZZ-ZZZZ")); await A.p.waitForTimeout(1500);
   console.log("toast código:", await A.p.evaluate(() => [...document.querySelectorAll(".toast")].map(t => t.textContent).join(" | ")));
   // panel de dueño (no es dueño)
-  await A.p.click("#bSet"); for (let i = 0; i < 5; i++) await A.p.click("text=Mi Ciudad · versión 3.0");
-  await A.p.waitForTimeout(400);
-  const abierto = await A.p.locator("#pinIn").count();
+  await A.p.click("#bSet"); await A.p.waitForTimeout(400);
+  const verVisible = await A.p.locator("text=versión 3.0").count();
+  console.log("versión visible para quien no es dueño:", verVisible ? "SÍ (MAL)" : "no (bien)"); if (verVisible) A.errs.push("se ve la versión del dueño");
+  const abierto = await A.p.locator("#pinIn").count() + await A.p.locator("#bOwner:visible").count();
   console.log("panel de dueño para quien no es dueño:", abierto ? "SE ABRIÓ (MAL)" : "no se abre (bien)");
   if (abierto) A.errs.push("el panel de dueño se abrió sin ser dueño");
   await A.p.screenshot({ path: OUT + "/on_owner.png" });
