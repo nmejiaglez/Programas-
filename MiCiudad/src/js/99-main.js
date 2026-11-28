@@ -56,7 +56,7 @@ function start(){
  const go=()=>{if(!S.created)welcome();else{toast("👋 ¡Hola de nuevo, "+S.name+"!");}};
  if(testMode)go();else showTitle(go);
  setTimeout(()=>{if(!isTouch)$("pchint").hidden=true;},14000);
- if(/[?&]test/.test(location.search))window.__t={get S(){return S;},P,teleport,travelTo,enter,ZONES,SPOTS,MODES,useSpot,get near(){return nearSpot;},doJump,doAttack,closeSheet,damage,colliders,get zone(){return curZone;},joy,setYaw(v){camYaw=v;},openShop,openPlaces,renderer,scene,NET,openFriends,joinRoom,leaveRoom,sendChat,redeemOnline,openAccount,openParents,nombreProblema,netStart,pushCloud,db,makeChar,makeVehicle,camera,animChar,addStars,buildPlayer,rideAnim,get player(){return player;},openSearch,BUILDINGS,crearCuenta,iniciarSesion,openCuenta,userEmail,applyCombo,COMBOS,bqStart,get bq(){return bq;},openBosque};
+ if(/[?&]test/.test(location.search))window.__t={get S(){return S;},P,teleport,travelTo,enter,ZONES,SPOTS,MODES,useSpot,get near(){return nearSpot;},doJump,doAttack,closeSheet,damage,colliders,get zone(){return curZone;},joy,setYaw(v){camYaw=v;},openShop,openPlaces,renderer,scene,NET,openFriends,joinRoom,leaveRoom,sendChat,redeemOnline,openAccount,openParents,nombreProblema,netStart,pushCloud,db,makeChar,makeVehicle,camera,animChar,addStars,buildPlayer,rideAnim,get player(){return player;},openSearch,BUILDINGS,crearCuenta,iniciarSesion,openCuenta,userEmail,applyCombo,COMBOS,userProblem,bqStart,get bq(){return bq;},openBosque};
  requestAnimationFrame(t=>{last=t;loop(t);});
 }
 const fontsReady=document.fonts&&document.fonts.ready?Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,1500))]):Promise.resolve();
