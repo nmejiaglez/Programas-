@@ -46,7 +46,7 @@ function cleanSave(){const c=JSON.parse(JSON.stringify(S));delete c.pin;delete c
 async function pushCloud(force){
  if(!NET.ok)return;const c=cleanSave();const js=JSON.stringify(c);if(!force&&js===NET.lastSync)return;
  await db("PUT","users/"+NET.uid,{s:c,t:SV_TIME});NET.lastSync=js;
- await db("PUT","perfiles/"+NET.uid,{n:S.name||"Jugador",tag:myTag(),look:S.look,t:SV_TIME});
+ await db("PUT","perfiles/"+NET.uid,{n:S.name||"Jugador",tag:myTag(),look:S.look,t:SV_TIME,hide:findHidden()?1:0});
 }
 async function pullCloud(replace){
  const d=await db("GET","users/"+NET.uid);if(!d||!d.s)return false;
@@ -105,6 +105,7 @@ function openFriends(tab){tab=tab||"sala";
    const cb=el("div","codebox",NET.room);body.appendChild(cb);
    const rw=el("div","row");const cp=el("button","btn ghost","📋 Copiar código");cp.onclick=()=>{try{navigator.clipboard.writeText(NET.room).then(()=>toast("Copiado"),()=>selectText(cb));}catch(e){selectText(cb);}};
    const iv=el("button","btn go","📲 Invitar amigas");iv.onclick=()=>invite(NET.room);rw.append(cp,iv);body.appendChild(rw);
+   const sb=el("button","btn","🔎 Buscar e invitar amiga");sb.onclick=()=>openSearch();body.appendChild(sb);
    body.appendChild(el("h3","","En la sala"));
    const l=el("div","list");const ids=Object.keys(NET.players).filter(id=>id!==NET.uid&&remoteAlive(NET.players[id]));
    l.appendChild(el("div","li",'<div style="font-size:24px">⭐</div><div class="tx"><b>'+escapeHtml(S.name||"Yo")+' (usted)</b><small>'+myTag()+'</small></div>'));
@@ -120,11 +121,13 @@ function openFriends(tab){tab=tab||"sala";
   body.appendChild(el("p","muted","Su sala tiene un código fijo: compártalo una vez y sus amigas siempre la encuentran. Solo entra quien tenga el código."));
   const home=myHome();const hb=el("div","codebox",home);body.appendChild(hb);
   const rw=el("div","row");const c=el("button","btn go big","🏠 Abrir mi sala");c.onclick=()=>{joinRoom(home);openFriends();};const iv=el("button","btn big","📲 Invitar");iv.onclick=()=>invite(home);rw.append(c,iv);body.appendChild(rw);
+  const sb=el("button","btn big","🔎 Buscar amiga por su nombre");sb.style.background="linear-gradient(#B38CFF,#7B4BD1)";sb.style.boxShadow="0 3px 0 #5A2FA8";sb.onclick=()=>openSearch();body.appendChild(sb);
   const fr=S.friends?Object.keys(S.friends).filter(id=>!(S.blocked&&S.blocked[id])).sort((a,b)=>S.friends[b].t-S.friends[a].t):[];
   body.appendChild(el("h3","","💞 Mis amigas"));
   if(!fr.length)body.appendChild(el("p","muted","Cuando juegue con alguien en una sala, aparecerá aquí para visitarla con un toque."));
   else{const l=el("div","list");fr.forEach(id=>{const f=S.friends[id];const r=el("div","li",'<div style="font-size:26px">'+["🧒","👧","👦","🧒🏽","👧🏾"][h32(id)%5]+'</div><div class="tx"><b>'+escapeHtml(f.n)+'</b><small>'+escapeHtml(f.tag)+' · Sala '+f.home+'</small></div>');
     const v=el("button","btn go","🏠 Visitar");v.style.width="auto";v.style.padding="7px 10px";v.onclick=()=>{joinRoom(f.home);openFriends();};
+    const ivf=el("button","btn","💌");ivf.style.width="auto";ivf.style.padding="7px 10px";ivf.setAttribute("aria-label","Invitar");ivf.onclick=()=>sendInvite(id,{n:f.n,look:f.look});r.appendChild(ivf);
     const x=el("button","btn ghost","✖");x.style.width="auto";x.style.padding="7px 10px";x.setAttribute("aria-label","Quitar de mis amigas");x.onclick=()=>{delete S.friends[id];save();openFriends();};r.append(v,x);l.appendChild(r);});body.appendChild(l);}
   body.appendChild(el("h3","","Entrar a la sala de una amiga"));
   const i=el("input");i.type="text";i.id="roomIn";i.placeholder="Código, por ejemplo K7P2Q";i.maxLength=5;i.setAttribute("autocapitalize","characters");body.appendChild(i);
