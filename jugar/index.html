@@ -2446,7 +2446,7 @@ function cleanSave(){const c=JSON.parse(JSON.stringify(S));delete c.pin;delete c
 async function pushCloud(force){
  if(!NET.ok)return;const c=cleanSave();const js=JSON.stringify(c);if(!force&&js===NET.lastSync)return;
  await db("PUT","users/"+NET.uid,{s:c,t:SV_TIME});NET.lastSync=js;
- await db("PUT","perfiles/"+NET.uid,{n:S.name||"Jugador",tag:myTag(),look:S.look,t:SV_TIME,hide:findHidden()?1:0});
+ await db("PUT","perfiles/"+NET.uid,{n:S.name||"Jugador",tag:myTag(),look:S.look,t:SV_TIME,hide:findHidden()?1:0,u:publicUser()});
 }
 async function pullCloud(replace){
  const d=await db("GET","users/"+NET.uid);if(!d||!d.s)return false;
@@ -2523,7 +2523,7 @@ function openFriends(tab){tab=tab||"sala";
   body.appendChild(el("p","muted","Su sala tiene un código fijo: compártalo una vez y sus amigos siempre la encuentran. Solo entra quien tenga el código."));
   const home=myHome();const hb=el("div","codebox",home);body.appendChild(hb);
   const rw=el("div","row");const c=el("button","btn go big","🏠 Abrir mi sala");c.onclick=()=>{joinRoom(home);openFriends();};const iv=el("button","btn big","📲 Invitar");iv.onclick=()=>invite(home);rw.append(c,iv);body.appendChild(rw);
-  const sb=el("button","btn big","🔎 Buscar amigos por su nombre");sb.style.background="linear-gradient(#B38CFF,#7B4BD1)";sb.style.boxShadow="0 3px 0 #5A2FA8";sb.onclick=()=>openSearch();body.appendChild(sb);
+  const sb=el("button","btn big","🔎 Buscar amigos por usuario o nombre");sb.style.background="linear-gradient(#B38CFF,#7B4BD1)";sb.style.boxShadow="0 3px 0 #5A2FA8";sb.onclick=()=>openSearch();body.appendChild(sb);
   const fr=S.friends?Object.keys(S.friends).filter(id=>!(S.blocked&&S.blocked[id])).sort((a,b)=>S.friends[b].t-S.friends[a].t):[];
   body.appendChild(el("h3","","💞 Mis amigos"));
   if(!fr.length)body.appendChild(el("p","muted","Cuando juegue con alguien en una sala, aparecerá aquí para visitarla con un toque."));
@@ -3017,20 +3017,21 @@ mode({id:"parque",init(){buildPlayground();},update(dt){if(curZone&&curZone.id==
 
 /* ==== 36-invites.js ==== */
 /* ================= BUSCAR AMIGAS E INVITACIONES (aceptar o no) ================= */
+function publicUser(){const e=NET.email||"";return e.endsWith("@jugadores-miciudad.com")?e.slice(0,-23).toLowerCase():"";}
 function findHidden(){return !!(S.parent&&(S.parent.find===false||S.parent.rooms===false));}
 function charThumb(look,key){const L=Object.assign({},fresh().look,look||{});return thumb("C"+JSON.stringify(L),()=>{const c=makeChar(L);c.g.rotation.y=-0.3;c.shadow.visible=false;return c.g;},FRAME_BODY);}
 function lastSeenTxt(t){const m=Math.floor((Date.now()-t)/60000);return m<1?"🟢 Jugando ahora":m<10?"🟢 Hace "+m+" min":"";}
 const INV={seen:{},sentT:{},pollT:6,beatT:50};
 async function searchPlayers(q){const all=await db("GET","perfiles")||{};const now=Date.now();q=q.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").trim();
  return Object.keys(all).filter(id=>{const p=all[id];if(!p||id===NET.uid||p.hide||(S.blocked&&S.blocked[id]))return false;if(!p.t||now-p.t>10*60000)return false;
-  const n=(p.n||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,""),tg=(p.tag||"").toLowerCase();return n.startsWith(q)||tg===q;}).slice(0,12).map(id=>Object.assign({id},all[id]));}
+  const n=(p.n||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,""),tg=(p.tag||"").toLowerCase(),us=(p.u||"").toLowerCase();return n.startsWith(q)||tg===q||(us&&us.startsWith(q));}).slice(0,12).map(id=>Object.assign({id},all[id]));}
 function openSearch(q){sheet("🔎 Buscar amigos",b=>{
- b.appendChild(el("p","muted","Escriba el nombre de su amigo o amiga. Solo aparecen las niñas y niños que están jugando ahora."));
- const i=el("input");i.type="text";i.id="findIn";i.placeholder="Nombre, por ejemplo Mateo o Sofía";i.maxLength=16;i.value=q||"";b.appendChild(i);
+ b.appendChild(el("p","muted","Escriba el usuario o el nombre de su amigo o amiga (por ejemplo papi2017 o Sofi). Solo aparecen quienes están jugando ahora."));
+ const i=el("input");i.type="text";i.id="findIn";i.placeholder="Usuario o nombre";i.maxLength=16;i.value=q||"";b.appendChild(i);
  const go=el("button","btn go","🔎 Buscar");b.appendChild(go);const res=el("div","list");b.appendChild(res);
  const run=async()=>{const v=i.value.trim();if(v.length<2){toast("Escriba al menos 2 letras");return;}go.disabled=true;res.innerHTML="";res.appendChild(el("p","muted","Buscando…"));
   try{const list=await searchPlayers(v);res.innerHTML="";if(!list.length)res.appendChild(el("p","muted","No encontré a nadie jugando con ese nombre. Pídale que abra el juego, o use el código de sala."));
-   list.forEach(p=>{const r=el("div","li fcard");r.innerHTML=imgTag(charThumb(p.look),'<div style="font-size:30px">🙂</div>')+'<div class="tx"><b>'+escapeHtml(p.n||"Jugador")+'</b><small>'+escapeHtml(p.tag||"")+'<br>'+lastSeenTxt(p.t)+'</small></div>';
+   list.forEach(p=>{const r=el("div","li fcard");r.innerHTML=imgTag(charThumb(p.look),'<div style="font-size:30px">🙂</div>')+'<div class="tx"><b>'+escapeHtml(p.n||"Jugador")+'</b><small>'+(p.u?"@"+escapeHtml(p.u)+" · ":"")+escapeHtml(p.tag||"")+'<br>'+lastSeenTxt(p.t)+'</small></div>';
     const iv=el("button","btn go","💌 Invitar");iv.style.width="auto";iv.style.padding="8px 12px";iv.onclick=()=>sendInvite(p.id,p);r.appendChild(iv);res.appendChild(r);});}
   catch(e){res.innerHTML="";res.appendChild(el("p","muted",errMsg(e)));}go.disabled=false;};
  go.onclick=run;i.addEventListener("keydown",e=>{if(e.key==="Enter")run();});if(q)run();
@@ -3063,7 +3064,7 @@ function showInvite(from,v){sfx("reto");sheet("💌 ¡Te invitan a jugar!",b=>{
 },{half:true});}
 mode({id:"invitaciones",update(dt){if(!NET.ok)return;const now=Date.now();
  if(now-(INV.lastPoll||0)>5000){INV.lastPoll=now;checkInvites();}
- if(now-(INV.lastBeat||0)>60000){INV.lastBeat=now;db("PATCH","perfiles/"+NET.uid,{t:SV_TIME,hide:findHidden()?1:0,n:S.name||"Jugador",tag:myTag()}).catch(()=>{});}}});
+ if(now-(INV.lastBeat||0)>60000){INV.lastBeat=now;db("PATCH","perfiles/"+NET.uid,{t:SV_TIME,hide:findHidden()?1:0,n:S.name||"Jugador",tag:myTag(),u:publicUser()}).catch(()=>{});}}});
 
 /* ==== 37-interiores.js ==== */
 /* ================= ENTRAR CAMINANDO A LOS EDIFICIOS ================= */

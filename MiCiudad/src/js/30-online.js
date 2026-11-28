@@ -46,7 +46,7 @@ function cleanSave(){const c=JSON.parse(JSON.stringify(S));delete c.pin;delete c
 async function pushCloud(force){
  if(!NET.ok)return;const c=cleanSave();const js=JSON.stringify(c);if(!force&&js===NET.lastSync)return;
  await db("PUT","users/"+NET.uid,{s:c,t:SV_TIME});NET.lastSync=js;
- await db("PUT","perfiles/"+NET.uid,{n:S.name||"Jugador",tag:myTag(),look:S.look,t:SV_TIME,hide:findHidden()?1:0});
+ await db("PUT","perfiles/"+NET.uid,{n:S.name||"Jugador",tag:myTag(),look:S.look,t:SV_TIME,hide:findHidden()?1:0,u:publicUser()});
 }
 async function pullCloud(replace){
  const d=await db("GET","users/"+NET.uid);if(!d||!d.s)return false;
@@ -123,7 +123,7 @@ function openFriends(tab){tab=tab||"sala";
   body.appendChild(el("p","muted","Su sala tiene un código fijo: compártalo una vez y sus amigos siempre la encuentran. Solo entra quien tenga el código."));
   const home=myHome();const hb=el("div","codebox",home);body.appendChild(hb);
   const rw=el("div","row");const c=el("button","btn go big","🏠 Abrir mi sala");c.onclick=()=>{joinRoom(home);openFriends();};const iv=el("button","btn big","📲 Invitar");iv.onclick=()=>invite(home);rw.append(c,iv);body.appendChild(rw);
-  const sb=el("button","btn big","🔎 Buscar amigos por su nombre");sb.style.background="linear-gradient(#B38CFF,#7B4BD1)";sb.style.boxShadow="0 3px 0 #5A2FA8";sb.onclick=()=>openSearch();body.appendChild(sb);
+  const sb=el("button","btn big","🔎 Buscar amigos por usuario o nombre");sb.style.background="linear-gradient(#B38CFF,#7B4BD1)";sb.style.boxShadow="0 3px 0 #5A2FA8";sb.onclick=()=>openSearch();body.appendChild(sb);
   const fr=S.friends?Object.keys(S.friends).filter(id=>!(S.blocked&&S.blocked[id])).sort((a,b)=>S.friends[b].t-S.friends[a].t):[];
   body.appendChild(el("h3","","💞 Mis amigos"));
   if(!fr.length)body.appendChild(el("p","muted","Cuando juegue con alguien en una sala, aparecerá aquí para visitarla con un toque."));
