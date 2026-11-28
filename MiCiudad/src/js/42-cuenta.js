@@ -2,26 +2,27 @@
 const USER_DOMAIN="@jugadores-miciudad.com";
 function userEmail(u){u=String(u||"").trim();return u.indexOf("@")>=0?u:u.toLowerCase()+USER_DOMAIN;}
 function userName(email){email=String(email||"");return email.endsWith(USER_DOMAIN)?email.slice(0,-USER_DOMAIN.length):email;}
+function realPass(u,p){return String(u).indexOf("@")>=0?p:"mc·"+p+"·ciudad";}
 function userProblem(u){u=String(u||"").trim();if(u.length<3)return "El usuario debe tener al menos 3 letras";if(u.length>16)return "El usuario puede tener hasta 16 letras";
  if(!/^[A-Za-z][A-Za-z0-9_.]*$/.test(u))return "Use solo letras y números, y empiece con una letra (sin espacios ni acentos)";if(/\d{5,}/.test(u))return "Use máximo 4 números seguidos (no ponga su teléfono)";const letras=u.replace(/[\d_.]/g,"");if(letras.length>=2){const pr=nombreProblema(letras);if(pr&&pr.indexOf("no está permitido")>=0)return pr;}return null;}
 function authError(e){const m=String(e&&e.message||e);
  if(m.indexOf("EMAIL_EXISTS")>=0)return "Ese usuario ya existe. Elija otro, o toque «Iniciar sesión» si es suyo.";
- if(m.indexOf("WEAK_PASSWORD")>=0)return "La contraseña debe tener al menos 6 letras o números.";
+ if(m.indexOf("WEAK_PASSWORD")>=0)return "La contraseña debe tener al menos 4 letras o números.";
  if(/INVALID_LOGIN_CREDENTIALS|EMAIL_NOT_FOUND|INVALID_PASSWORD|INVALID_EMAIL/.test(m))return "Usuario o contraseña incorrectos.";
  if(m.indexOf("TOO_MANY_ATTEMPTS")>=0)return "Demasiados intentos. Espere unos minutos.";
  if(/Failed to fetch|NetworkError|network/i.test(m))return "Sin internet. Revise la conexión e intente otra vez.";
  return typeof errMsg==="function"?errMsg(e):m;}
 async function ensureNet(){if(NET.ok&&NET.uid)return true;try{await netStart();}catch(e){}return NET.ok;}
 async function crearCuenta(u,p1,p2){
- const pr=userProblem(u);if(pr)throw new Error(pr);if(String(p1).length<6)throw new Error("La contraseña debe tener al menos 6 letras o números.");if(p1!==p2)throw new Error("Las dos contraseñas no son iguales.");
+ const pr=userProblem(u);if(pr)throw new Error(pr);if(String(p1).length<4)throw new Error("La contraseña debe tener al menos 4 letras o números.");if(p1!==p2)throw new Error("Las dos contraseñas no son iguales.");
  if(!await ensureNet())throw new Error("Sin internet. Revise la conexión e intente otra vez.");
  if(NET.email)throw new Error("Ya tiene una cuenta abierta. Cierre sesión primero.");
- const j=await idt("accounts:signUp",{idToken:await tok(),email:userEmail(u),password:p1,returnSecureToken:true});
+ const j=await idt("accounts:signUp",{idToken:await tok(),email:userEmail(u),password:realPass(u,p1),returnSecureToken:true});
  setAuth(j.localId,j.idToken,j.refreshToken,j.expiresIn,j.email);S.user=u.trim();save();await pushCloud(true).catch(()=>{});return true;}
 async function iniciarSesion(u,p){
  if(!String(u).trim()||!p)throw new Error("Escriba su usuario y su contraseña.");
  if(!await ensureNet())throw new Error("Sin internet. Revise la conexión e intente otra vez.");
- const j=await idt("accounts:signInWithPassword",{email:userEmail(u),password:p,returnSecureToken:true});
+ let j;try{j=await idt("accounts:signInWithPassword",{email:userEmail(u),password:realPass(u,p),returnSecureToken:true});}catch(e){if(String(u).indexOf("@")<0&&String(p).length>=6)j=await idt("accounts:signInWithPassword",{email:userEmail(u),password:p,returnSecureToken:true});else throw e;}
  setAuth(j.localId,j.idToken,j.refreshToken,j.expiresIn,j.email);
  try{NET.admin=(await db("GET","admins/"+NET.uid))===true;}catch(e){NET.admin=false;}
  const had=await pullCloud(true);if(!had){S.user=String(u).trim();await pushCloud(true).catch(()=>{});}
@@ -31,7 +32,7 @@ function cuentaForm(b,modo,done){
  b.appendChild(el("div","acchead",crear?'<div class="ai">🎮</div><b>Crea tu cuenta de Mi Ciudad</b><small>No necesitas correo. Solo un usuario y una contraseña.</small>':'<div class="ai">🔑</div><b>Inicia sesión</b><small>Escribe tu usuario y tu contraseña.</small>'));
  const u=el("input");u.type="text";u.id=crear?"cuUser":"inUser";u.placeholder=crear?"Nombre de usuario (ej.: Sofi_Estrella)":"Usuario";u.maxLength=40;u.setAttribute("autocapitalize","off");u.setAttribute("autocomplete","username");u.setAttribute("spellcheck","false");b.appendChild(u);
  if(crear)b.appendChild(el("p","muted","🔒 No uses tu nombre completo ni tu teléfono. Este nombre es para entrar al juego."));
- const p1=el("input");p1.type="password";p1.id=crear?"cuPass":"inPass";p1.placeholder="Contraseña (6 letras o números o más)";p1.setAttribute("autocomplete",crear?"new-password":"current-password");b.appendChild(p1);
+ const p1=el("input");p1.type="password";p1.id=crear?"cuPass":"inPass";p1.placeholder="Contraseña (4 o más letras o números)";p1.setAttribute("autocomplete",crear?"new-password":"current-password");b.appendChild(p1);
  let p2=null;if(crear){p2=el("input");p2.type="password";p2.id="cuPass2";p2.placeholder="Repite la contraseña";p2.setAttribute("autocomplete","new-password");b.appendChild(p2);
   b.appendChild(el("p","note","✍️ Anota tu usuario y contraseña en un lugar seguro, o pídele a papá o mamá que los guarde. El teléfono la recordará: no tendrás que escribirla otra vez, a menos que cierres sesión."));}
  const er=el("p","accerr","");b.appendChild(er);

@@ -13,10 +13,10 @@ const KEY = "AIzaSyCcK3SfW8lpa5fiDyr8BJzofaRqG3zTfg8";
   const u = "prueba" + Date.now().toString(36);
   await p.goto(url); await p.waitForSelector("#hCrear", { timeout: 30000 });
   // crear
-  await p.click("#hCrear"); await p.fill("#cuUser", u); await p.fill("#cuPass", "clave123"); await p.fill("#cuPass2", "clave999");
+  await p.click("#hCrear"); await p.fill("#cuUser", u); await p.fill("#cuPass", "2017"); await p.fill("#cuPass2", "2018");
   await p.click("#cuGo"); await p.waitForTimeout(300);
   const e1 = await p.textContent(".accerr"); if (e1.indexOf("no son iguales") < 0) bad.push("no avisó contraseñas distintas");
-  await p.fill("#cuPass2", "clave123"); await p.click("#cuGo"); await p.waitForSelector(".hgame", { timeout: 30000 });
+  await p.fill("#cuPass", "2017"); await p.fill("#cuPass2", "2017"); await p.click("#cuGo"); await p.waitForSelector(".hgame", { timeout: 30000 });
   // jugar y crear personaje
   await p.click(".tplay", { force: true }); await p.fill("#welName", "Lunita"); await p.click("text=¡A jugar!"); await p.waitForTimeout(800);
   await p.evaluate(() => { const s = JSON.parse(localStorage.getItem("miCiudad.v1")); }); 
@@ -45,7 +45,7 @@ const KEY = "AIzaSyCcK3SfW8lpa5fiDyr8BJzofaRqG3zTfg8";
   await p.click("text=No tengo cuenta: crear una"); await p.fill("#cuUser", u); await p.fill("#cuPass", "otra123"); await p.fill("#cuPass2", "otra123"); await p.click("#cuGo"); await p.waitForTimeout(2500);
   const e3 = await p.textContent(".accerr"); if (e3.indexOf("ya existe") < 0) bad.push("no avisó usuario repetido: " + e3);
   // entrar bien: recupera el personaje
-  await p.click("text=Ya tengo cuenta: iniciar sesión"); await p.fill("#inUser", u.toUpperCase()); await p.fill("#inPass", "clave123"); await p.click("#inGo");
+  await p.click("text=Ya tengo cuenta: iniciar sesión"); await p.fill("#inUser", u.toUpperCase()); await p.fill("#inPass", "2017"); await p.click("#inGo");
   await p.waitForSelector(".hgame", { timeout: 30000 });
   const nombre = await p.evaluate(() => JSON.parse(localStorage.getItem("miCiudad.v1")).name); if (nombre !== "Lunita") bad.push("no recuperó el personaje: " + nombre);
   console.log("recuperó:", nombre);
