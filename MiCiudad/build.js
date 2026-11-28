@@ -25,4 +25,10 @@ const app = `<!doctype html>
 fs.mkdirSync(path.join(root, "www"), { recursive: true });
 fs.writeFileSync(path.join(root, "www/index.html"), app);
 fs.copyFileSync(path.join(root, "node_modules/three/build/three.min.js"), path.join(root, "www/three.min.js"));
+// versión para jugar en el navegador (GitHub Pages): ../jugar/
+const web = path.join(root, "../jugar");
+if (fs.existsSync(web)) {
+  fs.writeFileSync(path.join(web, "index.html"), app.replace('<meta name="theme-color" content="#9FD8F5">', '<meta name="theme-color" content="#2E7BEF">\n<title>Mi Ciudad</title>\n<link rel="manifest" href="manifest.json">\n<link rel="icon" href="icono-192.png">\n<link rel="apple-touch-icon" href="icono-192.png">\n<meta name="mobile-web-app-capable" content="yes">\n<meta name="apple-mobile-web-app-capable" content="yes">'));
+  fs.copyFileSync(path.join(root, "www/three.min.js"), path.join(web, "three.min.js"));
+}
 console.log("Listo:", files.length, "partes");
