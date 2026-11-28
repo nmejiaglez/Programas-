@@ -59,8 +59,10 @@ async function jugador(b, nombre) {
   console.log("toast código:", await A.p.evaluate(() => [...document.querySelectorAll(".toast")].map(t => t.textContent).join(" | ")));
   // panel de dueño (no es dueño)
   await A.p.click("#bSet"); for (let i = 0; i < 5; i++) await A.p.click("text=Mi Ciudad · versión 3.0");
-  await A.p.fill("#pinIn", "1234"); await A.p.click("text=Crear clave"); await A.p.waitForTimeout(300);
-  console.log("panel muestra número:", await A.p.locator("text=Copiar mi número").count());
+  await A.p.waitForTimeout(400);
+  const abierto = await A.p.locator("#pinIn").count();
+  console.log("panel de dueño para quien no es dueño:", abierto ? "SE ABRIÓ (MAL)" : "no se abre (bien)");
+  if (abierto) A.errs.push("el panel de dueño se abrió sin ser dueño");
   await A.p.screenshot({ path: OUT + "/on_owner.png" });
   await A.p.evaluate(() => __t.closeSheet());
   // salir y limpiar

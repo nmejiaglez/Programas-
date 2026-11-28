@@ -133,19 +133,19 @@ function openSettings(){sheet("Ajustes",body=>{
  body.appendChild(el("h3","","Estadísticas"));
  body.appendChild(el("div","list",[["💵","Dinero ganado",$fmt(S.stats.earned)],["🧰","Trabajos completados",S.stats.jobs],["🪙","Monedas recogidas",S.stats.coins],["🔥","Incendios apagados",S.stats.fires],["🚓","Ladrones atrapados",S.stats.thieves],["🕵️","Misterios resueltos",S.stats.mysteries],["👾","Monstruos derrotados",S.stats.monsters],["🌋","Desastres sobrevividos",S.stats.survived],["🧗","Torres completadas",S.stats.obby],["🐟","Peces pescados",S.stats.fish],["🌽","Cosechas",S.stats.harvest],["👗","Pasarelas",S.stats.catwalks]].map(r=>'<div class="li"><div style="font-size:24px">'+r[0]+'</div><div class="tx"><b>'+r[2]+'</b><small>'+r[1]+'</small></div></div>').join("")));
  const rs=el("button","btn ghost","Reiniciar partida");rs.onclick=()=>requireParent(()=>sheet("¿Reiniciar?",b=>{b.appendChild(el("p","","Se borra todo el progreso, el dinero y las MediCoins de este dispositivo."));const r=el("div","row");const c=el("button","btn ghost","Cancelar");c.onclick=openSettings;const o=el("button","btn red","Reiniciar");o.onclick=()=>{const keep={pin:S.pin,gen:S.gen,parent:S.parent};S=fresh();S.pin=keep.pin;S.gen=keep.gen;S.parent=keep.parent;save();location.reload();};r.append(c,o);b.appendChild(r);},{half:true}),"reiniciar la partida");body.appendChild(rs);
- const ver=el("p","muted","Mi Ciudad · versión 3.0");ver.style.textAlign="center";ver.onclick=()=>{ownerTaps++;if(ownerTaps>=5){ownerTaps=0;ownerLogin();}};body.appendChild(ver);
+ const ver=el("p","muted","Mi Ciudad · versión 3.0");ver.style.textAlign="center";ver.onclick=()=>{if(!(typeof NET!=="undefined"&&NET.admin))return;ownerTaps++;if(ownerTaps>=5){ownerTaps=0;ownerLogin();}};body.appendChild(ver);
 });}
 function $fmt(n){return "$ "+fmt(n);}
 
 /* ---------- Panel de dueño ---------- */
-function ownerLogin(){sheet("Panel de dueño",b=>{
+function ownerLogin(){if(!(typeof NET!=="undefined"&&NET.admin&&NET.ok))return;sheet("Panel de dueño",b=>{
  const first=!S.pin;b.appendChild(el("p","muted",first?"Cree una clave de 4 a 8 números. Solo usted debe saberla.":"Escriba su clave de dueño."));
  const i=el("input");i.type="password";i.id="pinIn";i.inputMode="numeric";i.maxLength=8;b.appendChild(i);
  const ok=el("button","btn go",first?"Crear clave":"Entrar");ok.onclick=()=>{const v=i.value.trim();if(first){if(!/^\d{4,8}$/.test(v)){toast("Use de 4 a 8 números");return;}S.pin=v;save();ownerPanel();}else if(v===S.pin)ownerPanel();else toast("Clave incorrecta");};b.appendChild(ok);},{half:true});}
-function ownerPanel(amt){amt=amt||10000;sheet("👑 Panel de dueño",b=>{
+function ownerPanel(amt){if(!(typeof NET!=="undefined"&&NET.admin&&NET.ok)){closeSheet();return;}amt=amt||10000;sheet("👑 Panel de dueño",b=>{
  b.appendChild(el("h3","","Mis MediCoins (este teléfono)"));
  const ci=el("input");ci.type="number";ci.id="amtIn";ci.min=1;ci.max=999999;ci.value=amt;b.appendChild(ci);
- const me=el("button","btn go","Darme estas MediCoins a mí");me.onclick=()=>{const a=Math.max(1,Math.min(999999,parseInt(ci.value,10)||0));S.mc+=a;hud();save();if(NET.ok)pushCloud(true).catch(()=>{});toast("+"+fmt(a)+" MediCoins para usted");};b.appendChild(me);
+ const me=el("button","btn go","Darme estas MediCoins a mí");me.onclick=()=>{if(!NET.admin)return;const a=Math.max(1,Math.min(999999,parseInt(ci.value,10)||0));S.mc+=a;hud();save();if(NET.ok)pushCloud(true).catch(()=>{});toast("+"+fmt(a)+" MediCoins para usted");};b.appendChild(me);
  ownerOnline(b);
  if(S.gen.length){b.appendChild(el("h3","","Últimos códigos creados"));const l=el("div","list");S.gen.slice(0,15).forEach(g=>{const d=new Date(g.t);l.appendChild(el("div","li",'<div class="tx"><b class="mono">'+g.code+'</b><small>'+fmt(g.a)+' MediCoins · '+d.toLocaleDateString("es")+' '+d.toLocaleTimeString("es",{hour:"2-digit",minute:"2-digit"})+'</small></div>'));});b.appendChild(l);}
 });}
