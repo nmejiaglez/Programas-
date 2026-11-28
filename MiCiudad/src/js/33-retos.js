@@ -12,7 +12,9 @@ const RETO_POOL=[
  {k:"trampolin",t:"Rebota {n} veces en el trampolín",icon:"🤸",n:[10,20,30]},
  {k:"mascota",t:"Cuida a tu mascota {n} veces",icon:"🐶",n:[2,3,5]},
  {k:"amigas",t:"Juega en una sala con amigos",icon:"👫",n:[1,1,1]},
- {k:"bosque",t:"Pasa {n} niveles del Bosque de Retos",icon:"🌳",n:[1,2,3]}
+ {k:"bosque",t:"Pasa {n} niveles del Bosque de Retos",icon:"🌳",n:[1,2,3]},
+ {k:"troncos",t:"Entrega {n} troncos en el Aserradero",icon:"🪵",n:[5,15,30]},
+ {k:"talar",t:"Tala {n} árboles",icon:"🪓",n:[3,8,15]}
 ];
 const MEDALS=[
  {k:"saltos",n:500,name:"Supersaltos",icon:"🦘"},{k:"monedas",n:300,name:"Coleccionista",icon:"🪙"},{k:"bailes",n:60,name:"Estrella del baile",icon:"💃"},

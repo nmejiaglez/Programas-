@@ -282,6 +282,16 @@ img.th{width:84px;height:84px;object-fit:contain;display:block;filter:drop-shado
 .combo b{font-family:var(--display);font-size:16px;line-height:1.1}.combo small{font-size:11.5px;color:var(--muted);line-height:1.3}
 .combo .btn{margin-top:auto}
 select.sel{font:inherit;font-weight:800;font-size:15px;padding:10px;border-radius:12px;border:2px solid var(--line);background:#fff;width:100%}
+.garage{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:10px}
+.gcard{background:linear-gradient(#FFFFFF,#EEF4F8);border:2px solid var(--line);border-radius:16px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 3px 0 var(--line)}
+.gcard img.th{width:90px;height:90px}.gcard b{font-size:12.5px;line-height:1.15}.gcard small{font-size:12px;font-weight:800;color:var(--muted)}
+.gcard.on{border-color:var(--go);background:#E6F8EE}.gcard.lock{background:linear-gradient(#FFF9E3,#FFEFC0);border-color:#F5D27A}
+#garBtn{left:calc(max(16px,env(safe-area-inset-left,0px)) + 4px);bottom:calc(env(safe-area-inset-bottom,0px) + 270px);width:58px;height:58px;border-radius:50%;background:linear-gradient(#E2F6FF,#A9DDF7);border:3px solid #fff;box-shadow:0 4px 0 rgba(20,48,74,.22);font-size:28px}
+.carbar{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 62px);display:flex;gap:6px;background:rgba(255,255,255,.92);border:3px solid #fff;border-radius:16px;padding:5px;z-index:5;box-shadow:0 4px 0 rgba(20,48,74,.2)}
+.carbar button{width:42px;height:42px;border-radius:12px;background:var(--soft);font-size:22px}.carbar button[aria-pressed="true"]{background:#FFE68A}
+#chopBtn{right:calc(max(16px,env(safe-area-inset-right,0px)) + 4px);bottom:calc(env(safe-area-inset-bottom,0px) + 116px);width:82px;height:82px;border-radius:50%;background:linear-gradient(#C68A4A,#8A5A2B);color:#fff;border:3px solid #fff;box-shadow:0 4px 0 #5A3A1F;font-weight:800;font-size:13px;display:grid;place-items:center;line-height:1.05;opacity:.6}
+#chopBtn.near{opacity:1;animation:pulse3 1s ease-in-out infinite}#chopBtn .e{font-size:30px;display:block}
+@keyframes pulse3{50%{transform:scale(1.08)}}
 @media (prefers-reduced-motion:reduce){.hgrid{animation:none}}
 @media (prefers-reduced-motion:reduce){#title .logo .w span,#title .tplay{animation:none}#act{animation:none}.toast{animation:none}}
 </style>
@@ -315,6 +325,9 @@ select.sel{font:inherit;font-weight:800;font-size:15px;padding:10px;border-radiu
 <button class="ctrl" id="jump" hidden aria-label="Saltar"><span><span class="e">⤴️</span>Saltar</span></button>
 <button class="ctrl" id="emoBtn" hidden aria-label="Bailes y gestos">😀</button>
 <button class="ctrl" id="chatBtn" hidden aria-label="Mensajes">💬</button>
+<button class="ctrl" id="chopBtn" hidden aria-label="Talar"><span><span class="e">🪓</span>Talar</span></button>
+<button class="ctrl" id="garBtn" hidden aria-label="Sacar vehículo">🚗</button>
+<div class="carbar" id="carbar" hidden><button id="cbHorn" aria-label="Bocina">📯</button><button id="cbLights" aria-pressed="false" aria-label="Luces">💡</button><button id="cbRadio" aria-pressed="false" aria-label="Radio">📻</button><button id="cbLock" aria-pressed="false" aria-label="Seguro">🔓</button><button id="cbOut" aria-label="Bajarse">🚪</button></div>
 <button class="ctrl" id="ride" hidden aria-label="Usar vehículo" aria-pressed="false">🛹</button>
 <div id="joy" hidden><div id="knob"></div></div>
 <div class="joyhint" id="joyhint" hidden>Arrastre aquí para caminar</div>

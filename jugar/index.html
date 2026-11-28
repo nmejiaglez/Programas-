@@ -297,6 +297,16 @@ img.th{width:84px;height:84px;object-fit:contain;display:block;filter:drop-shado
 .combo b{font-family:var(--display);font-size:16px;line-height:1.1}.combo small{font-size:11.5px;color:var(--muted);line-height:1.3}
 .combo .btn{margin-top:auto}
 select.sel{font:inherit;font-weight:800;font-size:15px;padding:10px;border-radius:12px;border:2px solid var(--line);background:#fff;width:100%}
+.garage{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:10px}
+.gcard{background:linear-gradient(#FFFFFF,#EEF4F8);border:2px solid var(--line);border-radius:16px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 3px 0 var(--line)}
+.gcard img.th{width:90px;height:90px}.gcard b{font-size:12.5px;line-height:1.15}.gcard small{font-size:12px;font-weight:800;color:var(--muted)}
+.gcard.on{border-color:var(--go);background:#E6F8EE}.gcard.lock{background:linear-gradient(#FFF9E3,#FFEFC0);border-color:#F5D27A}
+#garBtn{left:calc(max(16px,env(safe-area-inset-left,0px)) + 4px);bottom:calc(env(safe-area-inset-bottom,0px) + 270px);width:58px;height:58px;border-radius:50%;background:linear-gradient(#E2F6FF,#A9DDF7);border:3px solid #fff;box-shadow:0 4px 0 rgba(20,48,74,.22);font-size:28px}
+.carbar{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 62px);display:flex;gap:6px;background:rgba(255,255,255,.92);border:3px solid #fff;border-radius:16px;padding:5px;z-index:5;box-shadow:0 4px 0 rgba(20,48,74,.2)}
+.carbar button{width:42px;height:42px;border-radius:12px;background:var(--soft);font-size:22px}.carbar button[aria-pressed="true"]{background:#FFE68A}
+#chopBtn{right:calc(max(16px,env(safe-area-inset-right,0px)) + 4px);bottom:calc(env(safe-area-inset-bottom,0px) + 116px);width:82px;height:82px;border-radius:50%;background:linear-gradient(#C68A4A,#8A5A2B);color:#fff;border:3px solid #fff;box-shadow:0 4px 0 #5A3A1F;font-weight:800;font-size:13px;display:grid;place-items:center;line-height:1.05;opacity:.6}
+#chopBtn.near{opacity:1;animation:pulse3 1s ease-in-out infinite}#chopBtn .e{font-size:30px;display:block}
+@keyframes pulse3{50%{transform:scale(1.08)}}
 @media (prefers-reduced-motion:reduce){.hgrid{animation:none}}
 @media (prefers-reduced-motion:reduce){#title .logo .w span,#title .tplay{animation:none}#act{animation:none}.toast{animation:none}}
 </style>
@@ -330,6 +340,9 @@ select.sel{font:inherit;font-weight:800;font-size:15px;padding:10px;border-radiu
 <button class="ctrl" id="jump" hidden aria-label="Saltar"><span><span class="e">⤴️</span>Saltar</span></button>
 <button class="ctrl" id="emoBtn" hidden aria-label="Bailes y gestos">😀</button>
 <button class="ctrl" id="chatBtn" hidden aria-label="Mensajes">💬</button>
+<button class="ctrl" id="chopBtn" hidden aria-label="Talar"><span><span class="e">🪓</span>Talar</span></button>
+<button class="ctrl" id="garBtn" hidden aria-label="Sacar vehículo">🚗</button>
+<div class="carbar" id="carbar" hidden><button id="cbHorn" aria-label="Bocina">📯</button><button id="cbLights" aria-pressed="false" aria-label="Luces">💡</button><button id="cbRadio" aria-pressed="false" aria-label="Radio">📻</button><button id="cbLock" aria-pressed="false" aria-label="Seguro">🔓</button><button id="cbOut" aria-label="Bajarse">🚪</button></div>
 <button class="ctrl" id="ride" hidden aria-label="Usar vehículo" aria-pressed="false">🛹</button>
 <div id="joy" hidden><div id="knob"></div></div>
 <div class="joyhint" id="joyhint" hidden>Arrastre aquí para caminar</div>
@@ -2830,7 +2843,9 @@ const RETO_POOL=[
  {k:"trampolin",t:"Rebota {n} veces en el trampolín",icon:"🤸",n:[10,20,30]},
  {k:"mascota",t:"Cuida a tu mascota {n} veces",icon:"🐶",n:[2,3,5]},
  {k:"amigas",t:"Juega en una sala con amigos",icon:"👫",n:[1,1,1]},
- {k:"bosque",t:"Pasa {n} niveles del Bosque de Retos",icon:"🌳",n:[1,2,3]}
+ {k:"bosque",t:"Pasa {n} niveles del Bosque de Retos",icon:"🌳",n:[1,2,3]},
+ {k:"troncos",t:"Entrega {n} troncos en el Aserradero",icon:"🪵",n:[5,15,30]},
+ {k:"talar",t:"Tala {n} árboles",icon:"🪓",n:[3,8,15]}
 ];
 const MEDALS=[
  {k:"saltos",n:500,name:"Supersaltos",icon:"🦘"},{k:"monedas",n:300,name:"Coleccionista",icon:"🪙"},{k:"bailes",n:60,name:"Estrella del baile",icon:"💃"},
@@ -3603,6 +3618,173 @@ shopTab("combos","Combos 🎁",body=>{
  body.appendChild(el("p","note","💬 Se compran por WhatsApp con el vendedor oficial. Le mandan un código y lo canjea en la pestaña MediCoins: todo se pone solo."));
 },2);
 
+/* ==== 44-garaje.js ==== */
+/* ================= GARAJE: sacar vehículos como en la ciudad, subirse, luces, bocina y radio ================= */
+VEHICLES.push(
+ {id:"sedan",name:"Sedán familiar",icon:"🚙",speed:2.2,p:0,free:true},
+ {id:"camioneta",name:"Camioneta",icon:"🛻",speed:2.3,p:0,free:true},
+ {id:"golf",name:"Carrito de golf",icon:"⛳",speed:1.8,p:0,free:true},
+ {id:"podadora",name:"Podadora",icon:"🌱",speed:1.4,p:20,cur:"mc"},
+ {id:"jeep",name:"Jeep de aventura",icon:"🚙",speed:2.6,p:80,cur:"mc"},
+ {id:"limusina",name:"Limusina rosada",icon:"💗",speed:2.4,p:180,cur:"mc"},
+ {id:"policia",name:"Patrulla",icon:"🚓",speed:2.7,p:120,cur:"mc"},
+ {id:"ambulancia",name:"Ambulancia",icon:"🚑",speed:2.6,p:120,cur:"mc"}
+);
+VEHICLES.forEach(v=>{if(!v.cur&&!v.free&&v.p&&v.id!=="skate")v.cur="$";});
+function vehFree(v){return !!v.free;}
+function vehOwned(id){const v=VEHICLES.find(x=>x.id===id);return !!(v&&(v.free||S.owned[id]));}
+// modelos nuevos
+const _makeVehicle=makeVehicle;
+makeVehicle=function(id,col){
+ const V={sedan:"#3E7BD6",camioneta:"#C23B4E",jeep:"#5E7A3A",limusina:"#FF8DC4",policia:"#FFFFFF",ambulancia:"#FFFFFF"};
+ if(id==="golf"){const g=new T.Group();const c=col||"#FFFFFF";box(1.4,0.35,2.2,c,0,0.55,0,g);box(1.4,0.08,1.9,"#2E7BEF",0,1.95,-0.1,g);for(const sx of [-0.62,0.62])for(const sz of [0.75,-0.95])box(0.06,1.25,0.06,"#C9D3DC",sx,1.3,sz,g);
+  box(1.2,0.15,0.6,"#3E2A1F",0,0.85,-0.25,g);box(1.2,0.5,0.1,"#3E2A1F",0,1.1,-0.55,g);box(0.4,0.3,0.5,"#9DB4C8",0,0.75,-1.1,g);
+  const w=[];for(const sx of [-0.7,0.7])for(const sz of [0.75,-0.75])w.push(wheel(g,0.25,0.18,sx,0.25,sz,"#E9EEF2"));return {g,lift:0.32,sit:true,pose:"car",wheels:w};}
+ if(id==="podadora"){const g=new T.Group();const c=col||"#3FBF5F";box(1,0.45,1.5,c,0,0.5,0,g);box(1.1,0.15,0.6,"#2A2E35",0,0.28,0.45,g);box(0.5,0.1,0.5,"#2A2E35",0,0.85,-0.25,g);box(0.5,0.5,0.08,"#2A2E35",0,1.1,-0.5,g);
+  tubeBetween(g,new T.Vector3(0,0.75,0.4),new T.Vector3(0,1.15,0.2),0.03,"#3E4B59");cyl(0.18,0.18,0.04,"#2A2E35",0,1.17,0.18,g,12).rotation.x=-0.6;
+  const w=[wheel(g,0.32,0.22,-0.55,0.32,-0.45,"#F5C518"),wheel(g,0.32,0.22,0.55,0.32,-0.45,"#F5C518"),wheel(g,0.2,0.15,-0.5,0.2,0.55),wheel(g,0.2,0.15,0.5,0.2,0.55)];return {g,lift:0.42,sit:true,pose:"car",wheels:w};}
+ if(V[id]){const g=new T.Group();const car=makeCar(col||V[id],{conv:id==="jeep",rim:id==="limusina"?"#FFE3F1":null});
+  if(id==="limusina"){car.scale.z=1.55;car.scale.x=1.05;}
+  if(id==="camioneta"){box(1.8,0.5,1.6,col||V[id],0,1.05,-1.25,car);box(1.6,0.2,1.4,"#3E2A1F",0,0.85,-1.25,car);car.children[1]&&(car.children[1].scale.z=0.75);}
+  if(id==="jeep"){for(const sx of [-0.82,0.82])box(0.08,1.0,0.08,"#2A2E35",sx,1.6,-0.4,car);box(1.7,0.08,0.08,"#2A2E35",0,2.1,-0.4,car);box(0.7,0.7,0.25,"#2A2E35",0,1.1,-2.15,car);}
+  if(id==="policia"||id==="ambulancia"){box(2.02,0.35,3.0,id==="policia"?"#1E2A55":"#E2465C",0,0.95,0,car);const lb=box(0.9,0.18,0.35,"#2A2E35",0,1.95,-0.3,car);const r=box(0.4,0.16,0.3,"#E2465C",-0.22,2.08,-0.3,car);r.material=M("#E2465C","#7A0A14");const b=box(0.4,0.16,0.3,"#2E7BEF",0.22,2.08,-0.3,car);b.material=M("#2E7BEF","#0A2A7A");g.userData.siren=[r,b];}
+  g.add(car);return {g,lift:0.48,sit:true,pose:"car",wheels:car.userData.wheels,siren:g.userData.siren};}
+ return _makeVehicle(id,col);};
+// vehículo estacionado en la calle
+let parked=null;
+function spawnVehicle(id){const v=VEHICLES.find(x=>x.id===id);if(!v)return;
+ if(curZone&&curZone.noVehicle){toast("Aquí no se pueden sacar vehículos");return;}
+ if(S.riding){S.riding=false;}
+ removeParked();const o=makeVehicle(id,S.look.carC);
+ const dx=Math.cos(P.face)*3.2,dz=-Math.sin(P.face)*3.2;let x=P.x+dx,z=P.z+dz;if(blocked(x,z,1.4,P.y)){x=P.x-dx;z=P.z-dz;}
+ o.g.position.set(x,P.y,z);o.g.rotation.y=P.face;(curZone?curZone.g:scene).add(o.g);shadowAll(o.g);
+ parked={id,o,x,z,y:P.y,zone:curZone&&curZone.id,face:P.face};S.vehicle=id;save();buildPlayer();
+ const fx=$("fade");sfx("pop");toast(v.icon+" ¡Su "+v.name+" está listo! Camine hacia él para subirse");}
+function removeParked(){if(parked){rm(parked.o.g);parked=null;}}
+function enterParked(){if(!parked)return;S.vehicle=parked.id;P.x=parked.x;P.z=parked.z;P.face=parked.face;removeParked();S.riding=true;buildPlayer();save();sfx("salto");}
+function leaveVehicle(){if(!S.riding||!S.vehicle)return;const id=S.vehicle;const veh=VEHICLES.find(v=>v.id===id);S.riding=false;
+ const sit=vehicleObj&&vehicleObj.sit;buildPlayer();
+ if(sit||["golf","podadora"].includes(id)){const o=makeVehicle(id,S.look.carC);o.g.position.set(P.x,P.y,P.z);o.g.rotation.y=P.face;(curZone?curZone.g:scene).add(o.g);shadowAll(o.g);parked={id,o,x:P.x,z:P.z,y:P.y,zone:curZone&&curZone.id,face:P.face};
+  P.x+=Math.cos(P.face)*1.8;P.z-=Math.sin(P.face)*1.8;}
+ save();}
+spot({zone:"city",x:0,z:0,r:2.6,label:"🚗 Subirse",pos:()=>parked?{x:parked.x,z:parked.z,y:parked.y}:{x:9999,z:9999},when:()=>!!parked&&!S.riding&&parked.zone==="city",fn:enterParked});
+spot({zone:"rural",x:0,z:0,r:2.6,label:"🚗 Subirse",pos:()=>parked?{x:parked.x,z:parked.z,y:parked.y}:{x:9999,z:9999},when:()=>!!parked&&!S.riding&&parked.zone==="rural",fn:enterParked});
+// menú del garaje
+function openGarage(){sheet("🚗 Sacar vehículo",b=>{
+ b.appendChild(el("p","muted","Elija un vehículo y aparece a su lado. Camine hacia él para subirse. Los de la fila de arriba son gratis."));
+ const g=el("div","garage");
+ VEHICLES.slice().sort((a,c)=>(c.free?1:0)-(a.free?1:0)).forEach(v=>{const own=vehOwned(v.id);
+  const c=el("button","gcard"+(own?"":" lock")+(S.vehicle===v.id?" on":""),imgTag(vehThumb(v.id),'<div style="font-size:40px">'+v.icon+'</div>')+'<b>'+v.name+'</b><small>'+(v.free?"Gratis":own?"Suyo":priceHTML(v))+'</small>');
+  c.onclick=()=>{if(!own){if(!pay(v))return;S.owned[v.id]=1;confetti();sfx("compra");toast("🎉 ¡"+v.name+" es suyo!");}closeSheet();spawnVehicle(v.id);};g.appendChild(c);});
+ b.appendChild(g);
+ if(parked||S.riding){const q=el("button","btn ghost","🧹 Guardar el vehículo");q.onclick=()=>{if(S.riding)leaveVehicle();removeParked();closeSheet();toast("Vehículo guardado");};b.appendChild(q);}
+},{half:true});}
+// controles del carro
+let lightsOn=false,radioOn=false,radioT=0,radioI=0;
+const SONG=[523,659,784,659,587,698,880,698,523,659,784,1047,988,784,659,587];
+function honk(){try{sfx("pop");if(!AC)return;const t=AC.currentTime;[0,0.18].forEach(d=>{const o=AC.createOscillator(),g=AC.createGain();o.type="square";o.frequency.value=392;g.gain.setValueAtTime(0.08,t+d);g.gain.exponentialRampToValueAtTime(0.001,t+d+0.16);o.connect(g);g.connect(AC.destination);o.start(t+d);o.stop(t+d+0.17);});}catch(e){}}
+function setLights(on){lightsOn=on;if(!vehicleObj)return;if(on&&!vehicleObj.beam){const bm=new T.Mesh(new T.ConeGeometry(2.4,9,16,1,true),new T.MeshBasicMaterial({color:0xFFF4B0,transparent:true,opacity:0.18,depthWrite:false,side:T.DoubleSide}));bm.rotation.x=-Math.PI/2;bm.position.set(0,0.9,6.4);vehicleObj.g.add(bm);vehicleObj.beam=bm;}
+ if(vehicleObj.beam)vehicleObj.beam.visible=on;}
+function carBar(){const bar=$("carbar");if(!bar)return;const show=!!(S.riding&&vehicleObj&&!uiOpen&&!titleOn);bar.hidden=!show;}
+function radioTick(dt){if(!radioOn||!S.riding)return;radioT+=dt;if(radioT>0.26){radioT=0;try{if(!AC)return;const t=AC.currentTime;const o=AC.createOscillator(),g=AC.createGain();o.type="triangle";o.frequency.value=SONG[radioI%SONG.length]/2;g.gain.setValueAtTime(0.05,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.24);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+0.25);radioI++;}catch(e){}}}
+/* ---------- palmeras y toldos para una ciudad más bonita ---------- */
+function palm(x,z,p){const g=grp(x,0.3,z,p);let px=0,py=0;for(let i=0;i<7;i++){const s=cyl(0.24-i*0.015,0.27-i*0.015,0.9,"#9A7B5B",px,py+0.45,0,g,8);px+=0.07;py+=0.85;s.position.x=px;s.rotation.z=-0.08;}
+ for(let i=0;i<7;i++){const a=i/7*Math.PI*2;const l=new T.Group();l.position.set(px,py+0.2,0);l.rotation.y=a;g.add(l);const f=box(0.5,0.06,2.6,"#2FA34D",0,0,1.2,l);f.rotation.x=0.45;const f2=box(0.4,0.05,1.4,"#3FBF5F",0,-0.45,2.4,l);f2.rotation.x=0.9;}
+ sph(0.2,"#8A5A2B",px,py,0.15,g,8,6);sph(0.2,"#8A5A2B",px-0.15,py,-0.1,g,8,6);addCol(x,z,0.7,0.7);return g;}
+mode({id:"garaje",
+ init(){ROOT=ZONES.city.g;
+  for(const bx of [-60,60])for(const bz of [-60,0,60]){for(const s of [-1,1]){palm(bx+s*21.5,bz+9);palm(bx+s*21.5,bz-9);}}
+  for(const bx of [-60,0,60])for(const bz of [-60,60]){for(const s of [-1,1])palm(bx+(s*9),bz+(bz<0?21.5:-21.5));}
+  ROOT=scene;},
+ afterStart(){const gb=$("garBtn");if(gb)gb.onclick=openGarage;
+  $("ride").onclick=null;const rb=$("ride");const nb=rb.cloneNode(true);rb.parentNode.replaceChild(nb,rb);nb.addEventListener("click",()=>{if(S.riding)leaveVehicle();else if(parked&&parked.zone===(curZone&&curZone.id)&&Math.hypot(parked.x-P.x,parked.z-P.z)<6)enterParked();else if(S.vehicle&&vehOwned(S.vehicle))spawnVehicle(S.vehicle);else openGarage();});
+  $("cbHorn").onclick=honk;$("cbLights").onclick=()=>{setLights(!lightsOn);$("cbLights").setAttribute("aria-pressed",lightsOn?"true":"false");};
+  $("cbRadio").onclick=()=>{radioOn=!radioOn;$("cbRadio").setAttribute("aria-pressed",radioOn?"true":"false");toast(radioOn?"📻 Radio encendida":"📻 Radio apagada");};
+  $("cbLock").onclick=()=>{const l=$("cbLock");const on=l.getAttribute("aria-pressed")!=="true";l.setAttribute("aria-pressed",on?"true":"false");l.textContent=on?"🔒":"🔓";toast(on?"🔒 Carro con seguro":"🔓 Carro sin seguro");};
+  $("cbOut").onclick=leaveVehicle;},
+ update(dt){carBar();radioTick(dt);if(vehicleObj&&lightsOn&&!vehicleObj.beam)setLights(true);
+  if(vehicleObj&&vehicleObj.siren){const k=Math.floor(perf*4)%2;vehicleObj.siren[0].visible=!!k;vehicleObj.siren[1].visible=!k;}
+  const gb=$("garBtn");if(gb)gb.hidden=!!(titleOn||uiOpen||(curZone&&curZone.noVehicle));}
+});
+
+/* ==== 45-aserradero.js ==== */
+/* ================= ASERRADERO: talar árboles, juntar troncos y subir de nivel ================= */
+const AS={cx:-660,cz:0};
+const HACHAS=[{id:"madera",name:"Hacha de madera",icon:"🪓",hits:4,p:0},{id:"hierro",name:"Hacha de hierro",icon:"🪓",hits:3,p:800,cur:"$"},{id:"oro",name:"Hacha de oro",icon:"✨",hits:2,p:60,cur:"mc"},{id:"diamante",name:"Hacha de diamante",icon:"💎",hits:1,p:150,cur:"mc"}];
+const MOCHILAS=[{n:5,name:"Bolsa pequeña",p:0},{n:10,name:"Mochila grande",p:1500,cur:"$"},{n:20,name:"Carretilla",p:80,cur:"mc"}];
+const as={trees:[],logs:[],carry:0,tag:null,axe:null,hudT:0};
+function asS(){if(!S.lenador)S.lenador={lvl:1,xp:0,axe:"madera",bag:5,total:0};return S.lenador;}
+function asNeed(l){return 60+l*40;}
+function asAxe(){return HACHAS.find(h=>h.id===asS().axe)||HACHAS[0];}
+function makeChopTree(x,z,s){const g=grp(x,0.3,z);const trunk=new T.Group();g.add(trunk);
+ cyl(0.42*s,0.55*s,3.2*s,"#8A5A2B",0,1.6*s,0,trunk,10);
+ const k=Math.random();if(k<0.5){sph(2.0*s,"#3FA34D",0,4.0*s,0,trunk,10,8);sph(1.4*s,"#4DB85A",0.8*s,4.9*s,0.3*s,trunk,10,8);sph(1.3*s,"#5CC768",-0.7*s,4.6*s,-0.4*s,trunk,10,8);}
+ else{cone(2.2*s,3.4*s,"#2E8B47",0,4.0*s,0,trunk,10);cone(1.7*s,2.6*s,"#3FA34D",0,5.4*s,0,trunk,10);}
+ const stump=cyl(0.5*s,0.58*s,0.45*s,"#7A5232",0,0.22*s,0,g,10);const top=cyl(0.46*s,0.46*s,0.02,"#E8C38E",0,0.46*s,0,g,10);stump.visible=top.visible=false;
+ const bar=new T.Group();bar.position.y=6.6*s;g.add(bar);const bg=new T.Mesh(new T.PlaneGeometry(1.6,0.22),new T.MeshBasicMaterial({color:0x14304A,depthTest:false}));bar.add(bg);
+ const fg=new T.Mesh(new T.PlaneGeometry(1.5,0.14),new T.MeshBasicMaterial({color:0x3BC46F,depthTest:false}));fg.position.z=0.01;bar.add(fg);bar.visible=false;bg.renderOrder=fg.renderOrder=11;
+ const t={g,trunk,stump,top,bar,fg,x,z,s,hp:1,down:false,fall:0,regrow:0};const c=addCol(x,z,1.1*s,1.1*s);t.col=c;return t;}
+function makeLog(x,y,z){const g=grp(x,y,z);const m=cyl(0.28,0.28,1.4,"#B5762E",0,0.28,0,g,10);m.rotation.z=Math.PI/2;g.rotation.y=Math.random()*Math.PI;
+ for(const s of [-1,1]){const e=cyl(0.27,0.27,0.02,"#E8C38E",s*0.71,0.28,0,g,10);e.rotation.z=Math.PI/2;}shadowAll(g);return {g,x,z,t:0};}
+function buildAserradero(){
+ const Z=zone({id:"aserradero",name:"Aserradero",icon:"🪓",desc:"Tale árboles, junte troncos y suba de nivel",cx:AS.cx,cz:AS.cz,hw:46,hd:46,sky:0xB8E2F2,
+  spawn:{x:AS.cx,z:AS.cz+38,face:Math.PI},onEnter(){as.axe=null;buildPlayer();asHud();},onLeave(){$("banner").hidden=true;zoneButton(null);if(as.tag){rm(as.tag);as.tag=null;}$("chopBtn").hidden=true;}});
+ ROOT=Z.g;
+ const gr=new T.Mesh(new T.PlaneGeometry(200,200),texMat(GRASS_TEX,30,30));gr.rotation.x=-Math.PI/2;gr.position.set(AS.cx,0.3,AS.cz);gr.receiveShadow=true;Z.g.add(gr);
+ const path=new T.Mesh(new T.PlaneGeometry(6,90),new T.MeshToonMaterial({color:0xD9B98A,gradientMap:TOON}));path.rotation.x=-Math.PI/2;path.position.set(AS.cx,0.32,AS.cz);Z.g.add(path);
+ // aserradero (depósito)
+ const sx=AS.cx+14,sz=AS.cz+22;const mill=grp(sx,0.3,sz);box(9,4.5,6,"#B5762E",0,2.25,0,mill);const rf=box(10,0.4,7,"#7A3B22",0,4.8,0,mill);rf.rotation.z=0.12;
+ box(3.2,3,0.2,"#3E2A1F",0,1.5,3.05,mill);const saw=cyl(1.2,1.2,0.08,"#C9D3DC",-5.6,1.6,1,mill,24);saw.rotation.x=Math.PI/2;as.saw=saw;
+ box(3,1,1.4,"#8A5A2B",-5.6,0.8,1,mill);for(let i=0;i<6;i++){const l=cyl(0.3,0.3,2,"#B5762E",3.5+((i%3)*0.62),0.3+Math.floor(i/3)*0.55,-4,mill,10);l.rotation.x=Math.PI/2;}
+ addCol(sx,sz,9.4,6.4,4);signMesh("🪓 Aserradero","#7A3B22",5,sx,5.8,sz+3.4,0);
+ spot({zone:"aserradero",x:sx-3,z:sz+5,r:3.4,label:()=>as.carry?"🪵 Entregar "+as.carry+" troncos":"🪓 Mejorar hacha y mochila",fn:()=>{if(as.carry)asDeliver();else openAserradero();}});
+ // bus
+ const bs=grp(AS.cx+6,0.3,AS.cz+42);box(3.4,0.2,1.4,"#2E7BEF",0,2.6,0,bs);box(0.15,2.6,0.15,"#3E4B59",-1.5,1.3,0,bs);box(0.15,2.6,0.15,"#3E4B59",1.5,1.3,0,bs);
+ spot({zone:"aserradero",x:AS.cx+6,z:AS.cz+40.5,r:2.6,label:"🚌 Viajar en bus",fn:openPlaces});
+ // bosque para talar
+ let n=0;for(let i=0;i<60&&n<26;i++){const x=AS.cx+rnd(-38,38),z=AS.cz+rnd(-40,12);if(Math.abs(x-AS.cx)<4)continue;if(as.trees.some(t=>Math.hypot(t.x-x,t.z-z)<6))continue;as.trees.push(makeChopTree(x,z,rnd(0.85,1.15)));n++;}
+ for(let i=0;i<30;i++){const a=i/30*Math.PI*2;tree(AS.cx+Math.cos(a)*48,AS.cz+Math.sin(a)*48,1.3,false,Z.g);}
+ ROOT=scene;}
+function asHud(){const bn=$("banner");if(!curZone||curZone.id!=="aserradero"){bn.hidden=true;return;}const s=asS();
+ bn.hidden=false;bn.style.background="#7A3B22";bn.textContent="🪓 Nivel "+s.lvl+" · "+s.xp+"/"+asNeed(s.lvl)+"  ·  🪵 "+as.carry+"/"+s.bag;
+ if(as.tag)rm(as.tag);if(player){as.tag=labelSprite(as.carry+"/"+s.bag,as.carry>=s.bag?"rgba(226,70,92,.92)":"rgba(122,59,34,.9)","#fff");as.tag.position.y=4.5;player.g.add(as.tag);}}
+function asNearTree(){let b=null,bd=3.2;for(const t of as.trees){if(t.down)continue;const d=Math.hypot(t.x-P.x,t.z-P.z)-0.6*t.s;if(d<bd){bd=d;b=t;}}return b;}
+function chop(){const t=asNearTree();if(!t){toast("Acérquese a un árbol");return;}
+ P.swing=0.35;P.face=Math.atan2(t.x-P.x,t.z-P.z);t.hp-=1/asAxe().hits;t.shake=0.25;t.bar.visible=true;t.fg.scale.x=Math.max(0.01,t.hp);t.fg.position.x=-(1-Math.max(0.01,t.hp))*0.75;
+ try{sfx("pop");}catch(e){}
+ if(t.hp<=0.001){t.down=true;t.fall=0.001;t.bar.visible=false;t.dir=Math.atan2(t.x-P.x,t.z-P.z);t.col.off=true;sfx("caida");retoAdd("talar",1);}}
+function asPickup(){const s=asS();for(let i=as.logs.length-1;i>=0;i--){const l=as.logs[i];if(Math.hypot(l.x-P.x,l.z-P.z)<1.6){if(as.carry>=s.bag){if(!as.fullT||Date.now()-as.fullT>2500){as.fullT=Date.now();toast("🎒 ¡Mochila llena! Lleve los troncos al aserradero");}return;}
+  rm(l.g);as.logs.splice(i,1);as.carry++;sfx("moneda");asHud();}}}
+function asDeliver(){const s=asS();const n=as.carry;if(!n)return;as.carry=0;const v=earn(18*n*(1+s.lvl*0.15),"aserradero");s.total+=n;s.xp+=n*10;retoAdd("troncos",n);
+ let up=0;while(s.xp>=asNeed(s.lvl)){s.xp-=asNeed(s.lvl);s.lvl++;up++;}
+ if(up){S.mc+=5*up;hud();confetti();sfx("reto");sheet("🎉 ¡Subió al nivel "+s.lvl+"!",b=>{b.appendChild(el("div","res","🪓🌲<br>Nivel "+s.lvl));b.appendChild(el("p","","Ahora gana más por cada tronco. Premio: +"+(5*up)+" MediCoins."));const k=el("button","btn go big","¡Seguir talando!");k.onclick=closeSheet;b.appendChild(k);},{half:true});}
+ else toast("🪵 Entregó "+n+" troncos · +$"+v);save();asHud();}
+function openAserradero(){const s=asS();sheet("🪓 Aserradero",b=>{
+ b.appendChild(el("div","res","Nivel "+s.lvl+'<div class="rbar big" style="margin:8px 0"><i style="width:'+Math.round(s.xp/asNeed(s.lvl)*100)+'%"></i></div><small style="font-size:14px">'+s.xp+" / "+asNeed(s.lvl)+" · Troncos entregados: "+s.total+"</small>"));
+ b.appendChild(el("p","muted","Toque 🪓 Talar cerca de un árbol. Junte los troncos caminando sobre ellos y tráigalos aquí. Cada nivel le paga más."));
+ b.appendChild(el("h3","","Hachas (talan más rápido)"));const g=el("div","grid");
+ HACHAS.forEach(h=>{const own=!h.p||S.owned["hacha_"+h.id];const on=s.axe===h.id;const c=el("div","card"+(on?" on":""),'<div class="big">'+h.icon+'</div><b>'+h.name+'</b><small>'+h.hits+" golpe"+(h.hits>1?"s":"")+" por árbol</small>");
+  const bt=el("button","btn"+(own?(on?" ghost":" go"):(h.cur==="mc"?" coinb":"")),own?(on?"En uso":"Usar"):priceHTML(h));bt.disabled=on;bt.onclick=()=>{if(!own){if(!pay(h))return;S.owned["hacha_"+h.id]=1;sfx("compra");confetti();}s.axe=h.id;as.axe=null;save();openAserradero();};c.appendChild(bt);g.appendChild(c);});b.appendChild(g);
+ b.appendChild(el("h3","","Mochila (lleva más troncos)"));const g2=el("div","grid");
+ MOCHILAS.forEach(m=>{const own=!m.p||S.owned["bolsa"+m.n];const on=s.bag===m.n;const c=el("div","card"+(on?" on":""),'<div class="big">'+(m.n>10?"🛒":"🎒")+'</div><b>'+m.name+'</b><small>'+m.n+" troncos</small>");
+  const bt=el("button","btn"+(own?(on?" ghost":" go"):(m.cur==="mc"?" coinb":"")),own?(on?"En uso":"Usar"):priceHTML(m));bt.disabled=on;bt.onclick=()=>{if(!own){if(!pay(m))return;S.owned["bolsa"+m.n]=1;sfx("compra");confetti();}s.bag=m.n;save();asHud();openAserradero();};c.appendChild(bt);g2.appendChild(c);});b.appendChild(g2);
+});}
+mode({id:"aserradero",init(){buildAserradero();},
+ afterStart(){const c=$("chopBtn");if(c)c.onclick=chop;},
+ update(dt){if(!curZone||curZone.id!=="aserradero"){return;}
+  const cb=$("chopBtn");cb.hidden=!!(uiOpen||S.riding);const near=asNearTree();cb.classList.toggle("near",!!near);
+  // hacha en la mano
+  if(player&&!as.axe&&!S.riding){const ax=new T.Group();box(0.07,0.75,0.07,"#8A5A2B",0,0,0,ax);const hd=box(0.32,0.22,0.06,asS().axe==="oro"?"#F5C518":asS().axe==="diamante"?"#7FD8F5":asS().axe==="hierro"?"#C9D3DC":"#B5762E",0.12,0.3,0,ax);player.arms[1].add(ax);ax.position.set(0,-0.75,0.1);ax.rotation.x=Math.PI/2;as.axe=ax;asHud();}
+  if(as.saw)as.saw.rotation.z+=dt*8;
+  for(const t of as.trees){
+   if(t.shake>0){t.shake-=dt;t.trunk.rotation.z=Math.sin(t.shake*60)*0.05;}
+   if(t.fall>0&&t.fall<1){t.fall=Math.min(1,t.fall+dt*1.6);const a=t.fall*t.fall*1.45;t.trunk.rotation.set(Math.cos(t.dir)*a,0,-Math.sin(t.dir)*a);
+    if(t.fall>=1){t.trunk.visible=false;t.stump.visible=t.top.visible=true;const n=2+(Math.random()<0.4?1:0);for(let k=0;k<n;k++){const d=2+k*1.6;ROOT=curZone.g;as.logs.push(makeLog(t.x+Math.sin(t.dir)*d,0.3,t.z+Math.cos(t.dir)*d));ROOT=scene;}t.regrow=25;}}
+   if(t.regrow>0){t.regrow-=dt;if(t.regrow<=0){t.down=false;t.hp=1;t.fall=0;t.trunk.visible=true;t.trunk.rotation.set(0,0,0);t.stump.visible=t.top.visible=false;t.col.off=false;t.trunk.scale.setScalar(0.2);t.grow=1;}}
+   if(t.grow>0){t.grow-=dt;t.trunk.scale.setScalar(Math.min(1,1-t.grow+0.2));}}
+  for(const l of as.logs){l.t+=dt;l.g.position.y=0.3+Math.abs(Math.sin(l.t*3))*0.08;}
+  asPickup();as.hudT+=dt;if(as.hudT>1){as.hudT=0;if(!$("banner").hidden)asHud();}}});
+
 /* ==== 99-main.js ==== */
 /* ================= BUCLE ================= */
 let last=performance.now(),saveT=0,coinT=0;
@@ -3662,7 +3844,7 @@ function start(){
  const go=()=>{if(!S.created)welcome();else{toast("👋 ¡Hola de nuevo, "+S.name+"!");}};
  if(testMode)go();else showTitle(go);
  setTimeout(()=>{if(!isTouch)$("pchint").hidden=true;},14000);
- if(/[?&]test/.test(location.search))window.__t={get S(){return S;},P,teleport,travelTo,enter,ZONES,SPOTS,MODES,useSpot,get near(){return nearSpot;},doJump,doAttack,closeSheet,damage,colliders,get zone(){return curZone;},joy,setYaw(v){camYaw=v;},openShop,openPlaces,renderer,scene,NET,openFriends,joinRoom,leaveRoom,sendChat,redeemOnline,openAccount,openParents,nombreProblema,netStart,pushCloud,db,makeChar,makeVehicle,camera,animChar,addStars,buildPlayer,rideAnim,get player(){return player;},openSearch,BUILDINGS,crearCuenta,iniciarSesion,openCuenta,userEmail,applyCombo,COMBOS,userProblem,bqStart,get bq(){return bq;},openBosque};
+ if(/[?&]test/.test(location.search))window.__t={get S(){return S;},P,teleport,travelTo,enter,ZONES,SPOTS,MODES,useSpot,get near(){return nearSpot;},doJump,doAttack,closeSheet,damage,colliders,get zone(){return curZone;},joy,setYaw(v){camYaw=v;},openShop,openPlaces,renderer,scene,NET,openFriends,joinRoom,leaveRoom,sendChat,redeemOnline,openAccount,openParents,nombreProblema,netStart,pushCloud,db,makeChar,makeVehicle,camera,animChar,addStars,buildPlayer,rideAnim,get player(){return player;},openSearch,BUILDINGS,crearCuenta,iniciarSesion,openCuenta,userEmail,applyCombo,COMBOS,userProblem,openGarage,spawnVehicle,enterParked,leaveVehicle,chop,get as(){return as;},get parked(){return parked;},bqStart,get bq(){return bq;},openBosque};
  requestAnimationFrame(t=>{last=t;loop(t);});
 }
 const fontsReady=document.fonts&&document.fonts.ready?Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,1500))]):Promise.resolve();
