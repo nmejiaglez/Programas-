@@ -29,8 +29,8 @@ function parentsPanel(){sheet("👨‍👩‍👧 Control de padres",b=>{
  b.appendChild(el("h3","","Límite de compras por mes"));const gasto=c.spent[monthKey()]||0;b.appendChild(el("p","muted","Este mes: US$ "+gasto.toFixed(2)+" en MediCoins."));
  seg(b,[[0,"Sin límite"],[5,"US$ 5"],[10,"US$ 10"],[20,"US$ 20"]],c.limit,v=>{c.limit=v;save();parentsPanel();});
  b.appendChild(el("h3","","Recordatorio para descansar"));seg(b,[[0,"Apagado"],[30,"30 min"],[60,"1 hora"],[90,"1 h 30"]],c.time,v=>{c.time=v;playSec=0;save();parentsPanel();});
- b.appendChild(el("h3","","Jugar con amigas en línea"));seg(b,[[true,"Permitido"],[false,"No permitido"]],c.rooms,v=>{c.rooms=v;if(!v&&NET.room)leaveRoom();save();parentsPanel();});
- b.appendChild(el("h3","","Que sus amigas la encuentren por su nombre"));b.appendChild(el("p","muted","Si lo apaga, solo pueden invitarla quienes ya jugaron con ella o tienen su código."));seg(b,[[true,"Sí"],[false,"No"]],c.find!==false,v=>{c.find=v;save();if(NET.ok)db("PATCH","perfiles/"+NET.uid,{hide:findHidden()?1:0}).catch(()=>{});parentsPanel();});
+ b.appendChild(el("h3","","Jugar con amigos en línea"));seg(b,[[true,"Permitido"],[false,"No permitido"]],c.rooms,v=>{c.rooms=v;if(!v&&NET.room)leaveRoom();save();parentsPanel();});
+ b.appendChild(el("h3","","Que lo puedan encontrar por su nombre"));b.appendChild(el("p","muted","Si lo apaga, solo pueden invitarlo quienes ya jugaron juntos o tienen su código."));seg(b,[[true,"Sí"],[false,"No"]],c.find!==false,v=>{c.find=v;save();if(NET.ok)db("PATCH","perfiles/"+NET.uid,{hide:findHidden()?1:0}).catch(()=>{});parentsPanel();});
 });}
 // límite de gasto y permiso en las compras de MediCoins
 const _buyPack=buyPack;

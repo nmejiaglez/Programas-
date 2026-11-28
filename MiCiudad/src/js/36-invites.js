@@ -6,9 +6,9 @@ const INV={seen:{},sentT:{},pollT:6,beatT:50};
 async function searchPlayers(q){const all=await db("GET","perfiles")||{};const now=Date.now();q=q.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").trim();
  return Object.keys(all).filter(id=>{const p=all[id];if(!p||id===NET.uid||p.hide||(S.blocked&&S.blocked[id]))return false;if(!p.t||now-p.t>10*60000)return false;
   const n=(p.n||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,""),tg=(p.tag||"").toLowerCase();return n.startsWith(q)||tg===q;}).slice(0,12).map(id=>Object.assign({id},all[id]));}
-function openSearch(q){sheet("🔎 Buscar amiga",b=>{
- b.appendChild(el("p","muted","Escriba el nombre de su amiga. Solo aparecen las niñas y niños que están jugando ahora."));
- const i=el("input");i.type="text";i.id="findIn";i.placeholder="Nombre, por ejemplo Valeria";i.maxLength=16;i.value=q||"";b.appendChild(i);
+function openSearch(q){sheet("🔎 Buscar amigos",b=>{
+ b.appendChild(el("p","muted","Escriba el nombre de su amigo o amiga. Solo aparecen las niñas y niños que están jugando ahora."));
+ const i=el("input");i.type="text";i.id="findIn";i.placeholder="Nombre, por ejemplo Mateo o Sofía";i.maxLength=16;i.value=q||"";b.appendChild(i);
  const go=el("button","btn go","🔎 Buscar");b.appendChild(go);const res=el("div","list");b.appendChild(res);
  const run=async()=>{const v=i.value.trim();if(v.length<2){toast("Escriba al menos 2 letras");return;}go.disabled=true;res.innerHTML="";res.appendChild(el("p","muted","Buscando…"));
   try{const list=await searchPlayers(v);res.innerHTML="";if(!list.length)res.appendChild(el("p","muted","No encontré a nadie jugando con ese nombre. Pídale que abra el juego, o use el código de sala."));
@@ -18,13 +18,13 @@ function openSearch(q){sheet("🔎 Buscar amiga",b=>{
  go.onclick=run;i.addEventListener("keydown",e=>{if(e.key==="Enter")run();});if(q)run();
 });}
 async function sendInvite(uid,p){
- if(!NET.ok){toast("Necesita internet");return;}if(S.parent&&S.parent.rooms===false){toast("Los papás desactivaron jugar con amigas");return;}
+ if(!NET.ok){toast("Necesita internet");return;}if(S.parent&&S.parent.rooms===false){toast("Los papás desactivaron jugar con amigos");return;}
  if(INV.sentT[uid]&&Date.now()-INV.sentT[uid]<30000){toast("Ya la invitó. Espere su respuesta 💌");return;}
  const home=myHome();
  try{await db("PUT","invites/"+uid+"/"+NET.uid,{n:S.name||"Jugador",tag:myTag(),room:home,look:S.look,t:SV_TIME});}catch(e){toast(errMsg(e).indexOf("ermiso")>=0||String(e).indexOf("401")>=0?"Falta activar las invitaciones en Firebase (pídale al dueño)":errMsg(e));return;}
  INV.sentT[uid]=Date.now();sfx("pop");
  if(NET.room!==home)await joinRoom(home);
- sheet("💌 Invitación enviada",b=>{b.appendChild(el("div","res",imgTag(charThumb(p.look),"🙂")));b.appendChild(el("p","","Le mandó una invitación a <b>"+escapeHtml(p.n||"su amiga")+"</b>. Si acepta, aparecerá aquí en su sala. Si no quiere, no pasa nada."));
+ sheet("💌 Invitación enviada",b=>{b.appendChild(el("div","res",imgTag(charThumb(p.look),"🙂")));b.appendChild(el("p","","Le mandó una invitación a <b>"+escapeHtml(p.n||"su amigo")+"</b>. Si acepta, aparecerá aquí en su sala. Si no quiere, no pasa nada."));
   const k=el("button","btn go big","¡A jugar!");k.onclick=closeSheet;b.appendChild(k);},{half:true});
 }
 async function checkInvites(){if(!NET.ok||(S.parent&&S.parent.rooms===false))return;
@@ -39,7 +39,7 @@ function showInvite(from,v){sfx("reto");sheet("💌 ¡Te invitan a jugar!",b=>{
  const r=el("div","row");const no=el("button","btn ghost","❌ No, gracias");const si=el("button","btn go","✅ Aceptar");
  const del=()=>db("DELETE","invites/"+NET.uid+"/"+from).catch(()=>{});
  no.onclick=()=>{del();closeSheet();toast("Invitación rechazada");};
- si.onclick=async()=>{del();closeSheet();if(typeof v.room==="string"&&/^[A-Z0-9]{5}$/.test(v.room)){await joinRoom(v.room);toast("👭 ¡Ya está con "+(v.n||"su amiga")+"!");}};
+ si.onclick=async()=>{del();closeSheet();if(typeof v.room==="string"&&/^[A-Z0-9]{5}$/.test(v.room)){await joinRoom(v.room);toast("👫 ¡Ya está con "+(v.n||"su amigo")+"!");}};
  r.append(no,si);b.appendChild(r);
  const bl=el("button","btn ghost","🔇 No quiero invitaciones de esta persona");bl.onclick=()=>{del();S.blocked=S.blocked||{};S.blocked[from]=1;save();closeSheet();toast("Bloqueada");};b.appendChild(bl);
 },{half:true});}

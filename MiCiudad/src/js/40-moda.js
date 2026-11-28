@@ -11,14 +11,23 @@ SHIRTS.push(
  {id:"s22",name:"Dinosaurio",c:"#7FD8B5",pat:"dino",p:45,cur:"mc"},
  {id:"s23",name:"Gatito",c:"#FFD6E7",pat:"gato",p:40,cur:"mc"},
  {id:"s24",name:"Fresa",c:"#FF6F91",pat:"fresa",p:40,cur:"mc"},
- {id:"s25",name:"Brillos dorados",c:"#E2A511",pat:"brillos",p:150,cur:"mc",tag:"Limitado"}
+ {id:"s25",name:"Brillos dorados",c:"#E2A511",pat:"brillos",p:150,cur:"mc",tag:"Limitado"},
+ {id:"s26",name:"Fútbol",c:"#2E7BEF",pat:"futbol",p:30,cur:"mc",tag:"Popular"},
+ {id:"s27",name:"Superhéroe",c:"#D9263B",pat:"rayo",p:50,cur:"mc",tag:"Nuevo"},
+ {id:"s28",name:"Robot",c:"#9DB4C8",pat:"robot",p:40,cur:"mc"},
+ {id:"s29",name:"Cohete espacial",c:"#1B2A5C",pat:"cohete",p:60,cur:"mc"},
+ {id:"s30",name:"Tiburón",c:"#7EC4EE",pat:"tiburon",p:45,cur:"mc"},
+ {id:"s31",name:"Carreras",c:"#FFFFFF",pat:"carreras",p:55,cur:"mc"},
+ {id:"s32",name:"Sudadera de dinosaurio",c:"#19A858",pat:"dino",hood:true,p:80,cur:"mc",tag:"Popular"}
 );
 PANTS.push(
  {id:"f6",name:"Tutú de bailarina",c:"#FFB3D6",p:50,cur:"mc",skirt:true,tutu:true,tag:"Popular"},
  {id:"f7",name:"Vestido de princesa",c:"#B38CFF",p:120,cur:"mc",skirt:true,gala:true,stars:true,tag:"Nuevo"},
  {id:"f8",name:"Falda de estrellas",c:"#2E3A8C",p:40,cur:"mc",skirt:true,stars:true},
  {id:"p7",name:"Overol de mezclilla",c:"#4A79C7",p:45,cur:"mc",overol:true},
- {id:"p8",name:"Leggins arcoíris",c:"#FF7A59",p:30,cur:"mc"}
+ {id:"p8",name:"Leggins arcoíris",c:"#FF7A59",p:30,cur:"mc"},
+ {id:"p9",name:"Pantalón deportivo",c:"#1E2329",p:25,cur:"mc"},
+ {id:"p10",name:"Camuflaje",c:"#5E7A3A",p:35,cur:"mc"}
 );
 HATS.push(
  {id:"mono",name:"Moño gigante",icon:"🎀",p:25,cur:"mc",tag:"Popular"},
@@ -27,17 +36,23 @@ HATS.push(
  {id:"audifonos",name:"Audífonos",icon:"🎧",p:45,cur:"mc"},
  {id:"oso",name:"Gorro de osito",icon:"🐻",p:50,cur:"mc"},
  {id:"flor",name:"Flor en el pelo",icon:"🌺",p:15,cur:"mc"},
- {id:"princesa",name:"Corona de princesa",icon:"👸",p:200,cur:"mc",tag:"Limitado"}
+ {id:"princesa",name:"Corona de princesa",icon:"👸",p:200,cur:"mc",tag:"Limitado"},
+ {id:"vikingo",name:"Casco vikingo",icon:"🪖",p:60,cur:"mc",tag:"Nuevo"},
+ {id:"reves",name:"Gorra al revés",icon:"🧢",p:20,cur:"mc"},
+ {id:"rey",name:"Corona de rey",icon:"🤴",p:200,cur:"mc",tag:"Limitado"},
+ {id:"dino",name:"Gorro de dinosaurio",icon:"🦖",p:55,cur:"mc",tag:"Popular"}
 );
 FACES.push(
  {id:"redondos",name:"Lentes redondos",icon:"👓",p:20,cur:"mc"},
  {id:"corazonrosa",name:"Lentes de corazón rosa",icon:"💗",p:35,cur:"mc",tag:"Popular"},
  {id:"estrelladorada",name:"Lentes de estrella",icon:"⭐",p:40,cur:"mc"},
  {id:"gatito",name:"Lentes de gatita",icon:"😼",p:45,cur:"mc",tag:"Nuevo"},
- {id:"visor",name:"Visor arcoíris",icon:"🌈",p:70,cur:"mc"}
+ {id:"visor",name:"Visor arcoíris",icon:"🌈",p:70,cur:"mc"},
+ {id:"deportivos",name:"Lentes deportivos",icon:"🕶️",p:30,cur:"mc"},
+ {id:"heroe",name:"Antifaz de superhéroe",icon:"🦸",p:35,cur:"mc"}
 );
 FACES.forEach(f=>{if(f.id==="corazon"||f.id==="estrella")f.hide=true;});
-STYLES_H.push({id:"ondas",name:"Ondas largas"},{id:"bob",name:"Bob"},{id:"chongos",name:"Chonguitos"},{id:"lado",name:"Coleta de lado"});
+STYLES_H.push({id:"cresta",name:"Cresta"},{id:"ondas",name:"Ondas largas"},{id:"bob",name:"Bob"},{id:"chongos",name:"Chonguitos"},{id:"lado",name:"Coleta de lado"});
 const EYE_STYLES=[{id:0,name:"Normales",p:0},{id:1,name:"Con pestañas",p:0},{id:2,name:"Felices ^^",p:0},{id:3,name:"Brillantes ✨",p:20},{id:4,name:"De estrella ⭐",p:35}];
 const MOUTH_STYLES=[{id:0,name:"Sonrisa",p:0},{id:1,name:"Carcajada",p:0},{id:2,name:"Gatito :3",p:0},{id:3,name:"Lengüita",p:10}];
 const CHEEKS=[{id:0,name:"Mejillas rosadas",p:0},{id:1,name:"Pecas",p:0},{id:2,name:"Corazoncitos",p:15},{id:3,name:"Estrellitas",p:15},{id:4,name:"Sin rubor",p:0}];
@@ -57,6 +72,12 @@ function patTex(pat,base){const k=pat+base;if(patCache[k])return patCache[k];
   if(pat==="dino"){stamp("🦕",22,10,6);big("🦖",56);}
   if(pat==="gato"){stamp("🐾",14,18,5);big("🐱",56);}
   if(pat==="fresa"){stamp("🍓",16,18,4);big("🍓",50);}
+  if(pat==="futbol"){x.fillStyle="#FFFFFF";for(let i=0;i<W;i+=32)x.fillRect(i,0,12,H);big("⚽",54);x.font="bold 22px sans-serif";x.fillStyle="#FFFFFF";x.fillText("10",W/2,H/2+4);}
+  if(pat==="rayo"){big("⚡",64);stamp("⭐",12,8,3);}
+  if(pat==="robot"){stamp("⚙️",16,14,5);big("🤖",58);}
+  if(pat==="cohete"){for(let i=0;i<80;i++){x.fillStyle="#FFFFFF";x.fillRect(Math.random()*W,Math.random()*H,2,2);}big("🚀",56);stamp("🪐",14,4,7);}
+  if(pat==="tiburon"){x.strokeStyle="#FFFFFF";x.lineWidth=4;for(let y=20;y<H;y+=34){x.beginPath();for(let i=0;i<=W;i+=16)x.lineTo(i,y+Math.sin(i/16*Math.PI)*5);x.stroke();}big("🦈",58);}
+  if(pat==="carreras"){for(let yy=0;yy<H;yy+=16)for(let xx=0;xx<W;xx+=16)if(((xx+yy)/16)%2===0){x.fillStyle="#1E2329";x.fillRect(xx,yy,16,16);}x.fillStyle="#E2465C";x.fillRect(0,H/2-14,W,28);big("🏎️",44);}
   if(pat==="brillos"){const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,"#FFE68A");g.addColorStop(0.5,"#E2A511");g.addColorStop(1,"#FFF3C4");x.fillStyle=g;x.fillRect(0,0,W,H);stamp("✨",16,30,1);}
  });t.wrapS=T.RepeatWrapping;patCache[k]=t;return t;}
 function patMat(pat,base){return new T.MeshToonMaterial({map:patTex(pat,base),gradientMap:TOON});}
@@ -107,12 +128,19 @@ function lookExtras(L,P_){const {body,head,tor,tg,tt,eyes,mouth,hair,skin,shirt,
  if(ht==="flor"){const g=new T.Group();g.position.set(-0.36,0.25,0.18);head.add(g);for(let i=0;i<5;i++){const a=i/5*Math.PI*2;const p=sph(0.07,"#FF6F91",Math.cos(a)*0.08,Math.sin(a)*0.08,0,g,8,6);p.scale.z=0.5;}sph(0.05,"#F5C518",0,0,0.02,g,6,4);}
  if(ht==="princesa"){const cr=new T.Group();cr.position.y=0.42;head.add(cr);const m_=M("#F5C518","#5A4000");for(let i=0;i<5;i++){const a=(i-2)*0.32;const st=flatShape(starShape(0.09),"#F5C518","#5A4000",0.03);st.position.set(Math.sin(a)*0.32,0.06+(i===2?0.05:0),Math.cos(a)*0.32);st.rotation.y=a;cr.add(st);}
   const band=mesh(new T.TorusGeometry(0.33,0.03,6,24,Math.PI),"#F5C518",0,0,0,cr);band.rotation.x=-Math.PI/2;band.rotation.z=Math.PI;band.material=m_;sph(0.05,"#FF4FA3",0,0.07,0.33,cr,8,6);}
+ if(ht==="vikingo"){const c=new T.Mesh(new T.SphereGeometry(0.52,16,10,0,Math.PI*2,0,Math.PI*0.5),M("#9DB4C8"));c.position.y=0.05;head.add(c);cyl(0.53,0.53,0.08,"#C68A4A",0,0.08,0,head,20);for(const s of [-1,1]){const h=cone(0.09,0.42,"#FFF6C8",s*0.5,0.4,0,head,10);h.rotation.z=-s*0.9;}}
+ if(ht==="reves"){const c=new T.Mesh(new T.SphereGeometry(0.5,16,10,0,Math.PI*2,0,Math.PI*0.45),M("#2E7BEF"));c.position.y=0.06;head.add(c);box(0.6,0.06,0.42,"#2E7BEF",0,0.2,-0.48,head);}
+ if(ht==="rey"){const cr=cyl(0.38,0.4,0.28,"#F5C518",0,0.48,0,head,16);cr.material=M("#F5C518","#5A4000");for(let i=0;i<8;i++){const a=i/8*Math.PI*2;const sp=cone(0.07,0.2,"#F5C518",Math.cos(a)*0.36,0.72,Math.sin(a)*0.36,head,6);sp.material=cr.material;sph(0.04,["#E2465C","#2E7BEF","#19A858"][i%3],Math.cos(a)*0.39,0.48,Math.sin(a)*0.39,head,6,4);}box(0.62,0.08,0.62,"#C23B4E",0,0.36,0,head).visible=false;}
+ if(ht==="dino"){const c=new T.Mesh(new T.SphereGeometry(0.54,16,10,0,Math.PI*2,0,Math.PI*0.55),M("#19A858"));c.position.y=0.03;head.add(c);for(let i=0;i<5;i++){const sp=cone(0.1,0.22,"#F5C518",0,0.5-i*0.05+(i===0?0:0),0.2-i*0.18,head,4);sp.position.y=0.52-Math.abs(i-1)*0.06;}for(const s of [-1,1]){sph(0.08,"#FFFFFF",s*0.16,0.42,0.42,head,8,6);sph(0.04,"#14212E",s*0.16,0.43,0.48,head,6,4);}}
+ if(hs==="cresta"){for(let i=0;i<6;i++){const c=cone(0.12,0.4-Math.abs(i-2.5)*0.05,hair,0,0.45,0.3-i*0.16,head,6);c.rotation.x=-0.2+i*0.12;}}
  // lentes nuevos
  const f=L.face;
  if(f==="redondos"){for(const s of [-1,1]){const r=mesh(new T.TorusGeometry(0.11,0.018,6,18),"#8A5A2B",s*0.17,0.0,0.46,head);const gl=new T.Mesh(new T.CircleGeometry(0.1,16),new T.MeshBasicMaterial({color:0xBFE6FF,transparent:true,opacity:0.3}));gl.position.set(s*0.17,0,0.465);head.add(gl);}box(0.1,0.02,0.02,"#8A5A2B",0,0.02,0.47,head);}
  if(f==="corazonrosa"||f==="corazon"){for(const s of [-1,1]){const h=flatShape(heartShape(0.17),"#FF4FA3","#5A1030",0.03);h.position.set(s*0.17,0.0,0.45);head.add(h);const l=flatShape(heartShape(0.12),"#FFB3D6","#5A2040",0.035);l.position.set(s*0.17,0.01,0.452);head.add(l);}box(0.1,0.02,0.02,"#FF4FA3",0,0.03,0.47,head);}
  if(f==="estrelladorada"||f==="estrella"){for(const s of [-1,1]){const h=flatShape(starShape(0.16),"#F5C518","#5A4000",0.03);h.position.set(s*0.17,0.01,0.45);head.add(h);const l=flatShape(starShape(0.1),"#FFF6C8","#6A5A20",0.035);l.position.set(s*0.17,0.01,0.452);head.add(l);}box(0.1,0.02,0.02,"#F5C518",0,0.03,0.47,head);}
  if(f==="gatito"){for(const s of [-1,1]){const sh=new T.Shape();sh.moveTo(-0.13,-0.06);sh.lineTo(0.1,-0.07);sh.quadraticCurveTo(0.15,0.0,0.16,0.1);sh.lineTo(0.05,0.05);sh.lineTo(-0.13,0.06);sh.closePath();const m=flatShape(sh,"#7B4BD1","#2A1050",0.03);m.position.set(s*0.17,0,0.45);if(s<0)m.scale.x=-1;head.add(m);sph(0.02,"#F5C518",s*0.3,0.08,0.47,head,6,4);}box(0.1,0.02,0.02,"#7B4BD1",0,0.02,0.47,head);}
+ if(f==="deportivos"){const v=new T.Mesh(new T.CylinderGeometry(0.49,0.49,0.15,24,1,true,-0.85,1.7),new T.MeshToonMaterial({color:0x1E2329,gradientMap:TOON,side:T.DoubleSide}));v.position.y=0.02;head.add(v);const st=new T.Mesh(new T.CylinderGeometry(0.495,0.495,0.03,24,1,true,-0.85,1.7),M("#FF4F6B"));st.position.y=0.09;head.add(st);}
+ if(f==="heroe"){const v=new T.Mesh(new T.CylinderGeometry(0.48,0.48,0.17,24,1,true,-1.1,2.2),new T.MeshToonMaterial({color:0xD9263B,gradientMap:TOON,side:T.DoubleSide}));v.position.y=0.03;head.add(v);for(const s of [-1,1]){const h=new T.Mesh(new T.CircleGeometry(0.075,12),new T.MeshBasicMaterial({color:0xffffff}));h.position.set(s*0.165,0.01,0.475);head.add(h);}}
  if(f==="visor"){const v=new T.Mesh(new T.CylinderGeometry(0.5,0.5,0.16,24,1,true,-0.9,1.8),new T.MeshBasicMaterial({map:patTex("arcoiris","#FFFFFF"),transparent:true,opacity:0.85,side:T.DoubleSide}));v.position.y=0.02;head.add(v);}
 }
 /* --- probador 3D (girando) antes de comprar --- */

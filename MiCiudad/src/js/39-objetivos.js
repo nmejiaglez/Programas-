@@ -11,7 +11,7 @@ const OBJS=[
  {id:"hospital",t:"Entra al hospital y atiende pacientes",i:"🩺",ok:()=>objF("entrar_hospital")&&objTot("trabajos")>=1,go:()=>{const d=doorOf("hospital");goCity(d.x,d.z,"el Hospital");}},
  {id:"reto",t:"Cumple un reto del día y reclama el premio",i:"🏆",ok:()=>objTot("retos")>=1,go:()=>openRetos()},
  {id:"bosque3",t:"Pasa el nivel 3 del Bosque de Retos",i:"🌳",ok:()=>!!bqLv(3),go:()=>travelTo("bosque")},
- {id:"amiga",t:"Juega con una amiga en línea",i:"👭",ok:()=>objTot("amigas")>=1,go:()=>openFriends()},
+ {id:"amiga",t:"Juega en línea con un amigo o amiga",i:"👫",ok:()=>objTot("amigas")>=1,go:()=>openFriends()},
  {id:"tobogan",t:"Tírate 3 veces por el tobogán",i:"🛝",ok:()=>objTot("tobogan")>=3,go:()=>goCity(PG.slide.x,PG.slide.z-3,"el tobogán")},
  {id:"cine",t:"Mira una película en el cine",i:"🎬",ok:()=>objF("pelicula"),go:()=>{const d=doorOf("cine");goCity(d.x,d.z,"el Cine");}},
  {id:"vehiculo",t:"Consigue tu propio vehículo",i:"🚲",ok:()=>!!S.vehicle,go:()=>openShop("vehiculos")},

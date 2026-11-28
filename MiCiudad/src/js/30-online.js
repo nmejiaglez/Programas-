@@ -85,27 +85,27 @@ function openAccount(){sheet("👤 Mi cuenta",b=>{
 
 /* ---------- salas con amigas ---------- */
 function myHome(){if(!NET.uid)return roomCode();let h=h32(NET.uid+"casa"),out="";for(let i=0;i<5;i++){out+=B32[h%32];h=Math.floor(h/32)+h32(out+NET.uid)%997;}return out;}
-function inviteText(code){return "¡Ven a jugar conmigo en Mi Ciudad! 🌈🏙️ Mi sala es: "+code+" — Abre el juego, toca 👭 Amigas y escribe el código.";}
+function inviteText(code){return "¡Ven a jugar conmigo en Mi Ciudad! 🌈🏙️ Mi sala es: "+code+" — Abre el juego, toca 👫 Amigos y escribe el código.";}
 function invite(code){const t=inviteText(code);sfx("pop");
  if(navigator.share){navigator.share({text:t}).catch(()=>{});return;}
  try{window.open("https://wa.me/?text="+encodeURIComponent(t),"_blank");}catch(e){}
  try{navigator.clipboard.writeText(t).then(()=>toast("📋 Invitación copiada: péguela en WhatsApp"));}catch(e){}}
 function rememberFriend(id,p){if(!p||!p.n||!p.home||id===NET.uid||(S.blocked&&S.blocked[id]))return;S.friends=S.friends||{};const f=S.friends[id];
  if(!f||f.home!==p.home||f.n!==p.n||Date.now()-f.t>60000){S.friends[id]={n:p.n,tag:p.tag||"",home:p.home,t:Date.now(),look:p.look?{skin:p.look.skin,hair:p.look.hair,hstyle:p.look.hstyle}:null};
-  const ids=Object.keys(S.friends).sort((a,b)=>S.friends[b].t-S.friends[a].t);ids.slice(30).forEach(k=>delete S.friends[k]);if(!f)toast("💞 "+p.n+" se guardó en Mis amigas");}}
+  const ids=Object.keys(S.friends).sort((a,b)=>S.friends[b].t-S.friends[a].t);ids.slice(30).forEach(k=>delete S.friends[k]);if(!f)toast("💞 "+p.n+" se guardó en Mis amigos");}}
 function roomCode(){let s="";for(let i=0;i<5;i++)s+=B32[Math.floor(Math.random()*32)];return s;}
 function openFriends(tab){tab=tab||"sala";
- if(!S.parent||S.parent.rooms===false){sheet("👭 Jugar con amigas",b=>{b.appendChild(el("p","","Los papás desactivaron el juego con amigas en Control de padres."));});return;}
- sheet("👭 Jugar con amigas",body=>{
+ if(!S.parent||S.parent.rooms===false){sheet("👫 Jugar con amigos",b=>{b.appendChild(el("p","","Los papás desactivaron el juego con amigos en Control de padres."));});return;}
+ sheet("👫 Jugar con amigos",body=>{
   seg(body,[["sala","Mi sala"],["ranking","🏆 Ranking"]],tab,t=>openFriends(t));
   if(tab==="ranking"){renderRanking(body);return;}
-  if(!NET.ok){body.appendChild(el("p","","Necesita internet para jugar con amigas."));const r=el("button","btn go","Reintentar conexión");r.onclick=async()=>{await netStart();openFriends();};body.appendChild(r);return;}
+  if(!NET.ok){body.appendChild(el("p","","Necesita internet para jugar con amigos."));const r=el("button","btn go","Reintentar conexión");r.onclick=async()=>{await netStart();openFriends();};body.appendChild(r);return;}
   if(NET.room){
-   body.appendChild(el("p","muted","Comparta este código con sus amigas. Solo entra quien lo tenga."));
+   body.appendChild(el("p","muted","Comparta este código con sus amigos. Solo entra quien lo tenga."));
    const cb=el("div","codebox",NET.room);body.appendChild(cb);
    const rw=el("div","row");const cp=el("button","btn ghost","📋 Copiar código");cp.onclick=()=>{try{navigator.clipboard.writeText(NET.room).then(()=>toast("Copiado"),()=>selectText(cb));}catch(e){selectText(cb);}};
-   const iv=el("button","btn go","📲 Invitar amigas");iv.onclick=()=>invite(NET.room);rw.append(cp,iv);body.appendChild(rw);
-   const sb=el("button","btn","🔎 Buscar e invitar amiga");sb.onclick=()=>openSearch();body.appendChild(sb);
+   const iv=el("button","btn go","📲 Invitar amigos");iv.onclick=()=>invite(NET.room);rw.append(cp,iv);body.appendChild(rw);
+   const sb=el("button","btn","🔎 Buscar e invitar amigos");sb.onclick=()=>openSearch();body.appendChild(sb);
    body.appendChild(el("h3","","En la sala"));
    const l=el("div","list");const ids=Object.keys(NET.players).filter(id=>id!==NET.uid&&remoteAlive(NET.players[id]));
    l.appendChild(el("div","li",'<div style="font-size:24px">⭐</div><div class="tx"><b>'+escapeHtml(S.name||"Yo")+' (usted)</b><small>'+myTag()+'</small></div>'));
@@ -113,23 +113,23 @@ function openFriends(tab){tab=tab||"sala";
     const bb=el("button","btn ghost",blk?"Desbloquear":"🔇 Bloquear");bb.style.width="auto";bb.style.padding="6px 10px";bb.onclick=()=>{S.blocked=S.blocked||{};if(blk)delete S.blocked[id];else S.blocked[id]=1;save();openFriends();};
     const rp=el("button","btn ghost","🚩");rp.style.width="auto";rp.style.padding="6px 10px";rp.setAttribute("aria-label","Reportar");rp.onclick=()=>openReport(id,p);
     r.append(bb,rp);l.appendChild(r);});
-   if(!ids.length)l.appendChild(el("p","muted","Todavía no ha entrado nadie. Mande el código a sus amigas."));
+   if(!ids.length)l.appendChild(el("p","muted","Todavía no ha entrado nadie. Mande el código a sus amigos."));
    body.appendChild(l);
-   if(NET.poll)body.appendChild(el("p","note","Conexión en modo de respaldo: las amigas se mueven un poco más lento."));
+   if(NET.poll)body.appendChild(el("p","note","Conexión en modo de respaldo: los amigos se mueven un poco más lento."));
    const lv=el("button","btn red","Salir de la sala");lv.onclick=()=>{leaveRoom();openFriends();};body.appendChild(lv);
    return;}
-  body.appendChild(el("p","muted","Su sala tiene un código fijo: compártalo una vez y sus amigas siempre la encuentran. Solo entra quien tenga el código."));
+  body.appendChild(el("p","muted","Su sala tiene un código fijo: compártalo una vez y sus amigos siempre la encuentran. Solo entra quien tenga el código."));
   const home=myHome();const hb=el("div","codebox",home);body.appendChild(hb);
   const rw=el("div","row");const c=el("button","btn go big","🏠 Abrir mi sala");c.onclick=()=>{joinRoom(home);openFriends();};const iv=el("button","btn big","📲 Invitar");iv.onclick=()=>invite(home);rw.append(c,iv);body.appendChild(rw);
-  const sb=el("button","btn big","🔎 Buscar amiga por su nombre");sb.style.background="linear-gradient(#B38CFF,#7B4BD1)";sb.style.boxShadow="0 3px 0 #5A2FA8";sb.onclick=()=>openSearch();body.appendChild(sb);
+  const sb=el("button","btn big","🔎 Buscar amigos por su nombre");sb.style.background="linear-gradient(#B38CFF,#7B4BD1)";sb.style.boxShadow="0 3px 0 #5A2FA8";sb.onclick=()=>openSearch();body.appendChild(sb);
   const fr=S.friends?Object.keys(S.friends).filter(id=>!(S.blocked&&S.blocked[id])).sort((a,b)=>S.friends[b].t-S.friends[a].t):[];
-  body.appendChild(el("h3","","💞 Mis amigas"));
+  body.appendChild(el("h3","","💞 Mis amigos"));
   if(!fr.length)body.appendChild(el("p","muted","Cuando juegue con alguien en una sala, aparecerá aquí para visitarla con un toque."));
   else{const l=el("div","list");fr.forEach(id=>{const f=S.friends[id];const r=el("div","li",'<div style="font-size:26px">'+["🧒","👧","👦","🧒🏽","👧🏾"][h32(id)%5]+'</div><div class="tx"><b>'+escapeHtml(f.n)+'</b><small>'+escapeHtml(f.tag)+' · Sala '+f.home+'</small></div>');
     const v=el("button","btn go","🏠 Visitar");v.style.width="auto";v.style.padding="7px 10px";v.onclick=()=>{joinRoom(f.home);openFriends();};
     const ivf=el("button","btn","💌");ivf.style.width="auto";ivf.style.padding="7px 10px";ivf.setAttribute("aria-label","Invitar");ivf.onclick=()=>sendInvite(id,{n:f.n,look:f.look});r.appendChild(ivf);
-    const x=el("button","btn ghost","✖");x.style.width="auto";x.style.padding="7px 10px";x.setAttribute("aria-label","Quitar de mis amigas");x.onclick=()=>{delete S.friends[id];save();openFriends();};r.append(v,x);l.appendChild(r);});body.appendChild(l);}
-  body.appendChild(el("h3","","Entrar a la sala de una amiga"));
+    const x=el("button","btn ghost","✖");x.style.width="auto";x.style.padding="7px 10px";x.setAttribute("aria-label","Quitar de mis amigos");x.onclick=()=>{delete S.friends[id];save();openFriends();};r.append(v,x);l.appendChild(r);});body.appendChild(l);}
+  body.appendChild(el("h3","","Entrar a la sala de un amigo o amiga"));
   const i=el("input");i.type="text";i.id="roomIn";i.placeholder="Código, por ejemplo K7P2Q";i.maxLength=5;i.setAttribute("autocapitalize","characters");body.appendChild(i);
   const j=el("button","btn go","Entrar");j.onclick=()=>{const v=i.value.toUpperCase().replace(/[^A-Z0-9]/g,"");if(v.length!==5){toast("El código tiene 5 letras o números");return;}joinRoom(v);openFriends();};body.appendChild(j);
  });
@@ -141,7 +141,7 @@ async function joinRoom(code){
  if(NET.room)leaveRoom();
  NET.room=code;NET.players={};NET.chatSeen={};NET.poll=false;NET.joinedAt=Date.now();NET.lastSent="";
  try{await tok();await sendMyState(true);}catch(e){toast(errMsg(e));NET.room=null;return;}
- toast("👭 Está en la sala "+code);if(typeof retoAdd==="function")retoAdd("amigas",1);openStreams();$("chatBtn").hidden=false;
+ toast("👫 Está en la sala "+code);if(typeof retoAdd==="function")retoAdd("amigas",1);openStreams();$("chatBtn").hidden=false;
 }
 function openStreams(){
  closeStreams();if(!NET.room)return;
@@ -177,7 +177,7 @@ function showChat(id,m){
  if(S.blocked&&S.blocked[m.uid])return;
  const txt=PHRASES[m.m];if(!txt)return;
  if(m.uid===NET.uid){bubble(player.g,txt);return;}
- const p=NET.players[m.uid];const r=NET.remotes[m.uid];toast((p&&p.n?p.n:"Amiga")+": "+txt);if(r)bubble(r.ch.g,txt);
+ const p=NET.players[m.uid];const r=NET.remotes[m.uid];toast((p&&p.n?p.n:"Amigo")+": "+txt);if(r)bubble(r.ch.g,txt);
 }
 function bubble(g,txt){if(!g)return;const old=g.getObjectByName("burbuja");if(old)g.remove(old);
  const s=labelSprite(txt,"rgba(255,255,255,.96)","#14304A");s.name="burbuja";s.position.y=4.5;s.scale.set(4.2,1.05,1);g.add(s);setTimeout(()=>{if(s.parent)s.parent.remove(s);},4500);}
@@ -214,7 +214,7 @@ function ensureRemote(id,p){
  if(r&&r.key===k)return r;
  if(r)removeRemote(id);
  const look=Object.assign(fresh().look,p.look||{});const ch=makeChar(look);scene.add(ch.g);
- const tag=labelSprite((p.vip?"⭐ ":"")+(p.n||"Amiga"),p.vip?"rgba(181,123,0,.9)":"rgba(123,75,209,.88)","#FFFFFF");tag.position.y=3.85;tag.scale.multiplyScalar(0.72);ch.g.add(tag);addStars(ch);
+ const tag=labelSprite((p.vip?"⭐ ":"")+(p.n||"Amigo"),p.vip?"rgba(181,123,0,.9)":"rgba(123,75,209,.88)","#FFFFFF");tag.position.y=3.85;tag.scale.multiplyScalar(0.72);ch.g.add(tag);addStars(ch);
  let veh=null;if(p.veh){const v=makeVehicle(p.veh,p.look&&p.look.carC);ch.g.add(v.g);veh=v;}
  let pet=null;if(p.pet&&p.pet.type){pet=makePet(p.pet.type);pet.scale.setScalar(p.pet.s||1);scene.add(pet);}
  r={ch,veh,pet,key:k,x:p.x||0,z:p.z||0,y:p.y||0.3,f:p.f||0,px:p.x||0,pz:p.z||0};NET.remotes[id]=r;return r;

@@ -11,14 +11,14 @@ const RETO_POOL=[
  {k:"tobogan",t:"Baja {n} veces por el tobogán",icon:"🛝",n:[3,5,8]},
  {k:"trampolin",t:"Rebota {n} veces en el trampolín",icon:"🤸",n:[10,20,30]},
  {k:"mascota",t:"Cuida a tu mascota {n} veces",icon:"🐶",n:[2,3,5]},
- {k:"amigas",t:"Juega en una sala con amigas",icon:"👭",n:[1,1,1]},
+ {k:"amigas",t:"Juega en una sala con amigos",icon:"👫",n:[1,1,1]},
  {k:"bosque",t:"Pasa {n} niveles del Bosque de Retos",icon:"🌳",n:[1,2,3]}
 ];
 const MEDALS=[
- {k:"saltos",n:500,name:"Saltarina",icon:"🦘"},{k:"monedas",n:300,name:"Coleccionista",icon:"🪙"},{k:"bailes",n:60,name:"Estrella del baile",icon:"💃"},
- {k:"trabajos",n:50,name:"Gran trabajadora",icon:"🏅"},{k:"paseo",n:5000,name:"Viajera",icon:"🗺️"},{k:"caidas",n:30,name:"¡Ups!",icon:"🤕"},
- {k:"pintar",n:15,name:"Gran artista",icon:"🖼️"},{k:"tobogan",n:40,name:"Reina del tobogán",icon:"🛝"},{k:"trampolin",n:200,name:"Saltos al cielo",icon:"🚀"},
- {k:"amigas",n:10,name:"Mejor amiga",icon:"💞"},{k:"retos",n:30,name:"Campeona de retos",icon:"🏆"}
+ {k:"saltos",n:500,name:"Supersaltos",icon:"🦘"},{k:"monedas",n:300,name:"Coleccionista",icon:"🪙"},{k:"bailes",n:60,name:"Estrella del baile",icon:"💃"},
+ {k:"trabajos",n:50,name:"Mucho trabajo",icon:"🏅"},{k:"paseo",n:5000,name:"Trotamundos",icon:"🗺️"},{k:"caidas",n:30,name:"¡Ups!",icon:"🤕"},
+ {k:"pintar",n:15,name:"Gran artista",icon:"🖼️"},{k:"tobogan",n:40,name:"As del tobogán",icon:"🛝"},{k:"trampolin",n:200,name:"Saltos al cielo",icon:"🚀"},
+ {k:"amigas",n:10,name:"Amistad de oro",icon:"💞"},{k:"retos",n:30,name:"Superestrella de retos",icon:"🏆"}
 ];
 function hashDay(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
 function retoState(){

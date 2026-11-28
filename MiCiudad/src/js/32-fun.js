@@ -19,7 +19,7 @@ const DANCES=[
 function playDance(id,silent){if(!player||player.fall>0)return;if(vehicleObj){toast("Bájese del vehículo para bailar");return;}player.dance=id===2?2.2:5;player.danceT=id;player.wave=0;if(id===2)player.wave=0;
  if(!silent&&typeof sendEmote==="function")sendEmote(id);if(typeof retoAdd==="function")retoAdd("bailes",1);}
 function openDances(){sheet("😀 Bailes y gestos",b=>{
- b.appendChild(el("p","muted","Toque un baile. Sus amigas lo ven si están en la misma sala."));
+ b.appendChild(el("p","muted","Toque un baile. Sus amigos lo ven si están en la misma sala."));
  const g=el("div","dgrid");
  DANCES.forEach(d=>{const own=!d.p||(S.dances&&S.dances[d.id]);const c=el("button","dcard"+(own?"":" lock"),'<span class="de">'+d.icon+'</span><b>'+d.name+'</b>'+(own?"":'<small><span class="coin sm"></span> '+d.p+'</small>'));
   c.onclick=()=>{if(own){closeSheet();playDance(d.id);return;}if(!pay(d))return;S.dances=S.dances||{};S.dances[d.id]=1;save();sfx("compra");toast("🎉 Nuevo baile: "+d.name);openDances();};g.appendChild(c);});

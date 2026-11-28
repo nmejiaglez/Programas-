@@ -67,7 +67,7 @@ function makeInterior(b,i){const def=intZoneDef(b.id,i,b.name,b.icon,0xFFF3E6);
  ROOT=scene;
  spot({zone:Z.id,x:x0,z:z0+d/2-1.4,r:2.2,label:"🚪 Salir a la calle",fn:()=>exitInside()});
  INT[b.id]={Z,b};}
-function goInside(b){const I=INT[b.id];if(!I)return;if(teleporting){setTimeout(()=>goInside(b),400);return;}const sp=I.Z.spawn;INT.cur=b.id;teleport(sp.x,sp.z,null,Math.PI,()=>{toast(b.icon+" ¡Bienvenida a "+b.name+"!");if(typeof objDone==="function")objDone("entrar_"+b.id);});}
+function goInside(b){const I=INT[b.id];if(!I)return;if(teleporting){setTimeout(()=>goInside(b),400);return;}const sp=I.Z.spawn;INT.cur=b.id;teleport(sp.x,sp.z,null,Math.PI,()=>{toast(b.icon+" ¡Bienvenidos a "+b.name+"!");if(typeof objDone==="function")objDone("entrar_"+b.id);});}
 function exitInside(after){const id=INT.cur||"helados";const d=doors.find(x=>x.b.id===id);const f=FACE[d.b.f];const face=Math.atan2(f.x,f.z);teleport(d.x+f.x*2.5,d.z+f.z*2.5,null,face,after);}
 function buyTreat(kind){kind=typeof kind==="string"?kind:"🍦";const price=kind==="🍦"?15:10;if(!pay({p:price,cur:"$"}))return;sfx("compra");
  if(heldTreat)rm(heldTreat);heldTreat=new T.Group();

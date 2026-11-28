@@ -26,7 +26,7 @@ function closetExtra(body,tab){
   const re=()=>openCloset("colores");
   paintRow(body,"👕 Camisa","shirtC",re);paintRow(body,"👖 Pantalón o falda","pantsC",re);paintRow(body,"👟 Zapatos","shoeC",re);paintRow(body,"💇 Pelo","hairC",re);
   if(S.vehicle&&S.vehicle!=="skate"){paintRow(body,"🚗 Mi vehículo","carC",re);}}
- if(tab==="estelas"){body.appendChild(el("p","muted","Al caminar deja una estela mágica que sus amigas también ven."));
+ if(tab==="estelas"){body.appendChild(el("p","muted","Al caminar deja una estela mágica que sus amigos también ven."));
   itemGrid(body,TRAILS.map(t=>Object.assign({},t)),it=>it.p?"":"Gratis",it=>S.owned["tr_"+it.id]||!it.p,it=>(S.look.trail||"none")===it.id,it=>{S.owned["tr_"+it.id]=1;S.look.trail=it.id;sfx("compra");buildPlayer();openCloset("estelas");});}
  if(tab==="bailes"){openDances();}
 }
